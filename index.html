@@ -163,6 +163,81 @@
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
+        /* Lightbox */
+        .lightbox-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .lightbox-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .lightbox-img {
+            max-width: 90vw;
+            max-height: 90vh;
+            border-radius: 4px;
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            transform: scale(0.95);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .lightbox-overlay.open .lightbox-img {
+            transform: scale(1);
+        }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 1rem;
+            color: white;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+            background: transparent;
+            border: none;
+        }
+
+        .lightbox-nav:hover {
+            opacity: 1;
+        }
+
+        .lightbox-prev {
+            left: 1rem;
+        }
+
+        .lightbox-next {
+            right: 1rem;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            color: white;
+            cursor: pointer;
+            padding: 0.5rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 9999px;
+            border: none;
+            transition: background 0.2s;
+        }
+
+        .lightbox-close:hover {
+            background: rgba(0, 0, 0, 0.5);
+        }
+
         /* Native View Transitions */
         @view-transition {
             navigation: auto;
@@ -281,7 +356,7 @@
 
             <!-- Hero image -->
             <figure class="relative h-full w-full overflow-hidden rounded border border-[var(--rule)] hatch">
-                <img src="assets/img/RNBL3150.jpg" alt="Sandbox Réseau in Accra."
+                <img src="assets/img/RNBL3150.jpg" alt="Sandbox Réseau in Accra." fetchpriority="high" decoding="sync"
                     class="aspect-[16/10] h-full w-full object-cover grayscale" />
                 <figcaption class="mt-2 text-[13px] text-[color:color-mix(in_oklab,var(--ink)_65%,var(--paper)_35%)]">
                     <em class="font-serif">Attendees connect during Sandbox Réseau in Accra.</em>
@@ -386,9 +461,9 @@
                             <!--                            <span class="font-bold">Image 1</span>-->
                             <!--                            <span class="opacity-70">Place 'event-1.jpg' in assets/img/</span>-->
                             <!--                        </div>-->
-                            <img src="assets/img/event-1.jpg" alt="Event photo 1"
-                                class="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
-
+                            <img src="assets/img/event-1.jpg" alt="Event photo 1" onclick="openLightbox(0)"
+                                loading="lazy" decoding="async"
+                                class="h-full w-full object-cover transition duration-500 group-hover:scale-105 cursor-zoom-in" />
                         </div>
 
                         <!-- Placeholder 2 -->
@@ -400,9 +475,9 @@
                             <!--                            <span class="opacity-70">Place 'event-2.jpg' in assets/img/</span>-->
                             <!--                        </div>-->
 
-                            <img src="assets/img/event-2.jpg" alt="Event photo 2"
-                                class="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
-
+                            <img src="assets/img/event-2.jpg" alt="Event photo 2" onclick="openLightbox(1)"
+                                loading="lazy" decoding="async"
+                                class="h-full w-full object-cover transition duration-500 group-hover:scale-105 cursor-zoom-in" />
                         </div>
 
                         <!-- Placeholder 3 -->
@@ -414,9 +489,9 @@
                             <!--                            <span class="opacity-70">Place 'event-3.jpg' in assets/img/</span>-->
                             <!--                        </div>-->
 
-                            <img src="assets/img/event-3.jpg" alt="Event photo 3"
-                                class="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
-
+                            <img src="assets/img/event-3.jpg" alt="Event photo 3" onclick="openLightbox(2)"
+                                loading="lazy" decoding="async"
+                                class="h-full w-full object-cover transition duration-500 group-hover:scale-105 cursor-zoom-in" />
                         </div>
 
                         <!-- Placeholder 4 -->
@@ -428,9 +503,9 @@
                             <!--                            <span class="opacity-70">Place 'event-4.jpg' in assets/img/</span>-->
                             <!--                        </div>-->
 
-                            <img src="assets/img/event-4.jpg" alt="Event photo 4"
-                                class="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
-
+                            <img src="assets/img/event-4.jpg" alt="Event photo 4" onclick="openLightbox(3)"
+                                loading="lazy" decoding="async"
+                                class="h-full w-full object-cover transition duration-500 group-hover:scale-105 cursor-zoom-in" />
                         </div>
                     </div>
                     <p class="mt-2 text-[13px] text-neutral-500 italic">Want only high-signal connection? Join the next
@@ -503,6 +578,83 @@
     </footer>
 
     <script>
+        // --- Lightbox Logic ---
+        const GALLERY_IMAGES = [
+            'assets/img/event-1.jpg',
+            'assets/img/event-2.jpg',
+            'assets/img/event-3.jpg',
+            'assets/img/event-4.jpg'
+        ];
+
+        let currentLightboxIndex = -1;
+
+        // Create Lightbox DOM
+        const lightbox = document.createElement('div');
+        lightbox.className = 'lightbox-overlay';
+        lightbox.innerHTML = `
+        <button class="lightbox-close" aria-label="Close">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+        <button class="lightbox-nav lightbox-prev" aria-label="Previous">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
+        </button>
+        <img class="lightbox-img" src="" alt="Full screen view" />
+        <button class="lightbox-nav lightbox-next" aria-label="Next">
+             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
+        </button>
+    `;
+        document.body.appendChild(lightbox);
+
+        const lightboxImg = lightbox.querySelector('.lightbox-img');
+
+        window.openLightbox = (index) => {
+            currentLightboxIndex = index;
+            updateLightbox();
+            lightbox.classList.add('open');
+            document.body.style.overflow = 'hidden'; // Lock scroll
+        };
+
+        function closeLightbox() {
+            lightbox.classList.remove('open');
+            document.body.style.overflow = '';
+            setTimeout(() => {
+                lightboxImg.src = '';
+            }, 300);
+        }
+
+        function updateLightbox() {
+            const url = GALLERY_IMAGES[currentLightboxIndex];
+            lightboxImg.src = url;
+        }
+
+        function nextImage(e) {
+            if (e) e.stopPropagation();
+            currentLightboxIndex = (currentLightboxIndex + 1) % GALLERY_IMAGES.length;
+            updateLightbox();
+        }
+
+        function prevImage(e) {
+            if (e) e.stopPropagation();
+            currentLightboxIndex = (currentLightboxIndex - 1 + GALLERY_IMAGES.length) % GALLERY_IMAGES.length;
+            updateLightbox();
+        }
+
+        // Listeners
+        lightbox.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
+        lightbox.querySelector('.lightbox-next').addEventListener('click', nextImage);
+        lightbox.querySelector('.lightbox-prev').addEventListener('click', prevImage);
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) closeLightbox();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (!lightbox.classList.contains('open')) return;
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowRight') nextImage();
+            if (e.key === 'ArrowLeft') prevImage();
+        });
+
+
         // Dateline + year
         const d = new Date();
         document.getElementById('dateline').textContent =
