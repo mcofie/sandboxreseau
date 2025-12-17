@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Sandbox Réseau — Gallery</title>
     <meta name="description" content="Event gallery for Sandbox Réseau." />
+    <meta name="referrer" content="no-referrer" />
 
     <!-- Fonts -->
     <link
@@ -122,22 +123,205 @@
             break-inside: avoid;
             margin-bottom: 1rem;
         }
+
+        /* --- Immersive Additions --- */
+
+        /* 1. Grain Texture */
+        .grain-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.035;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* 2. Entrance Animation */
+        .animate-enter {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            will-change: opacity, transform;
+        }
+
+        .animate-enter.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 3. Lightbox */
+        .lightbox-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .lightbox-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .lightbox-img {
+            max-width: 90vw;
+            max-height: 90vh;
+            border-radius: 4px;
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            transform: scale(0.95);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .lightbox-overlay.open .lightbox-img {
+            transform: scale(1);
+        }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 1rem;
+            color: white;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+            background: transparent;
+            border: none;
+        }
+
+        .lightbox-nav:hover {
+            opacity: 1;
+        }
+
+        .lightbox-prev {
+            left: 1rem;
+        }
+
+        .lightbox-next {
+            right: 1rem;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            color: white;
+            cursor: pointer;
+            padding: 0.5rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 9999px;
+            border: none;
+            transition: background 0.2s;
+        }
+
+        .lightbox-close:hover {
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        /* 4. Native View Transitions */
+        @view-transition {
+            navigation: auto;
+        }
     </style>
 </head>
 
 <body class="min-h-screen font-sans antialiased pb-12">
+    <!-- Grain Texture -->
+    <div class="grain-overlay"></div>
 
-    <!-- Minimal Nav -->
-    <header class="sticky top-0 z-10 border-b border-[var(--rule)] bg-[var(--paper)]/95 backdrop-blur">
-        <div class="mx-auto flex h-14 max-w-[1100px] items-center justify-between px-4">
-            <a href="index.html" class="flex items-center gap-2 text-sm font-semibold hover:opacity-70">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                    stroke="currentColor" class="h-4 w-4">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
-                </svg>
-                Back to Gazette
-            </a>
-            <div class="font-serif italic font-bold">Reseau Gallery</div>
+    <!-- ====== Masthead (3-row layout) ====== -->
+    <header class="border-b-[3px] border-[var(--rule)] border-double bg-[var(--paper)]">
+        <div class="mx-auto max-w-[1100px] px-4">
+            <!-- Row 1: Utility (dateline + controls) -->
+            <div class="flex flex-wrap items-center justify-between gap-3 py-2 text-[13px]">
+                <div class="text-[var(--muted)]">
+                    <span id="dateline"></span> • Vol. 1, No. 1 • Accra
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <!-- Back Link -->
+                    <a href="index.html"
+                        class="inline-flex items-center gap-2 mr-4 rounded bg-[var(--ink)] px-3 py-1.5 text-xs font-bold text-[var(--paper)] uppercase tracking-wide hover:opacity-80 transition-opacity">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
+                            stroke="currentColor" class="h-3.5 w-3.5">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                        </svg>
+                        Back to Gazette
+                    </a>
+
+                    <!-- Theme cycle -->
+                    <button id="themeToggle"
+                        class="inline-flex items-center gap-2 rounded border border-[var(--rule)] px-2.5 py-1 text-xs font-semibold uppercase tracking-wider hover:opacity-90"
+                        title="Switch theme (white → black → yellow)">
+                        <span class="inline-block h-[10px] w-[10px] rounded-full bg-[var(--ink)]"></span>
+                        Theme
+                    </button>
+
+                    <!-- Accent quick toggle (cycles accents) -->
+                    <button id="accentToggle"
+                        class="inline-flex items-center gap-2 rounded border accent-border px-2.5 py-1 text-xs font-semibold uppercase tracking-wider accent-text hover:opacity-90"
+                        title="Switch accent color">
+                        <span class="inline-block h-[10px] w-[10px] rounded-full"
+                            style="background: var(--accent)"></span>
+                        Color
+                    </button>
+                </div>
+            </div>
+
+            <!-- Row 2: Centered Masthead -->
+            <div class="py-3">
+                <h1 class="text-center font-serif text-[44px] leading-none tracking-tight sm:text-[56px]">
+                    Sandbox Réseau Gazette
+                </h1>
+                <div class="mx-auto mt-3 h-px w-24 bg-[var(--rule)]"></div>
+                <p class="mt-2 text-center font-serif italic text-sm text-[var(--muted)]">
+                    The Archive
+                </p>
+            </div>
+
+            <!-- Row 3: Slim Actions / Swatches -->
+            <div class="flex flex-col items-center gap-2 pb-4">
+                <div
+                    class="flex items-center gap-3 text-[11px] font-semibold tracking-[.18em] uppercase text-[var(--muted)]">
+                    <span>Theme</span>
+                    <div class="flex items-center gap-1">
+                        <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#fbfaf7]"
+                            data-theme-swatch="white" aria-label="White theme"></button>
+                        <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#0b0b0b]"
+                            data-theme-swatch="black" aria-label="Black theme"></button>
+                        <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#fff7cc]"
+                            data-theme-swatch="yellow" aria-label="Yellow theme"></button>
+                    </div>
+
+                    <span class="mx-2 h-3 w-px bg-[var(--rule)]/30"></span>
+
+                    <span>Color</span>
+                    <div class="flex items-center gap-1">
+                        <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#0ea5e9]"
+                            data-accent-swatch="blue" aria-label="Blue"></button>
+                        <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#10b981]"
+                            data-accent-swatch="emerald" aria-label="Emerald"></button>
+                        <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#8b5cf6]"
+                            data-accent-swatch="violet" aria-label="Violet"></button>
+                        <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#f59e0b]"
+                            data-accent-swatch="amber" aria-label="Amber"></button>
+                        <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#ef4444]"
+                            data-accent-swatch="red" aria-label="Red"></button>
+                        <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#d946ef]"
+                            data-accent-swatch="fuchsia" aria-label="Fuchsia"></button>
+                    </div>
+                </div>
+            </div>
         </div>
     </header>
 
@@ -148,71 +332,278 @@
         </div>
 
         <!-- Masonry Grid -->
-        <div class="masonry-grid">
-
-            <!-- Example Cloud Image 1 -->
-            <div class="masonry-item group relative overflow-hidden rounded border border-[var(--rule)]">
-                <!-- Replace 'src' with your Cloud URL (e.g., Cloudinary) -->
-                <img src="assets/img/header.svg" alt="Event Moment"
-                    class="w-full h-auto grayscale transition duration-500 group-hover:grayscale-0 group-hover:scale-105"
-                    loading="lazy">
-                <div
-                    class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4 opacity-0 transition group-hover:opacity-100">
-                    <span class="text-xs text-white font-medium">Networking Session</span>
-                </div>
-            </div>
-
-            <!-- Example Cloud Image 2 (Placeholder) -->
-            <div
-                class="masonry-item rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_90%,var(--ink)_10%)] aspect-[3/4] flex items-center justify-center p-4 text-center">
-                <div class="text-[var(--muted)] text-sm">
-                    <p class="font-bold mb-1">Cloud Image Slot</p>
-                    <p class="opacity-70 text-xs">Paste your image URL in gallery.html</p>
-                </div>
-            </div>
-
-            <!-- Example Cloud Image 3 (Placeholder) -->
-            <div
-                class="masonry-item rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_90%,var(--ink)_10%)] aspect-[4/3] flex items-center justify-center p-4 text-center">
-                <div class="text-[var(--muted)] text-sm">
-                    <p class="font-bold mb-1">Cloud Image Slot</p>
-                    <p class="opacity-70 text-xs">Paste your image URL in gallery.html</p>
-                </div>
-            </div>
-
-            <!-- Example Cloud Image 4 (Placeholder) -->
-            <div
-                class="masonry-item rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_90%,var(--ink)_10%)] aspect-[1/1] flex items-center justify-center p-4 text-center">
-                <div class="text-[var(--muted)] text-sm">
-                    <p class="font-bold mb-1">Cloud Image Slot</p>
-                    <p class="opacity-70 text-xs">Paste your image URL in gallery.html</p>
-                </div>
-            </div>
-
-            <!-- Example Cloud Image 5 (Placeholder) -->
-            <div
-                class="masonry-item rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_90%,var(--ink)_10%)] aspect-[3/5] flex items-center justify-center p-4 text-center">
-                <div class="text-[var(--muted)] text-sm">
-                    <p class="font-bold mb-1">Cloud Image Slot</p>
-                    <p class="opacity-70 text-xs">Paste your image URL in gallery.html</p>
-                </div>
-            </div>
-
+        <div id="masonry-grid" class="masonry-grid">
+            <!-- Images will be injected here by script below -->
         </div>
     </main>
 
-    <script>
-            // Simple Theme Init (reads generic LocalStorage from index.html)
-            (function () {
-                const THEME_KEY = 'srz_theme_v1';
-                const ACCENT_KEY = 'srz_accent_v1';
-                const root = document.documentElement;
+    <!-- Footer -->
+    <footer class="border-t-[3px] border-[var(--rule)] border-double">
+        <div
+            class="mx-auto flex min-h-[60px] max-w-[1100px] flex-wrap items-center justify-between gap-3 px-4 py-3 text-[13px] text-neutral-600">
+            <div>© <span id="year"></span> Sandbox Réseau • Accra</div>
+            <div>The Archive</div>
+            <a class="underline accent-text" href="https://luma.com/sandbox-reseau" target="_blank"
+                rel="noreferrer">Register</a>
+        </div>
+    </footer>
 
-                const savedTheme = localStorage.getItem(THEME_KEY);
-                if (savedTheme) root.setAttribute('data-theme', savedTheme);
-                const savedAccent = localStorage.getItem(ACCENT_KEY);
-                if (savedAccent) root.setAttribute('data-accent', savedAccent);
-            })();
+
+    <script>
+        // CONFIGURATION: Add your image URLs here
+        const GALLERY_IMAGES = [
+            "https://lh3.googleusercontent.com/pw/AP1GczPxq3oJMIY_yNpz9nIF0jrfOSpusWcU_m1_wCUGZgjK402pATmYRVmyqsTrEEhJELNAT_pAr_x16xpLoof1TWKfONrWWX22Oi80Sprz9thvI0A1iBqxXkSUwAW2k1soaVvUMaeGisiF6nj9NaY58bk=w1600",
+            "https://lh3.googleusercontent.com/pw/AP1GczMedjIQf-TkO8yE03LUbfnzftsWopTClOYYa1udeCBlh_vYG8UfYkbEQDutkff1JvxqK2gCtz1z4y1kBSrAwZal3bCYofEKE8N5IJJ-qWG1d1jSijxPlHe4KZy-0Gj505Or7OYZ0OOL4d6cuqQuJdk=w1600",
+            "https://lh3.googleusercontent.com/pw/AP1GczNXUZFoxCw9nZMEoSU5RweP6_OkoFF16SjVKqlzGURR1kmZ7aa2S3I41sdPTyNaa5lrEltEjdxJCcdKnYHqv1X0NUqKLklkWp67YWLSQuE4JpVgPOKUz59bZevXE8r1xIg8yqtDT2IpOi9evlpdeRA=w1600",
+            "https://lh3.googleusercontent.com/pw/AP1GczNm4Zu3XerLv8oyksJaesMXvulKTZRVFJVF_v3WpGswiytNDFEmTKY4Vh8US7qpFm9q4ZCD6qtaPlSP953V63RM3cHaH32Qi9ImHZ2FC40igYeIFkq8DavsiQIR14JbB9xlVLGnXnfadzphWUJEdrE=w1600",
+            "https://lh3.googleusercontent.com/pw/AP1GczOMmyvqiUeGcmeRNjw9jRMyyKsc0PuI4PU3nuipxArP8t8tLaRadXmrVBBp7yvKf9xbhPGVTobK8vxKIhgskUIzzf-pctArMATgEIPM5PyQOaw3GCi1dNvVihNwUJIh6Bkxnmyl95qfgh8l3aNzQcs=w1600",
+            "https://lh3.googleusercontent.com/pw/AP1GczPlactgivsaKRQKQM1SSR10k8HHop2rRcZ5jQ0guvXCpgNAkXwXLZgtfMSj1wzXYh6fb_xH6T3rNHJxs7cCdtAE0q6gqmh-YcK7ZyrD83diZ-wj0Zuc8qpKFB8F1nPDhayQT39uYWL9FS9RCIJWSGU=w1600",
+            "https://lh3.googleusercontent.com/pw/AP1GczO8nb627JjpPEToucx0X8_gWPrNBFGeJUIxLZV9-pzWgoEaK_xGwWk0zpWeHe7yGZwlU4uXrsMOJ7SJg5hrcwlzK2wFpuXWnjjYztcYEjgiMJhqqDWip5zvX7U3V5qEGjNkmzOUw93uz6h0U70Kuk0=w1600",
+            "https://lh3.googleusercontent.com/pw/AP1GczPomoi8TZpRaxQdEomW74ftRmAvuaeCs_FSA1IB2suPoS4UfbLWD32hMfvNFroi8NCJrJvRszvRwExTicHzymdHZQjduAQI9jx3bvlu8100KR4EckA_5jLFJhRw7AV4nHCVMWmJ5NNaHyzEl4NnFEw=w1600",
+            "https://lh3.googleusercontent.com/pw/AP1GczP5qWS3ljIBRP0-5Jjyz_ejXkS4AR4b4rkQcobd26mB402ZSmZMDf1PghNbpqmR2TjgyN_C1YEL9ozbEtuAKeksYSKi3wr2VEeiwDKl1aSqWI_RAZMp7ud-ZFc7zR942mYa2WJqY07KwuSCaA-VW1Q=w1600",
+            "https://lh3.googleusercontent.com/pw/AP1GczMrj0f7nKa2_e7-JcSLGUtFPtKQvMVmtOnvxpaUTJDEfJUEZpj6Lfr5i_wWfvDBYHULRzRLctjoOwSkKWIKtOl7VlgBThwyOViWmzpTo-wklqVcmIbW_QSN--r2PMA6Y7gI6lDEvhLhmpCFoITtEOE=w1600",
+            "https://lh3.googleusercontent.com/pw/AP1GczPVCXW-WeyfIxXksQbjEeiiXF-Pc1UrEtLBX_BI4pN9DnIzd1w7V-3Oye0O510xHy_MY0FW1sIvOw1TEtylPouq5dE9DMrZdqlXqqLBE3xiu4xjtdTLvILvkei8uixmDGyZxzaarZVxfUSHOBA38C4=w1600",
+            "https://lh3.googleusercontent.com/pw/AP1GczNSqWxMslTou5Vj9zpLMFAnXaf_LyeopNsjnzNFfUBxNJxp9Y5bFOAzxbYLhiRR9Nnpl-_YKUKxiFCG6t7NuV9OaCtvXAaChtTD-dqOzBze0Jho-LTRv1Q-whrZSHl4uHLVfrPtGPTrfeYHb2jpogQ=w1600",
+            "https://lh3.googleusercontent.com/pw/AP1GczNbNTNBdy7QjbyZW9H9RF9lnoFQB0dA1VnnmqJhEHkqdM3rkimZa_7hE4dh6i_jNPDIEtAJFe_-5mbZUPd1TeY9Pg8VpQhA0jyjW4X_qEh0mBapy8dE36bVsOFM_Z4NqmSfUn8m1NQwssL68P0qvaw=w1600",
+            "https://lh3.googleusercontent.com/pw/AP1GczOPA9xEndrCmM1Q6S3cVIFF3uIJNcOoR0W9mBrSZY2HrjVPxUsZkDDlh27mSFmLMLn2TUWlLEMLh9JKgQuiZD1oJfrZ3XAc6oLHJoItkBipMClKu7-zMxXIzST9wysLpQmF1880XGlyzNJSnlpGvLE=w1600"
+        ];     // "https://your-cloud-provider.com/image2.jpg",
+
+
+        // Render Logic
+        const grid = document.getElementById('masonry-grid');
+
+        // --- Lightbox State ---
+        let currentLightboxIndex = -1;
+
+        // Create Lightbox DOM
+        const lightbox = document.createElement('div');
+        lightbox.className = 'lightbox-overlay';
+        lightbox.innerHTML = `
+        <button class="lightbox-close" aria-label="Close">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+        <button class="lightbox-nav lightbox-prev" aria-label="Previous">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
+        </button>
+        <img class="lightbox-img" src="" alt="Full screen view" />
+        <button class="lightbox-nav lightbox-next" aria-label="Next">
+             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
+        </button>
+    `;
+        document.body.appendChild(lightbox);
+
+        const lightboxImg = lightbox.querySelector('.lightbox-img');
+
+        // Animation Observer
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, i) => {
+                if (entry.isIntersecting) {
+                    // Staggered delay based on index logic or random
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, i * 100); // simple stagger
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        GALLERY_IMAGES.forEach((url, index) => {
+            // Helper to generate srcset from Google Photos URL
+            // Assumes URL ends with =w1600 or similar
+            const base = url.split('=')[0];
+            const srcSet = `${base}=w400 400w, ${base}=w800 800w, ${base}=w1600 1600w`;
+            const sizes = "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw";
+
+            const item = document.createElement('div');
+            // Added 'animate-enter' for scroll animation
+            item.className = 'masonry-item group relative overflow-hidden rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_90%,var(--ink)_10%)] animate-enter';
+
+            item.innerHTML = `
+                <img src="${base}=w1600" 
+                     srcset="${srcSet}"
+                     sizes="${sizes}"
+                     alt="Gallery Image ${index + 1}" 
+                     class="w-full h-auto transition duration-700 group-hover:scale-105 cursor-zoom-in" 
+                     loading="lazy"
+                     referrerpolicy="no-referrer"
+                     onclick="openLightbox(${index})"
+                     onerror="this.parentElement.innerHTML='<div class=\\'p-4 text-center text-xs text-[var(--muted)]\\'>Image not found:<br>${url}</div>'"/>
+            `;
+
+            grid.appendChild(item);
+            observer.observe(item);
+        });
+
+        // --- Lightbox Functions ---
+        window.openLightbox = (index) => {
+            currentLightboxIndex = index;
+            updateLightbox();
+            lightbox.classList.add('open');
+            document.body.style.overflow = 'hidden'; // Lock scroll
+        };
+
+        function closeLightbox() {
+            lightbox.classList.remove('open');
+            document.body.style.overflow = '';
+            setTimeout(() => {
+                lightboxImg.src = ''; // clear for next time
+            }, 300);
+        }
+
+        function updateLightbox() {
+            const url = GALLERY_IMAGES[currentLightboxIndex];
+            lightboxImg.src = url;
+        }
+
+        function nextImage(e) {
+            if (e) e.stopPropagation();
+            currentLightboxIndex = (currentLightboxIndex + 1) % GALLERY_IMAGES.length;
+            updateLightbox();
+        }
+
+        function prevImage(e) {
+            if (e) e.stopPropagation();
+            currentLightboxIndex = (currentLightboxIndex - 1 + GALLERY_IMAGES.length) % GALLERY_IMAGES.length;
+            updateLightbox();
+        }
+
+        // Event Listeners
+        lightbox.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
+        lightbox.querySelector('.lightbox-next').addEventListener('click', nextImage);
+        lightbox.querySelector('.lightbox-prev').addEventListener('click', prevImage);
+
+        // Close on background click
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) closeLightbox();
+        });
+
+        // Keyboard Nav
+        document.addEventListener('keydown', (e) => {
+            if (!lightbox.classList.contains('open')) return;
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowRight') nextImage();
+            if (e.key === 'ArrowLeft') prevImage();
+        });
+
+        // Loop to fill formatted placeholders if array is empty (For demo purposes only)
+        if (GALLERY_IMAGES.length === 0 || (GALLERY_IMAGES.length === 1 && GALLERY_IMAGES[0].includes('header.svg'))) {
+            // Add a few placeholder slots so the page isn't empty for the user
+            const placeholders = [1, 2, 3];
+            placeholders.forEach(i => {
+                const item = document.createElement('div');
+                item.className = 'masonry-item rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_90%,var(--ink)_10%)] aspect-[4/3] flex items-center justify-center p-4 text-center animate-enter';
+                item.innerHTML = `
+                    <div class="text-[var(--muted)] text-sm">
+                        <p class="font-bold mb-1">Slot ${i}</p>
+                        <p class="opacity-70 text-xs">Add URL to GALLERY_IMAGES in code</p>
+                    </div>
+                 `;
+                grid.appendChild(item);
+                observer.observe(item);
+            });
+        }
+    </script>
+
+    <script>
+        // Dateline + year
+        const d = new Date();
+        const dateEl = document.getElementById('dateline');
+        const yearEl = document.getElementById('year');
+
+        if (dateEl) dateEl.textContent = d.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        if (yearEl) yearEl.textContent = d.getFullYear();
+
+        // Theme + Accent switchers (persist)
+        (function () {
+            const THEME_KEY = 'srz_theme_v1';
+            const ACCENT_KEY = 'srz_accent_v1';
+            const THEMES = ['white', 'black', 'yellow'];
+            const ACCENTS = ['blue', 'emerald', 'violet', 'amber', 'red', 'fuchsia'];
+            const root = document.documentElement;
+
+            // init from storage
+            const savedTheme = localStorage.getItem(THEME_KEY);
+            if (savedTheme) root.setAttribute('data-theme', savedTheme);
+            const savedAccent = localStorage.getItem(ACCENT_KEY);
+            if (savedAccent) root.setAttribute('data-accent', savedAccent);
+
+            // swatches (optional)
+            document.querySelectorAll('[data-theme-swatch]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const v = btn.getAttribute('data-theme-swatch');
+                    root.setAttribute('data-theme', v);
+                    try {
+                        localStorage.setItem(THEME_KEY, v);
+                    } catch {
+                    }
+                    updateThemeToggleTitle();
+                });
+            });
+            document.querySelectorAll('[data-accent-swatch]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const v = btn.getAttribute('data-accent-swatch');
+                    root.setAttribute('data-accent', v);
+                    try {
+                        localStorage.setItem(ACCENT_KEY, v);
+                    } catch {
+                    }
+                });
+            });
+
+            // Cycle buttons
+            const themeBtn = document.getElementById('themeToggle');
+
+            function cycleTheme() {
+                const cur = root.getAttribute('data-theme') || THEMES[0];
+                const next = THEMES[(THEMES.indexOf(cur) + 1) % THEMES.length];
+                root.setAttribute('data-theme', next);
+                try {
+                    localStorage.setItem(THEME_KEY, next);
+                } catch {
+                }
+                updateThemeToggleTitle();
+            }
+
+            function updateThemeToggleTitle() {
+                if (!themeBtn) return;
+                const cur = root.getAttribute('data-theme');
+                themeBtn.title = `Switch theme (current: ${cur})`;
+            }
+
+            if (themeBtn) {
+                themeBtn.addEventListener('click', cycleTheme);
+                updateThemeToggleTitle();
+            }
+
+            const accentBtn = document.getElementById('accentToggle');
+
+            function cycleAccent() {
+                const cur = root.getAttribute('data-accent') || ACCENTS[0];
+                const next = ACCENTS[(ACCENTS.indexOf(cur) + 1) % ACCENTS.length];
+                root.setAttribute('data-accent', next);
+                try {
+                    localStorage.setItem(ACCENT_KEY, next);
+                } catch {
+                }
+            }
+
+            if (accentBtn) accentBtn.addEventListener('click', cycleAccent);
+
+            // (Optional) keyboard shortcuts
+            window.addEventListener('keydown', (e) => {
+                const isMac = navigator.platform.toUpperCase().includes('MAC');
+                // Theme: Ctrl/Cmd + J
+                if ((isMac ? e.metaKey : e.ctrlKey) && e.key.toLowerCase() === 'j') {
+                    e.preventDefault();
+                    cycleTheme();
+                }
+                // Accent: Ctrl/Cmd + K
+                if ((isMac ? e.metaKey : e.ctrlKey) && e.key.toLowerCase() === 'k') {
+                    e.preventDefault();
+                    cycleAccent();
+                }
+            });
+        })();
     </script>
 </body>
 
