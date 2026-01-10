@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="white" data-accent="blue">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+    <!-- Primary Meta Tags -->
+    <title>Community | Sandbox Réseau — Join the Builders Network</title>
+    <meta name="title" content="Community | Sandbox Réseau — Join the Builders Network" />
+    <meta name="description"
+        content="Connect with Accra's most ambitious builders, engineers, and founders. Join the Sandbox Réseau community for collaboration, support, and high-signal connections." />
+    <meta name="keywords"
+        content="Tech Community Accra, Ghana Developers, Builders Network, Startup Community, Sandbox Réseau Community" />
+    <meta name="author" content="Sandbox Réseau" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://sandboxreseau.com/community" />
+    <meta property="og:title" content="Community | Sandbox Réseau — Join the Builders Network" />
+    <meta property="og:description" content="Connect with Accra's most ambitious builders, engineers, and founders." />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:title" content="Community | Sandbox Réseau — Join the Builders Network" />
+    <meta property="twitter:description"
+        content="Connect with Accra's most ambitious builders, engineers, and founders." />
+
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Libre+Baskerville:wght@400;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'ui-sans-serif', 'system-ui'],
+                        serif: ['"Libre Baskerville"', 'Georgia', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Base theme vars */
+        :root {
+            --paper: #fbfaf7;
+            --ink: #111;
+            --muted: #5b5b5b;
+            --rule: #111;
+            --accent: #0ea5e9;
+        }
+
+        [data-theme="white"] {
+            --paper: #fbfaf7;
+            --ink: #111;
+            --muted: #5b5b5b;
+            --rule: #111;
+        }
+
+        [data-theme="black"] {
+            --paper: #0b0b0b;
+            --ink: #f3f3f3;
+            --muted: #bdbdbd;
+            --rule: #eaeaea;
+        }
+
+        [data-theme="yellow"] {
+            --paper: #fff7cc;
+            --ink: #111;
+            --muted: #5b5b5b;
+            --rule: #111;
+        }
+
+        /* Accent palettes */
+        [data-accent="blue"] {
+            --accent: #0ea5e9;
+        }
+
+        [data-accent="emerald"] {
+            --accent: #10b981;
+        }
+
+        [data-accent="violet"] {
+            --accent: #8b5cf6;
+        }
+
+        [data-accent="amber"] {
+            --accent: #f59e0b;
+        }
+
+        [data-accent="red"] {
+            --accent: #ef4444;
+        }
+
+        [data-accent="fuchsia"] {
+            --accent: #d946ef;
+        }
+
+        .banner {
+            background: repeating-linear-gradient(90deg, transparent, transparent 12px, rgba(0, 0, 0, .06) 12px, rgba(0, 0, 0, .06) 24px);
+        }
+
+        .hatch:before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(135deg, rgba(0, 0, 0, .05) 0, rgba(0, 0, 0, .05) 1px, transparent 2px, transparent 6px);
+            mix-blend-mode: multiply;
+            pointer-events: none;
+        }
+
+        .small-caps {
+            font-variant: small-caps;
+            letter-spacing: .06em;
+        }
+
+        .prose-like p {
+            font-size: 16.5px;
+            line-height: 1.85;
+        }
+
+        /* Accent helpers */
+        .accent-border {
+            border-color: var(--accent);
+        }
+
+        .accent-text {
+            color: var(--accent);
+        }
+
+        .accent-bg {
+            background: var(--accent);
+        }
+
+        .accent-hover {
+            background: color-mix(in oklab, var(--accent) 14%, var(--paper));
+        }
+
+        .chip-hover:hover {
+            background: color-mix(in oklab, var(--accent) 12%, var(--paper));
+            border-color: var(--accent);
+        }
+
+        /* Texture */
+        .grain-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.035;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Card styles */
+        .community-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .community-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Value card animation */
+        .value-card {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .value-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .value-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .value-card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .value-card:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Native View Transitions */
+        @view-transition {
+            navigation: auto;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen bg-[var(--paper)] text-[var(--ink)] font-sans antialiased">
+    <!-- Texture -->
+    <div class="grain-overlay"></div>
+
+    <!-- ====== Masthead ====== -->
+    <header class="border-b-[3px] border-[var(--rule)] border-double">
+        <div class="mx-auto max-w-[1100px] px-4">
+            <!-- Row 1: Utility -->
+            <div class="flex flex-wrap items-center justify-between gap-3 py-2 text-[13px]">
+                <div class="text-[var(--muted)]">
+                    <span id="dateline"></span> • Vol. 1, No. 1 • Accra
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <!-- Back Link -->
+                    <a href="/"
+                        class="inline-flex items-center gap-2 mr-4 rounded bg-[var(--ink)] px-3 py-1.5 text-xs font-bold text-[var(--paper)] uppercase tracking-wide hover:opacity-80 transition-opacity">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
+                            stroke="currentColor" class="h-3.5 w-3.5">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                        </svg>
+                        Back to Gazette
+                    </a>
+
+                    <!-- Theme cycle -->
+                    <button id="themeToggle"
+                        class="inline-flex items-center gap-2 rounded border border-[var(--rule)] px-2.5 py-1 text-xs font-semibold uppercase tracking-wider hover:opacity-90"
+                        title="Switch theme (white → black → yellow)">
+                        <span class="inline-block h-[10px] w-[10px] rounded-full bg-[var(--ink)]"></span>
+                        Theme
+                    </button>
+
+                    <!-- Accent toggle -->
+                    <button id="accentToggle"
+                        class="inline-flex items-center gap-2 rounded border accent-border px-2.5 py-1 text-xs font-semibold uppercase tracking-wider accent-text hover:opacity-90"
+                        title="Switch accent color">
+                        <span class="inline-block h-[10px] w-[10px] rounded-full"
+                            style="background: var(--accent)"></span>
+                        Color
+                    </button>
+                </div>
+            </div>
+
+            <!-- Row 2: Centered Masthead -->
+            <div class="py-3">
+                <h1 class="text-center font-serif text-[44px] leading-none tracking-tight sm:text-[56px]">
+                    Sandbox Réseau Gazette
+                </h1>
+                <div class="mx-auto mt-3 h-px w-24 bg-[var(--rule)]"></div>
+                <p class="mt-2 text-center font-serif italic text-sm text-[var(--muted)]">
+                    Community
+                </p>
+            </div>
+
+            <!-- Row 3: Swatches -->
+            <div class="flex flex-col items-center gap-2 pb-4">
+                <div
+                    class="flex items-center gap-3 text-[11px] font-semibold tracking-[.18em] uppercase text-[var(--muted)]">
+                    <span>Theme</span>
+                    <div class="flex items-center gap-1">
+                        <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#fbfaf7]"
+                            data-theme-swatch="white" aria-label="White theme"></button>
+                        <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#0b0b0b]"
+                            data-theme-swatch="black" aria-label="Black theme"></button>
+                        <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#fff7cc]"
+                            data-theme-swatch="yellow" aria-label="Yellow theme"></button>
+                    </div>
+
+                    <span class="mx-2 h-3 w-px bg-[var(--rule)]/30"></span>
+
+                    <span>Color</span>
+                    <div class="flex items-center gap-1">
+                        <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#0ea5e9]"
+                            data-accent-swatch="blue" aria-label="Blue"></button>
+                        <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#10b981]"
+                            data-accent-swatch="emerald" aria-label="Emerald"></button>
+                        <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#8b5cf6]"
+                            data-accent-swatch="violet" aria-label="Violet"></button>
+                        <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#f59e0b]"
+                            data-accent-swatch="amber" aria-label="Amber"></button>
+                        <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#ef4444]"
+                            data-accent-swatch="red" aria-label="Red"></button>
+                        <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#d946ef]"
+                            data-accent-swatch="fuchsia" aria-label="Fuchsia"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="h-2 border-y border-[var(--rule)] banner"></div>
+
+    <!-- Hero Section -->
+    <section class="border-b border-[var(--rule)]">
+        <div class="mx-auto max-w-[1100px] px-4 py-12 text-center">
+            <span
+                class="inline-block w-max border-y border-[var(--rule)] px-2 py-1 text-[11px] font-semibold uppercase tracking-[.2em] text-[color:color-mix(in_oklab,var(--ink)_45%,var(--paper)_55%)] mb-4">
+                Join the Network
+            </span>
+            <h2 class="font-serif text-4xl sm:text-5xl leading-tight mb-4">
+                Where Builders Connect
+            </h2>
+            <p class="max-w-2xl mx-auto text-lg text-[var(--muted)]">
+                The Sandbox Réseau community is a tight-knit network of engineers, designers, founders, and makers
+                building the future from Accra. We share knowledge, support each other's work, and create together.
+            </p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="mx-auto max-w-[1100px] px-4 py-10">
+
+        <!-- Community Values -->
+        <section class="mb-16">
+            <h3 class="font-serif text-2xl mb-6 text-center">Our Values</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div
+                    class="value-card rounded border border-[var(--rule)] p-5 bg-[color:color-mix(in_oklab,var(--paper)_95%,var(--ink)_5%)]">
+                    <div class="w-10 h-10 rounded-full accent-bg flex items-center justify-center mb-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                            stroke="white" class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+                        </svg>
+                    </div>
+                    <h4 class="font-semibold mb-2">Signal Over Noise</h4>
+                    <p class="text-sm text-[var(--muted)]">We prioritize substance over hype, real work over
+                        performative gestures.</p>
+                </div>
+
+                <div
+                    class="value-card rounded border border-[var(--rule)] p-5 bg-[color:color-mix(in_oklab,var(--paper)_95%,var(--ink)_5%)]">
+                    <div class="w-10 h-10 rounded-full accent-bg flex items-center justify-center mb-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                            stroke="white" class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18" />
+                        </svg>
+                    </div>
+                    <h4 class="font-semibold mb-2">Learn in Public</h4>
+                    <p class="text-sm text-[var(--muted)]">Share your journey, mistakes, and breakthroughs openly with
+                        the community.</p>
+                </div>
+
+                <div
+                    class="value-card rounded border border-[var(--rule)] p-5 bg-[color:color-mix(in_oklab,var(--paper)_95%,var(--ink)_5%)]">
+                    <div class="w-10 h-10 rounded-full accent-bg flex items-center justify-center mb-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                            stroke="white" class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
+                        </svg>
+                    </div>
+                    <h4 class="font-semibold mb-2">Collaborate Generously</h4>
+                    <p class="text-sm text-[var(--muted)]">Help others freely, share resources, and lift the whole
+                        community up.</p>
+                </div>
+
+                <div
+                    class="value-card rounded border border-[var(--rule)] p-5 bg-[color:color-mix(in_oklab,var(--paper)_95%,var(--ink)_5%)]">
+                    <div class="w-10 h-10 rounded-full accent-bg flex items-center justify-center mb-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                            stroke="white" class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
+                        </svg>
+                    </div>
+                    <h4 class="font-semibold mb-2">Ship Faster Together</h4>
+                    <p class="text-sm text-[var(--muted)]">Progress over polish. Build momentum with accountability
+                        partners.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Join Options -->
+        <section class="mb-16">
+            <h3 class="font-serif text-2xl mb-6 text-center">Ways to Connect</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <!-- WhatsApp Community -->
+                <div
+                    class="community-card rounded border-2 border-[var(--rule)] p-6 bg-[color:color-mix(in_oklab,var(--paper)_92%,var(--ink)_8%)]">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-[#25D366] flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" class="w-6 h-6">
+                                <path
+                                    d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-serif text-xl mb-2">WhatsApp Community</h4>
+                            <p class="text-[var(--muted)] text-sm mb-4">
+                                Join our active WhatsApp group for daily discussions, resource sharing, quick questions,
+                                and spontaneous collaborations.
+                            </p>
+                            <a href="https://chat.whatsapp.com/your-invite-link" target="_blank" rel="noreferrer"
+                                class="inline-flex items-center gap-2 rounded bg-[#25D366] px-4 py-2 text-sm text-white font-semibold hover:opacity-90 transition-opacity">
+                                Join WhatsApp
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                    stroke="currentColor" class="w-4 h-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Twitter/X -->
+                <div
+                    class="community-card rounded border-2 border-[var(--rule)] p-6 bg-[color:color-mix(in_oklab,var(--paper)_92%,var(--ink)_8%)]">
+                    <div class="flex items-start gap-4">
+                        <div
+                            class="flex-shrink-0 w-12 h-12 rounded-full bg-[var(--ink)] flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="var(--paper)"
+                                class="w-5 h-5">
+                                <path
+                                    d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-serif text-xl mb-2">Follow on X</h4>
+                            <p class="text-[var(--muted)] text-sm mb-4">
+                                Stay updated with event announcements, community highlights, and builder spotlights on
+                                our official X account.
+                            </p>
+                            <a href="https://twitter.com/sandboxreseau" target="_blank" rel="noreferrer"
+                                class="inline-flex items-center gap-2 rounded bg-[var(--ink)] px-4 py-2 text-sm text-[var(--paper)] font-semibold hover:opacity-90 transition-opacity">
+                                Follow @sandboxreseau
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                    stroke="currentColor" class="w-4 h-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Luma Events -->
+                <div
+                    class="community-card rounded border-2 border-[var(--rule)] p-6 bg-[color:color-mix(in_oklab,var(--paper)_92%,var(--ink)_8%)]">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-full accent-bg flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                stroke="white" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-serif text-xl mb-2">Luma Events</h4>
+                            <p class="text-[var(--muted)] text-sm mb-4">
+                                RSVP to upcoming meetups, get notified of new editions, and secure your spot at our next
+                                gathering.
+                            </p>
+                            <a href="https://luma.com/sandbox-reseau" target="_blank" rel="noreferrer"
+                                class="inline-flex items-center gap-2 rounded accent-bg px-4 py-2 text-sm text-white font-semibold hover:opacity-90 transition-opacity">
+                                View Events on Luma
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                    stroke="currentColor" class="w-4 h-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Email Newsletter -->
+                <div
+                    class="community-card rounded border-2 border-[var(--rule)] p-6 bg-[color:color-mix(in_oklab,var(--paper)_92%,var(--ink)_8%)]">
+                    <div class="flex items-start gap-4">
+                        <div
+                            class="flex-shrink-0 w-12 h-12 rounded-full bg-[var(--muted)] flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                stroke="white" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-serif text-xl mb-2">Newsletter</h4>
+                            <p class="text-[var(--muted)] text-sm mb-4">
+                                Get curated updates straight to your inbox: event recaps, builder spotlights, and
+                                resources we're loving.
+                            </p>
+                            <a href="mailto:hello@sandboxreseau.com?subject=Subscribe to Newsletter"
+                                class="inline-flex items-center gap-2 rounded bg-[var(--muted)] px-4 py-2 text-sm text-white font-semibold hover:opacity-90 transition-opacity">
+                                Subscribe via Email
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                    stroke="currentColor" class="w-4 h-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Community Guidelines -->
+        <section class="mb-16">
+            <div
+                class="rounded border border-[var(--rule)] p-6 bg-[color:color-mix(in_oklab,var(--paper)_95%,var(--ink)_5%)]">
+                <h3 class="font-serif text-2xl mb-4">Community Guidelines</h3>
+                <div class="prose-like">
+                    <ul class="space-y-3 text-[var(--muted)]">
+                        <li class="flex items-start gap-3">
+                            <span class="accent-text font-bold">01.</span>
+                            <span><strong class="text-[var(--ink)]">Be kind and constructive.</strong> We're all here to
+                                grow. Offer feedback generously and receive it graciously.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="accent-text font-bold">02.</span>
+                            <span><strong class="text-[var(--ink)]">Credit work.</strong> When sharing resources or
+                                ideas, always attribute the original creators.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="accent-text font-bold">03.</span>
+                            <span><strong class="text-[var(--ink)]">Respect time.</strong> Be punctual to events, keep
+                                discussions on-topic, and value others' attention.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="accent-text font-bold">04.</span>
+                            <span><strong class="text-[var(--ink)]">No spam or pitches.</strong> Promotional content
+                                should add genuine value. No cold sales tactics.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="accent-text font-bold">05.</span>
+                            <span><strong class="text-[var(--ink)]">Keep it confidential.</strong> What's shared in the
+                                community stays in the community unless explicitly public.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="text-center py-8 border-t border-[var(--rule)]">
+            <h3 class="font-serif text-2xl mb-3">Ready to join?</h3>
+            <p class="text-[var(--muted)] mb-6 max-w-xl mx-auto">
+                Whether you're shipping your first project or scaling your tenth, there's a place for you here.
+            </p>
+            <div class="flex flex-wrap justify-center gap-3">
+                <a href="https://luma.com/sandbox-reseau" target="_blank" rel="noreferrer"
+                    class="rounded bg-[var(--ink)] px-5 py-2.5 text-sm text-[var(--paper)] font-semibold hover:opacity-90 transition-opacity">
+                    RSVP on Luma
+                </a>
+                <a href="/"
+                    class="rounded border accent-border px-5 py-2.5 text-sm accent-text font-semibold hover:accent-hover transition-colors">
+                    Back to Gazette
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t-[3px] border-[var(--rule)] border-double">
+        <div
+            class="mx-auto flex min-h-[60px] max-w-[1100px] flex-wrap items-center justify-between gap-3 px-4 py-3 text-[13px] text-neutral-600">
+            <div>© <span id="year"></span> Sandbox Réseau • Accra</div>
+            <div>Community</div>
+            <a class="underline accent-text" href="https://luma.com/sandbox-reseau" target="_blank"
+                rel="noreferrer">Register</a>
+        </div>
+    </footer>
+
+    <script>
+        // Dateline + year
+        const d = new Date();
+        const dateEl = document.getElementById('dateline');
+        const yearEl = document.getElementById('year');
+
+        if (dateEl) dateEl.textContent = d.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        if (yearEl) yearEl.textContent = d.getFullYear();
+
+        // Theme + Accent switchers (persist)
+        (function () {
+            const THEME_KEY = 'srz_theme_v1';
+            const ACCENT_KEY = 'srz_accent_v1';
+            const THEMES = ['white', 'black', 'yellow'];
+            const ACCENTS = ['blue', 'emerald', 'violet', 'amber', 'red', 'fuchsia'];
+            const root = document.documentElement;
+
+            // init from storage
+            const savedTheme = localStorage.getItem(THEME_KEY);
+            if (savedTheme) root.setAttribute('data-theme', savedTheme);
+            const savedAccent = localStorage.getItem(ACCENT_KEY);
+            if (savedAccent) root.setAttribute('data-accent', savedAccent);
+
+            // swatches
+            document.querySelectorAll('[data-theme-swatch]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const v = btn.getAttribute('data-theme-swatch');
+                    root.setAttribute('data-theme', v);
+                    try {
+                        localStorage.setItem(THEME_KEY, v);
+                    } catch {
+                    }
+                    updateThemeToggleTitle();
+                });
+            });
+            document.querySelectorAll('[data-accent-swatch]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const v = btn.getAttribute('data-accent-swatch');
+                    root.setAttribute('data-accent', v);
+                    try {
+                        localStorage.setItem(ACCENT_KEY, v);
+                    } catch {
+                    }
+                });
+            });
+
+            // Cycle buttons
+            const themeBtn = document.getElementById('themeToggle');
+
+            function cycleTheme() {
+                const cur = root.getAttribute('data-theme') || THEMES[0];
+                const next = THEMES[(THEMES.indexOf(cur) + 1) % THEMES.length];
+                root.setAttribute('data-theme', next);
+                try {
+                    localStorage.setItem(THEME_KEY, next);
+                } catch {
+                }
+                updateThemeToggleTitle();
+            }
+
+            function updateThemeToggleTitle() {
+                if (!themeBtn) return;
+                const cur = root.getAttribute('data-theme');
+                themeBtn.title = `Switch theme (current: ${cur})`;
+            }
+
+            if (themeBtn) {
+                themeBtn.addEventListener('click', cycleTheme);
+                updateThemeToggleTitle();
+            }
+
+            const accentBtn = document.getElementById('accentToggle');
+
+            function cycleAccent() {
+                const cur = root.getAttribute('data-accent') || ACCENTS[0];
+                const next = ACCENTS[(ACCENTS.indexOf(cur) + 1) % ACCENTS.length];
+                root.setAttribute('data-accent', next);
+                try {
+                    localStorage.setItem(ACCENT_KEY, next);
+                } catch {
+                }
+            }
+
+            if (accentBtn) accentBtn.addEventListener('click', cycleAccent);
+
+            // Keyboard shortcuts
+            window.addEventListener('keydown', (e) => {
+                const isMac = navigator.platform.toUpperCase().includes('MAC');
+                if ((isMac ? e.metaKey : e.ctrlKey) && e.key.toLowerCase() === 'j') {
+                    e.preventDefault();
+                    cycleTheme();
+                }
+                if ((isMac ? e.metaKey : e.ctrlKey) && e.key.toLowerCase() === 'k') {
+                    e.preventDefault();
+                    cycleAccent();
+                }
+            });
+        })();
+    </script>
+</body>
+
+</html>
