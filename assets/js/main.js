@@ -1,0 +1,157 @@
+// Date + Year Logic
+const d = new Date();
+const dateEl = document.getElementById('dateline');
+const yearEl = document.getElementById('year');
+
+if (dateEl) dateEl.textContent = d.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+if (yearEl) yearEl.textContent = d.getFullYear();
+
+// Theme + Accent Logic
+(function () {
+    const THEME_KEY = 'srz_theme_v1';
+    const ACCENT_KEY = 'srz_accent_v1';
+    const THEMES = ['white', 'black', 'yellow'];
+    const ACCENTS = ['blue', 'emerald', 'violet', 'amber', 'red', 'fuchsia'];
+    const root = document.documentElement;
+
+    // init from storage
+    const savedTheme = localStorage.getItem(THEME_KEY);
+    if (savedTheme) root.setAttribute('data-theme', savedTheme);
+    const savedAccent = localStorage.getItem(ACCENT_KEY);
+    if (savedAccent) root.setAttribute('data-accent', savedAccent);
+
+    // swatches
+    document.querySelectorAll('[data-theme-swatch]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const v = btn.getAttribute('data-theme-swatch');
+            root.setAttribute('data-theme', v);
+            try { localStorage.setItem(THEME_KEY, v); } catch { }
+            updateThemeToggleTitle();
+        });
+    });
+    document.querySelectorAll('[data-accent-swatch]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const v = btn.getAttribute('data-accent-swatch');
+            root.setAttribute('data-accent', v);
+            try { localStorage.setItem(ACCENT_KEY, v); } catch { }
+        });
+    });
+
+    // Cycle buttons
+    const themeBtn = document.getElementById('themeToggle');
+    const accentBtn = document.getElementById('accentToggle');
+
+    function cycleTheme() {
+        const cur = root.getAttribute('data-theme') || THEMES[0];
+        const next = THEMES[(THEMES.indexOf(cur) + 1) % THEMES.length];
+        root.setAttribute('data-theme', next);
+        try { localStorage.setItem(THEME_KEY, next); } catch { }
+        updateThemeToggleTitle();
+    }
+
+    function cycleAccent() {
+        const cur = root.getAttribute('data-accent') || ACCENTS[0];
+        const next = ACCENTS[(ACCENTS.indexOf(cur) + 1) % ACCENTS.length];
+        root.setAttribute('data-accent', next);
+        try { localStorage.setItem(ACCENT_KEY, next); } catch { }
+    }
+
+    function updateThemeToggleTitle() {
+        if (!themeBtn) return;
+        const cur = root.getAttribute('data-theme');
+        themeBtn.title = `Switch theme (current: ${cur})`;
+    }
+
+    if (themeBtn) {
+        themeBtn.addEventListener('click', cycleTheme);
+        updateThemeToggleTitle();
+    }
+
+    if (accentBtn) {
+        accentBtn.addEventListener('click', cycleAccent);
+    }
+
+    // Keyboard shortcuts
+    window.addEventListener('keydown', (e) => {
+        const isMac = navigator.platform.toUpperCase().includes('MAC');
+        if ((isMac ? e.metaKey : e.ctrlKey) && e.key.toLowerCase() === 'j') {
+            e.preventDefault();
+            cycleTheme();
+        }
+        if ((isMac ? e.metaKey : e.ctrlKey) && e.key.toLowerCase() === 'k') {
+            e.preventDefault();
+            cycleAccent();
+        }
+    });
+})();
+
+// Lightbox Logic (Only if constants are defined)
+if (typeof GALLERY_IMAGES !== 'undefined') {
+    let currentLightboxIndex = -1;
+
+    // Create Lightbox DOM
+    const lightbox = document.createElement('div');
+    lightbox.className = 'lightbox-overlay';
+    lightbox.innerHTML = `
+    <button class="lightbox-close" aria-label="Close">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
+    <button class="lightbox-nav lightbox-prev" aria-label="Previous">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
+    </button>
+    <img class="lightbox-img" src="" alt="Full screen view" />
+    <button class="lightbox-nav lightbox-next" aria-label="Next">
+         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
+    </button>
+`;
+    document.body.appendChild(lightbox);
+
+    const lightboxImg = lightbox.querySelector('.lightbox-img');
+
+    window.openLightbox = (index) => {
+        currentLightboxIndex = index;
+        updateLightbox();
+        lightbox.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    };
+
+    function closeLightbox() {
+        lightbox.classList.remove('open');
+        document.body.style.overflow = '';
+        setTimeout(() => {
+            lightboxImg.src = '';
+        }, 300);
+    }
+
+    function updateLightbox() {
+        const url = GALLERY_IMAGES[currentLightboxIndex];
+        lightboxImg.src = url;
+    }
+
+    function nextImage(e) {
+        if (e) e.stopPropagation();
+        currentLightboxIndex = (currentLightboxIndex + 1) % GALLERY_IMAGES.length;
+        updateLightbox();
+    }
+
+    function prevImage(e) {
+        if (e) e.stopPropagation();
+        currentLightboxIndex = (currentLightboxIndex - 1 + GALLERY_IMAGES.length) % GALLERY_IMAGES.length;
+        updateLightbox();
+    }
+
+    // Listeners
+    lightbox.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
+    lightbox.querySelector('.lightbox-next').addEventListener('click', nextImage);
+    lightbox.querySelector('.lightbox-prev').addEventListener('click', prevImage);
+    lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeLightbox();
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('open')) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowRight') nextImage();
+        if (e.key === 'ArrowLeft') prevImage();
+    });
+}

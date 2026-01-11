@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="white" data-accent="blue">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+    <!-- Primary Meta Tags -->
+    <title>Handbook | Sandbox Réseau — Community Guidelines & Manual</title>
+    <meta name="title" content="Handbook | Sandbox Réseau" />
+    <meta name="description"
+        content="The official handbook for Sandbox Réseau. Our values, rules, and how to make the most of the community." />
+    <meta name="author" content="Sandbox Réseau" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://sandboxreseau.com/handbook" />
+    <meta property="og:title" content="Handbook | Sandbox Réseau" />
+    <meta property="og:description"
+        content="The official handbook for Sandbox Réseau. Our values, rules, and how to make the most of the community." />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:title" content="Handbook | Sandbox Réseau" />
+    <meta property="twitter:description"
+        content="The official handbook for Sandbox Réseau. Our values, rules, and how to make the most of the community." />
+
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Libre+Baskerville:wght@400;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'ui-sans-serif', 'system-ui'],
+                        serif: ['"Libre Baskerville"', 'Georgia', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body class="min-h-screen bg-[var(--paper)] text-[var(--ink)] font-sans antialiased">
+    <!-- Texture -->
+    <div class="grain-overlay"></div>
+
+    <!-- ====== Masthead ====== -->
+    <header class="border-b-[3px] border-[var(--rule)] border-double">
+        <div class="mx-auto max-w-[1100px] px-4">
+            <!-- Row 1: Utility -->
+            <div class="flex flex-wrap items-center justify-between gap-3 py-2 text-[13px]">
+                <div class="text-[var(--muted)]">
+                    <span id="dateline"></span> • Vol. 1, No. 1 • Accra
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <!-- Back Link -->
+                    <a href="/"
+                        class="inline-flex items-center gap-2 mr-4 rounded bg-[var(--ink)] px-3 py-1.5 text-xs font-bold text-[var(--paper)] uppercase tracking-wide hover:opacity-80 transition-opacity">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
+                            stroke="currentColor" class="h-3.5 w-3.5">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                        </svg>
+                        Back to Gazette
+                    </a>
+
+                    <!-- Theme cycle -->
+                    <button id="themeToggle"
+                        class="inline-flex items-center gap-2 rounded border border-[var(--rule)] px-2.5 py-1 text-xs font-semibold uppercase tracking-wider hover:opacity-90"
+                        title="Switch theme (white → black → yellow)">
+                        <span class="inline-block h-[10px] w-[10px] rounded-full bg-[var(--ink)]"></span>
+                        Theme
+                    </button>
+
+                    <!-- Accent toggle -->
+                    <button id="accentToggle"
+                        class="inline-flex items-center gap-2 rounded border accent-border px-2.5 py-1 text-xs font-semibold uppercase tracking-wider accent-text hover:opacity-90"
+                        title="Switch accent color">
+                        <span class="inline-block h-[10px] w-[10px] rounded-full"
+                            style="background: var(--accent)"></span>
+                        Color
+                    </button>
+                </div>
+            </div>
+
+            <!-- Row 2: Centered Masthead -->
+            <div class="py-3">
+                <h1 class="text-center font-serif text-[44px] leading-none tracking-tight sm:text-[56px]">
+                    Sandbox Réseau Gazette
+                </h1>
+                <div class="mx-auto mt-3 h-px w-24 bg-[var(--rule)]"></div>
+                <p class="mt-2 text-center font-serif italic text-sm text-[var(--muted)]">
+                    Handbook
+                </p>
+            </div>
+
+            <!-- Row 3: Swatches -->
+            <div class="flex flex-col items-center gap-2 pb-4">
+                <div
+                    class="flex items-center gap-3 text-[11px] font-semibold tracking-[.18em] uppercase text-[var(--muted)]">
+                    <span>Theme</span>
+                    <div class="flex items-center gap-1">
+                        <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#fbfaf7]"
+                            data-theme-swatch="white" aria-label="White theme"></button>
+                        <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#0b0b0b]"
+                            data-theme-swatch="black" aria-label="Black theme"></button>
+                        <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#fff7cc]"
+                            data-theme-swatch="yellow" aria-label="Yellow theme"></button>
+                    </div>
+
+                    <span class="mx-2 h-3 w-px bg-[var(--rule)]/30"></span>
+
+                    <span>Color</span>
+                    <div class="flex items-center gap-1">
+                        <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#0ea5e9]"
+                            data-accent-swatch="blue" aria-label="Blue"></button>
+                        <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#10b981]"
+                            data-accent-swatch="emerald" aria-label="Emerald"></button>
+                        <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#8b5cf6]"
+                            data-accent-swatch="violet" aria-label="Violet"></button>
+                        <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#f59e0b]"
+                            data-accent-swatch="amber" aria-label="Amber"></button>
+                        <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#ef4444]"
+                            data-accent-swatch="red" aria-label="Red"></button>
+                        <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#d946ef]"
+                            data-accent-swatch="fuchsia" aria-label="Fuchsia"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="h-2 border-y border-[var(--rule)] banner"></div>
+
+    <main class="mx-auto max-w-[800px] px-4 py-12">
+        <h2 class="font-serif text-3xl sm:text-4xl leading-tight mb-8 text-center">Community Handbook</h2>
+        <div class="prose-like space-y-12">
+
+            <!-- Manifesto -->
+            <section>
+                <h3 class="font-serif text-2xl mb-4 border-b border-[var(--rule)] pb-2">Our Manifesto</h3>
+                <p class="mb-4 text-lg font-medium">A network for builders who ship.</p>
+                <p class="mb-6 text-[var(--muted)]">We're engineers, designers, and makers in Accra building the next
+                    wave of products from Ghana. This isn't a networking group. It's a workspace.</p>
+
+                <div class="space-y-4">
+                    <div
+                        class="p-4 rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_95%,var(--ink)_5%)]">
+                        <strong class="block accent-text mb-1">Signal over Noise</strong>
+                        <p class="text-sm">Every message should add value. No fluff, no "thoughts?" without context, no
+                            self-promotion disguised as conversation.</p>
+                    </div>
+                    <div
+                        class="p-4 rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_95%,var(--ink)_5%)]">
+                        <strong class="block accent-text mb-1">Progress over Polish</strong>
+                        <p class="text-sm">Share your messy V1. Post the broken prototype. We'd rather see your WIP than
+                            wait for your press release.</p>
+                    </div>
+                    <div
+                        class="p-4 rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_95%,var(--ink)_5%)]">
+                        <strong class="block accent-text mb-1">Learn in Public</strong>
+                        <p class="text-sm">Document your process. Write the tutorial you wish existed. Your failures are
+                            someone else's roadmap.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Rules -->
+            <section>
+                <h3 class="font-serif text-2xl mb-4 border-b border-[var(--rule)] pb-2">The Rules</h3>
+                <p class="mb-6 text-[var(--muted)]">These aren't suggestions. They're how we keep signal high and noise
+                    low.</p>
+
+                <ul class="space-y-4 list-decimal list-inside marker:accent-text marker:font-bold">
+                    <li>
+                        <strong>No "Hello" Messages.</strong> Don't send "Hello" and wait. State your question or
+                        context immediately. We're async-first.
+                    </li>
+                    <li>
+                        <strong>No Unsolicited DMs.</strong> Ask permission in a public channel first. Cold DMs for
+                        sales or spam = instant ban.
+                    </li>
+                    <li>
+                        <strong>No Low-Effort Promo.</strong> Share your work, but lead with the story: what you built,
+                        how, what you learned. Drop a link with zero context = message deleted.
+                    </li>
+                    <li>
+                        <strong>Give Before You Take.</strong> Answer questions. Review someone's PR. Share a resource.
+                        Build reputation before asking for favors.
+                    </li>
+                    <li>
+                        <strong>Respect the Craft.</strong> Critique the work, not the person. Be direct, not
+                        dismissive.
+                    </li>
+                </ul>
+            </section>
+
+            <!-- Roles -->
+            <section>
+                <h3 class="font-serif text-2xl mb-4 border-b border-[var(--rule)] pb-2">Roles & Identity</h3>
+                <p class="mb-4 text-[var(--muted)]">When you join, pick your primary identity to find your peers:</p>
+                <div class="grid grid-cols-2 gap-3 text-sm">
+                    <div class="flex items-center gap-2 p-2 rounded border border-[var(--rule)]">
+                        <span>🧑‍💻</span> <strong>Engineer</strong>
+                    </div>
+                    <div class="flex items-center gap-2 p-2 rounded border border-[var(--rule)]">
+                        <span>🎨</span> <strong>Designer</strong>
+                    </div>
+                    <div class="flex items-center gap-2 p-2 rounded border border-[var(--rule)]">
+                        <span>🛠️</span> <strong>Maker</strong>
+                    </div>
+                    <div class="flex items-center gap-2 p-2 rounded border border-[var(--rule)]">
+                        <span>🚀</span> <strong>Founder</strong>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div class="mt-12 p-6 rounded border-2 border-[var(--rule)] text-center">
+            <h3 class="font-serif text-xl mb-3">Ready to contribute?</h3>
+            <div class="flex flex-wrap justify-center gap-3">
+                <a href="community"
+                    class="rounded bg-[var(--ink)] px-5 py-2 text-sm text-[var(--paper)] hover:opacity-90">
+                    Join the Community
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t-[3px] border-[var(--rule)] border-double">
+        <div
+            class="mx-auto flex min-h-[60px] max-w-[1100px] flex-wrap items-center justify-between gap-3 px-4 py-3 text-[13px] text-neutral-600">
+            <div>© <span id="year"></span> Sandbox Réseau • Accra</div>
+            <div class="flex items-center gap-4">
+                <a href="gallery" class="hover:underline">Gallery</a>
+                <a href="community" class="hover:underline">Community</a>
+                <span class="text-[var(--ink)] font-semibold">Handbook</span>
+            </div>
+            <a class="underline accent-text" href="https://luma.com/sandbox-reseau" target="_blank"
+                rel="noreferrer">Register</a>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js" defer></script>
+</body>
+
+</html>

@@ -46,165 +46,7 @@
         }
     </script>
 
-    <style>
-        /* Base theme vars */
-        :root {
-            --paper: #fbfaf7;
-            --ink: #111;
-            --muted: #5b5b5b;
-            --rule: #111;
-            --accent: #0ea5e9;
-        }
-
-        [data-theme="white"] {
-            --paper: #fbfaf7;
-            --ink: #111;
-            --muted: #5b5b5b;
-            --rule: #111;
-        }
-
-        [data-theme="black"] {
-            --paper: #0b0b0b;
-            --ink: #f3f3f3;
-            --muted: #bdbdbd;
-            --rule: #eaeaea;
-        }
-
-        [data-theme="yellow"] {
-            --paper: #fff7cc;
-            --ink: #111;
-            --muted: #5b5b5b;
-            --rule: #111;
-        }
-
-        /* Accent palettes */
-        [data-accent="blue"] {
-            --accent: #0ea5e9;
-        }
-
-        [data-accent="emerald"] {
-            --accent: #10b981;
-        }
-
-        [data-accent="violet"] {
-            --accent: #8b5cf6;
-        }
-
-        [data-accent="amber"] {
-            --accent: #f59e0b;
-        }
-
-        [data-accent="red"] {
-            --accent: #ef4444;
-        }
-
-        [data-accent="fuchsia"] {
-            --accent: #d946ef;
-        }
-
-        .banner {
-            background: repeating-linear-gradient(90deg, transparent, transparent 12px, rgba(0, 0, 0, .06) 12px, rgba(0, 0, 0, .06) 24px);
-        }
-
-        .hatch:before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: repeating-linear-gradient(135deg, rgba(0, 0, 0, .05) 0, rgba(0, 0, 0, .05) 1px, transparent 2px, transparent 6px);
-            mix-blend-mode: multiply;
-            pointer-events: none;
-        }
-
-        .small-caps {
-            font-variant: small-caps;
-            letter-spacing: .06em;
-        }
-
-        .prose-like p {
-            font-size: 16.5px;
-            line-height: 1.85;
-        }
-
-        /* Accent helpers */
-        .accent-border {
-            border-color: var(--accent);
-        }
-
-        .accent-text {
-            color: var(--accent);
-        }
-
-        .accent-bg {
-            background: var(--accent);
-        }
-
-        .accent-hover {
-            background: color-mix(in oklab, var(--accent) 14%, var(--paper));
-        }
-
-        .chip-hover:hover {
-            background: color-mix(in oklab, var(--accent) 12%, var(--paper));
-            border-color: var(--accent);
-        }
-
-        /* Texture */
-        .grain-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 50;
-            opacity: 0.035;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-        }
-
-        /* Card styles */
-        .community-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .community-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.15);
-        }
-
-        /* Value card animation */
-        .value-card {
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 0.6s ease forwards;
-        }
-
-        .value-card:nth-child(1) {
-            animation-delay: 0.1s;
-        }
-
-        .value-card:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-
-        .value-card:nth-child(3) {
-            animation-delay: 0.3s;
-        }
-
-        .value-card:nth-child(4) {
-            animation-delay: 0.4s;
-        }
-
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Native View Transitions */
-        @view-transition {
-            navigation: auto;
-        }
-    </style>
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
 <body class="min-h-screen bg-[var(--paper)] text-[var(--ink)] font-sans antialiased">
@@ -387,25 +229,30 @@
             <h3 class="font-serif text-2xl mb-6 text-center">Ways to Connect</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                <!-- WhatsApp Community -->
+                <!-- Discord Community -->
                 <div
-                    class="community-card rounded border-2 border-[var(--rule)] p-6 bg-[color:color-mix(in_oklab,var(--paper)_92%,var(--ink)_8%)]">
+                    class="community-card relative rounded border-2 border-[#5865F2] p-6 bg-[color:color-mix(in_oklab,var(--paper)_92%,var(--ink)_8%)] ring-4 ring-[#5865F2]/10">
+                    <div
+                        class="absolute -top-3 right-4 bg-[#5865F2] text-white text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded-full shadow-sm">
+                        Most Active
+                    </div>
                     <div class="flex items-start gap-4">
-                        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-[#25D366] flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" class="w-6 h-6">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-[#5865F2] flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 127.14 96.36" fill="white"
+                                class="w-6 h-6">
                                 <path
-                                    d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                                    d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.11,77.11,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22c2.36-24.44-2.85-48.47-18.9-72.15ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z" />
                             </svg>
                         </div>
                         <div class="flex-1">
-                            <h4 class="font-serif text-xl mb-2">WhatsApp Community</h4>
+                            <h4 class="font-serif text-xl mb-2">Discord Server</h4>
                             <p class="text-[var(--muted)] text-sm mb-4">
-                                Join our active WhatsApp group for daily discussions, resource sharing, quick questions,
-                                and spontaneous collaborations.
+                                The main hub for deep technical discussions, code reviews, project showcases, and async
+                                collaboration with fellow builders.
                             </p>
-                            <a href="https://chat.whatsapp.com/your-invite-link" target="_blank" rel="noreferrer"
-                                class="inline-flex items-center gap-2 rounded bg-[#25D366] px-4 py-2 text-sm text-white font-semibold hover:opacity-90 transition-opacity">
-                                Join WhatsApp
+                            <a href="https://discord.gg/KgdRQ7d7" target="_blank" rel="noreferrer"
+                                class="inline-flex items-center gap-2 rounded bg-[#5865F2] px-4 py-2 text-sm text-white font-semibold hover:opacity-90 transition-opacity">
+                                Join Discord
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                                     stroke="currentColor" class="w-4 h-4">
                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -416,36 +263,7 @@
                     </div>
                 </div>
 
-                <!-- Twitter/X -->
-                <div
-                    class="community-card rounded border-2 border-[var(--rule)] p-6 bg-[color:color-mix(in_oklab,var(--paper)_92%,var(--ink)_8%)]">
-                    <div class="flex items-start gap-4">
-                        <div
-                            class="flex-shrink-0 w-12 h-12 rounded-full bg-[var(--ink)] flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="var(--paper)"
-                                class="w-5 h-5">
-                                <path
-                                    d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                            </svg>
-                        </div>
-                        <div class="flex-1">
-                            <h4 class="font-serif text-xl mb-2">Follow on X</h4>
-                            <p class="text-[var(--muted)] text-sm mb-4">
-                                Stay updated with event announcements, community highlights, and builder spotlights on
-                                our official X account.
-                            </p>
-                            <a href="https://twitter.com/sandboxreseau" target="_blank" rel="noreferrer"
-                                class="inline-flex items-center gap-2 rounded bg-[var(--ink)] px-4 py-2 text-sm text-[var(--paper)] font-semibold hover:opacity-90 transition-opacity">
-                                Follow @sandboxreseau
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                                    stroke="currentColor" class="w-4 h-4">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
+
 
                 <!-- Luma Events -->
                 <div
@@ -477,35 +295,83 @@
                     </div>
                 </div>
 
-                <!-- Email Newsletter -->
+                <!-- Email Newsletter (Substack) -->
+                <div class="community-card rounded border-2 border-[var(--rule)] overflow-hidden md:col-span-2">
+                    <iframe src="https://sandboxreseau.substack.com/embed" width="100%" height="320"
+                        style="border:1px solid #EEE; background:white;" frameborder="0" scrolling="no"></iframe>
+                </div>
+            </div>
+        </section>
+
+        <!-- Inside the Server Preview -->
+        <section class="mb-16">
+            <h3 class="font-serif text-2xl mb-6 text-center">Inside the Server</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Channel: Showcase -->
                 <div
-                    class="community-card rounded border-2 border-[var(--rule)] p-6 bg-[color:color-mix(in_oklab,var(--paper)_92%,var(--ink)_8%)]">
-                    <div class="flex items-start gap-4">
-                        <div
-                            class="flex-shrink-0 w-12 h-12 rounded-full bg-[var(--muted)] flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                                stroke="white" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
-                            </svg>
-                        </div>
-                        <div class="flex-1">
-                            <h4 class="font-serif text-xl mb-2">Newsletter</h4>
-                            <p class="text-[var(--muted)] text-sm mb-4">
-                                Get curated updates straight to your inbox: event recaps, builder spotlights, and
-                                resources we're loving.
-                            </p>
-                            <a href="mailto:hello@sandboxreseau.com?subject=Subscribe to Newsletter"
-                                class="inline-flex items-center gap-2 rounded bg-[var(--muted)] px-4 py-2 text-sm text-white font-semibold hover:opacity-90 transition-opacity">
-                                Subscribe via Email
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                                    stroke="currentColor" class="w-4 h-4">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
+                    class="p-5 rounded border border-[var(--rule)] bg-[var(--paper)] hover:border-[#5865F2] transition-colors group">
+                    <div
+                        class="text-[11px] font-bold uppercase tracking-widest text-[var(--muted)] mb-2 group-hover:text-[#5865F2]">
+                        #showcase</div>
+                    <p class="text-sm leading-relaxed">
+                        Share your shipped work. No "coming soon" landing pages—only live products and honest
+                        post-mortems.
+                    </p>
+                </div>
+
+                <!-- Channel: Code Review -->
+                <div
+                    class="p-5 rounded border border-[var(--rule)] bg-[var(--paper)] hover:border-[#5865F2] transition-colors group">
+                    <div
+                        class="text-[11px] font-bold uppercase tracking-widest text-[var(--muted)] mb-2 group-hover:text-[#5865F2]">
+                        #code-review</div>
+                    <p class="text-sm leading-relaxed">
+                        Get async feedback on your PRs. Architecture decisions, debugging help, and performance tips.
+                    </p>
+                </div>
+
+                <!-- Channel: Jobs -->
+                <div
+                    class="p-5 rounded border border-[var(--rule)] bg-[var(--paper)] hover:border-[#5865F2] transition-colors group">
+                    <div
+                        class="text-[11px] font-bold uppercase tracking-widest text-[var(--muted)] mb-2 group-hover:text-[#5865F2]">
+                        #jobs</div>
+                    <p class="text-sm leading-relaxed">
+                        Strictly high-signal opportunities. Who is hiring in Accra, and who is looking for work.
+                    </p>
+                </div>
+
+                <!-- Channel: Help -->
+                <div
+                    class="p-5 rounded border border-[var(--rule)] bg-[var(--paper)] hover:border-[#5865F2] transition-colors group">
+                    <div
+                        class="text-[11px] font-bold uppercase tracking-widest text-[var(--muted)] mb-2 group-hover:text-[#5865F2]">
+                        #help</div>
+                    <p class="text-sm leading-relaxed">
+                        Stuck on a bug? Share your stack, your error, and what you've tried. We solve it together.
+                    </p>
+                </div>
+
+                <!-- Channel: Events -->
+                <div
+                    class="p-5 rounded border border-[var(--rule)] bg-[var(--paper)] hover:border-[#5865F2] transition-colors group">
+                    <div
+                        class="text-[11px] font-bold uppercase tracking-widest text-[var(--muted)] mb-2 group-hover:text-[#5865F2]">
+                        #events</div>
+                    <p class="text-sm leading-relaxed">
+                        Aggregated tech meetups, hackathons, and workshops happening across the city.
+                    </p>
+                </div>
+
+                <!-- Channel: Random -->
+                <div
+                    class="p-5 rounded border border-[var(--rule)] bg-[var(--paper)] hover:border-[#5865F2] transition-colors group">
+                    <div
+                        class="text-[11px] font-bold uppercase tracking-widest text-[var(--muted)] mb-2 group-hover:text-[#5865F2]">
+                        #random</div>
+                    <p class="text-sm leading-relaxed">
+                        Off-topic but high signal. Tech memes, coffee shop recs, and life updates.
+                    </p>
                 </div>
             </div>
         </section>
@@ -572,111 +438,17 @@
         <div
             class="mx-auto flex min-h-[60px] max-w-[1100px] flex-wrap items-center justify-between gap-3 px-4 py-3 text-[13px] text-neutral-600">
             <div>© <span id="year"></span> Sandbox Réseau • Accra</div>
-            <div>Community</div>
+            <div class="flex items-center gap-4">
+                <a href="gallery" class="hover:underline">Gallery</a>
+                <span class="text-[var(--ink)] font-semibold">Community</span>
+                <a href="handbook" class="hover:underline">Handbook</a>
+            </div>
             <a class="underline accent-text" href="https://luma.com/sandbox-reseau" target="_blank"
                 rel="noreferrer">Register</a>
         </div>
     </footer>
 
-    <script>
-        // Dateline + year
-        const d = new Date();
-        const dateEl = document.getElementById('dateline');
-        const yearEl = document.getElementById('year');
-
-        if (dateEl) dateEl.textContent = d.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-        if (yearEl) yearEl.textContent = d.getFullYear();
-
-        // Theme + Accent switchers (persist)
-        (function () {
-            const THEME_KEY = 'srz_theme_v1';
-            const ACCENT_KEY = 'srz_accent_v1';
-            const THEMES = ['white', 'black', 'yellow'];
-            const ACCENTS = ['blue', 'emerald', 'violet', 'amber', 'red', 'fuchsia'];
-            const root = document.documentElement;
-
-            // init from storage
-            const savedTheme = localStorage.getItem(THEME_KEY);
-            if (savedTheme) root.setAttribute('data-theme', savedTheme);
-            const savedAccent = localStorage.getItem(ACCENT_KEY);
-            if (savedAccent) root.setAttribute('data-accent', savedAccent);
-
-            // swatches
-            document.querySelectorAll('[data-theme-swatch]').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const v = btn.getAttribute('data-theme-swatch');
-                    root.setAttribute('data-theme', v);
-                    try {
-                        localStorage.setItem(THEME_KEY, v);
-                    } catch {
-                    }
-                    updateThemeToggleTitle();
-                });
-            });
-            document.querySelectorAll('[data-accent-swatch]').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const v = btn.getAttribute('data-accent-swatch');
-                    root.setAttribute('data-accent', v);
-                    try {
-                        localStorage.setItem(ACCENT_KEY, v);
-                    } catch {
-                    }
-                });
-            });
-
-            // Cycle buttons
-            const themeBtn = document.getElementById('themeToggle');
-
-            function cycleTheme() {
-                const cur = root.getAttribute('data-theme') || THEMES[0];
-                const next = THEMES[(THEMES.indexOf(cur) + 1) % THEMES.length];
-                root.setAttribute('data-theme', next);
-                try {
-                    localStorage.setItem(THEME_KEY, next);
-                } catch {
-                }
-                updateThemeToggleTitle();
-            }
-
-            function updateThemeToggleTitle() {
-                if (!themeBtn) return;
-                const cur = root.getAttribute('data-theme');
-                themeBtn.title = `Switch theme (current: ${cur})`;
-            }
-
-            if (themeBtn) {
-                themeBtn.addEventListener('click', cycleTheme);
-                updateThemeToggleTitle();
-            }
-
-            const accentBtn = document.getElementById('accentToggle');
-
-            function cycleAccent() {
-                const cur = root.getAttribute('data-accent') || ACCENTS[0];
-                const next = ACCENTS[(ACCENTS.indexOf(cur) + 1) % ACCENTS.length];
-                root.setAttribute('data-accent', next);
-                try {
-                    localStorage.setItem(ACCENT_KEY, next);
-                } catch {
-                }
-            }
-
-            if (accentBtn) accentBtn.addEventListener('click', cycleAccent);
-
-            // Keyboard shortcuts
-            window.addEventListener('keydown', (e) => {
-                const isMac = navigator.platform.toUpperCase().includes('MAC');
-                if ((isMac ? e.metaKey : e.ctrlKey) && e.key.toLowerCase() === 'j') {
-                    e.preventDefault();
-                    cycleTheme();
-                }
-                if ((isMac ? e.metaKey : e.ctrlKey) && e.key.toLowerCase() === 'k') {
-                    e.preventDefault();
-                    cycleAccent();
-                }
-            });
-        })();
-    </script>
+    <script src="assets/js/main.js" defer></script>
 </body>
 
 </html>
