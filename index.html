@@ -54,6 +54,7 @@
 </head>
 
 <body class="min-h-screen bg-[var(--paper)] text-[var(--ink)] font-sans antialiased">
+
     <!-- Texture -->
     <div class="grain-overlay"></div>
 
@@ -175,10 +176,15 @@
     </section>
 
     <!-- “In this issue” horizontal strip -->
-    <section class="border-b border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_92%,var(--ink)_8%)]">
+    <section id="secondaryNav" class="sticky-secondary border-b border-[var(--rule)]">
         <div class="mx-auto max-w-[1100px] px-4 py-3">
-            <div class="mb-2 text-xs font-semibold uppercase tracking-widest text-[var(--muted)]">In this issue</div>
-            <div class="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-1">
+            <div
+                class="mb-2 text-xs font-semibold uppercase tracking-widest text-[var(--muted)] flex items-center justify-between">
+                <span>In this issue</span>
+                <span class="font-serif italic capitalize text-[11px] opacity-0 transition-opacity duration-300"
+                    id="readingState">Page 1 / Digest</span>
+            </div>
+            <div class="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-1 no-scrollbar">
                 <a href="#about"
                     class="snap-start whitespace-nowrap rounded-full border border-[var(--rule)] px-3 py-1 text-xs chip-hover hover:accent-text">About
                     Réseau</a>
@@ -195,6 +201,9 @@
                 <a href="#register"
                     class="snap-start whitespace-nowrap rounded-full border border-[var(--rule)] px-3 py-1 text-xs chip-hover hover:accent-text">Register</a>
             </div>
+        </div>
+        <div class="scroll-progress-container">
+            <div class="scroll-progress-bar" id="progressBar"></div>
         </div>
     </section>
 
@@ -232,10 +241,12 @@
                 <article class="prose-like">
                     <h3 class="mb-1 font-serif text-[28px] leading-tight">Why It Exists</h3>
                     <p class="text-neutral-600">Signal over noise; progress over polish.</p>
+
                     <blockquote
                         class="my-3 border-l-[3px] accent-border bg-[color:color-mix(in_oklab,var(--paper)_92%,var(--ink)_8%)] px-3.5 py-2 font-serif text-[18px] leading-[1.5]">
                         “No hype. Just signal.”
                     </blockquote>
+
                     <p>Réseau creates a trusted room to learn in public with feedback, momentum, and a network that
                         actually
                         ships.</p>

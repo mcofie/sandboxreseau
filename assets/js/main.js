@@ -85,6 +85,53 @@ if (yearEl) yearEl.textContent = d.getFullYear();
     });
 })();
 
+// Scroll & Sticky Logic
+(function () {
+    const secondaryNav = document.getElementById('secondaryNav');
+    const progressBar = document.getElementById('progressBar');
+    const readingState = document.getElementById('readingState');
+    const sections = document.querySelectorAll('article[id]');
+
+    if (!secondaryNav) return;
+
+    const navTop = secondaryNav.offsetTop;
+
+    function handleScroll() {
+        const scrolled = window.scrollY;
+
+        // Sticky class
+        if (scrolled > navTop) {
+            secondaryNav.classList.add('is-stuck');
+            readingState.style.opacity = '1';
+        } else {
+            secondaryNav.classList.remove('is-stuck');
+            readingState.style.opacity = '0';
+        }
+
+        // Progress Bar
+        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolledPercent = (winScroll / height) * 100;
+        if (progressBar) progressBar.style.width = scrolledPercent + "%";
+
+        // Active Section
+        let currentSection = "Digest";
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop - 100;
+            if (scrolled >= sectionTop) {
+                currentSection = section.getAttribute('id');
+            }
+        });
+
+        if (readingState) {
+            readingState.textContent = `Section: ${currentSection.replace('-', ' ')}`;
+        }
+    }
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Init
+})();
+
 // Lightbox Logic (Only if constants are defined)
 if (typeof GALLERY_IMAGES !== 'undefined') {
     let currentLightboxIndex = -1;
