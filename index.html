@@ -181,7 +181,7 @@
             <div
                 class="mb-2 text-xs font-semibold uppercase tracking-widest text-[var(--muted)] flex items-center justify-between">
                 <span>In this issue</span>
-                <span class="font-serif italic capitalize text-[11px] opacity-0 transition-opacity duration-300"
+                <span class="font-serif capitalize text-[11px] opacity-0 transition-opacity duration-300"
                     id="readingState">Page 1 / Digest</span>
             </div>
             <div class="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-1 no-scrollbar">
@@ -194,6 +194,8 @@
                     class="snap-start whitespace-nowrap rounded-full border border-[var(--rule)] px-3 py-1 text-xs chip-hover hover:accent-text">Details</a>
                 <a href="#faq"
                     class="snap-start whitespace-nowrap rounded-full border border-[var(--rule)] px-3 py-1 text-xs chip-hover hover:accent-text">FAQ</a>
+                <a href="#podcast"
+                    class="snap-start whitespace-nowrap rounded-full border border-[var(--rule)] px-3 py-1 text-xs chip-hover hover:accent-text">Podcast</a>
                 <a href="editions"
                     class="snap-start whitespace-nowrap rounded-full border border-[var(--rule)] px-3 py-1 text-xs chip-hover hover:accent-text">Editions</a>
                 <a href="community"
@@ -343,6 +345,32 @@
                     </div>
                 </article>
 
+                <article id="podcast" class="prose-like">
+                    <h3 class="mb-1 font-serif text-[28px] leading-tight">Tune In: The Reverb</h3>
+                    <p class="text-neutral-600">The high-bandwidth audio-log for the African builder.</p>
+                    
+                    <div class="mt-4 flex flex-col gap-6 sm:flex-row">
+                        <div class="w-full sm:w-1/3">
+                            <img src="assets/img/podcast-logo.png" alt="The Reverb Podcast Logo" class="w-full rounded border border-[var(--rule)] shadow-sm" />
+                        </div>
+                        <div class="flex-1">
+                            <p>Most tech podcasts are too long—<strong>The Reverb</strong> is built for the fast lane. Every 5-minute episode stitches together unfiltered voices from the Sandbox Réseau ecosystem. Hosted by Maxwell Cofie.</p>
+                            <p class="mt-2">No fluff. Just the raw "reverb" of building in the 233. Plug in, sync up, and get back to building.</p>
+                            
+                            <div class="mt-4 flex flex-wrap gap-3">
+                                <a href="https://open.spotify.com/show/1mQUSNNpjenkeUiFVBXWCN" target="_blank" rel="noreferrer"
+                                    class="inline-flex items-center gap-2 rounded border border-[var(--rule)] px-3 py-1.5 text-xs font-semibold uppercase tracking-wider hover:bg-[var(--accent)] hover:text-white transition-colors">
+                                    Listen on Spotify
+                                </a>
+                                <a href="https://podcasts.apple.com/gh/podcast/the-reverb/id1884282478" target="_blank" rel="noreferrer"
+                                    class="inline-flex items-center gap-2 rounded border border-[var(--rule)] px-3 py-1.5 text-xs font-semibold uppercase tracking-wider hover:bg-[var(--accent)] hover:text-white transition-colors">
+                                    Apple Podcasts
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
                 <article id="faq" class="prose-like">
                     <h3 class="mb-1 font-serif text-[28px] leading-tight">FAQ</h3>
                     <ul class="ml-5 list-disc">
@@ -373,6 +401,7 @@
                         <li><strong>About Réseau</strong> — the origin, purpose, vibe.</li>
                         <li><strong>Format</strong> — demos, mini-talks, network.</li>
                         <li><strong>Details</strong> — when, where, how to demo.</li>
+                        <li><strong>Podcast</strong> — the high-bandwidth audio-log.</li>
                         <li><strong>FAQ</strong> — beginner-friendly, cadence, notes.</li>
                     </ul>
                     <a href="https://luma.com/sandbox-reseau" target="_blank" rel="noreferrer"
@@ -397,6 +426,7 @@
             class="mx-auto flex min-h-[60px] max-w-[1100px] flex-wrap items-center justify-between gap-3 px-4 py-3 text-[13px] text-neutral-600">
             <div>© <span id="year"></span> Sandbox Réseau • Accra</div>
             <div class="flex items-center gap-4">
+                <a href="#podcast" class="hover:underline">Podcast</a>
                 <a href="gallery" class="hover:underline">Gallery</a>
                 <a href="editions" class="hover:underline">Editions</a>
                 <a href="community" class="hover:underline">Community</a>

@@ -297,9 +297,44 @@
                 </div>
 
                 <!-- Email Newsletter (Substack) -->
-                <div class="community-card rounded border-2 border-[var(--rule)] overflow-hidden md:col-span-2">
+                <div class="community-card rounded border border-[var(--rule)] overflow-hidden">
                     <iframe src="https://sandboxreseau.substack.com/embed" width="100%" height="320"
-                        style="border:1px solid #EEE; background:white;" frameborder="0" scrolling="no"></iframe>
+                        style="border:none; background:white;" frameborder="0" scrolling="no"></iframe>
+                </div>
+
+                <!-- Podcast Card -->
+                <div
+                    class="community-card rounded border-2 border-[var(--rule)] p-6 bg-[color:color-mix(in_oklab,var(--paper)_92%,var(--ink)_8%)]">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-[var(--ink)] flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                stroke="white" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M12 18.75a6 6 0 006-6v-1.5a6 6 0 00-12 0v1.5a6 6 0 006 6z" />
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M12 18.75v3.75m-3.75 0h7.5" />
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M19.5 10.5v.375c0 4.142-3.358 7.5-7.5 7.5s-7.5-3.358-7.5-7.5V10.5" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-serif text-xl mb-2">The Reverb</h4>
+                            <p class="text-[var(--muted)] text-sm mb-4">
+                                The high-bandwidth audio-log for the African builder. Short, raw, and unfiltered voices
+                                from the ecosystem.
+                            </p>
+                            <div class="flex gap-3">
+                                <a href="https://open.spotify.com/show/1mQUSNNpjenkeUiFVBXWCN" target="_blank" rel="noreferrer"
+                                    class="text-xs font-bold uppercase tracking-wider underline hover:accent-text transition-colors">
+                                    Spotify
+                                </a>
+                                <a href="https://podcasts.apple.com/gh/podcast/the-reverb/id1884282478" target="_blank" rel="noreferrer"
+                                    class="text-xs font-bold uppercase tracking-wider underline hover:accent-text transition-colors">
+                                    Apple
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -440,6 +475,7 @@
             class="mx-auto flex min-h-[60px] max-w-[1100px] flex-wrap items-center justify-between gap-3 px-4 py-3 text-[13px] text-neutral-600">
             <div>© <span id="year"></span> Sandbox Réseau • Accra</div>
             <div class="flex items-center gap-4">
+                <a href="/#podcast" class="hover:underline">Podcast</a>
                 <a href="gallery" class="hover:underline">Gallery</a>
                 <a href="editions" class="hover:underline">Editions</a>
                 <span class="text-[var(--ink)] font-semibold">Community</span>
