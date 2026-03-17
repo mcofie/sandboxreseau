@@ -1,0 +1,117 @@
+collections:
+  - name: companies
+    label: Companies
+    path: content/companies.json
+    type: list
+    fields:
+      - name: name
+        label: Name
+        type: string
+      - name: industry
+        label: Industry
+        type: string
+      - name: location
+        label: Location
+        type: string
+      - name: status
+        label: Status
+        type: string
+      - name: description
+        label: Description
+        type: text
+      - name: founded
+        label: Founded
+        type: string
+      - name: url
+        label: URL
+        type: string
+      - name: cta
+        label: CTA
+        type: string
+      - name: logo
+        label: Logo
+        type: string
+      - name: logoAltTheme
+        label: Logo Alt Theme
+        type: string
+      - name: id
+        label: ID
+        type: string
+
+  - name: editions
+    label: Editions
+    path: content/editions.json
+    type: list
+    fields:
+      - name: vol
+        label: Volume
+        type: number
+      - name: no
+        label: Number
+        type: number
+      - name: title
+        label: Title
+        type: string
+      - name: description
+        label: Description
+        type: text
+      - name: date
+        label: Date
+        type: string
+      - name: status
+        label: Status
+        type: string
+      - name: image
+        label: Image
+        type: string
+      - name: lumaUrl
+        label: Luma URL
+        type: string
+
+  - name: newsletters
+    label: Newsletters
+    path: content/newsletters.json
+    type: list
+    fields:
+      - name: issue
+        label: Issue
+        type: number
+      - name: title
+        label: Title
+        type: string
+      - name: excerpt
+        label: Excerpt
+        type: text
+      - name: date
+        label: Date
+        type: string
+      - name: author
+        label: Author
+        type: string
+      - name: readTime
+        label: Read Time
+        type: string
+      - name: url
+        label: URL
+        type: string
+      - name: content
+        label: Content
+        type: rich-text
+      - name: id
+        label: ID
+        type: string
+      - name: tags
+        label: Tags
+        type: list
+
+  - name: gallery
+    label: Gallery
+    path: content/gallery.json
+    type: list
+    fields:
+      - name: url
+        label: Image URL
+        type: string
+      - name: title
+        label: Title
+        type: string

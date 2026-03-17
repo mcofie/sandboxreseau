@@ -1,0 +1,29 @@
+[
+  {
+    "id": "tr",
+    "name": "Pouch",
+    "industry": "Tech",
+    "location": "Accra",
+    "status": "Live",
+    "description": "The high-bandwidth audio-log for the African builder. Short, raw episodes featuring unfiltered voices from the ecosystem.",
+    "tags": ["Fintech"],
+    "founded": "2025",
+    "url": "https://www.pouchpay.app",
+    "cta": "Learn more",
+    "logo": "assets/img/podcast-logo.png"
+  },
+  {
+    "id": "m2m",
+    "name": "Minutes 2 Match",
+    "industry": "Social",
+    "location": "Accra, GH",
+    "status": "Batch SR01",
+    "description": "A platform for sports enthusiasts to find matches and teammates in minutes. Connecting the city through play.",
+    "tags": ["Marketplace", "Sports", "Social"],
+    "founded": "2024",
+    "url": "#",
+    "cta": "Join App",
+    "logo": "M2M",
+    "logoAltTheme": "black"
+  }
+]

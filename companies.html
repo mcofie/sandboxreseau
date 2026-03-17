@@ -4,26 +4,28 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <meta name="referrer" content="no-referrer" />
 
     <!-- Primary Meta Tags -->
     <link rel="icon" type="image/png" href="assets/img/favicon.png">
-    <title>The Archive | Event Gallery — Sandbox Réseau</title>
-    <meta name="title" content="The Archive | Event Gallery — Sandbox Réseau" />
+    <title>Companies | Sandbox Réseau — The Builder Directory</title>
+    <meta name="title" content="Companies | Sandbox Réseau — The Builder Directory" />
     <meta name="description"
-        content="Explore snapshots from past Sandbox Réseau meetups. See the demos, the connections, and the builders shaping Accra's tech ecosystem." />
-    <meta name="keywords" content="Event Gallery, Tech Meetup Photos, Accra Tech Community, Sandbox Réseau Archive" />
+        content="A directory of companies and projects built by the Sandbox Réseau community in Accra." />
+    <meta name="keywords"
+        content="YC Companies Accra, Ghana Startups, Builders Directory, Sandbox Réseau Companies" />
+    <meta name="author" content="Sandbox Réseau" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://sandboxreseau.com/gallery.html" />
-    <meta property="og:title" content="The Archive | Event Gallery — Sandbox Réseau" />
-    <meta property="og:description" content="Explore snapshots from past Sandbox Réseau meetups in Accra." />
+    <meta property="og:url" content="https://sandboxreseau.com/companies" />
+    <meta property="og:title" content="Companies | Sandbox Réseau — The Builder Directory" />
+    <meta property="og:description" content="A directory of companies and projects built by the Sandbox Réseau community." />
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:title" content="The Archive | Event Gallery — Sandbox Réseau" />
-    <meta property="twitter:description" content="Explore snapshots from past Sandbox Réseau meetups in Accra." />
+    <meta property="twitter:title" content="Companies | Sandbox Réseau — The Builder Directory" />
+    <meta property="twitter:description"
+        content="A directory of companies and projects built by the Sandbox Réseau community." />
 
     <!-- Fonts -->
     <link
@@ -47,144 +49,37 @@
 
     <link rel="stylesheet" href="assets/css/style.css">
     <style>
-        /* Base theme vars (Copied from index.html for consistency) */
-        :root {
-            --paper: #fbfaf7;
-            --ink: #111;
-            --muted: #5b5b5b;
-            --rule: #111;
-            --accent: #0ea5e9;
+        .filter-chip {
+            transition: all 0.2s ease;
         }
-
-        [data-theme="white"] {
-            --paper: #fbfaf7;
-            --ink: #111;
-            --muted: #5b5b5b;
-            --rule: #111;
-        }
-
-        [data-theme="black"] {
-            --paper: #0b0b0b;
-            --ink: #f3f3f3;
-            --muted: #bdbdbd;
-            --rule: #eaeaea;
-        }
-
-        [data-theme="yellow"] {
-            --paper: #fff7cc;
-            --ink: #111;
-            --muted: #5b5b5b;
-            --rule: #111;
-        }
-
-        /* Accent palettes */
-        [data-accent="blue"] {
-            --accent: #0ea5e9;
-        }
-
-        [data-accent="emerald"] {
-            --accent: #10b981;
-        }
-
-        [data-accent="violet"] {
-            --accent: #8b5cf6;
-        }
-
-        [data-accent="amber"] {
-            --accent: #f59e0b;
-        }
-
-        [data-accent="red"] {
-            --accent: #ef4444;
-        }
-
-        [data-accent="fuchsia"] {
-            --accent: #d946ef;
-        }
-
-        .accent-text {
-            color: var(--accent);
-        }
-
-        .accent-border {
+        .filter-chip.active {
+            background-color: var(--accent);
+            color: white;
             border-color: var(--accent);
         }
-
-        .accent-bg {
-            background: var(--accent);
+        .company-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
-
-        body {
-            background-color: var(--paper);
-            color: var(--ink);
+        .company-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.1);
         }
-
-        /* Masonry Support */
-        .masonry-grid {
-            column-count: 1;
-            column-gap: 1rem;
-        }
-
-        @media (min-width: 640px) {
-            .masonry-grid {
-                column-count: 2;
-            }
-        }
-
-        @media (min-width: 1024px) {
-            .masonry-grid {
-                column-count: 3;
-            }
-        }
-
-        .masonry-item {
-            break-inside: avoid;
-            margin-bottom: 1rem;
-        }
-
-        /* --- Immersive Additions --- */
-
-        /* 1. Grain Texture */
-        .grain-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 50;
-            opacity: 0.035;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-        }
-
-        /* 2. Entrance Animation */
-        .animate-enter {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-            will-change: opacity, transform;
-        }
-
-        .animate-enter.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* 4. Native View Transitions */
-        @view-transition {
-            navigation: auto;
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px color-mix(in oklab, var(--accent) 20%, transparent);
         }
     </style>
 </head>
 
-<body class="min-h-screen font-sans antialiased pb-12">
-    <!-- Grain Texture -->
+<body class="min-h-screen bg-[var(--paper)] text-[var(--ink)] font-sans antialiased">
+    <!-- Texture -->
     <div class="grain-overlay"></div>
 
-    <!-- ====== Masthead (3-row layout) ====== -->
-    <header class="border-b-[3px] border-[var(--rule)] border-double bg-[var(--paper)]">
+    <!-- ====== Masthead ====== -->
+    <header class="border-b-[3px] border-[var(--rule)] border-double">
         <div class="mx-auto max-w-[1100px] px-4">
-            <!-- Row 1: Utility (dateline + controls) -->
+            <!-- Row 1: Utility -->
             <div class="flex flex-wrap items-center justify-between gap-3 py-2 text-[13px]">
                 <div class="text-[var(--muted)]">
                     <span id="dateline"></span> • Vol. 1, No. 1 • Accra
@@ -210,7 +105,7 @@
                         Theme
                     </button>
 
-                    <!-- Accent quick toggle (cycles accents) -->
+                    <!-- Accent toggle -->
                     <button id="accentToggle"
                         class="inline-flex items-center gap-2 rounded border accent-border px-2.5 py-1 text-xs font-semibold uppercase tracking-wider accent-text hover:opacity-90"
                         title="Switch accent color">
@@ -228,11 +123,11 @@
                 </h1>
                 <div class="mx-auto mt-3 h-px w-24 bg-[var(--rule)]"></div>
                 <p class="mt-2 text-center font-serif italic text-sm text-[var(--muted)]">
-                    The Archive
+                    Company Directory
                 </p>
             </div>
 
-            <!-- Row 3: Slim Actions / Swatches -->
+            <!-- Row 3: Swatches -->
             <div class="flex flex-col items-center gap-2 pb-4">
                 <div
                     class="flex items-center gap-3 text-[11px] font-semibold tracking-[.18em] uppercase text-[var(--muted)]">
@@ -268,20 +163,56 @@
         </div>
     </header>
 
-    <main class="mx-auto max-w-[1100px] px-4 py-8">
-        <div class="mb-8 text-center">
-            <h1 class="font-serif text-4xl mb-2">The Archive</h1>
-            <p class="text-[var(--muted)]">Moments from past editions.</p>
-        </div>
+    <div class="h-2 border-y border-[var(--rule)] banner"></div>
 
-        <!-- Masonry Grid -->
-        <div id="masonry-grid" class="masonry-grid">
-            <!-- Images will be injected here by script below -->
+    <!-- Directory Header/Hero -->
+    <section class="border-b border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_97%,var(--ink)_3%)]">
+        <div class="mx-auto max-w-[1100px] px-4 py-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                <div class="max-w-xl">
+                    <span
+                        class="inline-block w-max border-y border-[var(--rule)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-[.2em] text-[var(--muted)] mb-3">
+                        The Index
+                    </span>
+                    <h2 class="font-serif text-3xl sm:text-4xl leading-tight mb-2">
+                        Built by the Réseau.
+                    </h2>
+                    <p class="text-[var(--muted)] text-sm">
+                        Discover companies, tools, and projects taking shape in the Accra builder ecosystem.
+                    </p>
+                </div>
+                
+                <div class="w-full md:w-80">
+                    <div class="relative">
+                        <input type="text" id="companySearch" placeholder="Search companies..." aria-label="Search companies"
+                            class="search-input w-full rounded border border-[var(--rule)] bg-[var(--paper)] px-4 py-2 text-sm" />
+                        <div class="absolute right-3 top-2.5 text-[var(--muted)] pointer-events-none">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Horizontal Filters -->
+            <div class="mt-8 flex flex-wrap gap-2 border-t border-[var(--rule)]/10 pt-6">
+                <button class="filter-chip active rounded-full border border-[var(--rule)] px-3 py-1 text-[11px] font-semibold uppercase tracking-wider hover:bg-[var(--accent)] hover:text-white transition-colors">All</button>
+                <button class="filter-chip rounded-full border border-[var(--rule)] px-3 py-1 text-[11px] font-semibold uppercase tracking-wider hover:bg-[var(--accent)] hover:text-white transition-colors">Software</button>
+                <button class="filter-chip rounded-full border border-[var(--rule)] px-3 py-1 text-[11px] font-semibold uppercase tracking-wider hover:bg-[var(--accent)] hover:text-white transition-colors">Fintech</button>
+                <button class="filter-chip rounded-full border border-[var(--rule)] px-3 py-1 text-[11px] font-semibold uppercase tracking-wider hover:bg-[var(--accent)] hover:text-white transition-colors">Creative</button>
+                <button class="filter-chip rounded-full border border-[var(--rule)] px-3 py-1 text-[11px] font-semibold uppercase tracking-wider hover:bg-[var(--accent)] hover:text-white transition-colors">Hardware</button>
+                <button class="filter-chip rounded-full border border-[var(--rule)] px-3 py-1 text-[11px] font-semibold uppercase tracking-wider hover:bg-[var(--accent)] hover:text-white transition-colors">Open Source</button>
+            </div>
+        </div>
+    <!-- Main Content List -->
+    <main class="mx-auto max-w-[1100px] px-4 py-10">
+        <div class="flex flex-col gap-4" id="companyGrid">
+            <!-- Dynamic Content -->
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="border-t-[3px] border-[var(--rule)] border-double text-[var(--ink)]">
+    <footer class="border-t-[3px] border-[var(--rule)] border-double">
         <div class="mx-auto flex max-w-[1100px] flex-col md:flex-row items-center justify-between gap-6 px-4 py-8 md:py-4 text-[13px] text-neutral-600">
             <div class="order-2 md:order-1 text-center md:text-left">
                 © <span id="year"></span> Sandbox Réseau • Accra
@@ -289,11 +220,11 @@
             
             <div class="order-1 md:order-2 flex flex-wrap items-center justify-center gap-x-5 gap-y-3">
                 <a href="podcast" class="hover:underline">Podcast</a>
-                <span class="text-[var(--ink)] font-semibold">Gallery</span>
+                <a href="gallery" class="hover:underline">Gallery</a>
                 <a href="editions" class="hover:underline">Editions</a>
                 <a href="newsletters" class="hover:underline">Newsletters</a>
                 <a href="community" class="hover:underline">Community</a>
-                <a href="companies" class="hover:underline">Companies</a>
+                <span class="text-[var(--ink)] font-semibold">Companies</span>
                 <a href="handbook" class="hover:underline">Handbook</a>
             </div>
             
@@ -304,41 +235,59 @@
         </div>
     </footer>
 
-
     <script src="assets/js/db.js"></script>
     <script src="assets/js/content-manager.js"></script>
+    <script src="assets/js/main.js" defer></script>
     <script>
         async function initPage() {
             await DB.init();
 
             // Init dynamically
-            ContentManager.renderGallery('masonry-grid', DB.gallery);
+            ContentManager.renderCompanies('companyGrid', DB.companies);
 
-            // Animation Observer
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach((entry, i) => {
-                    if (entry.isIntersecting) {
-                        setTimeout(() => {
-                            entry.target.classList.add('visible');
-                        }, i * 100);
-                        observer.unobserve(entry.target);
+            // Simple search filtering
+            const searchInput = document.getElementById('companySearch');
+            const companyGrid = document.getElementById('companyGrid');
+
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => {
+                    const term = e.target.value.toLowerCase();
+                    const filtered = DB.companies.filter(c => 
+                        c.name.toLowerCase().includes(term) || 
+                        c.description.toLowerCase().includes(term) ||
+                        c.tags.some(t => t.toLowerCase().includes(term))
+                    );
+                    ContentManager.renderCompanies('companyGrid', filtered);
+                });
+            }
+
+            // Filter chips interaction
+            const chips = document.querySelectorAll('.filter-chip');
+            chips.forEach(chip => {
+                chip.addEventListener('click', () => {
+                    chips.forEach(c => c.classList.remove('active'));
+                    chip.classList.add('active');
+                    
+                    const filter = chip.textContent;
+                    if (filter === 'All') {
+                        ContentManager.renderCompanies('companyGrid', DB.companies);
+                    } else {
+                        const filtered = DB.companies.filter(c => 
+                            c.industry === filter || 
+                            c.tags.includes(filter)
+                        );
+                        ContentManager.renderCompanies('companyGrid', filtered);
                     }
                 });
-            }, { threshold: 0.1 });
-
-            // Re-call observer for dynamically added items
-            document.querySelectorAll('.animate-enter').forEach(el => observer.observe(el));
-
-            // Lightbox integration
-            window.GALLERY_IMAGES = DB.gallery.map(img => img.url);
+            });
 
             // Ensure year is dynamic
-            document.getElementById('year').textContent = new Date().getFullYear();
+            const yearEl = document.getElementById('year');
+            if (yearEl) yearEl.textContent = new Date().getFullYear();
         }
 
         initPage();
     </script>
-    <script src="assets/js/main.js" defer></script>
 </body>
 
 </html>

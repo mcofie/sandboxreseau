@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="white" data-accent="blue">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Drafting Board | Sandbox Réseau Gazette</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Libre+Baskerville:wght@400;700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'ui-sans-serif', 'system-ui'],
+                        serif: ['"Libre Baskerville"', 'Georgia', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        input, textarea, select {
+            background: var(--paper);
+            border: 1px solid var(--rule);
+            padding: 0.5rem;
+            width: 100%;
+            font-size: 0.875rem;
+            border-radius: 4px;
+        }
+        label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.25rem;
+            color: var(--muted);
+        }
+        .code-output {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 1rem;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.75rem;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            position: relative;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen bg-[var(--paper)] text-[var(--ink)] font-sans antialiased pb-20">
+    <div class="grain-overlay"></div>
+
+    <header class="border-b-[3px] border-[var(--rule)] border-double bg-[var(--paper)]">
+        <div class="mx-auto max-w-[900px] px-4 py-6">
+            <h1 class="text-center font-serif text-3xl">Gazette Drafting Board</h1>
+            <p class="text-center font-serif italic text-sm text-[var(--muted)]">Content Management Utility</p>
+        </div>
+    </header>
+
+    <main class="mx-auto max-w-[900px] px-4 py-10">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+            
+            <!-- FORM SECTION -->
+            <section class="space-y-12">
+                
+                <!-- ADD COMPANY -->
+                <div>
+                    <h2 class="font-serif text-xl border-b border-[var(--rule)] mb-6 pb-2">Add New Company</h2>
+                    <form id="companyForm" class="space-y-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label>Name</label>
+                                <input type="text" name="name" placeholder="e.g. Sandbox Réseau" required>
+                            </div>
+                            <div>
+                                <label>Industry</label>
+                                <input type="text" name="industry" placeholder="e.g. Community" required>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label>Logo (Initials or URL)</label>
+                                <input type="text" name="logo" placeholder="e.g. SR or assets/img/logo.png" required>
+                            </div>
+                            <div>
+                                <label>Status</label>
+                                <input type="text" name="status" placeholder="e.g. Active" required>
+                            </div>
+                        </div>
+                        <div>
+                            <label>Description</label>
+                            <textarea name="description" rows="3" placeholder="Description of the company..." required></textarea>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label>Location/Founding</label>
+                                <input type="text" name="location" placeholder="e.g. Accra, GH">
+                            </div>
+                            <div>
+                                <label>Site URL</label>
+                                <input type="text" name="url" placeholder="https://...">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- ADD EDITION -->
+                <div>
+                    <h2 class="font-serif text-xl border-b border-[var(--rule)] mb-6 pb-2">Add New Edition</h2>
+                    <form id="editionForm" class="space-y-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label>Vol</label>
+                                <input type="number" name="vol" value="1" required>
+                            </div>
+                            <div>
+                                <label>No</label>
+                                <input type="number" name="no" placeholder="e.g. 4" required>
+                            </div>
+                        </div>
+                        <div>
+                            <label>Title</label>
+                            <input type="text" name="title" placeholder="e.g. The New Wave" required>
+                        </div>
+                        <div>
+                            <label>Date String</label>
+                            <input type="text" name="date" placeholder="e.g. 15th June '26" required>
+                        </div>
+                        <div>
+                            <label>Short Description</label>
+                            <input type="text" name="description" placeholder="A brief hook..." required>
+                        </div>
+                        <div>
+                            <label>Image Path (Optional)</label>
+                            <input type="text" name="image" placeholder="assets/img/...">
+                        </div>
+                    </form>
+                </div>
+
+            </section>
+
+            <!-- OUTPUT SECTION -->
+            <section class="space-y-12 sticky top-10 h-fit">
+                <div>
+                    <h2 class="font-serif text-xl border-b border-[var(--rule)] mb-6 pb-2">Code Generated</h2>
+                    <p class="text-xs text-[var(--muted)] mb-4">Copy the block below and paste it into <code>assets/js/db.js</code> within the appropriate array.</p>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <label>Company Object</label>
+                            <div class="code-output" id="companyOutput">// Fill form to see code</div>
+                            <button onclick="copyToClipboard('companyOutput')" class="mt-2 text-[10px] font-bold uppercase tracking-widest accent-text hover:underline">Copy Code</button>
+                        </div>
+
+                        <div>
+                            <label>Edition Object</label>
+                            <div class="code-output" id="editionOutput">// Fill form to see code</div>
+                            <button onclick="copyToClipboard('editionOutput')" class="mt-2 text-[10px] font-bold uppercase tracking-widest accent-text hover:underline">Copy Code</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-6 border border-[var(--rule)] rounded bg-[var(--paper)]">
+                    <h3 class="font-serif text-lg mb-2">Instructions</h3>
+                    <ul class="text-xs space-y-2 list-decimal ml-4 text-[var(--muted)]">
+                        <li>Fill out the form for the item you want to add.</li>
+                        <li>The code object updates in real-time.</li>
+                        <li>Click "Copy Code".</li>
+                        <li>Open <a href="assets/js/db.js" target="_blank" class="underline">db.js</a> and paste the object into the corresponding list.</li>
+                        <li>Save and your site is updated.</li>
+                    </ul>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <script>
+        const companyForm = document.getElementById('companyForm');
+        const editionForm = document.getElementById('editionForm');
+        const companyOutput = document.getElementById('companyOutput');
+        const editionOutput = document.getElementById('editionOutput');
+
+        function updateCompanyCode() {
+            const fd = new FormData(companyForm);
+            const data = Object.fromEntries(fd);
+            const code = `{
+            id: '${data.name.toLowerCase().replace(/\s+/g, '-')}',
+            name: '${data.name}',
+            industry: '${data.industry}',
+            location: '${data.location || 'Accra'}',
+            status: '${data.status}',
+            description: '${data.description.replace(/'/g, "\\'")}',
+            tags: ['New'],
+            founded: '${new Date().getFullYear()}',
+            url: '${data.url || '#'}',
+            cta: 'Visit Site',
+            logo: '${data.logo}'
+        },`;
+            companyOutput.textContent = code;
+        }
+
+        function updateEditionCode() {
+            const fd = new FormData(editionForm);
+            const data = Object.fromEntries(fd);
+            const code = `{
+            vol: ${data.vol},
+            no: ${data.no},
+            title: '${data.title}',
+            description: '${data.description.replace(/'/g, "\\'")}',
+            date: '${data.date}',
+            status: 'Past',
+            image: ${data.image ? `'${data.image}'` : 'null'}
+        },`;
+            editionOutput.textContent = code;
+        }
+
+        companyForm.addEventListener('input', updateCompanyCode);
+        editionForm.addEventListener('input', updateEditionCode);
+
+        function copyToClipboard(id) {
+            const text = document.getElementById(id).textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Copied to clipboard!');
+            });
+        }
+    </script>
+</body>
+</html>

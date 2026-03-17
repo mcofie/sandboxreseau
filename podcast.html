@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="white" data-accent="blue">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+    <!-- Primary Meta Tags -->
+    <link rel="icon" type="image/png" href="assets/img/favicon.png">
+    <title>Podcast Archive | The Reverb — Sandbox Réseau</title>
+    <meta name="title" content="Podcast Archive | The Reverb" />
+    <meta name="description"
+        content="The high-bandwidth audio-log for the African builder. Unfiltered voices from the Sandbox ecosystem." />
+
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Libre+Baskerville:wght@400;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'ui-sans-serif', 'system-ui'],
+                        serif: ['"Libre Baskerville"', 'Georgia', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body class="min-h-screen bg-[var(--paper)] text-[var(--ink)] font-sans antialiased pb-20">
+    <!-- Texture -->
+    <div class="grain-overlay"></div>
+
+    <!-- ====== Masthead (3-row layout) ====== -->
+    <header class="border-b-[3px] border-[var(--rule)] border-double">
+        <div class="mx-auto max-w-[1100px] px-4">
+            <!-- Row 1: Utility (dateline + controls) -->
+            <div class="flex flex-wrap items-center justify-between gap-3 py-2 text-[13px]">
+                <div class="text-[var(--muted)]">
+                    <span id="dateline"></span> • Vol. 1, No. 1 • Accra
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <!-- Theme cycle -->
+                    <button id="themeToggle"
+                        class="inline-flex items-center gap-2 rounded border border-[var(--rule)] px-2.5 py-1 text-xs font-semibold uppercase tracking-wider hover:opacity-90"
+                        title="Switch theme (white → black → yellow)">
+                        <span class="inline-block h-[10px] w-[10px] rounded-full bg-[var(--ink)]"></span>
+                        Theme
+                    </button>
+
+                    <!-- Accent quick toggle (cycles accents) -->
+                    <button id="accentToggle"
+                        class="inline-flex items-center gap-2 rounded border accent-border px-2.5 py-1 text-xs font-semibold uppercase tracking-wider accent-text hover:opacity-90"
+                        title="Switch accent color">
+                        <span class="inline-block h-[10px] w-[10px] rounded-full"
+                            style="background: var(--accent)"></span>
+                        Color
+                    </button>
+                    
+                    <a href="/"
+                        class="inline-flex items-center gap-2 ml-4 rounded bg-[var(--ink)] px-3 py-1.5 text-xs font-bold text-[var(--paper)] uppercase tracking-wide hover:opacity-80 transition-opacity">
+                         Home
+                    </a>
+                </div>
+            </div>
+
+            <!-- Row 2: Centered Masthead -->
+            <div class="py-3">
+                <h1 class="text-center font-serif text-[44px] leading-none tracking-tight sm:text-[56px]">
+                    Sandbox Réseau Gazette
+                </h1>
+                <div class="mx-auto mt-3 h-px w-24 bg-[var(--rule)]"></div>
+                <p class="mt-2 text-center font-serif italic text-sm text-[var(--muted)]">
+                    The Reverb Archive
+                </p>
+            </div>
+
+            <!-- Row 3: Slim Actions / Swatches -->
+            <div class="flex flex-col items-center gap-2 pb-4">
+                <div
+                    class="flex items-center gap-3 text-[11px] font-semibold tracking-[.18em] uppercase text-[var(--muted)]">
+                    <span>Theme</span>
+                    <div class="flex items-center gap-1">
+                        <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#fbfaf7]"
+                            data-theme-swatch="white" aria-label="White theme"></button>
+                        <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#0b0b0b]"
+                            data-theme-swatch="black" aria-label="Black theme"></button>
+                        <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#fff7cc]"
+                            data-theme-swatch="yellow" aria-label="Yellow theme"></button>
+                    </div>
+
+                    <span class="mx-2 h-3 w-px bg-[var(--rule)]/30"></span>
+
+                    <span>Color</span>
+                    <div class="flex items-center gap-1">
+                        <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#0ea5e9]"
+                            data-accent-swatch="blue" aria-label="Blue"></button>
+                        <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#10b981]"
+                            data-accent-swatch="emerald" aria-label="Emerald"></button>
+                        <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#8b5cf6]"
+                            data-accent-swatch="violet" aria-label="Violet"></button>
+                        <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#f59e0b]"
+                            data-accent-swatch="amber" aria-label="Amber"></button>
+                        <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#ef4444]"
+                            data-accent-swatch="red" aria-label="Red"></button>
+                        <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#d946ef]"
+                            data-accent-swatch="fuchsia" aria-label="Fuchsia"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="mx-auto max-w-[900px] px-4 py-16">
+        <!-- Show Hero Section -->
+        <div class="mb-20 grid grid-cols-1 md:grid-cols-[280px_1fr] items-start gap-8 md:gap-12 animate-enter">
+            <div class="relative group">
+                <div class="aspect-square w-full overflow-hidden rounded border border-[var(--rule)] bg-white p-2">
+                    <img src="assets/img/podcast-logo.png" alt="The Reverb Clipart" class="w-full h-full object-cover grayscale transition-all duration-700 group-hover:grayscale-0">
+                </div>
+                <div class="mt-2 text-center">
+                    <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--muted)]">The Audio Log</span>
+                </div>
+            </div>
+            
+            <div class="pt-2">
+                <div class="border-y border-[var(--rule)] py-1 mb-4 inline-block">
+                    <span class="text-[11px] font-bold uppercase tracking-[0.3em] text-[var(--muted)]">Program Profile</span>
+                </div>
+                
+                <h2 class="font-serif text-4xl md:text-5xl leading-tight mb-2 tracking-tight">The Reverb</h2>
+                <div class="font-serif italic text-lg text-neutral-500 mb-6">Hosted by Maxwell Cofie</div>
+                
+                <div class="space-y-6 max-w-2xl">
+                    <p class="text-xl font-serif text-[var(--ink)] leading-relaxed underline decoration-[var(--rule)] decoration-1 underline-offset-4">
+                        The high-bandwidth audio-log for the African builder.
+                    </p>
+                    <p class="text-[16px] text-neutral-600 leading-relaxed font-serif italic">
+                        Most tech podcasts are too long—The Reverb is built for the fast lane. Every 5-minute episode stitches together unfiltered voices from the Sandbox Réseau ecosystem. No fluff, no 40-minute monologues. Just the raw signal.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-8 flex items-center gap-4">
+             <div class="h-px flex-1 bg-[var(--rule)]/20"></div>
+             <h3 class="font-serif text-lg italic text-neutral-400">Latest Episodes</h3>
+             <div class="h-px flex-1 bg-[var(--rule)]/20"></div>
+        </div>
+
+        <!-- Episodes Grid -->
+        <div id="podcast-archive" class="space-y-6">
+            <!-- Premium Skeleton Loader Items x3 -->
+            <div class="flex flex-col sm:flex-row gap-6 p-6 rounded border border-[var(--rule)] bg-white animate-pulse">
+                <div class="w-24 h-24 sm:w-32 sm:h-32 flex-shrink-0 bg-neutral-100 rounded border border-[var(--rule)]"></div>
+                <div class="flex-1 space-y-4 pt-2">
+                    <div class="h-3 w-32 bg-neutral-100 rounded"></div>
+                    <div class="h-6 w-3/4 bg-neutral-100 rounded"></div>
+                    <div class="space-y-2">
+                        <div class="h-3 w-full bg-neutral-50 rounded"></div>
+                        <div class="h-3 w-5/6 bg-neutral-50 rounded"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-6 p-6 rounded border border-[var(--rule)] bg-white animate-pulse">
+                <div class="w-24 h-24 sm:w-32 sm:h-32 flex-shrink-0 bg-neutral-100 rounded border border-[var(--rule)]"></div>
+                <div class="flex-1 space-y-4 pt-2">
+                    <div class="h-3 w-32 bg-neutral-100 rounded"></div>
+                    <div class="h-6 w-3/4 bg-neutral-100 rounded"></div>
+                    <div class="space-y-2">
+                        <div class="h-3 w-full bg-neutral-50 rounded"></div>
+                        <div class="h-3 w-5/6 bg-neutral-50 rounded"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-6 p-6 rounded border border-[var(--rule)] bg-white animate-pulse">
+                <div class="w-24 h-24 sm:w-32 sm:h-32 flex-shrink-0 bg-neutral-100 rounded border border-[var(--rule)]"></div>
+                <div class="flex-1 space-y-4 pt-2">
+                    <div class="h-3 w-32 bg-neutral-100 rounded"></div>
+                    <div class="h-6 w-3/4 bg-neutral-100 rounded"></div>
+                    <div class="space-y-2">
+                        <div class="h-3 w-full bg-neutral-50 rounded"></div>
+                        <div class="h-3 w-5/6 bg-neutral-50 rounded"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-28 mb-12 relative overflow-hidden rounded border border-[var(--rule)] bg-[var(--paper)] p-12 text-center animate-enter">
+            <!-- Subtle Hatch Background for depth -->
+            <div class="absolute inset-0 hatch opacity-[0.03] pointer-events-none"></div>
+            
+            <div class="relative z-10">
+                <div class="mb-8 inline-block rounded border border-[var(--rule)] bg-white p-2">
+                    <img src="assets/img/podcast-logo.png" alt="Logo" class="w-12 h-12 grayscale">
+                </div>
+                
+                <h3 class="font-serif text-3xl md:text-4xl mb-4 tracking-tight text-[var(--ink)]">Never miss a pulse.</h3>
+                <p class="text-[var(--muted)] mb-10 max-w-lg mx-auto font-serif italic text-lg leading-relaxed">
+                    Subscribe on your preferred platform for weekly dispatches from the Sandbox.
+                </p>
+                
+                <div class="flex flex-wrap justify-center gap-6">
+                    <a href="https://open.spotify.com/show/1mQUSNNpjenkeUiFVBXWCN" target="_blank" 
+                       class="group flex items-center gap-3 border border-[var(--rule)] px-8 py-3 text-xs font-bold uppercase tracking-[0.2em] hover:bg-[var(--ink)] hover:text-[var(--paper)] transition-all">
+                        Spotify
+                    </a>
+                    <a href="https://podcasts.apple.com/gh/podcast/the-reverb/id1884282478" target="_blank" 
+                       class="group flex items-center gap-3 border border-[var(--rule)] px-8 py-3 text-xs font-bold uppercase tracking-[0.2em] hover:bg-[var(--ink)] hover:text-[var(--paper)] transition-all">
+                        Apple Podcasts
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t-[3px] border-[var(--rule)] border-double bg-[var(--paper)]">
+        <div class="mx-auto flex max-w-[1100px] flex-col md:flex-row items-center justify-between gap-6 px-4 py-8 md:py-4 text-[13px] text-neutral-600">
+            <div class="order-2 md:order-1 text-center md:text-left">
+                © <span id="year"></span> Sandbox Réseau • Accra
+            </div>
+            
+            <div class="order-1 md:order-2 flex flex-wrap items-center justify-center gap-x-5 gap-y-3">
+                <span class="text-[var(--ink)] font-semibold">Podcast</span>
+                <a href="gallery" class="hover:underline">Gallery</a>
+                <a href="editions" class="hover:underline">Editions</a>
+                <a href="newsletters" class="hover:underline">Newsletters</a>
+                <a href="community" class="hover:underline">Community</a>
+                <a href="companies" class="hover:underline">Companies</a>
+            </div>
+            
+            <div class="order-3">
+                <a class="underline accent-text font-bold" href="https://luma.com/sandbox-reseau" target="_blank"
+                    rel="noreferrer">Register</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/db.js"></script>
+    <script src="assets/js/content-manager.js"></script>
+    <script>
+        async function initPage() {
+            await DB.init();
+            
+            // Fetch and render from LIVE RSS feed
+            ContentManager.renderPodcastFromRSS('podcast-archive', 'https://anchor.fm/s/110059518/podcast/rss');
+            
+            // SEO: Inject Structured Data
+            ContentManager.injectStructuredData('podcast');
+            
+            // Animation Observer
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, i) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add('visible');
+                        }, i * 150);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.animate-enter').forEach(el => observer.observe(el));
+            
+            document.getElementById('year').textContent = new Date().getFullYear();
+            
+            // Shared Dateline logic
+            const d = new Date();
+            const dateEl = document.getElementById('dateline');
+            if (dateEl) dateEl.textContent = d.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        }
+        initPage();
+    </script>
+    <script src="assets/js/main.js" defer></script>
+</body>
+
+</html>

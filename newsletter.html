@@ -7,10 +7,10 @@
 
     <!-- Primary Meta Tags -->
     <link rel="icon" type="image/png" href="assets/img/favicon.png">
-    <title>The Chronicle | Editions Archive — Sandbox Réseau</title>
-    <meta name="title" content="The Chronicle | Editions Archive — Sandbox Réseau" />
+    <title>Newsletter — Sandbox Réseau</title>
+    <meta name="title" content="Newsletter — Sandbox Réseau" />
     <meta name="description"
-        content="Browse through the physical chronicle of every Sandbox Réseau edition. Our journey, documented." />
+        content="Our thoughts, shared. Documentation of the building process and ecosystem insights." />
 
     <!-- Fonts -->
     <link
@@ -33,42 +33,55 @@
     </script>
 
     <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        .prose-news h3 {
+            font-family: 'Libre Baskerville', serif;
+            font-size: 1.5rem;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--ink);
+        }
+        .prose-news p {
+            margin-bottom: 1.5rem;
+        }
+    </style>
 </head>
 
-<body class="min-h-screen bg-[var(--paper)] text-[var(--ink)] font-sans antialiased pb-12">
+<body class="min-h-screen bg-[var(--paper)] text-[var(--ink)] font-sans antialiased pb-20">
     <!-- Texture -->
     <div class="grain-overlay"></div>
 
-    <!-- ====== Masthead ====== -->
-    <header class="border-b-[3px] border-[var(--rule)] border-double bg-[var(--paper)]">
+    <!-- ====== Masthead (3-row layout) ====== -->
+    <header class="border-b-[3px] border-[var(--rule)] border-double">
         <div class="mx-auto max-w-[1100px] px-4">
-            <!-- Row 1: Utility -->
+            <!-- Row 1: Utility (dateline + controls) -->
             <div class="flex flex-wrap items-center justify-between gap-3 py-2 text-[13px]">
                 <div class="text-[var(--muted)]">
                     <span id="dateline"></span> • Vol. 1, No. 1 • Accra
                 </div>
 
                 <div class="flex items-center gap-2">
-                    <a href="/"
-                        class="inline-flex items-center gap-2 mr-4 rounded bg-[var(--ink)] px-3 py-1.5 text-xs font-bold text-[var(--paper)] uppercase tracking-wide hover:opacity-80 transition-opacity">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
-                            stroke="currentColor" class="h-3.5 w-3.5">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
-                        </svg>
-                        Back to Gazette
-                    </a>
+                    <!-- Theme cycle -->
                     <button id="themeToggle"
-                        class="inline-flex items-center gap-2 rounded border border-[var(--rule)] px-2.5 py-1 text-xs font-semibold uppercase tracking-wider hover:opacity-90">
+                        class="inline-flex items-center gap-2 rounded border border-[var(--rule)] px-2.5 py-1 text-xs font-semibold uppercase tracking-wider hover:opacity-90"
+                        title="Switch theme (white → black → yellow)">
                         <span class="inline-block h-[10px] w-[10px] rounded-full bg-[var(--ink)]"></span>
                         Theme
                     </button>
+
+                    <!-- Accent quick toggle (cycles accents) -->
                     <button id="accentToggle"
-                        class="inline-flex items-center gap-2 rounded border accent-border px-2.5 py-1 text-xs font-semibold uppercase tracking-wider accent-text hover:opacity-90">
+                        class="inline-flex items-center gap-2 rounded border accent-border px-2.5 py-1 text-xs font-semibold uppercase tracking-wider accent-text hover:opacity-90"
+                        title="Switch accent color">
                         <span class="inline-block h-[10px] w-[10px] rounded-full"
                             style="background: var(--accent)"></span>
                         Color
                     </button>
+                    
+                    <a href="newsletters"
+                        class="inline-flex items-center gap-2 ml-4 rounded bg-[var(--ink)] px-3 py-1.5 text-xs font-bold text-[var(--paper)] uppercase tracking-wide hover:opacity-80 transition-opacity">
+                         Back to Archive
+                    </a>
                 </div>
             </div>
 
@@ -79,54 +92,54 @@
                 </h1>
                 <div class="mx-auto mt-3 h-px w-24 bg-[var(--rule)]"></div>
                 <p class="mt-2 text-center font-serif italic text-sm text-[var(--muted)]">
-                    Chronicled Editions
+                    Dispatches from the Sandbox
                 </p>
             </div>
 
-            <!-- Row 3: Swatches -->
+            <!-- Row 3: Slim Actions / Swatches -->
             <div class="flex flex-col items-center gap-2 pb-4">
                 <div
                     class="flex items-center gap-3 text-[11px] font-semibold tracking-[.18em] uppercase text-[var(--muted)]">
                     <span>Theme</span>
                     <div class="flex items-center gap-1">
                         <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#fbfaf7]"
-                            data-theme-swatch="white"></button>
+                            data-theme-swatch="white" aria-label="White theme"></button>
                         <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#0b0b0b]"
-                            data-theme-swatch="black"></button>
+                            data-theme-swatch="black" aria-label="Black theme"></button>
                         <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#fff7cc]"
-                            data-theme-swatch="yellow"></button>
+                            data-theme-swatch="yellow" aria-label="Yellow theme"></button>
                     </div>
+
                     <span class="mx-2 h-3 w-px bg-[var(--rule)]/30"></span>
+
                     <span>Color</span>
                     <div class="flex items-center gap-1">
                         <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#0ea5e9]"
-                            data-accent-swatch="blue"></button>
+                            data-accent-swatch="blue" aria-label="Blue"></button>
                         <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#10b981]"
-                            data-accent-swatch="emerald"></button>
+                            data-accent-swatch="emerald" aria-label="Emerald"></button>
                         <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#8b5cf6]"
-                            data-accent-swatch="violet"></button>
-                        <button class="h-[18px] w-[18px] rounded-full border border border-[var(--rule)] bg-[#f59e0b]"
-                            data-accent-swatch="amber"></button>
-                        <button class="h-[18px] w-[18px] rounded-full border border border-[var(--rule)] bg-[#ef4444]"
-                            data-accent-swatch="red"></button>
-                        <button class="h-[18px] w-[18px] rounded-full border border border-[var(--rule)] bg-[#d946ef]"
-                            data-accent-swatch="fuchsia"></button>
+                            data-accent-swatch="violet" aria-label="Violet"></button>
+                        <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#f59e0b]"
+                            data-accent-swatch="amber" aria-label="Amber"></button>
+                        <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#ef4444]"
+                            data-accent-swatch="red" aria-label="Red"></button>
+                        <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#d946ef]"
+                            data-accent-swatch="fuchsia" aria-label="Fuchsia"></button>
                     </div>
                 </div>
             </div>
         </div>
     </header>
 
-    <main class="mx-auto max-w-[1100px] px-4 py-8">
-        <div class="mb-8 text-center text-[var(--muted)]">
-            <h1 class="font-serif text-4xl mb-2 text-[var(--ink)]">The Chronicle</h1>
-            <p class="italic">A visual history of our gatherings.</p>
-        </div>
-
-        <!-- Grid Layout to enforce equal heights -->
-        <div id="editions-grid"
-            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 items-stretch">
+    <main class="mx-auto max-w-[800px] px-4 py-16 lg:py-24">
+        <div id="newsletter-detail-container" class="animate-enter">
             <!-- Dynamic Content -->
+            <div class="pt-20 text-center">
+                <div class="inline-block h-8 w-8 animate-spin rounded-full border-2 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" role="status">
+                    <span class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">Loading...</span>
+                </div>
+            </div>
         </div>
     </main>
 
@@ -140,11 +153,10 @@
             <div class="order-1 md:order-2 flex flex-wrap items-center justify-center gap-x-5 gap-y-3">
                 <a href="podcast" class="hover:underline">Podcast</a>
                 <a href="gallery" class="hover:underline">Gallery</a>
-                <span class="text-[var(--ink)] font-semibold">Editions</span>
+                <a href="editions" class="hover:underline">Editions</a>
                 <a href="newsletters" class="hover:underline">Newsletters</a>
                 <a href="community" class="hover:underline">Community</a>
                 <a href="companies" class="hover:underline">Companies</a>
-                <a href="handbook" class="hover:underline">Handbook</a>
             </div>
             
             <div class="order-3">
@@ -159,26 +171,29 @@
     <script>
         async function initPage() {
             await DB.init();
-            
-            // Init dynamically
-            ContentManager.renderEditions('editions-grid', DB.editions);
 
-            // Entrance Animation Logic
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach((entry, i) => {
-                    if (entry.isIntersecting) {
-                        setTimeout(() => {
-                            entry.target.classList.add('visible');
-                        }, i * 150);
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.1 });
+            // Parse ID from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const newsletterId = urlParams.get('id');
 
-            document.querySelectorAll('.animate-enter').forEach(el => observer.observe(el));
+            // Find newsletter in DB
+            const newsletter = DB.newsletters.find(n => n.id === newsletterId);
+
+            // Render detail
+            ContentManager.renderNewsletterDetail('newsletter-detail-container', newsletter);
+
+            // SEO: Inject Structured Data
+            if (newsletter) {
+                ContentManager.injectStructuredData('newsletter', newsletter);
+            }
 
             // Ensure year is dynamic
             document.getElementById('year').textContent = new Date().getFullYear();
+
+            // Reveal effect
+            setTimeout(() => {
+                document.getElementById('newsletter-detail-container').classList.add('visible');
+            }, 100);
         }
 
         initPage();

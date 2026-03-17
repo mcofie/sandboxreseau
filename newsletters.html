@@ -7,10 +7,10 @@
 
     <!-- Primary Meta Tags -->
     <link rel="icon" type="image/png" href="assets/img/favicon.png">
-    <title>The Chronicle | Editions Archive — Sandbox Réseau</title>
-    <meta name="title" content="The Chronicle | Editions Archive — Sandbox Réseau" />
+    <title>The Archive | Newsletter — Sandbox Réseau</title>
+    <meta name="title" content="The Archive | Newsletter — Sandbox Réseau" />
     <meta name="description"
-        content="Browse through the physical chronicle of every Sandbox Réseau edition. Our journey, documented." />
+        content="Our thoughts, shared. Documentation of the building process and ecosystem insights." />
 
     <!-- Fonts -->
     <link
@@ -79,7 +79,7 @@
                 </h1>
                 <div class="mx-auto mt-3 h-px w-24 bg-[var(--rule)]"></div>
                 <p class="mt-2 text-center font-serif italic text-sm text-[var(--muted)]">
-                    Chronicled Editions
+                    Dispatches from the Sandbox
                 </p>
             </div>
 
@@ -117,16 +117,23 @@
         </div>
     </header>
 
-    <main class="mx-auto max-w-[1100px] px-4 py-8">
-        <div class="mb-8 text-center text-[var(--muted)]">
-            <h1 class="font-serif text-4xl mb-2 text-[var(--ink)]">The Chronicle</h1>
-            <p class="italic">A visual history of our gatherings.</p>
+    <main class="mx-auto max-w-[800px] px-4 py-12">
+        <div class="mb-16 text-center">
+            <h1 class="font-serif text-5xl mb-4 text-[var(--ink)]">Newsletters</h1>
+            <p class="italic text-neutral-600 font-serif">A periodic log of our thoughts, discoveries, and ecosystem updates.</p>
+            <div class="mx-auto mt-6 h-px w-16 bg-[var(--rule)]"></div>
         </div>
 
-        <!-- Grid Layout to enforce equal heights -->
-        <div id="editions-grid"
-            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 items-stretch">
+        <div id="newsletter-archive" class="space-y-12">
             <!-- Dynamic Content -->
+        </div>
+
+        <div class="mt-20 border-t-2 border-double border-[var(--rule)] pt-8 text-center">
+            <h3 class="font-serif text-xl mb-4">Don't miss the next issue</h3>
+            <p class="text-sm text-neutral-600 mb-6">Join 500+ builders in the ecosystem.</p>
+            <a href="https://luma.com/sandbox-reseau" target="_blank" class="inline-block bg-[var(--ink)] text-[var(--paper)] px-8 py-3 rounded text-sm font-bold uppercase tracking-widest hover:opacity-90 transition-opacity">
+                Subscribe on Luma
+            </a>
         </div>
     </main>
 
@@ -140,8 +147,8 @@
             <div class="order-1 md:order-2 flex flex-wrap items-center justify-center gap-x-5 gap-y-3">
                 <a href="podcast" class="hover:underline">Podcast</a>
                 <a href="gallery" class="hover:underline">Gallery</a>
-                <span class="text-[var(--ink)] font-semibold">Editions</span>
-                <a href="newsletters" class="hover:underline">Newsletters</a>
+                <a href="editions" class="hover:underline">Editions</a>
+                <span class="text-[var(--ink)] font-semibold">Newsletters</span>
                 <a href="community" class="hover:underline">Community</a>
                 <a href="companies" class="hover:underline">Companies</a>
                 <a href="handbook" class="hover:underline">Handbook</a>
@@ -159,23 +166,9 @@
     <script>
         async function initPage() {
             await DB.init();
-            
+
             // Init dynamically
-            ContentManager.renderEditions('editions-grid', DB.editions);
-
-            // Entrance Animation Logic
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach((entry, i) => {
-                    if (entry.isIntersecting) {
-                        setTimeout(() => {
-                            entry.target.classList.add('visible');
-                        }, i * 150);
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.1 });
-
-            document.querySelectorAll('.animate-enter').forEach(el => observer.observe(el));
+            ContentManager.renderNewsletters('newsletter-archive', DB.newsletters);
 
             // Ensure year is dynamic
             document.getElementById('year').textContent = new Date().getFullYear();

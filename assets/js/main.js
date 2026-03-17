@@ -139,32 +139,42 @@ if (typeof GALLERY_IMAGES !== 'undefined') {
     // Create Lightbox DOM
     const lightbox = document.createElement('div');
     lightbox.className = 'lightbox-overlay';
+    lightbox.setAttribute('role', 'dialog');
+    lightbox.setAttribute('aria-modal', 'true');
+    lightbox.setAttribute('aria-label', 'Image Lightbox');
+    
     lightbox.innerHTML = `
-    <button class="lightbox-close" aria-label="Close">
+    <button class="lightbox-close" aria-label="Close Lightbox">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
     </button>
-    <button class="lightbox-nav lightbox-prev" aria-label="Previous">
+    <button class="lightbox-nav lightbox-prev" aria-label="Previous Image">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
     </button>
-    <img class="lightbox-img" src="" alt="Full screen view" />
-    <button class="lightbox-nav lightbox-next" aria-label="Next">
+    <div class="lightbox-content">
+        <img class="lightbox-img" src="" alt="Expanded View" />
+    </div>
+    <button class="lightbox-nav lightbox-next" aria-label="Next Image">
          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
     </button>
 `;
     document.body.appendChild(lightbox);
 
     const lightboxImg = lightbox.querySelector('.lightbox-img');
+    let lastFocusedElement = null;
 
     window.openLightbox = (index) => {
+        lastFocusedElement = document.activeElement;
         currentLightboxIndex = index;
         updateLightbox();
         lightbox.classList.add('open');
         document.body.style.overflow = 'hidden';
+        lightbox.querySelector('.lightbox-close').focus();
     };
 
     function closeLightbox() {
         lightbox.classList.remove('open');
         document.body.style.overflow = '';
+        if (lastFocusedElement) lastFocusedElement.focus();
         setTimeout(() => {
             lightboxImg.src = '';
         }, 300);

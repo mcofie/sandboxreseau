@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://sandboxreseau.com/sitemap.xml

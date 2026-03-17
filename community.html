@@ -471,18 +471,25 @@
 
     <!-- Footer -->
     <footer class="border-t-[3px] border-[var(--rule)] border-double">
-        <div
-            class="mx-auto flex min-h-[60px] max-w-[1100px] flex-wrap items-center justify-between gap-3 px-4 py-3 text-[13px] text-neutral-600">
-            <div>© <span id="year"></span> Sandbox Réseau • Accra</div>
-            <div class="flex items-center gap-4">
-                <a href="/#podcast" class="hover:underline">Podcast</a>
+        <div class="mx-auto flex max-w-[1100px] flex-col md:flex-row items-center justify-between gap-6 px-4 py-8 md:py-4 text-[13px] text-neutral-600">
+            <div class="order-2 md:order-1 text-center md:text-left">
+                © <span id="year"></span> Sandbox Réseau • Accra
+            </div>
+            
+            <div class="order-1 md:order-2 flex flex-wrap items-center justify-center gap-x-5 gap-y-3">
+                <a href="podcast" class="hover:underline">Podcast</a>
                 <a href="gallery" class="hover:underline">Gallery</a>
                 <a href="editions" class="hover:underline">Editions</a>
+                <a href="newsletters" class="hover:underline">Newsletters</a>
                 <span class="text-[var(--ink)] font-semibold">Community</span>
+                <a href="companies" class="hover:underline">Companies</a>
                 <a href="handbook" class="hover:underline">Handbook</a>
             </div>
-            <a class="underline accent-text" href="https://luma.com/sandbox-reseau" target="_blank"
-                rel="noreferrer">Register</a>
+            
+            <div class="order-3">
+                <a class="underline accent-text font-bold" href="https://luma.com/sandbox-reseau" target="_blank"
+                    rel="noreferrer">Register</a>
+            </div>
         </div>
     </footer>
 

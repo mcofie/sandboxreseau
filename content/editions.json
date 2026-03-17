@@ -1,0 +1,30 @@
+[
+  {
+    "vol": 1,
+    "no": 3,
+    "title": "Dealing with regulators",
+    "description": "Navigating compliance and policy in the regulatory landscape.",
+    "date": "24th April '26",
+    "status": "In Preparation",
+    "image": null,
+    "lumaUrl": "https://luma.com/sandbox-reseau"
+  },
+  {
+    "vol": 1,
+    "no": 2,
+    "title": "Distribution",
+    "description": "Unlocking growth channels and scaling access.",
+    "date": "27th Feb '26",
+    "status": "Past",
+    "image": "assets/img/vol2-theforge.jpg"
+  },
+  {
+    "vol": 1,
+    "no": 1,
+    "title": "Genesis",
+    "description": "Where the first sandbox was built.",
+    "date": "11th Dec '25",
+    "status": "Past",
+    "image": "assets/img/vol1-genesis.jpg"
+  }
+]

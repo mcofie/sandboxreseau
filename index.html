@@ -194,12 +194,16 @@
                     class="snap-start whitespace-nowrap rounded-full border border-[var(--rule)] px-3 py-1 text-xs chip-hover hover:accent-text">Details</a>
                 <a href="#faq"
                     class="snap-start whitespace-nowrap rounded-full border border-[var(--rule)] px-3 py-1 text-xs chip-hover hover:accent-text">FAQ</a>
-                <a href="#podcast"
+                <a href="podcast"
                     class="snap-start whitespace-nowrap rounded-full border border-[var(--rule)] px-3 py-1 text-xs chip-hover hover:accent-text">Podcast</a>
                 <a href="editions"
                     class="snap-start whitespace-nowrap rounded-full border border-[var(--rule)] px-3 py-1 text-xs chip-hover hover:accent-text">Editions</a>
+                <a href="newsletters"
+                    class="snap-start whitespace-nowrap rounded-full border border-[var(--rule)] px-3 py-1 text-xs chip-hover hover:accent-text">Newsletters</a>
                 <a href="community"
                     class="snap-start whitespace-nowrap rounded-full border border-[var(--rule)] px-3 py-1 text-xs chip-hover hover:accent-text">Community</a>
+                <a href="companies"
+                    class="snap-start whitespace-nowrap rounded-full border border-[var(--rule)] px-3 py-1 text-xs chip-hover hover:accent-text">Companies</a>
                 <a href="handbook"
                     class="snap-start whitespace-nowrap rounded-full border border-[var(--rule)] px-3 py-1 text-xs chip-hover hover:accent-text">Handbook</a>
                 <a href="#register"
@@ -420,31 +424,59 @@
         </div>
     </main>
 
-    <!-- Footer -->
     <footer class="border-t-[3px] border-[var(--rule)] border-double">
-        <div
-            class="mx-auto flex min-h-[60px] max-w-[1100px] flex-wrap items-center justify-between gap-3 px-4 py-3 text-[13px] text-neutral-600">
-            <div>© <span id="year"></span> Sandbox Réseau • Accra</div>
-            <div class="flex items-center gap-4">
-                <a href="#podcast" class="hover:underline">Podcast</a>
+        <div class="mx-auto flex max-w-[1100px] flex-col md:flex-row items-center justify-between gap-6 px-4 py-8 md:py-4 text-[13px] text-neutral-600">
+            <div class="order-2 md:order-1 text-center md:text-left">
+                © <span id="year"></span> Sandbox Réseau • Accra
+            </div>
+            
+            <div class="order-1 md:order-2 flex flex-wrap items-center justify-center gap-x-5 gap-y-3">
+                <a href="podcast" class="hover:underline">Podcast</a>
                 <a href="gallery" class="hover:underline">Gallery</a>
                 <a href="editions" class="hover:underline">Editions</a>
+                <a href="newsletters" class="hover:underline">Newsletters</a>
                 <a href="community" class="hover:underline">Community</a>
+                <a href="companies" class="hover:underline">Companies</a>
+                <a href="handbook" class="hover:underline">Handbook</a>
             </div>
-            <a class="underline accent-text" href="https://luma.com/sandbox-reseau" target="_blank"
-                rel="noreferrer">Register</a>
+            
+            <div class="order-3">
+                <a class="underline accent-text font-bold" href="https://luma.com/sandbox-reseau" target="_blank"
+                    rel="noreferrer">Register</a>
+            </div>
         </div>
     </footer>
 
-    <script>
-        const GALLERY_IMAGES = [
-            'assets/img/event-1.jpg',
-            'assets/img/event-2.jpg',
-            'assets/img/event-3.jpg',
-            'assets/img/event-4.jpg'
-        ];
-    </script>
+    <script src="assets/js/db.js"></script>
+    <script src="assets/js/content-manager.js"></script>
     <script src="assets/js/main.js" defer></script>
+    <script>
+        // Use DB for GALLERY_IMAGES if defined
+        async function initPage() {
+            // Wait for data
+            await DB.init();
+
+            const GALLERY_IMAGES = DB.gallery.map(img => img.url);
+            window.GALLERY_IMAGES = GALLERY_IMAGES; // Share with lightbox
+
+            // Dynamic Next Edition in Sidebar
+            const nextEdition = DB.editions.find(e => e.status === 'In Preparation') || DB.editions[0];
+            const nextEditionEl = document.querySelector('aside .rounded.border.border-\\[var\\(--rule\\)\\].p-4:last-of-type');
+            if (nextEditionEl) {
+                nextEditionEl.innerHTML = `
+                    <h4 class="m-0 font-serif text-lg">Next Edition: ${nextEdition.title}</h4>
+                    <p class="mt-2 text-sm text-neutral-600">${nextEdition.date} — ${nextEdition.description}</p>
+                    <a href="editions" class="text-sm underline accent-text">View details →</a>
+                `;
+            }
+
+            // Ensure year is dynamic
+            const yearEl = document.getElementById('year');
+            if (yearEl) yearEl.textContent = new Date().getFullYear();
+        }
+
+        initPage();
+    </script>
 </body>
 
 </html>
