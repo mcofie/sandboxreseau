@@ -490,7 +490,7 @@ const ContentManager = {
 
     setPlaybackSpeed: function(speed) {
         window._audioPlayer.playbackRate = speed;
-        document.getElementById('speedToggle').textContent = speed === 1 ? '1x Speed' : speed + 'x Speed';
+        document.getElementById('speedToggle').textContent = speed + 'x';
         
         // UI Active State
         document.querySelectorAll('.speed-option').forEach(opt => {
