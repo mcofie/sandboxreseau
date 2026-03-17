@@ -35,7 +35,7 @@ const ContentManager = {
                     </div>
                 </div>
                 <div class="flex flex-col items-end gap-2 shrink-0 self-stretch justify-between sm:border-l border-[var(--rule)]/10 sm:pl-6 pt-4 sm:pt-0">
-                    <span class="text-[11px] font-serif italic text-[var(--muted)]">${company.location || company.founded}</span>
+                    <span class="text-[11px] font-serif  text-[var(--muted)]">${company.location || company.founded}</span>
                     <a href="${company.url}" target="_blank" class="text-[11px] font-bold uppercase tracking-widest hover:underline accent-text">${company.cta} →</a>
                 </div>
             </div>
@@ -63,7 +63,7 @@ const ContentManager = {
                     ` : `
                         <div class="relative overflow-hidden aspect-[4/3] border border-[var(--rule)] bg-[var(--accent)]/10 flex items-center justify-center p-8 text-center shrink-0">
                             <div class="space-y-2">
-                                <div class="font-serif italic text-2xl accent-text">${edition.status}</div>
+                                <div class="font-serif  text-2xl accent-text">${edition.status}</div>
                                 <div class="text-[10px] uppercase tracking-[0.2em] opacity-40">${edition.date}</div>
                             </div>
                         </div>
@@ -75,7 +75,7 @@ const ContentManager = {
                             <span class="${edition.status === 'In Preparation' ? 'accent-text' : ''}">${edition.date}</span>
                         </div>
                         <h2 class="font-serif text-xl border-b border-[var(--rule)] pb-1 mb-2">${edition.title}</h2>
-                        <p class="text-sm text-neutral-600 leading-relaxed italic">${edition.description}</p>
+                        <p class="text-sm text-neutral-600 leading-relaxed ">${edition.description}</p>
                         
                         ${edition.lumaUrl ? `
                             <div class="mt-auto pt-4">
@@ -143,13 +143,13 @@ const ContentManager = {
                 <div class="flex flex-col md:flex-row md:items-start gap-4 md:gap-8">
                     <div class="md:w-32 shrink-0">
                         <div class="text-[11px] font-bold uppercase tracking-widest text-[var(--muted)] mb-1">Issue ${newsletter.issue}</div>
-                        <div class="text-[13px] font-serif italic text-neutral-500">${newsletter.date}</div>
+                        <div class="text-[13px] font-serif  text-neutral-500">${newsletter.date}</div>
                     </div>
                     <div class="flex-1">
                         <h2 class="font-serif text-2xl mb-2 group-hover:accent-text transition-colors">
                             <a href="${newsletter.url}" aria-label="Read Issue ${newsletter.issue}: ${newsletter.title}">${newsletter.title}</a>
                         </h2>
-                        <p class="text-[17px] text-neutral-600 leading-relaxed mb-4 font-serif italic">
+                        <p class="text-[17px] text-neutral-600 leading-relaxed mb-4 font-serif ">
                             "${newsletter.excerpt}"
                         </p>
                         <div class="flex flex-wrap items-center gap-4 text-[11px] font-semibold uppercase tracking-wider text-[var(--muted)]">
@@ -182,7 +182,7 @@ const ContentManager = {
     renderNewsletterDetail: function(containerId, newsletter) {
         const container = document.getElementById(containerId);
         if (!container || !newsletter) {
-            if (container) container.innerHTML = '<div class="text-center py-20 font-serif italic text-neutral-500">Edition not found. <a href="newsletters" class="underline">Back to Archive</a></div>';
+            if (container) container.innerHTML = '<div class="text-center py-20 font-serif  text-neutral-500">Edition not found. <a href="newsletters" class="underline">Back to Archive</a></div>';
             return;
         }
 
@@ -200,15 +200,15 @@ const ContentManager = {
                 <div class="flex flex-wrap items-center gap-6 py-6 border-y border-[var(--rule)]/10 text-[13px] text-[var(--muted)]">
                     <div class="flex items-center gap-2">
                         <span class="font-bold text-[var(--ink)] uppercase tracking-widest text-[10px]">Author:</span>
-                        <span class="font-serif italic text-neutral-600">${newsletter.author}</span>
+                        <span class="font-serif  text-neutral-600">${newsletter.author}</span>
                     </div>
                     <div class="flex items-center gap-2">
                         <span class="font-bold text-[var(--ink)] uppercase tracking-widest text-[10px]">Date:</span>
-                        <span class="font-serif italic text-neutral-600">${newsletter.date}</span>
+                        <span class="font-serif  text-neutral-600">${newsletter.date}</span>
                     </div>
                     <div class="flex items-center gap-2">
                         <span class="font-bold text-[var(--ink)] uppercase tracking-widest text-[10px]">Read:</span>
-                        <span class="font-serif italic text-neutral-600">${newsletter.readTime}</span>
+                        <span class="font-serif  text-neutral-600">${newsletter.readTime}</span>
                     </div>
                     <div class="flex items-center gap-2 ml-auto">
                         ${newsletter.tags.map(tag => `<span class="px-2 py-0.5 rounded-full border border-[var(--rule)] text-[9px] uppercase font-bold">${tag}</span>`).join('')}
@@ -230,7 +230,7 @@ const ContentManager = {
                         </div>
                         <div>
                             <div class="font-bold text-[13px] uppercase tracking-wider text-[var(--ink)]">Sandbox Réseau</div>
-                            <div class="text-[11px] text-[var(--muted)] font-serif italic mb-2">Accra, Ghana</div>
+                            <div class="text-[11px] text-[var(--muted)] font-serif  mb-2">Accra, Ghana</div>
                         </div>
                     </div>
                     <div class="flex gap-4">
@@ -309,16 +309,22 @@ const ContentManager = {
         if (!window._audioPlayer) {
             window._audioPlayer = new Audio();
             window._activeEpisodeId = null;
+            this.initGlobalPlayer();
         }
 
         container.innerHTML = episodes.map(ep => `
-            <div class="group relative flex flex-col sm:flex-row gap-6 p-6 rounded border border-[var(--rule)] bg-white hover:border-[var(--ink)] transition-all animate-enter" data-episode-id="${ep.id}">
-                <div class="w-24 h-24 sm:w-32 sm:h-32 flex-shrink-0 bg-neutral-100 rounded border border-[var(--rule)] overflow-hidden relative group/art">
+            <div class="group relative flex flex-col sm:flex-row gap-6 p-6 rounded border border-[var(--rule)] bg-white hover:border-[var(--ink)] transition-all animate-enter" 
+                 data-episode-id="${ep.id}" 
+                 data-title="${ep.title.replace(/"/g, '&quot;')}" 
+                 data-meta="${ep.date} • ${ep.duration}" 
+                 data-thumb="${ep.thumbnail}"
+                 data-audio-url="${ep.audioUrl}">
+                
+                <div class="w-24 h-24 sm:w-32 sm:h-32 flex-shrink-0 bg-neutral-100 rounded border border-[var(--rule)] overflow-hidden relative group/art cursor-pointer" onclick="openLightbox('${ep.thumbnail}')">
                     <img src="${ep.thumbnail}" alt="${ep.title}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
                     
                     ${ep.audioUrl ? `
-                    <!-- Inline Play Overlay -->
-                    <button onclick="ContentManager.togglePlay('${ep.id}', '${ep.audioUrl}')" 
+                    <button onclick="event.stopPropagation(); ContentManager.togglePlay('${ep.id}', '${ep.audioUrl}')" 
                             class="absolute inset-0 flex items-center justify-center bg-[var(--ink)]/40 opacity-0 group-hover/art:opacity-100 transition-opacity text-[var(--paper)]">
                         <div class="play-icon w-12 h-12 flex items-center justify-center rounded-full border-2 border-[var(--paper)]">
                             <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
@@ -351,8 +357,8 @@ const ContentManager = {
                         </div>
                         
                         ${ep.audioUrl ? `
-                        <div class="audio-status text-[10px] font-bold uppercase tracking-widest text-[var(--muted)] hidden italic">
-                            Playing...
+                        <div class="audio-wave hidden">
+                            <div></div><div></div><div></div><div></div>
                         </div>
                         ` : ''}
                     </div>
@@ -361,53 +367,142 @@ const ContentManager = {
         `).join('');
     },
 
+    initGlobalPlayer: function() {
+        const player = window._audioPlayer;
+        const bar = document.getElementById('global-player');
+        const progress = document.getElementById('playerProgressBar');
+        const progressContainer = document.getElementById('playerProgressContainer');
+        const mainToggle = document.getElementById('playerMainToggle');
+        const currentTimeEl = document.getElementById('playerCurrentTime');
+        const durationEl = document.getElementById('playerDuration');
+        const speedToggle = document.getElementById('speedToggle');
+        const speedDropdown = document.getElementById('speedDropdown');
+
+        if (!bar) return;
+
+        // Progress Updates
+        player.ontimeupdate = () => {
+            const pct = (player.currentTime / player.duration) * 100;
+            progress.style.width = pct + '%';
+            currentTimeEl.textContent = this.formatTime(player.currentTime);
+        };
+
+        player.onloadedmetadata = () => {
+            durationEl.textContent = this.formatTime(player.duration);
+        };
+
+        // Main Toggle Logic
+        mainToggle.addEventListener('click', () => {
+            if (window._activeEpisodeId) {
+                const card = document.querySelector(`[data-episode-id="${window._activeEpisodeId}"]`);
+                const audioUrl = card.dataset.audioUrl;
+                this.togglePlay(window._activeEpisodeId, audioUrl);
+            }
+        });
+
+        // Seek on Progress Click
+        progressContainer.addEventListener('click', (e) => {
+            const rect = progressContainer.getBoundingClientRect();
+            const pos = (e.clientX - rect.left) / rect.width;
+            player.currentTime = pos * player.duration;
+        });
+
+        // Speed Toggle
+        speedToggle.addEventListener('click', () => speedDropdown.classList.toggle('active'));
+        document.addEventListener('click', (e) => {
+            if (!speedToggle.contains(e.target)) speedDropdown.classList.remove('active');
+        });
+
+        // Global key controls (Space to Play/Pause)
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space' && window._activeEpisodeId && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+                e.preventDefault();
+                mainToggle.click();
+            }
+        });
+    },
+
     togglePlay: function(episodeId, audioUrl) {
         const player = window._audioPlayer;
-        const cards = document.querySelectorAll('[data-episode-id]');
-        const currentCard = document.querySelector(`[data-episode-id="${episodeId}"]`);
+        const bar = document.getElementById('global-player');
         
         if (window._activeEpisodeId === episodeId) {
             if (player.paused) {
                 player.play();
-                this.updatePlayerUI(episodeId, true);
             } else {
                 player.pause();
-                this.updatePlayerUI(episodeId, false);
             }
         } else {
-            // Stop current
-            if (window._activeEpisodeId) {
-                this.updatePlayerUI(window._activeEpisodeId, false);
-            }
-            
+            // New Episode
             player.src = audioUrl;
             player.play();
             window._activeEpisodeId = episodeId;
-            this.updatePlayerUI(episodeId, true);
+            
+            // Update Global Bar Info
+            const card = document.querySelector(`[data-episode-id="${episodeId}"]`);
+            document.getElementById('playerTitle').textContent = card.dataset.title;
+            document.getElementById('playerMeta').textContent = card.dataset.meta;
+            document.getElementById('playerThumbnail').src = card.dataset.thumb;
+            bar.classList.add('active');
         }
 
+        // Global Listeners for UI Sync
+        player.onplay = () => this.syncUI(true);
+        player.onpause = () => this.syncUI(false);
         player.onended = () => {
-            this.updatePlayerUI(episodeId, false);
+            this.syncUI(false);
             window._activeEpisodeId = null;
+            bar.classList.remove('active');
         };
     },
 
-    updatePlayerUI: function(episodeId, isPlaying) {
-        const card = document.querySelector(`[data-episode-id="${episodeId}"]`);
-        if (!card) return;
+    syncUI: function(isPlaying) {
+        const episodeId = window._activeEpisodeId;
+        const mainToggle = document.getElementById('playerMainToggle');
+        const cards = document.querySelectorAll('[data-episode-id]');
         
-        const playBtn = card.querySelector('.play-icon svg');
-        const status = card.querySelector('.audio-status');
+        // Update Card UI
+        cards.forEach(card => {
+            const isActive = card.dataset.episodeId === episodeId;
+            const playBtn = card.querySelector('.play-icon svg');
+            const wave = card.querySelector('.audio-wave');
+            
+            if (isActive && isPlaying) {
+                playBtn.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
+                wave?.classList.remove('hidden');
+                card.classList.add('border-[var(--ink)]');
+            } else {
+                playBtn.innerHTML = '<path d="M8 5v14l11-7z"/>';
+                wave?.classList.add('hidden');
+                if (!isActive || !isPlaying) card.classList.remove('border-[var(--ink)]');
+            }
+        });
+
+        // Update Main Toggle UI
+        mainToggle.innerHTML = isPlaying 
+            ? '<svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>'
+            : '<svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
+    },
+
+    seek: function(seconds) {
+        window._audioPlayer.currentTime += seconds;
+    },
+
+    setPlaybackSpeed: function(speed) {
+        window._audioPlayer.playbackRate = speed;
+        document.getElementById('speedToggle').textContent = speed === 1 ? '1x Speed' : speed + 'x Speed';
         
-        if (isPlaying) {
-            playBtn.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>'; // Pause icon
-            status?.classList.remove('hidden');
-            card.classList.add('border-[var(--ink)]');
-        } else {
-            playBtn.innerHTML = '<path d="M8 5v14l11-7z"/>'; // Play icon
-            status?.classList.add('hidden');
-            card.classList.remove('border-[var(--ink)]');
-        }
+        // UI Active State
+        document.querySelectorAll('.speed-option').forEach(opt => {
+            opt.classList.toggle('active', parseFloat(opt.textContent) === speed);
+        });
+    },
+
+    formatTime: function(seconds) {
+        if (isNaN(seconds)) return '0:00';
+        const m = Math.floor(seconds / 60);
+        const s = Math.floor(seconds % 60);
+        return `${m}:${s < 10 ? '0' : ''}${s}`;
     },
 
     /**

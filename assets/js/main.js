@@ -162,10 +162,19 @@ if (typeof GALLERY_IMAGES !== 'undefined') {
     const lightboxImg = lightbox.querySelector('.lightbox-img');
     let lastFocusedElement = null;
 
-    window.openLightbox = (index) => {
+    window.openLightbox = (input) => {
         lastFocusedElement = document.activeElement;
-        currentLightboxIndex = index;
-        updateLightbox();
+        
+        if (typeof input === 'number') {
+            currentLightboxIndex = input;
+            updateLightbox();
+        } else if (typeof input === 'string') {
+            lightboxImg.src = input;
+            // Disable nav for single images
+            lightbox.querySelector('.lightbox-next').style.display = 'none';
+            lightbox.querySelector('.lightbox-prev').style.display = 'none';
+        }
+        
         lightbox.classList.add('open');
         document.body.style.overflow = 'hidden';
         lightbox.querySelector('.lightbox-close').focus();
@@ -174,6 +183,9 @@ if (typeof GALLERY_IMAGES !== 'undefined') {
     function closeLightbox() {
         lightbox.classList.remove('open');
         document.body.style.overflow = '';
+        // Reset nav display
+        lightbox.querySelector('.lightbox-next').style.display = '';
+        lightbox.querySelector('.lightbox-prev').style.display = '';
         if (lastFocusedElement) lastFocusedElement.focus();
         setTimeout(() => {
             lightboxImg.src = '';
@@ -183,16 +195,20 @@ if (typeof GALLERY_IMAGES !== 'undefined') {
     function updateLightbox() {
         const url = GALLERY_IMAGES[currentLightboxIndex];
         lightboxImg.src = url;
+        lightbox.querySelector('.lightbox-next').style.display = '';
+        lightbox.querySelector('.lightbox-prev').style.display = '';
     }
 
     function nextImage(e) {
         if (e) e.stopPropagation();
+        if (typeof currentLightboxIndex !== 'number') return;
         currentLightboxIndex = (currentLightboxIndex + 1) % GALLERY_IMAGES.length;
         updateLightbox();
     }
 
     function prevImage(e) {
         if (e) e.stopPropagation();
+        if (typeof currentLightboxIndex !== 'number') return;
         currentLightboxIndex = (currentLightboxIndex - 1 + GALLERY_IMAGES.length) % GALLERY_IMAGES.length;
         updateLightbox();
     }
