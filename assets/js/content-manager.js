@@ -256,24 +256,48 @@ const ContentManager = {
         if (!container) return;
 
         try {
-            // Use a CORS proxy if needed, or assume the user has configured CORS
-            // For general stability, we fetch and parse
-            const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`);
-            const data = await response.json();
+            // Anchor.fm has CORS enabled (Access-Control-Allow-Origin: *), 
+            // so we can fetch it directly and bypass 3rd party cache/limits
+            const response = await fetch(rssUrl);
+            if (!response.ok) throw new Error('RSS fetch failed');
+            
+            const xmlText = await response.text();
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(xmlText, "text/xml");
+            const items = Array.from(xmlDoc.querySelectorAll("item"));
 
-            if (data.status !== 'ok') throw new Error('RSS fetch failed');
+            const episodes = items.map(item => {
+                const getTag = (name) => item.querySelector(name)?.textContent || "";
+                const getITunesTag = (name) => {
+                    const nodes = item.getElementsByTagName(`itunes:${name}`);
+                    return nodes.length > 0 ? nodes[0].textContent : getTag(name);
+                };
+                const getITunesAttr = (name, attr) => {
+                    const nodes = item.getElementsByTagName(`itunes:${name}`);
+                    return nodes.length > 0 ? nodes[0].getAttribute(attr) : "";
+                };
 
-            const episodes = data.items.map(item => ({
-                id: item.guid,
-                title: item.title,
-                description: item.description.replace(/<[^>]*>?/gm, '').substring(0, 180) + '...',
-                date: new Date(item.pubDate).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }),
-                duration: item.itunes_duration || '5:00',
-                thumbnail: item.thumbnail || 'assets/img/podcast-logo.png',
-                audioUrl: item.enclosure ? item.enclosure.link : null, // The direct MP3 link
-                spotifyUrl: item.link, 
-                appleUrl: 'https://podcasts.apple.com/gh/podcast/the-reverb/id1884282478'
-            }));
+                const enclosure = item.querySelector("enclosure");
+                const description = getTag("description")
+                    .replace(/<!\[CDATA\[/g, '')
+                    .replace(/\]\]>/g, '')
+                    .replace(/<[^>]*>?/gm, '')
+                    .trim();
+
+                return {
+                    id: getTag("guid"),
+                    title: getTag("title")
+                        .replace(/<!\[CDATA\[/g, '')
+                        .replace(/\]\]>/g, ''),
+                    description: description.substring(0, 180) + (description.length > 180 ? '...' : ''),
+                    date: new Date(getTag("pubDate")).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }),
+                    duration: getITunesTag("duration") || '5:00',
+                    thumbnail: getITunesAttr("image", "href") || 'assets/img/podcast-logo.png',
+                    audioUrl: enclosure ? enclosure.getAttribute("url") : null,
+                    spotifyUrl: getTag("link"), 
+                    appleUrl: 'https://podcasts.apple.com/gh/podcast/the-reverb/id1884282478'
+                };
+            });
 
             this.renderPodcast(containerId, episodes);
             
@@ -292,7 +316,7 @@ const ContentManager = {
 
         } catch (err) {
             console.error('RSS Error:', err);
-            container.innerHTML = `<p class="text-center text-neutral-500">Failed to load live feed. <a href="https://podcasts.apple.com/gh/podcast/the-reverb/id1884282478" class="underline">Listen on Apple Podcasts</a></p>`;
+            container.innerHTML = `<p class="text-center text-neutral-500">Failed to load feed. <a href="https://podcasts.apple.com/gh/podcast/the-reverb/id1884282478" class="underline">Listen on Apple Podcasts</a></p>`;
         }
     },
 
