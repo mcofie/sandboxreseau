@@ -56,21 +56,5 @@ const headerSubtitle = "The Archive";
     <script is:inline define:vars={{ galleryStrings: gallery.map(img => img.url) }}>
         // Set up gallery images for lightbox
         window.GALLERY_IMAGES = galleryStrings;
-
-        // Simple Intersection Observer for entry animations
-        (function() {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach((entry, i) => {
-                    if (entry.isIntersecting) {
-                        setTimeout(() => {
-                            entry.target.classList.add('visible');
-                        }, (i % 3) * 100);
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.1 });
-
-            document.querySelectorAll('.animate-enter').forEach(el => observer.observe(el));
-        })();
     </script>
 </Layout>

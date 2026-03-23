@@ -303,21 +303,5 @@ const galleryPreview = gallery.slice(0, 4);
             window.addEventListener('scroll', handleScroll);
             handleScroll(); // Init
         })();
-
-        // Entrance Animation Logic
-        (function() {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach((entry, i) => {
-                    if (entry.isIntersecting) {
-                        setTimeout(() => {
-                            entry.target.classList.add('visible');
-                        }, (i % 4) * 100);
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.1 });
-
-            document.querySelectorAll('.animate-enter').forEach(el => observer.observe(el));
-        })();
     </script>
 </Layout>

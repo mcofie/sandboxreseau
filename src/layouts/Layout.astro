@@ -436,6 +436,31 @@ const {
                     if (e.key === 'ArrowLeft') prevImage();
                 });
             })();
+
+            // --- GLOBAL ENTRANCE ANIMATIONS ---
+            function initEntranceAnimations() {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach((entry, i) => {
+                        if (entry.isIntersecting) {
+                            setTimeout(() => {
+                                entry.target.classList.add('visible');
+                            }, (i % 4) * 100);
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.1 });
+
+                const elements = document.querySelectorAll('.animate-enter');
+                elements.forEach(el => observer.observe(el));
+
+                // Fail-safe: Force all to be visible after 2 seconds if still hidden
+                setTimeout(() => {
+                    elements.forEach(el => el.classList.add('visible'));
+                }, 2000);
+            }
+
+            document.addEventListener('astro:after-swap', initEntranceAnimations);
+            initEntranceAnimations();
         </script>
 	</body>
 </html>
