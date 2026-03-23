@@ -48,8 +48,8 @@ const { newsletter } = Astro.props;
             </div>
         </div>
 
-        <article class="prose-news max-w-none">
-            <div class="newsletter-content-body font-serif text-[20px] sm:text-[22px] leading-relaxed text-neutral-800 space-y-8" set:html={newsletter.content}>
+        <article class="prose-news max-w-[700px] mx-auto">
+            <div class="newsletter-content-body font-serif text-[19px] sm:text-[21px] leading-relaxed text-[var(--ink)] opacity-90 space-y-7" set:html={newsletter.content}>
             </div>
         </article>
 
@@ -80,19 +80,42 @@ const { newsletter } = Astro.props;
 <style is:global>
     .newsletter-content-body h3 {
         font-family: 'Libre Baskerville', serif;
-        font-size: 1.5rem;
-        margin-top: 2.5rem;
-        margin-bottom: 1rem;
+        font-size: 1.75rem;
+        margin-top: 3.5rem;
+        margin-bottom: 1.25rem;
         color: var(--ink);
+        letter-spacing: -0.02em;
+    }
+    .newsletter-content-body strong {
+        color: var(--ink);
+        font-weight: 700;
     }
     .newsletter-content-body blockquote {
-        margin: 2rem 0;
-        padding-left: 1.5rem;
-        border-left: 3px solid var(--accent);
+        margin: 2.5rem 0;
+        padding: 1.5rem 2rem;
+        border-left: 2px solid var(--accent);
+        background: color-mix(in oklab, var(--paper) 95%, var(--ink) 5%);
         font-style: italic;
         color: var(--muted);
     }
     .newsletter-content-body p + p {
-        margin-top: 1.5rem;
+        margin-top: 1.75rem;
+    }
+    .newsletter-content-body ul {
+        list-style: disc;
+        padding-left: 1.5rem;
+        margin: 1.5rem 0;
+    }
+    .newsletter-content-body li + li {
+        margin-top: 0.75rem;
+    }
+    .newsletter-content-body a {
+        color: var(--ink);
+        text-decoration: underline;
+        text-underline-offset: 4px;
+        transition: color 0.2s ease;
+    }
+    .newsletter-content-body a:hover {
+        color: var(--accent);
     }
 </style>

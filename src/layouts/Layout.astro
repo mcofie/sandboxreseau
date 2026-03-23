@@ -96,19 +96,23 @@ const {
                     day: 'numeric' 
                 });
             }
+        </script>
 
-            // Theme & Accent Switcher Logic
-            (function () {
+        <!-- Main Runtime Scripts -->
+        <script>
+            function initThemeControls() {
                 const THEME_KEY = 'srz_theme_v1';
                 const ACCENT_KEY = 'srz_accent_v1';
                 const THEMES = ['white', 'black', 'yellow'];
                 const ACCENTS = ['blue', 'emerald', 'violet', 'amber', 'red', 'fuchsia'];
                 const root = document.documentElement;
 
-                // Swatches
+                // 1. Swatches
                 document.querySelectorAll('[data-theme-swatch]').forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        const v = btn.getAttribute('data-theme-swatch');
+                    const newBtn = btn.cloneNode(true) as HTMLElement;
+                    btn.parentNode?.replaceChild(newBtn, btn); // Clean listeners
+                    newBtn.addEventListener('click', () => {
+                        const v = newBtn.getAttribute('data-theme-swatch');
                         if (v) {
                             root.setAttribute('data-theme', v);
                             localStorage.setItem(THEME_KEY, v);
@@ -118,8 +122,10 @@ const {
                 });
                 
                 document.querySelectorAll('[data-accent-swatch]').forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        const v = btn.getAttribute('data-accent-swatch');
+                    const newBtn = btn.cloneNode(true) as HTMLElement;
+                    btn.parentNode?.replaceChild(newBtn, btn); // Clean listeners
+                    newBtn.addEventListener('click', () => {
+                        const v = newBtn.getAttribute('data-accent-swatch');
                         if (v) {
                             root.setAttribute('data-accent', v);
                             localStorage.setItem(ACCENT_KEY, v);
@@ -127,9 +133,15 @@ const {
                     });
                 });
 
-                // Cycle buttons
+                // 2. Cycle buttons
                 const themeBtn = document.getElementById('themeToggle');
                 const accentBtn = document.getElementById('accentToggle');
+
+                function updateThemeToggleTitle() {
+                    if (!themeBtn) return;
+                    const cur = root.getAttribute('data-theme');
+                    themeBtn.title = `Switch theme (current: ${cur})`;
+                }
 
                 function cycleTheme() {
                     const cur = root.getAttribute('data-theme') || THEMES[0];
@@ -146,23 +158,21 @@ const {
                     localStorage.setItem(ACCENT_KEY, next);
                 }
 
-                function updateThemeToggleTitle() {
-                    if (!themeBtn) return;
-                    const cur = root.getAttribute('data-theme');
-                    themeBtn.title = `Switch theme (current: ${cur})`;
-                }
-
                 if (themeBtn) {
-                    themeBtn.addEventListener('click', cycleTheme);
+                    const newThemeBtn = themeBtn.cloneNode(true) as HTMLElement;
+                    themeBtn.parentNode?.replaceChild(newThemeBtn, themeBtn);
+                    newThemeBtn.addEventListener('click', cycleTheme);
                     updateThemeToggleTitle();
                 }
 
                 if (accentBtn) {
-                    accentBtn.addEventListener('click', cycleAccent);
+                    const newAccentBtn = accentBtn.cloneNode(true) as HTMLElement;
+                    accentBtn.parentNode?.replaceChild(newAccentBtn, accentBtn);
+                    newAccentBtn.addEventListener('click', cycleAccent);
                 }
 
                 // Keyboard shortcuts
-                window.addEventListener('keydown', (e) => {
+                const handleKeyDown = (e: KeyboardEvent) => {
                     const isMac = navigator.platform.toUpperCase().includes('MAC');
                     if ((isMac ? e.metaKey : e.ctrlKey) && e.key.toLowerCase() === 'j') {
                         e.preventDefault();
@@ -172,8 +182,14 @@ const {
                         e.preventDefault();
                         cycleAccent();
                     }
-                });
-            })();
+                };
+                window.removeEventListener('keydown', handleKeyDown);
+                window.addEventListener('keydown', handleKeyDown);
+            }
+
+            // Init on load and after swaps
+            initThemeControls();
+            document.addEventListener('astro:after-swap', initThemeControls);
 
             // Lightbox Logic (Optimized Global version)
             (function () {

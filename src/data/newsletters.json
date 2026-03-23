@@ -1,38 +1,13 @@
 [
   {
-    "id": "n3",
-    "issue": 3,
-    "title": "The Art of the Pivot",
-    "excerpt": "When to hold on, and when to let go. Stories from founders who changed course.",
-    "date": "March 15, 2026",
-    "author": "Maxwell Cofie",
-    "readTime": "5 min",
-    "url": "newsletter?id=n3",
-    "tags": ["Strategy", "Foundership"],
-    "content": "<p>The pivot is often romanticized in startup lore, but the reality is much grittier. It’s the realization that the path you’ve been carving through the jungle has led to a cliff edge, and you need to backtrack and find a new way forward.</p>\n<p>In this issue, we explore three specific pivots within our ecosystem. We look at why they happened, how the founders handled the team transition, and what the \"signal\" was that finally forced the change.</p>\n<h3>The Signal vs. The Noise</h3>\n<p>How do you know if you're just in a \"trough of sorrow\" or if the product is fundamentally flawed? One builder in our community suggests looking at natural retention: if users aren't coming back without a push, you aren't building a habit.</p>"
-  },
-  {
-    "id": "n2",
-    "issue": 2,
-    "title": "Building High-Signal Communities",
-    "excerpt": "How we curate Sandbox Réseau to ensure maximum value for every builder.",
-    "date": "Feb 28, 2026",
-    "author": "Maxwell Cofie",
-    "readTime": "4 min",
-    "url": "newsletter?id=n2",
-    "tags": ["Community", "Culture"],
-    "content": "<p>Community is a buzzword that often means \"a group of people we can market to.\" At Sandbox Réseau, we’ve taken a different approach.</p>\n<p>We curate for signal. This means saying no to noise, no to hype-driven pitches, and yes to the raw, unfinished, and deeply technical conversations that actually move the needle for builders.</p>\n<h3>Curating the Room</h3>\n<p>The secret is in the RSVP. We don't just look for titles; we look for projects. What are you building? What is the hardest thing you solved this week? These are the questions that define our member base.</p>"
-  },
-  {
-    "id": "n1",
+    "id": "sandbox-build-log",
     "issue": 1,
-    "title": "Genesis: The Sandbox Vision",
-    "excerpt": "Why we started Sandbox Réseau and what we hope to build for the Accra ecosystem.",
-    "date": "Jan 10, 2026",
-    "author": "Maxwell Cofie",
-    "readTime": "6 min",
-    "url": "newsletter?id=n1",
-    "tags": ["Vision", "Ecosystem"],
-    "content": "<p>Sandbox Réseau started with a simple observation: there are incredible builders in Accra, but they are often building in silos. The \"tech scene\" was full of networking events, but lacking in *building* events.</p>\n<p>We wanted to create a space that felt like a workshop rather than a cocktail party. A place where you could walk in, see a demo of a local LLM implementation, argue about system architecture, and walk out with a collaborator.</p>\n<h3>The 10-Year Horizon</h3>\n<p>Our goal isn't just to host meetups. It's to be the infrastructure for the next generation of African builders. We're starting with the meetups, but the vision is much larger.</p>"
+    "title": "The Sandbox Build-Log: What are we making?",
+    "date": "31 January 2026",
+    "author": "The Sandbox Réseau Team",
+    "readTime": "4 min",
+    "excerpt": "Welcome to our space for builders. No panels. No pitches. Just people in a room thinking out loud.",
+    "tags": ["Community", "Build-Log", "Accra"],
+    "content": "<p>Hi there,</p><p>This is the first of many updates you’ll receive from us this year. If you’re reading this, you’re officially part of the Sandbox Reseau community, and we’re glad to have you here.</p><p><em>Thanks for reading Sandbox Réseau! Subscribe for free to receive new posts and support my work.</em></p><p>At its core, Sandbox Reseau is a space for builders, founders, and change-makers to have honest conversations about what they’re building, what they’re learning, and what isn’t quite working yet.</p><p>No panels. No pitches. Just people in a room thinking out loud.</p><h3>What to expect in your inbox</h3><p>This newsletter is our “quiet corner of the internet.” We’ll keep it simple and consistent:</p><ul><li><strong>Ecosystem Updates: What’s happening in our world.</strong></li><li><strong>Opportunities: Funding, programs, and collaborations worth your time.</strong></li><li><strong>Community Spotlights: A look at a fellow builder and the problem they are solving.</strong></li><li><strong>Sound Bites: Insights from resource people on issues that matter.</strong></li></ul><h3>Upcoming Event: February Meetup</h3><p>Our first meetup of the year is happening on 27th February 2026.</p><blockquote><strong>Important: Timing Change</strong> To make the session more accessible, the event will now run from 15:00 – 17:00 GMT (instead of the previously communicated 17:00 – 19:00 GMT). We apologise for any inconvenience this shift may cause!</blockquote><p>Spots are limited and filling up quickly. If you haven’t registered yet, consider this your cue.</p><p><a href=\"https://luma.com/sandbox-reseau\" target=\"_blank\">Register here</a></p><h3>What are you building?</h3><p>We want to create a shared “Build-Log” so we can all be more aware of each other’s journeys. Whether it’s a global startup, a community project, or a weekend experiment, we want to hear about it.</p><p>This helps us know how to support, collaborate, and highlight your work in future spotlights.</p><p>Tell us about your project here:</p><p><a href=\"#\" style=\"display:inline-block; padding:12px 24px; background:var(--ink); color:var(--paper); text-decoration:none; font-weight:bold; font-size:14px; text-transform:uppercase; letter-spacing:0.1em;\">Fill out the Sandbox Build-Log</a></p><p>We’re excited about what we’ll build together this year. Thanks for being part of the journey.</p><p>Warm regards,</p><p><strong>The Sandbox Reseau Team</strong></p><p><em>Thanks for reading Sandbox Réseau!</em></p>"
   }
 ]

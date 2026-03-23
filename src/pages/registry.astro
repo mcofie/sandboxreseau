@@ -58,10 +58,10 @@ const industries = ['All', ...new Set(registry.map(item => item.industry))];
         <div class="flex flex-col gap-4" id="companyGrid">
             {registry.map(company => (
                 <div class="company-card group flex flex-col sm:flex-row items-start sm:items-center gap-6 rounded border border-[var(--rule)] bg-[var(--paper)] p-5" data-industry={company.industry} data-tags={company.tags.join(',')}>
-                    <div class={`w-16 h-16 rounded border border-[var(--rule)] bg-white p-2 flex items-center justify-center overflow-hidden shrink-0 ${company.logoAltTheme === 'black' ? 'bg-black text-white' : ''}`}>
+                    <div class="company-logo-container w-16 h-16 rounded border border-[var(--rule)] bg-[var(--ink)] text-[var(--paper)] p-2 flex items-center justify-center overflow-hidden shrink-0 transition-colors duration-300">
                         {(company.logo.startsWith('http') || company.logo.startsWith('/') || company.logo.startsWith('assets/') || company.logo.includes('.')) 
-                            ? <img src={company.logo.startsWith('assets/') ? `/${company.logo}` : company.logo} alt={`${company.name} Logo`} class="w-full h-full object-contain" />
-                            : <span class="font-serif text-2xl font-bold">{company.logo}</span>
+                            ? <img src={company.logo.startsWith('assets/') ? `/${company.logo}` : company.logo} alt={`${company.name} Logo`} class="w-full h-full object-contain brightness-[1.1] dark:brightness-100" />
+                            : <span class="font-serif text-2xl font-bold select-none">{company.logo}</span>
                         }
                     </div>
                     <div class="flex-1 min-w-0">
