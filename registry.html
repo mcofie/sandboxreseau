@@ -17,7 +17,7 @@
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://sandboxreseau.com/companies" />
+    <meta property="og:url" content="https://sandboxreseau.com/registry" />
     <meta property="og:title" content="Ecosystem Registry | Sandbox Réseau" />
     <meta property="og:description" content="A comprehensive directory of products, startups, and organizations building within the Sandbox Réseau ecosystem." />
 
@@ -246,7 +246,7 @@
             await DB.init();
 
             // Init dynamically
-            ContentManager.renderCompanies('companyGrid', DB.companies);
+            ContentManager.renderRegistry('companyGrid', DB.registry);
 
             // Simple search filtering
             const searchInput = document.getElementById('companySearch');
@@ -255,12 +255,12 @@
             if (searchInput) {
                 searchInput.addEventListener('input', (e) => {
                     const term = e.target.value.toLowerCase();
-                    const filtered = DB.companies.filter(c => 
+                    const filtered = DB.registry.filter(c => 
                         c.name.toLowerCase().includes(term) || 
                         c.description.toLowerCase().includes(term) ||
                         c.tags.some(t => t.toLowerCase().includes(term))
                     );
-                    ContentManager.renderCompanies('companyGrid', filtered);
+                    ContentManager.renderRegistry('companyGrid', filtered);
                 });
             }
 
@@ -273,13 +273,13 @@
                     
                     const filter = chip.textContent;
                     if (filter === 'All') {
-                        ContentManager.renderCompanies('companyGrid', DB.companies);
+                        ContentManager.renderRegistry('companyGrid', DB.registry);
                     } else {
-                        const filtered = DB.companies.filter(c => 
+                        const filtered = DB.registry.filter(c => 
                             c.industry === filter || 
                             c.tags.includes(filter)
                         );
-                        ContentManager.renderCompanies('companyGrid', filtered);
+                        ContentManager.renderRegistry('companyGrid', filtered);
                     }
                 });
             });

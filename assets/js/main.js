@@ -132,99 +132,120 @@ if (yearEl) yearEl.textContent = d.getFullYear();
     handleScroll(); // Init
 })();
 
-// Lightbox Logic (Only if constants are defined)
-if (typeof GALLERY_IMAGES !== 'undefined') {
+// Lightbox Logic
+(function () {
     let currentLightboxIndex = -1;
-
-    // Create Lightbox DOM
-    const lightbox = document.createElement('div');
-    lightbox.className = 'lightbox-overlay';
-    lightbox.setAttribute('role', 'dialog');
-    lightbox.setAttribute('aria-modal', 'true');
-    lightbox.setAttribute('aria-label', 'Image Lightbox');
-    
-    lightbox.innerHTML = `
-    <button class="lightbox-close" aria-label="Close Lightbox">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-    </button>
-    <button class="lightbox-nav lightbox-prev" aria-label="Previous Image">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
-    </button>
-    <div class="lightbox-content">
-        <img class="lightbox-img" src="" alt="Expanded View" />
-    </div>
-    <button class="lightbox-nav lightbox-next" aria-label="Next Image">
-         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
-    </button>
-`;
-    document.body.appendChild(lightbox);
-
-    const lightboxImg = lightbox.querySelector('.lightbox-img');
+    let lightbox;
+    let lightboxImg;
     let lastFocusedElement = null;
 
-    window.openLightbox = (input) => {
-        lastFocusedElement = document.activeElement;
+    function initLightbox() {
+        if (document.querySelector('.lightbox-overlay')) return;
         
+        lightbox = document.createElement('div');
+        lightbox.className = 'lightbox-overlay';
+        lightbox.setAttribute('role', 'dialog');
+        lightbox.setAttribute('aria-modal', 'true');
+        lightbox.setAttribute('aria-label', 'Image Lightbox');
+
+        lightbox.innerHTML = `
+        <button class="lightbox-close" aria-label="Close Lightbox">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+        <button class="lightbox-nav lightbox-prev" aria-label="Previous Image">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
+        </button>
+        <div class="lightbox-content">
+            <img class="lightbox-img" src="" alt="Expanded View" referrerpolicy="no-referrer" />
+        </div>
+        <button class="lightbox-nav lightbox-next" aria-label="Next Image">
+             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
+        </button>
+    `;
+        document.body.appendChild(lightbox);
+        lightboxImg = lightbox.querySelector('.lightbox-img');
+
+        // Listeners
+        lightbox.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
+        lightbox.querySelector('.lightbox-next').addEventListener('click', nextImage);
+        lightbox.querySelector('.lightbox-prev').addEventListener('click', prevImage);
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) closeLightbox();
+        });
+    }
+
+    window.openLightbox = (input) => {
+        if (!lightbox) initLightbox();
+        lastFocusedElement = document.activeElement;
+
         if (typeof input === 'number') {
             currentLightboxIndex = input;
             updateLightbox();
         } else if (typeof input === 'string') {
+            currentLightboxIndex = -1;
             lightboxImg.src = input;
-            // Disable nav for single images
             lightbox.querySelector('.lightbox-next').style.display = 'none';
             lightbox.querySelector('.lightbox-prev').style.display = 'none';
         }
-        
+
         lightbox.classList.add('open');
         document.body.style.overflow = 'hidden';
         lightbox.querySelector('.lightbox-close').focus();
     };
 
     function closeLightbox() {
+        if (!lightbox) return;
         lightbox.classList.remove('open');
         document.body.style.overflow = '';
-        // Reset nav display
         lightbox.querySelector('.lightbox-next').style.display = '';
         lightbox.querySelector('.lightbox-prev').style.display = '';
         if (lastFocusedElement) lastFocusedElement.focus();
         setTimeout(() => {
-            lightboxImg.src = '';
+            if (lightboxImg) lightboxImg.src = '';
         }, 300);
     }
 
     function updateLightbox() {
-        const url = GALLERY_IMAGES[currentLightboxIndex];
-        lightboxImg.src = url;
-        lightbox.querySelector('.lightbox-next').style.display = '';
-        lightbox.querySelector('.lightbox-prev').style.display = '';
+        // Safe check for GALLERY_IMAGES
+        const images = window.GALLERY_IMAGES || [];
+        if (currentLightboxIndex >= 0 && currentLightboxIndex < images.length) {
+            const url = images[currentLightboxIndex];
+            lightboxImg.src = url;
+            lightbox.querySelector('.lightbox-next').style.display = images.length > 1 ? '' : 'none';
+            lightbox.querySelector('.lightbox-prev').style.display = images.length > 1 ? '' : 'none';
+        } else {
+            // Case for single image or missing gallery
+            lightbox.querySelector('.lightbox-next').style.display = 'none';
+            lightbox.querySelector('.lightbox-prev').style.display = 'none';
+        }
     }
 
     function nextImage(e) {
         if (e) e.stopPropagation();
-        if (typeof currentLightboxIndex !== 'number') return;
-        currentLightboxIndex = (currentLightboxIndex + 1) % GALLERY_IMAGES.length;
+        const images = window.GALLERY_IMAGES || [];
+        if (images.length === 0 || currentLightboxIndex < 0) return;
+        currentLightboxIndex = (currentLightboxIndex + 1) % images.length;
         updateLightbox();
     }
 
     function prevImage(e) {
         if (e) e.stopPropagation();
-        if (typeof currentLightboxIndex !== 'number') return;
-        currentLightboxIndex = (currentLightboxIndex - 1 + GALLERY_IMAGES.length) % GALLERY_IMAGES.length;
+        const images = window.GALLERY_IMAGES || [];
+        if (images.length === 0 || currentLightboxIndex < 0) return;
+        currentLightboxIndex = (currentLightboxIndex - 1 + images.length) % images.length;
         updateLightbox();
     }
 
-    // Listeners
-    lightbox.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
-    lightbox.querySelector('.lightbox-next').addEventListener('click', nextImage);
-    lightbox.querySelector('.lightbox-prev').addEventListener('click', prevImage);
-    lightbox.addEventListener('click', (e) => {
-        if (e.target === lightbox) closeLightbox();
-    });
-
     document.addEventListener('keydown', (e) => {
-        if (!lightbox.classList.contains('open')) return;
+        if (!lightbox || !lightbox.classList.contains('open')) return;
         if (e.key === 'Escape') closeLightbox();
         if (e.key === 'ArrowRight') nextImage();
         if (e.key === 'ArrowLeft') prevImage();
     });
-}
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initLightbox);
+    } else {
+        initLightbox();
+    }
+})();

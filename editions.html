@@ -145,7 +145,7 @@
                 <span class="text-[var(--ink)] font-semibold">Editions</span>
                 <a href="newsletters" class="hover:underline">Newsletters</a>
                 <a href="community" class="hover:underline">Community</a>
-                <a href="companies" class="hover:underline">Registry</a>
+                <a href="registry" class="hover:underline">Registry</a>
                 <a href="handbook" class="hover:underline">Handbook</a>
             </div>
             
@@ -179,8 +179,8 @@
 
             document.querySelectorAll('.animate-enter').forEach(el => observer.observe(el));
 
-            // Ensure year is dynamic
-            document.getElementById('year').textContent = new Date().getFullYear();
+            // Lightbox integration
+             window.GALLERY_IMAGES = DB.editions.filter(ed => ed.image).map(ed => ed.image);
         }
 
         initPage();

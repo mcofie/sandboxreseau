@@ -5,15 +5,15 @@
 
 const ContentManager = {
     /**
-     * Renders company cards into a container
+     * Renders registry cards into a container
      * @param {string} containerId 
-     * @param {Array} companies 
+     * @param {Array} registry 
      */
-    renderCompanies: function(containerId, companies) {
+    renderRegistry: function(containerId, registry) {
         const container = document.getElementById(containerId);
         if (!container) return;
 
-        container.innerHTML = companies.map(company => `
+        container.innerHTML = registry.map(company => `
             <div class="company-card group flex flex-col sm:flex-row items-start sm:items-center gap-6 rounded border border-[var(--rule)] bg-[var(--paper)] p-5">
                 <div class="w-16 h-16 rounded border border-[var(--rule)] bg-white p-2 flex items-center justify-center overflow-hidden shrink-0 ${company.logoAltTheme === 'black' ? 'bg-black text-white' : ''}">
                     ${(company.logo.startsWith('http') || company.logo.startsWith('/') || company.logo.startsWith('assets/') || company.logo.includes('.')) 
@@ -54,7 +54,7 @@ const ContentManager = {
         container.innerHTML = editions.map((edition, i) => `
             <div class="animate-enter">
                 <article class="h-full flex flex-col group relative overflow-hidden rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_92%,var(--ink)_8%)] p-2 hatch ${edition.image ? 'cursor-zoom-in' : ''}" 
-                    ${edition.image ? `onclick="openLightbox(${i})"` : ''}>
+                    ${edition.image ? `onclick="openLightbox('${edition.image}')"` : ''}>
                     
                     ${edition.image ? `
                         <div class="relative overflow-hidden aspect-[4/3] border border-[var(--rule)] shrink-0">

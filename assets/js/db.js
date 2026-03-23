@@ -4,7 +4,7 @@
  **/
 
 const DB = {
-    companies: [],
+    registry: [],
     editions: [],
     gallery: [],
     newsletters: [],
@@ -18,14 +18,14 @@ const DB = {
      */
     init: async function() {
         try {
-            const [companies, editions, gallery, newsletters] = await Promise.all([
-                fetch('content/companies.json').then(res => res.json()),
+            const [registry, editions, gallery, newsletters] = await Promise.all([
+                fetch('content/registry.json').then(res => res.json()),
                 fetch('content/editions.json').then(res => res.json()),
                 fetch('content/gallery.json').then(res => res.json()),
                 fetch('content/newsletters.json').then(res => res.json())
             ]);
 
-            this.companies = companies;
+            this.registry = registry;
             this.editions = editions;
             this.gallery = gallery;
             this.newsletters = newsletters;
