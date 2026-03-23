@@ -34,7 +34,7 @@ const headerSubtitle = "Chronicle of Progress";
                         {edition.image && (
                             <div class="relative overflow-hidden aspect-[4/3] border border-[var(--rule)] shrink-0">
                                 <img 
-                                    src={edition.image} 
+                                    src={edition.image.startsWith('http') ? edition.image : `/${edition.image}`} 
                                     alt={edition.title} 
                                     loading="lazy" 
                                     decoding="async" 

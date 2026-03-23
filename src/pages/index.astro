@@ -158,9 +158,9 @@ const galleryPreview = gallery.slice(0, 4);
                         {galleryPreview.map((img, i) => (
                             <div class="group relative aspect-[4/3] w-full overflow-hidden rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_90%,var(--ink)_10%)] animate-enter">
                                 <img 
-                                    src={`/assets/img/${img.url.split('/').pop() || 'event-' + (i+1) + '.jpg'}`} 
+                                    src={`/assets/img/event-${i + 1}.jpg`} 
                                     alt={img.title || `Event photo ${i + 1}`} 
-                                    onclick={`openLightbox(${i})`}
+                                    onclick={`openLightbox('/assets/img/event-${i + 1}.jpg')`}
                                     loading="lazy" 
                                     decoding="async"
                                     class="h-full w-full object-cover transition duration-500 group-hover:scale-105 cursor-zoom-in" 
@@ -301,6 +301,22 @@ const galleryPreview = gallery.slice(0, 4);
 
             window.addEventListener('scroll', handleScroll);
             handleScroll(); // Init
+        })();
+
+        // Entrance Animation Logic
+        (function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, i) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add('visible');
+                        }, (i % 4) * 100);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.animate-enter').forEach(el => observer.observe(el));
         })();
     </script>
 </Layout>

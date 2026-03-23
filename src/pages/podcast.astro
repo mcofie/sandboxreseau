@@ -7,7 +7,6 @@ const parser = new Parser({
     customFields: {
         item: [
             ['itunes:duration', 'duration'],
-            ['itunes:image', 'episodeImage'],
             ['itunes:summary', 'summary']
         ]
     }
@@ -41,7 +40,7 @@ try {
             description: description.substring(0, 180) + (description.length > 180 ? '...' : ''),
             date: new Date(item.pubDate || '').toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }),
             duration: item.itunes?.duration || '5:00',
-            thumbnail: item.itunes?.image?.href || '/assets/img/podcast-logo.png',
+            thumbnail: item.itunes?.image?.href || item.itunes?.image || '/assets/img/podcast-logo.png',
             audioUrl: item.enclosure?.url,
             spotifyUrl: item.link,
             appleUrl: 'https://podcasts.apple.com/gh/podcast/the-reverb/id1884282478'
@@ -299,11 +298,27 @@ const headerSubtitle = "Digital Audio-Log";
 
             // Space key
             document.addEventListener('keydown', (e) => {
-                if (e.code === 'Space' && activeEpisodeId && e.target.tagName !== 'INPUT') {
+                if (e.code === 'Space' && activeEpisodeId && (e.target as HTMLElement).tagName !== 'INPUT') {
                     e.preventDefault();
                     mainToggle?.click();
                 }
             });
+        })();
+
+        // Entrance Animation Logic
+        (function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, i) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add('visible');
+                        }, (i % 4) * 100);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.animate-enter').forEach(el => observer.observe(el));
         })();
     </script>
 </Layout>
