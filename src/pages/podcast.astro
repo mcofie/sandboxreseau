@@ -177,134 +177,28 @@ const headerSubtitle = "Digital Audio-Log";
     <GlobalPlayer />
 
     <script>
-        // Global Audio Handler
-        (function() {
-            let activeEpisodeId = null;
-            const audioPlayer = new Audio();
-            const bar = document.getElementById('global-player');
-            const progress = document.getElementById('playerProgressBar');
-            const progressContainer = document.getElementById('playerProgressContainer');
-            const mainToggle = document.getElementById('playerMainToggle');
-            const playIconMain = document.getElementById('playIconMain');
-            const pauseIconMain = document.getElementById('pauseIconMain');
-            const currentTimeEl = document.getElementById('playerCurrentTime');
-            const durationEl = document.getElementById('playerDuration');
-            const speedToggle = document.getElementById('speedToggle');
-            const speedDropdown = document.getElementById('speedDropdown');
-            const playerThumbnail = document.getElementById('playerThumbnail');
-            const playerTitle = document.getElementById('playerTitle');
-            const playerMeta = document.getElementById('playerMeta');
-
-            function formatTime(seconds) {
-                const h = Math.floor(seconds / 3600);
-                const m = Math.floor((seconds % 3600) / 60);
-                const s = Math.floor(seconds % 60);
-                if (h > 0) return `${h}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-                return `${m}:${s.toString().padStart(2, '0')}`;
-            }
-
-            function updateUI() {
-                if (!bar) return;
-                
-                if (audioPlayer.paused) {
-                    playIconMain?.classList.remove('hidden');
-                    pauseIconMain?.classList.add('hidden');
-                } else {
-                    playIconMain?.classList.add('hidden');
-                    pauseIconMain?.classList.remove('hidden');
-                }
-
-                // Update cards
-                document.querySelectorAll('.episode-card').forEach(card => {
-                    const id = card.getAttribute('data-episode-id');
-                    if (id === activeEpisodeId && !audioPlayer.paused) {
-                        card.classList.add('is-playing');
-                    } else {
-                        card.classList.remove('is-playing');
-                    }
-                });
-            }
-
-            function togglePlay(id, url) {
-                if (activeEpisodeId === id) {
-                    if (audioPlayer.paused) audioPlayer.play();
-                    else audioPlayer.pause();
-                } else {
-                    activeEpisodeId = id;
-                    audioPlayer.src = url;
-                    audioPlayer.play();
-                    
-                    // Update Player bar content
-                    const card = document.querySelector(`[data-episode-id="${id}"]`);
-                    if (card && playerTitle && playerMeta && playerThumbnail) {
-                        playerTitle.textContent = card.dataset.title || '';
-                        playerMeta.textContent = card.dataset.meta || '';
-                        playerThumbnail.src = card.dataset.thumb || '';
-                        bar?.classList.add('active');
-                    }
-                }
-                updateUI();
-            }
-
-            // Init listeners
+        document.addEventListener('astro:after-swap', initPodcastActions);
+        function initPodcastActions() {
             document.querySelectorAll('.play-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.stopPropagation();
-                    const card = btn.closest('.episode-card');
-                    const id = card.dataset.episodeId;
-                    const url = card.dataset.audioUrl;
-                    if (id && url) togglePlay(id, url);
-                });
-            });
-
-            audioPlayer.ontimeupdate = () => {
-                const pct = (audioPlayer.currentTime / audioPlayer.duration) * 100;
-                if (progress) progress.style.width = pct + '%';
-                if (currentTimeEl) currentTimeEl.textContent = formatTime(audioPlayer.currentTime);
-            };
-
-            audioPlayer.onloadedmetadata = () => {
-                if (durationEl) durationEl.textContent = formatTime(audioPlayer.duration);
-            };
-
-            audioPlayer.onplay = updateUI;
-            audioPlayer.onpause = updateUI;
-
-            mainToggle?.addEventListener('click', () => {
-                if (audioPlayer.paused) audioPlayer.play();
-                else audioPlayer.pause();
-            });
-
-            progressContainer?.addEventListener('click', (e) => {
-                const rect = progressContainer.getBoundingClientRect();
-                const pos = (e.clientX - rect.left) / rect.width;
-                audioPlayer.currentTime = pos * audioPlayer.duration;
-            });
-
-            // Speed
-            speedToggle?.addEventListener('click', () => speedDropdown?.classList.toggle('active'));
-            document.querySelectorAll('.speed-option').forEach(opt => {
-                opt.addEventListener('click', () => {
-                    const speed = opt.dataset.speed;
-                    if (speed) {
-                        audioPlayer.playbackRate = parseFloat(speed);
-                        if (speedToggle) speedToggle.textContent = speed + 'x';
-                        document.querySelectorAll('.speed-option').forEach(o => o.classList.remove('active'));
-                        opt.classList.add('active');
-                        speedDropdown?.classList.remove('active');
+                    const card = (btn.closest('.episode-card') as HTMLElement);
+                    if (card) {
+                        const id = card.dataset.episodeId || '';
+                        const url = card.dataset.audioUrl || '';
+                        const title = card.dataset.title || '';
+                        const meta = card.dataset.meta || '';
+                        const thumb = card.dataset.thumb || '';
+                        if ((window as any).playEpisode) {
+                            (window as any).playEpisode(id, url, title, meta, thumb);
+                        }
                     }
                 });
             });
-
-            // Space key
-            document.addEventListener('keydown', (e) => {
-                if (e.code === 'Space' && activeEpisodeId && (e.target as HTMLElement).tagName !== 'INPUT') {
-                    e.preventDefault();
-                    mainToggle?.click();
-                }
-            });
-        })();
-
+        }
+        initPodcastActions();
+    </script>
+    <script>
         // Entrance Animation Logic
         (function() {
             const observer = new IntersectionObserver((entries) => {

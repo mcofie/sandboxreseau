@@ -3,6 +3,7 @@ import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import GrainOverlay from '../components/GrainOverlay.astro';
+import GlobalPlayer from '../components/GlobalPlayer.astro';
 import { ClientRouter } from 'astro:transitions';
 
 interface Props {
@@ -82,6 +83,7 @@ const {
         <Header title={headerTitle} subtitle={headerSubtitle} />
 		<slot />
         <Footer />
+        <GlobalPlayer />
 
         <!-- Scripts -->
         <script>
@@ -187,6 +189,133 @@ const {
                 window.addEventListener('keydown', handleKeyDown);
             }
 
+            // --- PERSISTENT AUDIO SYSTEM ---
+            (function() {
+                // Initialize Global Audio once
+                if (!(window as any).SBR_AUDIO) {
+                    (window as any).SBR_AUDIO = new Audio();
+                }
+                
+                const audio = (window as any).SBR_AUDIO;
+                let activeId = (window as any).SBR_ACTIVE_EP_ID || null;
+
+                function formatTime(s: number) {
+                    const m = Math.floor(s / 60);
+                    const sec = Math.floor(s % 60);
+                    return `${m}:${sec.toString().padStart(2, '0')}`;
+                }
+
+                function updatePlayerUI() {
+                    const bar = document.getElementById('global-player');
+                    const playIcon = document.getElementById('playIconMain');
+                    const pauseIcon = document.getElementById('pauseIconMain');
+                    const titleEl = document.getElementById('playerTitle');
+                    const metaEl = document.getElementById('playerMeta');
+                    const thumbEl = document.getElementById('playerThumbnail') as HTMLImageElement;
+                    const progress = document.getElementById('playerProgressBar');
+                    const currentEl = document.getElementById('playerCurrentTime');
+                    const durEl = document.getElementById('playerDuration');
+
+                    if (!bar) return;
+
+                    if (audio.paused) {
+                        playIcon?.classList.remove('hidden');
+                        pauseIcon?.classList.add('hidden');
+                    } else {
+                        playIcon?.classList.add('hidden');
+                        pauseIcon?.classList.remove('hidden');
+                        bar.classList.add('active'); // Keep bar visible if playing
+                    }
+
+                    // Update local cards if they exist
+                    document.querySelectorAll('.episode-card').forEach(card => {
+                        if (card.getAttribute('data-episode-id') === activeId && !audio.paused) {
+                            card.classList.add('is-playing');
+                        } else {
+                            card.classList.remove('is-playing');
+                        }
+                    });
+
+                    // Update labels
+                    if (currentEl) currentEl.textContent = formatTime(audio.currentTime);
+                    if (durEl && audio.duration) durEl.textContent = formatTime(audio.duration);
+                    if (progress && audio.duration) {
+                        progress.style.width = (audio.currentTime / audio.duration) * 100 + '%';
+                    }
+                }
+
+                // Global play function accessible from anywhere
+                (window as any).playEpisode = (id: string, url: string, title: string, meta: string, thumb: string) => {
+                    const bar = document.getElementById('global-player');
+                    if (activeId === id) {
+                        if (audio.paused) audio.play();
+                        else audio.pause();
+                    } else {
+                        activeId = id;
+                        (window as any).SBR_ACTIVE_EP_ID = id;
+                        audio.src = url;
+                        audio.play();
+
+                        // Sync UI content
+                        const titleEl = document.getElementById('playerTitle');
+                        const metaEl = document.getElementById('playerMeta');
+                        const thumbEl = document.getElementById('playerThumbnail') as HTMLImageElement;
+                        if (titleEl) titleEl.textContent = title;
+                        if (metaEl) metaEl.textContent = meta;
+                        if (thumbEl) thumbEl.src = thumb;
+                    }
+                    bar?.classList.add('active');
+                    updatePlayerUI();
+                };
+
+                // Audio Events
+                audio.ontimeupdate = updatePlayerUI;
+                audio.onplay = updatePlayerUI;
+                audio.onpause = updatePlayerUI;
+                audio.onloadedmetadata = updatePlayerUI;
+
+                // Sync UI on every page swap
+                function syncUI() {
+                    const bar = document.getElementById('global-player');
+                    const mainToggle = document.getElementById('playerMainToggle');
+                    const progContainer = document.getElementById('playerProgressContainer');
+                    const speedToggle = document.getElementById('speedToggle');
+
+                    if (activeId) bar?.classList.add('active');
+                    
+                    mainToggle?.addEventListener('click', () => {
+                        if (audio.paused) audio.play();
+                        else audio.pause();
+                    });
+
+                    progContainer?.addEventListener('click', (e: any) => {
+                        const rect = progContainer.getBoundingClientRect();
+                        const p = (e.clientX - rect.left) / rect.width;
+                        audio.currentTime = p * audio.duration;
+                    });
+
+                    // Re-init speed
+                    speedToggle?.addEventListener('click', () => document.getElementById('speedDropdown')?.classList.toggle('active'));
+                    document.querySelectorAll('.speed-option').forEach(opt => {
+                        opt.addEventListener('click', () => {
+                            const s = (opt as HTMLElement).dataset.speed;
+                            if (s) {
+                                audio.playbackRate = parseFloat(s);
+                                if (speedToggle) speedToggle.textContent = s + 'x';
+                                document.querySelectorAll('.speed-option').forEach(o => o.classList.remove('active'));
+                                opt.classList.add('active');
+                                document.getElementById('speedDropdown')?.classList.remove('active');
+                            }
+                        });
+                    });
+
+                    updatePlayerUI();
+                }
+
+                document.addEventListener('astro:after-swap', syncUI);
+                syncUI(); // Init on load
+            })();
+
             // Init on load and after swaps
             initThemeControls();
             document.addEventListener('astro:after-swap', initThemeControls);
@@ -197,7 +326,6 @@ const {
                 let lightbox: HTMLElement | null;
                 let lightboxImg: HTMLImageElement | null;
                 let lastFocusedElement: HTMLElement | null = null;
-
                 function initLightbox() {
                     if (document.querySelector('.lightbox-overlay')) return;
                     

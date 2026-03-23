@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import editions from '../data/editions.json';
 import gallery from '../data/gallery.json';
+import { Image } from 'astro:assets';
 
 const nextEdition = editions.find(e => e.status === 'In Preparation') || editions[0];
 const galleryPreview = gallery.slice(0, 4);
@@ -156,7 +157,7 @@ const galleryPreview = gallery.slice(0, 4);
 
                     <div class="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-2">
                         {galleryPreview.map((img, i) => (
-                            <div class="group relative aspect-[4/3] w-full overflow-hidden rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_90%,var(--ink)_10%)] animate-enter">
+                            <div class="group relative aspect-square w-full overflow-hidden rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_90%,var(--ink)_10%)] animate-enter">
                                 <img 
                                     src={`/assets/img/event-${i + 1}.jpg`} 
                                     alt={img.title || `Event photo ${i + 1}`} 

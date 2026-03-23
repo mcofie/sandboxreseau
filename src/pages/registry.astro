@@ -10,26 +10,22 @@ const industries = ['All', ...new Set(registry.map(item => item.industry))];
     description="Discover the products, startups, and organizations building in the Sandbox Réseau ecosystem."
 >
     <!-- Header Section -->
-    <section class="border-b border-[var(--rule)] bg-[var(--paper)]">
-        <div class="mx-auto max-w-[1100px] px-4 py-8">
+    <section class="sticky top-0 z-20 border-b border-[var(--rule)] bg-[var(--paper)]/95 backdrop-blur-md">
+        <div class="mx-auto max-w-[1100px] px-4 py-6">
             <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
                 <div class="max-w-xl">
-                    <span
-                        class="inline-block w-max border-y border-[var(--rule)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-[.2em] text-[var(--muted)] mb-3">
-                        The Index
-                    </span>
-                    <h2 class="font-serif text-3xl sm:text-4xl leading-tight mb-2">
+                    <h2 class="font-serif text-2xl sm:text-3xl leading-tight mb-0.5">
                         The Ecosystem Registry.
                     </h2>
-                    <p class="text-[var(--muted)] text-sm">
-                        Discover the products, startups, and organizations building in our ecosystem and connected to Sandbox Réseau.
+                    <p class="text-[var(--muted)] text-xs">
+                        Discover the builders in our ecosystem.
                     </p>
                 </div>
                 
                 <div class="w-full md:w-80">
                     <div class="relative">
-                        <input type="text" id="companySearch" placeholder="Search the registry..." aria-label="Search the registry"
-                            class="search-input w-full rounded border border-[var(--rule)] bg-[var(--paper)] px-4 py-2 text-sm" />
+                        <input type="text" id="companySearch" placeholder="Search entries..." aria-label="Search the registry"
+                            class="search-input w-full rounded border border-[var(--rule)] bg-[var(--paper)] px-4 py-2 text-sm focus:outline-none focus:border-[var(--accent)] transition-colors" />
                         <div class="absolute right-3 top-2.5 text-[var(--muted)] pointer-events-none">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
@@ -40,7 +36,7 @@ const industries = ['All', ...new Set(registry.map(item => item.industry))];
             </div>
 
             <!-- Horizontal Filters -->
-            <div class="mt-8 flex flex-wrap gap-2 border-t border-[var(--rule)]/10 pt-6">
+            <div class="mt-6 flex flex-wrap gap-2">
                 {industries.map((industry) => (
                     <button 
                         class={`filter-chip rounded-full border border-[var(--rule)] px-3 py-1 text-[11px] font-semibold uppercase tracking-wider hover:bg-[var(--accent)] hover:text-white transition-colors ${industry === 'All' ? 'active bg-[var(--ink)] text-[var(--paper)]' : ''}`}
