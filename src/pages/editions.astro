@@ -1,0 +1,95 @@
+---
+import Layout from '../layouts/Layout.astro';
+import editions from '../data/editions.json';
+
+const headerSubtitle = "Chronicle of Progress";
+---
+
+<Layout 
+    title="Editions | Sandbox Réseau" 
+    description="Explore previous editions of Sandbox Réseau, featuring builder demos, talks, and community snapshots."
+    headerSubtitle={headerSubtitle}
+>
+    <main class="mx-auto max-w-[1100px] px-4 py-10">
+        <header class="mb-12 max-w-2xl">
+            <span
+                class="inline-block w-max border-y border-[var(--rule)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-[.2em] text-[var(--muted)] mb-3">
+                The Archive
+            </span>
+            <h2 class="font-serif text-3xl sm:text-4xl leading-tight mb-4">
+                Previous Gatherings.
+            </h2>
+            <p class="text-[var(--muted)] text-sm md:text-base leading-relaxed">
+                Every edition is a new chapter in the Sandbox story. Revisit the demos, the insights, and the atmosphere of past meetups.
+            </p>
+        </header>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="editions-grid">
+            {editions.map((edition, i) => (
+                <div class="animate-enter">
+                    <article 
+                        class={`h-full flex flex-col group relative overflow-hidden rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_92%,var(--ink)_8%)] p-2 hatch ${edition.image ? 'cursor-zoom-in' : ''}`} 
+                        onclick={edition.image ? `openLightbox('${edition.image}')` : undefined}
+                    >
+                        {edition.image && (
+                            <div class="relative overflow-hidden aspect-[4/3] border border-[var(--rule)] shrink-0">
+                                <img 
+                                    src={edition.image} 
+                                    alt={edition.title} 
+                                    loading="lazy" 
+                                    decoding="async" 
+                                    class="w-full h-full object-cover grayscale transition duration-500 group-hover:grayscale-0 group-hover:scale-105" 
+                                />
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                                    <span class="text-white text-[10px] uppercase font-bold tracking-widest">View Highlight</span>
+                                </div>
+                            </div>
+                        )}
+                        
+                        {!edition.image && (
+                             <div class="aspect-[4/3] border border-[var(--rule)] shrink-0 bg-[color:color-mix(in_oklab,var(--paper)_80%,var(--ink)_20%)] flex items-center justify-center">
+                                <span class="font-serif text-neutral-400 italic">No image available</span>
+                             </div>
+                        )}
+
+                        <div class="flex-1 p-4 flex flex-col">
+                            <div class="text-[10px] font-bold uppercase tracking-widest text-[var(--muted)] mb-2 flex items-center justify-between">
+                                <span>{edition.date}</span>
+                                <span class={`px-1.5 py-0.5 rounded border border-[var(--rule)]/20 ${edition.status === 'Complete' ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'}`}>
+                                    {edition.status}
+                                </span>
+                            </div>
+                            <h3 class="font-serif text-xl sm:text-2xl mb-2 leading-tight group-hover:accent-text transition-colors">{edition.title}</h3>
+                            <p class="text-sm text-neutral-600 mb-6 font-sans leading-relaxed line-clamp-3">
+                                {edition.description}
+                            </p>
+                            
+                            <div class="mt-auto pt-4 border-t border-[var(--rule)]/10 flex items-center justify-between">
+                                <span class="text-[10px] font-bold uppercase tracking-widest text-[var(--muted)]">Vol. 1</span>
+                                <span class="text-xs font-bold uppercase tracking-widest underline decoration-2 underline-offset-4 decoration-[var(--rule)]/0 group-hover:decoration-[var(--accent)] transition-all">Details →</span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            ))}
+        </div>
+    </main>
+
+    <script is:inline>
+        // Entrance Animation Logic
+        (function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, i) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add('visible');
+                        }, (i % 3) * 150);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.animate-enter').forEach(el => observer.observe(el));
+        })();
+    </script>
+</Layout>

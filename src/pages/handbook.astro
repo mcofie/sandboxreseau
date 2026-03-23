@@ -1,0 +1,119 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const headerSubtitle = "The Culture Manual";
+---
+
+<Layout 
+    title="Handbook | Sandbox Réseau" 
+    description="The guide for builders in the Sandbox Réseau ecosystem. Rules, culture, and high-signal coordination."
+    headerSubtitle={headerSubtitle}
+>
+    <!-- Header Hero -->
+    <section class="border-b border-[var(--rule)] bg-[var(--paper)]">
+        <div class="mx-auto max-w-[1100px] px-4 py-16 text-center">
+            <span
+                class="inline-block w-max border-y border-[var(--rule)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-[.2em] text-[var(--muted)] mb-5">
+                Vol. 1, No. 1
+            </span>
+            <h1 class="font-serif text-5xl sm:text-7xl leading-[.85] tracking-tighter mb-8">
+                The Community Handbook.
+            </h1>
+            <p class="mx-auto max-w-2xl text-[var(--muted)] text-base md:text-xl leading-relaxed font-serif ">
+                How we build, interact, and collaborate within the Sandbox ecosystem. A manual for high-signal, low-noise coordination.
+            </p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="mx-auto max-w-[800px] px-4 py-20 pb-40">
+        <div class="space-y-24">
+            <!-- Culture Section -->
+            <section>
+                <header class="mb-10">
+                    <h2 class="font-serif text-4xl mb-2 tracking-tight">Our Culture.</h2>
+                    <div class="h-1 w-12 bg-[var(--accent)] mb-6"></div>
+                    <p class="text-[var(--muted)] leading-relaxed italic">The core values that define the Sandbox Réseau experience.</p>
+                </header>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div class="p-6 rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_97%,var(--ink)_3%)] transition-all hover:-translate-y-1 hover:shadow-xl">
+                        <strong class="block text-lg font-serif mb-2 text-[var(--ink)]">Signal Over Noise</strong>
+                        <p class="text-[15px] text-neutral-600 leading-relaxed">
+                            Focus on the work, not the hype. We celebrate builders who have something to show, not just something to say.
+                        </p>
+                    </div>
+                    <div class="p-6 rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_97%,var(--ink)_3%)] transition-all hover:-translate-y-1 hover:shadow-xl">
+                        <strong class="block text-lg font-serif mb-2 text-[var(--ink)]">Progress Over Polish</strong>
+                        <p class="text-[15px] text-neutral-600 leading-relaxed">
+                            An unfinished prototype that works is better than a polished slide deck that doesn't. Build fast, and share early.
+                        </p>
+                    </div>
+                    <div class="p-6 rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_97%,var(--ink)_3%)] transition-all hover:-translate-y-1 hover:shadow-xl">
+                        <strong class="block text-lg font-serif mb-2 text-[var(--ink)]">Async First</strong>
+                        <p class="text-[15px] text-neutral-600 leading-relaxed">
+                            Respect everyone's deep work time. Use the public channels, state your full context, and allow for thoughtful responses.
+                        </p>
+                    </div>
+                    <div class="p-6 rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_97%,var(--ink)_3%)] transition-all hover:-translate-y-1 hover:shadow-xl">
+                        <strong class="block text-lg font-serif mb-2 text-[var(--ink)]">Learn in Public</strong>
+                        <p class="text-[15px] text-neutral-600 leading-relaxed">
+                            Document your process. Write the tutorial you wish existed. Your failures are someone else's roadmap.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Rules Section -->
+            <section class="p-8 sm:p-12 border-4 border-double border-[var(--rule)] bg-[var(--paper)]">
+                <header class="mb-10 text-center">
+                    <h2 class="font-serif text-4xl mb-2 tracking-tight">The Rules of Contact.</h2>
+                    <p class="text-[var(--muted)] text-sm tracking-widest uppercase font-bold">Protocol for High-Signal Interactions</p>
+                </header>
+
+                <ul class="space-y-10 list-decimal list-inside marker:accent-text marker:font-bold marker:text-xl">
+                    <li class="pl-4">
+                        <strong class="text-xl font-serif inline-block ml-4">No "Hello" Messages.</strong>
+                        <div class="mt-3 ml-12 text-[16px] text-neutral-700 leading-relaxed">
+                            Don't send "Hello" and wait for a response. State your full question or context immediately. This allows for faster async resolution.
+                        </div>
+                    </li>
+                    <li class="pl-4">
+                        <strong class="text-xl font-serif inline-block ml-4">No Unsolicited DMs.</strong>
+                        <div class="mt-3 ml-12 text-[16px] text-neutral-700 leading-relaxed">
+                            Ask permission in a public channel first. Cold DMs for sales, pitches, or spam are strictly prohibited and will result in a ban.
+                        </div>
+                    </li>
+                    <li class="pl-4">
+                        <strong class="text-xl font-serif inline-block ml-4">Contextual Sharing.</strong>
+                        <div class="mt-3 ml-12 text-[16px] text-neutral-700 leading-relaxed">
+                            Share your work, but lead with the <strong>story</strong>: what you built, why, and what you learned. Links with zero context will be deleted.
+                        </div>
+                    </li>
+                    <li class="pl-4">
+                        <strong class="text-xl font-serif inline-block ml-4">Give More, Take Less.</strong>
+                        <div class="mt-3 ml-12 text-[16px] text-neutral-700 leading-relaxed">
+                            Reputation is built through contribution. Answer questions, review PRs, or share resources before asking for favors.
+                        </div>
+                    </li>
+                    <li class="pl-4">
+                        <strong class="text-xl font-serif inline-block ml-4">Critique the Work, Respect the Maker.</strong>
+                        <div class="mt-3 ml-12 text-[16px] text-neutral-700 leading-relaxed">
+                            Be direct and honest about technical trade-offs, but never dismissive of the individual. Maintain a professional, supportive environment.
+                        </div>
+                    </li>
+                </ul>
+            </section>
+
+            <!-- Final CTA -->
+            <section class="text-center py-10">
+                <div class="mb-8 font-serif text-2xl">Ready to enter the Sandbox?</div>
+                <div class="flex flex-wrap justify-center gap-6">
+                    <a href="/community" class="bg-[var(--ink)] text-[var(--paper)] px-10 py-5 font-bold uppercase tracking-widest hover:opacity-90 transition-all shadow-xl">
+                        Join the Community
+                    </a>
+                </div>
+            </section>
+        </div>
+    </main>
+</Layout>

@@ -1,0 +1,309 @@
+---
+import Layout from '../layouts/Layout.astro';
+import GlobalPlayer from '../components/GlobalPlayer.astro';
+import Parser from 'rss-parser';
+
+const parser = new Parser({
+    customFields: {
+        item: [
+            ['itunes:duration', 'duration'],
+            ['itunes:image', 'episodeImage'],
+            ['itunes:summary', 'summary']
+        ]
+    }
+});
+
+async function fetchWithRetry(url, retries = 3) {
+    for (let i = 0; i < retries; i++) {
+        try {
+            return await parser.parseURL(url);
+        } catch (err) {
+            if (i === retries - 1) throw err;
+            console.log(`Fetch failed, retrying (${i + 1}/${retries})...`);
+            await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
+        }
+    }
+}
+
+let episodes = [];
+let error = null;
+
+try {
+    const feed = await fetchWithRetry('https://anchor.fm/s/110059518/podcast/rss');
+    episodes = feed.items.map(item => {
+        const description = (item.contentSnippet || item.itunes?.summary || item.itunes?.subtitle || '')
+            .replace(/<[^>]*>?/gm, '')
+            .trim();
+        
+        return {
+            id: item.guid,
+            title: item.title,
+            description: description.substring(0, 180) + (description.length > 180 ? '...' : ''),
+            date: new Date(item.pubDate || '').toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }),
+            duration: item.itunes?.duration || '5:00',
+            thumbnail: item.itunes?.image?.href || '/assets/img/podcast-logo.png',
+            audioUrl: item.enclosure?.url,
+            spotifyUrl: item.link,
+            appleUrl: 'https://podcasts.apple.com/gh/podcast/the-reverb/id1884282478'
+        };
+    });
+} catch (err) {
+    console.error('RSS Fetch Error:', err);
+    error = "Failed to load feed. Please check back later.";
+}
+
+const headerSubtitle = "Digital Audio-Log";
+---
+
+<Layout 
+    title="The Reverb Podcast | Sandbox Réseau" 
+    description="The high-bandwidth audio-log for the African builder. Listen to the latest dispatches from the Sandbox Réseau ecosystem."
+    headerSubtitle={headerSubtitle}
+>
+    <!-- Hero Section -->
+    <section class="border-b border-[var(--rule)] bg-[var(--paper)]">
+        <div class="mx-auto grid max-w-[1100px] grid-cols-1 gap-12 px-4 py-12 md:grid-cols-2">
+            <div class="flex flex-col justify-center">
+                <span class="inline-block w-max border-y border-[var(--rule)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-[.2em] text-[var(--muted)] mb-5">
+                    Audio Dispatch
+                </span>
+                <h2 class="font-serif text-4xl sm:text-5xl lg:text-6xl leading-[.95] tracking-tight mb-6">
+                    The Reverb.
+                </h2>
+                <p class="text-[17px] text-neutral-600 leading-relaxed max-w-xl font-sans">
+                    Most tech podcasts are too long — <strong>The Reverb</strong> is built for the fast lane. Every 5-minute episode stitches together unfiltered voices from the Sandbox Réseau ecosystem. No fluff, no 40-minute monologues. Just the raw signal.
+                </p>
+
+                <div class="mt-12 flex flex-wrap items-center gap-4">
+                    <a href="https://open.spotify.com/show/1mQUSNNpjenkeUiFVBXWCN" target="_blank" class="flex items-center justify-center rounded-full border border-[var(--rule)] px-6 py-2.5 text-[10px] font-black uppercase tracking-widest hover:bg-[#1DB954] hover:text-white hover:border-[#1DB954] transition-all">
+                        Spotify
+                    </a>
+                    <a href="https://podcasts.apple.com/gh/podcast/the-reverb/id1884282478" target="_blank" class="flex items-center justify-center rounded-full border border-[var(--rule)] px-6 py-2.5 text-[10px] font-black uppercase tracking-widest hover:bg-[#8e3ee5] hover:text-white hover:border-[#8e3ee5] transition-all">
+                        Apple
+                    </a>
+                </div>
+            </div>
+
+            <aside class="flex items-center justify-center lg:justify-end">
+                <div class="relative group p-4 hatch rounded border border-[var(--rule)]">
+                    <img id="podcastCover" src="/assets/img/podcast-logo.png" alt="The Reverb Logo" class="w-64 h-64 sm:w-80 sm:h-80 rounded border border-[var(--rule)] shadow-2xl grayscale group-hover:grayscale-0 transition-all duration-700">
+                </div>
+            </aside>
+        </div>
+    </section>
+
+    <!-- Episodes Grid -->
+    <main class="mx-auto max-w-[1100px] px-4 py-12">
+        <div class="mb-12 flex items-center justify-between gap-4">
+             <h3 class="font-serif text-2xl tracking-tight">Archive</h3>
+             <div class="h-px flex-1 bg-[var(--rule)]/10"></div>
+             <div class="text-[11px] font-bold uppercase tracking-widest text-[var(--muted)]">{episodes.length} Episodes</div>
+        </div>
+
+        {error && <p class="text-center py-20 text-neutral-500 font-serif italic">{error}</p>}
+        
+        <div id="podcast-archive" class="space-y-6">
+            {episodes.map(ep => (
+                <div class="episode-card group relative flex flex-col sm:flex-row gap-6 p-6 rounded border border-[var(--rule)] bg-white hover:border-[var(--ink)] transition-all animate-enter" 
+                     data-episode-id={ep.id} 
+                     data-title={ep.title} 
+                     data-meta={`${ep.date} • ${ep.duration}`} 
+                     data-thumb={ep.thumbnail}
+                     data-audio-url={ep.audioUrl}>
+                    
+                    <div class="w-24 h-24 sm:w-32 sm:h-32 flex-shrink-0 bg-neutral-100 rounded border border-[var(--rule)] overflow-hidden relative group/art cursor-pointer" onclick={`openLightbox('${ep.thumbnail}')`}>
+                        <img src={ep.thumbnail} alt={ep.title} class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
+                        
+                        {ep.audioUrl && (
+                        <button class="play-btn absolute inset-0 flex items-center justify-center bg-[var(--ink)]/40 opacity-0 group-hover/art:opacity-100 transition-opacity text-[var(--paper)]">
+                            <div class="play-icon w-12 h-12 flex items-center justify-center rounded-full border-2 border-[var(--paper)]">
+                                <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                                    <path d="M8 5v14l11-7z"/>
+                                </svg>
+                            </div>
+                        </button>
+                        )}
+                    </div>
+                    
+                    <div class="flex-1 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-3 text-[10px] uppercase font-bold tracking-widest text-[var(--muted)] mb-2 text-neutral-400">
+                                 <span>{ep.date}</span>
+                                 <span class="w-1 h-1 rounded-full bg-[var(--rule)]"></span>
+                                 <span>{ep.duration}</span>
+                            </div>
+                            <h3 class="font-serif text-xl sm:text-2xl mb-2 text-[var(--ink)] group-hover:accent-text transition-colors">{ep.title}</h3>
+                            <p class="text-[14px] text-neutral-600 leading-relaxed mb-4">{ep.description}</p>
+                        </div>
+                        
+                        <div class="flex flex-wrap items-center justify-between gap-4 mt-auto">
+                            <div class="flex flex-wrap gap-2">
+                                <a href={ep.spotifyUrl} target="_blank" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[var(--rule)] text-[10px] font-bold uppercase tracking-widest hover:bg-[#1DB954] hover:text-white hover:border-[#1DB954] transition-all">
+                                    Spotify
+                                </a>
+                                <a href={ep.appleUrl} target="_blank" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[var(--rule)] text-[10px] font-bold uppercase tracking-widest hover:bg-[#8e3ee5] hover:text-white hover:border-[#8e3ee5] transition-all">
+                                    Apple
+                                </a>
+                            </div>
+                            
+                            <div class="audio-wave hidden group-[.is-playing]:flex">
+                                <div></div><div></div><div></div><div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            ))}
+        </div>
+
+        <!-- Subscribe CTA -->
+        <div class="mt-28 mb-12 relative overflow-hidden rounded border border-[var(--rule)] bg-[var(--paper)] p-12 text-center animate-enter">
+            <div class="absolute inset-0 hatch opacity-[0.03] pointer-events-none"></div>
+            <div class="relative z-10">
+                <div class="mb-8 inline-block rounded border border-[var(--rule)] bg-white p-2">
+                    <img src="/assets/img/podcast-logo.png" alt="Logo" class="w-12 h-12 grayscale">
+                </div>
+                <h3 class="font-serif text-3xl md:text-4xl mb-4 tracking-tight text-[var(--ink)]">Never miss a pulse.</h3>
+                <p class="text-[var(--muted)] mb-10 max-w-lg mx-auto font-serif text-lg leading-relaxed">
+                    Subscribe on your preferred platform for weekly dispatches from the Sandbox.
+                </p>
+                <div class="flex flex-wrap justify-center gap-6">
+                    <a href="https://open.spotify.com/show/1mQUSNNpjenkeUiFVBXWCN" target="_blank" class="text-xs font-bold uppercase tracking-widest underline decoration-2 underline-offset-4 hover:accent-text">Spotify</a>
+                    <a href="https://podcasts.apple.com/gh/podcast/the-reverb/id1884282478" target="_blank" class="text-xs font-bold uppercase tracking-widest underline decoration-2 underline-offset-4 hover:accent-text">Apple</a>
+                    <a href="https://anchor.fm/s/110059518/podcast/rss" target="_blank" class="text-xs font-bold uppercase tracking-widest underline decoration-2 underline-offset-4 hover:accent-text">RSS Feed</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <GlobalPlayer />
+
+    <script>
+        // Global Audio Handler
+        (function() {
+            let activeEpisodeId = null;
+            const audioPlayer = new Audio();
+            const bar = document.getElementById('global-player');
+            const progress = document.getElementById('playerProgressBar');
+            const progressContainer = document.getElementById('playerProgressContainer');
+            const mainToggle = document.getElementById('playerMainToggle');
+            const playIconMain = document.getElementById('playIconMain');
+            const pauseIconMain = document.getElementById('pauseIconMain');
+            const currentTimeEl = document.getElementById('playerCurrentTime');
+            const durationEl = document.getElementById('playerDuration');
+            const speedToggle = document.getElementById('speedToggle');
+            const speedDropdown = document.getElementById('speedDropdown');
+            const playerThumbnail = document.getElementById('playerThumbnail');
+            const playerTitle = document.getElementById('playerTitle');
+            const playerMeta = document.getElementById('playerMeta');
+
+            function formatTime(seconds) {
+                const h = Math.floor(seconds / 3600);
+                const m = Math.floor((seconds % 3600) / 60);
+                const s = Math.floor(seconds % 60);
+                if (h > 0) return `${h}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+                return `${m}:${s.toString().padStart(2, '0')}`;
+            }
+
+            function updateUI() {
+                if (!bar) return;
+                
+                if (audioPlayer.paused) {
+                    playIconMain?.classList.remove('hidden');
+                    pauseIconMain?.classList.add('hidden');
+                } else {
+                    playIconMain?.classList.add('hidden');
+                    pauseIconMain?.classList.remove('hidden');
+                }
+
+                // Update cards
+                document.querySelectorAll('.episode-card').forEach(card => {
+                    const id = card.getAttribute('data-episode-id');
+                    if (id === activeEpisodeId && !audioPlayer.paused) {
+                        card.classList.add('is-playing');
+                    } else {
+                        card.classList.remove('is-playing');
+                    }
+                });
+            }
+
+            function togglePlay(id, url) {
+                if (activeEpisodeId === id) {
+                    if (audioPlayer.paused) audioPlayer.play();
+                    else audioPlayer.pause();
+                } else {
+                    activeEpisodeId = id;
+                    audioPlayer.src = url;
+                    audioPlayer.play();
+                    
+                    // Update Player bar content
+                    const card = document.querySelector(`[data-episode-id="${id}"]`);
+                    if (card && playerTitle && playerMeta && playerThumbnail) {
+                        playerTitle.textContent = card.dataset.title || '';
+                        playerMeta.textContent = card.dataset.meta || '';
+                        playerThumbnail.src = card.dataset.thumb || '';
+                        bar?.classList.add('active');
+                    }
+                }
+                updateUI();
+            }
+
+            // Init listeners
+            document.querySelectorAll('.play-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const card = btn.closest('.episode-card');
+                    const id = card.dataset.episodeId;
+                    const url = card.dataset.audioUrl;
+                    if (id && url) togglePlay(id, url);
+                });
+            });
+
+            audioPlayer.ontimeupdate = () => {
+                const pct = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+                if (progress) progress.style.width = pct + '%';
+                if (currentTimeEl) currentTimeEl.textContent = formatTime(audioPlayer.currentTime);
+            };
+
+            audioPlayer.onloadedmetadata = () => {
+                if (durationEl) durationEl.textContent = formatTime(audioPlayer.duration);
+            };
+
+            audioPlayer.onplay = updateUI;
+            audioPlayer.onpause = updateUI;
+
+            mainToggle?.addEventListener('click', () => {
+                if (audioPlayer.paused) audioPlayer.play();
+                else audioPlayer.pause();
+            });
+
+            progressContainer?.addEventListener('click', (e) => {
+                const rect = progressContainer.getBoundingClientRect();
+                const pos = (e.clientX - rect.left) / rect.width;
+                audioPlayer.currentTime = pos * audioPlayer.duration;
+            });
+
+            // Speed
+            speedToggle?.addEventListener('click', () => speedDropdown?.classList.toggle('active'));
+            document.querySelectorAll('.speed-option').forEach(opt => {
+                opt.addEventListener('click', () => {
+                    const speed = opt.dataset.speed;
+                    if (speed) {
+                        audioPlayer.playbackRate = parseFloat(speed);
+                        if (speedToggle) speedToggle.textContent = speed + 'x';
+                        document.querySelectorAll('.speed-option').forEach(o => o.classList.remove('active'));
+                        opt.classList.add('active');
+                        speedDropdown?.classList.remove('active');
+                    }
+                });
+            });
+
+            // Space key
+            document.addEventListener('keydown', (e) => {
+                if (e.code === 'Space' && activeEpisodeId && e.target.tagName !== 'INPUT') {
+                    e.preventDefault();
+                    mainToggle?.click();
+                }
+            });
+        })();
+    </script>
+</Layout>

@@ -1,0 +1,38 @@
+---
+const currentYear = new Date().getFullYear();
+const currentPath = Astro.url.pathname;
+
+const links = [
+    { name: 'Podcast', href: '/podcast' },
+    { name: 'Gallery', href: '/gallery' },
+    { name: 'Editions', href: '/editions' },
+    { name: 'Newsletters', href: '/newsletters' },
+    { name: 'Community', href: '/community' },
+    { name: 'Registry', href: '/registry' },
+    { name: 'Handbook', href: '/handbook' },
+];
+---
+
+<footer class="border-t-[3px] border-[var(--rule)] border-double">
+    <div class="mx-auto flex max-w-[1100px] flex-col md:flex-row items-center justify-between gap-6 px-4 py-8 md:py-4 text-[13px] text-neutral-600">
+        <div class="order-2 md:order-1 text-center md:text-left">
+            © <span id="year">{currentYear}</span> Sandbox Réseau • Accra
+        </div>
+        
+        <div class="order-1 md:order-2 flex flex-wrap items-center justify-center gap-x-5 gap-y-3">
+            {links.map((link) => (
+                <a 
+                    href={link.href} 
+                    class={`hover:underline ${currentPath === link.href ? 'text-[var(--ink)] font-semibold' : ''}`}
+                >
+                    {link.name}
+                </a>
+            ))}
+        </div>
+        
+        <div class="order-3">
+            <a class="underline accent-text font-bold" href="https://luma.com/sandbox-reseau" target="_blank"
+                rel="noreferrer">Register</a>
+        </div>
+    </div>
+</footer>

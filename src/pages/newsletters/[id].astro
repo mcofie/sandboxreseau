@@ -1,0 +1,98 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import newsletters from '../../data/newsletters.json';
+
+export function getStaticPaths() {
+  return newsletters.map((newsletter) => ({
+    params: { id: newsletter.id },
+    props: { newsletter },
+  }));
+}
+
+const { newsletter } = Astro.props;
+---
+
+<Layout 
+    title={`${newsletter.title} | Newsletter — Sandbox Réseau`}
+    description={newsletter.excerpt}
+    headerSubtitle={`Dispatch Issue ${newsletter.issue}`}
+>
+    <main class="mx-auto max-w-[800px] px-4 py-12">
+        <div class="mb-12">
+            <div class="flex flex-wrap items-center gap-3 text-[11px] font-bold uppercase tracking-widest text-[var(--muted)] mb-6">
+                <a href="/newsletters" class="hover:accent-text transition-colors">Archive</a>
+                <span class="opacity-30">/</span>
+                <span class="text-[var(--ink)]">Issue {newsletter.issue}</span>
+            </div>
+            
+            <h1 class="font-serif text-4xl sm:text-5xl lg:text-7xl leading-tight mb-8 tracking-tighter text-[var(--ink)]">
+                {newsletter.title}
+            </h1>
+
+            <div class="flex flex-wrap items-center gap-x-8 gap-y-4 py-8 border-y border-[var(--rule)]/20 text-[13px] text-[var(--muted)]">
+                <div class="flex flex-col gap-1">
+                    <span class="font-bold text-[var(--ink)] uppercase tracking-[.2em] text-[9px]">Author</span>
+                    <span class="font-serif  text-neutral-600">{newsletter.author}</span>
+                </div>
+                <div class="flex flex-col gap-1">
+                    <span class="font-bold text-[var(--ink)] uppercase tracking-[.2em] text-[9px]">Date</span>
+                    <span class="font-serif  text-neutral-600">{newsletter.date}</span>
+                </div>
+                <div class="flex flex-col gap-1">
+                    <span class="font-bold text-[var(--ink)] uppercase tracking-[.2em] text-[9px]">Read Time</span>
+                    <span class="font-serif  text-neutral-600">{newsletter.readTime}</span>
+                </div>
+                <div class="flex items-center gap-2 ml-auto">
+                    {newsletter.tags.map(tag => <span class="px-2 py-0.5 rounded-full border border-[var(--rule)]/20 text-[9px] uppercase font-bold tracking-widest">{tag}</span>)}
+                </div>
+            </div>
+        </div>
+
+        <article class="prose-news max-w-none">
+            <div class="newsletter-content-body font-serif text-[20px] sm:text-[22px] leading-relaxed text-neutral-800 space-y-8" set:html={newsletter.content}>
+            </div>
+        </article>
+
+        <div class="mt-28 pt-12 border-t border-[var(--rule)]">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-10">
+                <div class="flex items-center gap-5">
+                    <div class="w-16 h-16 rounded-full border border-[var(--rule)] bg-white p-1.5 shadow-sm">
+                        <img src="/assets/img/favicon.png" alt="Sandbox Logo" class="w-full h-full object-contain grayscale">
+                    </div>
+                    <div>
+                        <div class="font-bold text-[13px] uppercase tracking-widest text-[var(--ink)]">Sandbox Réseau</div>
+                        <div class="text-[11px] text-[var(--muted)] font-serif  mb-1">Accra, Ghana</div>
+                    </div>
+                </div>
+                <div class="flex gap-4">
+                    <a href="/newsletters" class="text-xs font-bold uppercase tracking-widest border border-[var(--ink)] px-8 py-4 hover:bg-[var(--ink)] hover:text-[var(--paper)] transition-all">
+                    ← Archive
+                    </a>
+                    <a href="https://luma.com/sandbox-reseau" target="_blank" rel="noopener noreferrer" class="text-xs font-bold uppercase tracking-widest bg-[var(--ink)] text-[var(--paper)] px-8 py-4 hover:opacity-90 transition-all shadow-lg">
+                    Subscribe
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+</Layout>
+
+<style is:global>
+    .newsletter-content-body h3 {
+        font-family: 'Libre Baskerville', serif;
+        font-size: 1.5rem;
+        margin-top: 2.5rem;
+        margin-bottom: 1rem;
+        color: var(--ink);
+    }
+    .newsletter-content-body blockquote {
+        margin: 2rem 0;
+        padding-left: 1.5rem;
+        border-left: 3px solid var(--accent);
+        font-style: italic;
+        color: var(--muted);
+    }
+    .newsletter-content-body p + p {
+        margin-top: 1.5rem;
+    }
+</style>

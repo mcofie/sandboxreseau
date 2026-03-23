@@ -1,0 +1,189 @@
+---
+import Layout from '../layouts/Layout.astro';
+import registry from '../data/registry.json';
+
+const industries = ['All', ...new Set(registry.map(item => item.industry))];
+---
+
+<Layout 
+    title="Registry | Sandbox Réseau" 
+    description="Discover the products, startups, and organizations building in the Sandbox Réseau ecosystem."
+>
+    <!-- Header Section -->
+    <section class="border-b border-[var(--rule)] bg-[var(--paper)]">
+        <div class="mx-auto max-w-[1100px] px-4 py-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                <div class="max-w-xl">
+                    <span
+                        class="inline-block w-max border-y border-[var(--rule)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-[.2em] text-[var(--muted)] mb-3">
+                        The Index
+                    </span>
+                    <h2 class="font-serif text-3xl sm:text-4xl leading-tight mb-2">
+                        The Ecosystem Registry.
+                    </h2>
+                    <p class="text-[var(--muted)] text-sm">
+                        Discover the products, startups, and organizations building in our ecosystem and connected to Sandbox Réseau.
+                    </p>
+                </div>
+                
+                <div class="w-full md:w-80">
+                    <div class="relative">
+                        <input type="text" id="companySearch" placeholder="Search the registry..." aria-label="Search the registry"
+                            class="search-input w-full rounded border border-[var(--rule)] bg-[var(--paper)] px-4 py-2 text-sm" />
+                        <div class="absolute right-3 top-2.5 text-[var(--muted)] pointer-events-none">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Horizontal Filters -->
+            <div class="mt-8 flex flex-wrap gap-2 border-t border-[var(--rule)]/10 pt-6">
+                {industries.map((industry) => (
+                    <button 
+                        class={`filter-chip rounded-full border border-[var(--rule)] px-3 py-1 text-[11px] font-semibold uppercase tracking-wider hover:bg-[var(--accent)] hover:text-white transition-colors ${industry === 'All' ? 'active bg-[var(--ink)] text-[var(--paper)]' : ''}`}
+                        data-filter={industry}
+                    >
+                        {industry}
+                    </button>
+                ))}
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content List -->
+    <main class="mx-auto max-w-[1100px] px-4 py-10">
+        <div class="flex flex-col gap-4" id="companyGrid">
+            {registry.map(company => (
+                <div class="company-card group flex flex-col sm:flex-row items-start sm:items-center gap-6 rounded border border-[var(--rule)] bg-[var(--paper)] p-5" data-industry={company.industry} data-tags={company.tags.join(',')}>
+                    <div class={`w-16 h-16 rounded border border-[var(--rule)] bg-white p-2 flex items-center justify-center overflow-hidden shrink-0 ${company.logoAltTheme === 'black' ? 'bg-black text-white' : ''}`}>
+                        {(company.logo.startsWith('http') || company.logo.startsWith('/') || company.logo.startsWith('assets/') || company.logo.includes('.')) 
+                            ? <img src={company.logo.startsWith('assets/') ? `/${company.logo}` : company.logo} alt={`${company.name} Logo`} class="w-full h-full object-contain" />
+                            : <span class="font-serif text-2xl font-bold">{company.logo}</span>
+                        }
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex flex-wrap items-center gap-x-3 gap-y-1 mb-1">
+                            <h3 class="name font-serif text-xl font-bold leading-tight group-hover:accent-text transition-colors">{company.name}</h3>
+                            <span class="px-2 py-0.5 rounded border border-[var(--rule)]/20 text-[9px] font-bold uppercase tracking-widest bg-[color:color-mix(in_oklab,var(--paper)_95%,var(--ink)_5%)]">{company.industry}</span>
+                            <span class="px-2 py-0.5 rounded border border-[var(--rule)]/20 text-[9px] font-bold uppercase tracking-widest bg-[color:color-mix(in_oklab,var(--paper)_95%,var(--ink)_5%)]">{company.status}</span>
+                        </div>
+                        <p class="description text-sm text-[var(--muted)] leading-relaxed mb-2">
+                            {company.description}
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="text-[10px] font-semibold text-[color:color-mix(in_oklab,var(--ink)_60%,var(--paper)_40%)]">{company.tags.join(' • ')}</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-col items-end gap-2 shrink-0 self-stretch justify-between sm:border-l border-[var(--rule)]/10 sm:pl-6 pt-4 sm:pt-0">
+                        <span class="text-[11px] font-serif text-[var(--muted)]">{company.location || company.founded}</span>
+                        <a href={company.url} target="_blank" rel="noopener noreferrer" class="text-[11px] font-bold uppercase tracking-widest hover:underline accent-text">{company.cta} →</a>
+                    </div>
+                </div>
+            ))}
+        </div>
+        
+        <!-- Empty State -->
+        <div id="emptyState" class="hidden text-center py-20 border-2 border-dashed border-[var(--rule)]/10 rounded-xl">
+            <div class="text-4xl mb-4">🔍</div>
+            <h3 class="font-serif text-xl mb-1">No results found</h3>
+            <p class="text-[var(--muted)] text-sm">Try adjusting your search or filter to find what you're looking for.</p>
+            <button id="clearFilters" class="mt-4 text-xs font-bold uppercase tracking-widest underline accent-text">Clear all filters</button>
+        </div>
+    </main>
+
+    <script>
+        import debounce from 'lodash-es/debounce';
+
+        const searchInput = document.getElementById('companySearch') as HTMLInputElement;
+        const companyGrid = document.getElementById('companyGrid');
+        const emptyState = document.getElementById('emptyState');
+        const cards = document.querySelectorAll('.company-card') as NodeListOf<HTMLElement>;
+        const filterChips = document.querySelectorAll('.filter-chip');
+        const clearBtn = document.getElementById('clearFilters');
+
+        let currentFilter = 'All';
+        let currentSearch = '';
+
+        const updateDisplay = () => {
+            let visibleCount = 0;
+            
+            cards.forEach(card => {
+                const name = card.querySelector('.name')?.textContent?.toLowerCase() || '';
+                const desc = card.querySelector('.description')?.textContent?.toLowerCase() || '';
+                const tags = card.getAttribute('data-tags')?.toLowerCase() || '';
+                const industry = card.getAttribute('data-industry') || '';
+
+                const matchesSearch = !currentSearch || 
+                    name.includes(currentSearch) || 
+                    desc.includes(currentSearch) || 
+                    tags.includes(currentSearch);
+                
+                const matchesFilter = currentFilter === 'All' || industry === currentFilter;
+
+                if (matchesSearch && matchesFilter) {
+                    card.classList.remove('hidden');
+                    card.classList.add('flex');
+                    visibleCount++;
+                } else {
+                    card.classList.remove('flex');
+                    card.classList.add('hidden');
+                }
+            });
+
+            if (visibleCount === 0) {
+                companyGrid?.classList.add('hidden');
+                emptyState?.classList.remove('hidden');
+            } else {
+                companyGrid?.classList.remove('hidden');
+                emptyState?.classList.add('hidden');
+            }
+        };
+
+        // Debounced search
+        const handleSearch = debounce((e: Event) => {
+            currentSearch = (e.target as HTMLInputElement).value.toLowerCase();
+            updateDisplay();
+        }, 150);
+
+        searchInput?.addEventListener('input', handleSearch);
+
+        // Filter chips
+        filterChips.forEach(chip => {
+            chip.addEventListener('click', () => {
+                filterChips.forEach(c => {
+                    c.classList.remove('active', 'bg-[var(--ink)]', 'text-[var(--paper)]');
+                });
+                chip.classList.add('active', 'bg-[var(--ink)]', 'text-[var(--paper)]');
+                
+                currentFilter = chip.getAttribute('data-filter') || 'All';
+                updateDisplay();
+            });
+        });
+
+        // Clear filters
+        clearBtn?.addEventListener('click', () => {
+            if (searchInput) searchInput.value = '';
+            currentSearch = '';
+            currentFilter = 'All';
+            
+            filterChips.forEach(c => {
+                c.classList.remove('active', 'bg-[var(--ink)]', 'text-[var(--paper)]');
+                if (c.getAttribute('data-filter') === 'All') {
+                    c.classList.add('active', 'bg-[var(--ink)]', 'text-[var(--paper)]');
+                }
+            });
+            
+            updateDisplay();
+        });
+    </script>
+</Layout>
+
+<style>
+    .filter-chip.active {
+        background-color: var(--ink);
+        color: var(--paper);
+    }
+</style>

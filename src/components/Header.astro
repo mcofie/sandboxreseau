@@ -1,0 +1,53 @@
+---
+import ThemeControls from './ThemeControls.astro';
+import ThemeSwatches from './ThemeSwatches.astro';
+
+interface Props {
+	title?: string;
+	subtitle?: string;
+}
+
+const { title = "Sandbox Réseau Gazette", subtitle = "For Builders, Thinkers & Makers" } = Astro.props;
+---
+
+<header class="border-b-[3px] border-[var(--rule)] border-double bg-[var(--paper)]">
+    <div class="mx-auto max-w-[1100px] px-4">
+        <!-- Row 1: Utility -->
+        <div class="flex flex-wrap items-center justify-between gap-3 py-2 text-[13px]">
+            <div class="text-[var(--muted)]">
+                <span id="dateline">Monday, March 23, 2026</span> • Vol. 1, No. 1 • Accra
+            </div>
+
+            <div class="flex items-center gap-2">
+                {Astro.url.pathname !== '/' && (
+                    <a href="/"
+                        class="inline-flex items-center gap-2 mr-4 rounded bg-[var(--ink)] px-3 py-1.5 text-xs font-bold text-[var(--paper)] uppercase tracking-wide hover:opacity-80 transition-opacity">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
+                            stroke="currentColor" class="h-3.5 w-3.5">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                        </svg>
+                        Back to Gazette
+                    </a>
+                )}
+                <ThemeControls />
+            </div>
+        </div>
+
+        <!-- Row 2: Centered Masthead -->
+        <div class="py-3">
+            <h1 class="text-center font-serif text-[44px] leading-none tracking-tight sm:text-[56px]">
+                {title}
+            </h1>
+            <div class="mx-auto mt-3 h-px w-24 bg-[var(--rule)]"></div>
+            <p class="mt-2 text-center font-serif text-sm text-[var(--muted)]">
+                {subtitle}
+            </p>
+        </div>
+
+        <!-- Row 3: Swatches -->
+        <ThemeSwatches />
+    </div>
+</header>
+
+<div class="h-2 border-y border-[var(--rule)] banner"></div>

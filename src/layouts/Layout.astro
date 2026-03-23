@@ -1,0 +1,286 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import GrainOverlay from '../components/GrainOverlay.astro';
+
+interface Props {
+	title?: string;
+	description?: string;
+    headerTitle?: string;
+    headerSubtitle?: string;
+}
+
+const { 
+    title = "Sandbox Réseau | The Creative-Tech Meetup for Builders in Accra",
+    description = "Join Accra's premier community for builders, engineers, and founders. Demo your work, learn in public, and connect with high-signal peers at Sandbox Réseau.",
+    headerTitle,
+    headerSubtitle
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en" data-theme="white" data-accent="blue">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/png" href="/assets/img/favicon.png" />
+		<meta name="generator" content={Astro.generator} />
+        
+        <!-- Primary Meta Tags -->
+        <title>{title}</title>
+        <meta name="title" content={title} />
+        <meta name="description" content={description} />
+        <meta name="keywords" content="Tech Meetup Accra, Ghana Startups, Software Engineers, Creative Technology, Builders Community, Sandbox Réseau" />
+        <meta name="author" content="Sandbox Réseau" />
+
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={Astro.url} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:image" content="/assets/img/social-preview.jpg" />
+
+        <!-- Twitter -->
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content={Astro.url} />
+        <meta property="twitter:title" content={title} />
+        <meta property="twitter:description" content={description} />
+        <meta property="twitter:image" content="/assets/img/social-preview.jpg" />
+
+        <!-- Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
+
+        <!-- Theme Init Script (Prevent Flash) -->
+        <script is:inline>
+            (function() {
+                const THEME_KEY = 'srz_theme_v1';
+                const ACCENT_KEY = 'srz_accent_v1';
+                const root = document.documentElement;
+                const savedTheme = localStorage.getItem(THEME_KEY);
+                if (savedTheme) root.setAttribute('data-theme', savedTheme);
+                const savedAccent = localStorage.getItem(ACCENT_KEY);
+                if (savedAccent) root.setAttribute('data-accent', savedAccent);
+            })();
+        </script>
+	</head>
+	<body class="min-h-screen font-sans antialiased">
+        <GrainOverlay />
+        <Header title={headerTitle} subtitle={headerSubtitle} />
+		<slot />
+        <Footer />
+
+        <!-- Scripts -->
+        <script>
+            // Dateline Logic
+            const d = new Date();
+            const dateEl = document.getElementById('dateline');
+            if (dateEl) {
+                dateEl.textContent = d.toLocaleDateString(undefined, { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                });
+            }
+
+            // Theme & Accent Switcher Logic
+            (function () {
+                const THEME_KEY = 'srz_theme_v1';
+                const ACCENT_KEY = 'srz_accent_v1';
+                const THEMES = ['white', 'black', 'yellow'];
+                const ACCENTS = ['blue', 'emerald', 'violet', 'amber', 'red', 'fuchsia'];
+                const root = document.documentElement;
+
+                // Swatches
+                document.querySelectorAll('[data-theme-swatch]').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const v = btn.getAttribute('data-theme-swatch');
+                        if (v) {
+                            root.setAttribute('data-theme', v);
+                            localStorage.setItem(THEME_KEY, v);
+                            updateThemeToggleTitle();
+                        }
+                    });
+                });
+                
+                document.querySelectorAll('[data-accent-swatch]').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const v = btn.getAttribute('data-accent-swatch');
+                        if (v) {
+                            root.setAttribute('data-accent', v);
+                            localStorage.setItem(ACCENT_KEY, v);
+                        }
+                    });
+                });
+
+                // Cycle buttons
+                const themeBtn = document.getElementById('themeToggle');
+                const accentBtn = document.getElementById('accentToggle');
+
+                function cycleTheme() {
+                    const cur = root.getAttribute('data-theme') || THEMES[0];
+                    const next = THEMES[(THEMES.indexOf(cur) + 1) % THEMES.length];
+                    root.setAttribute('data-theme', next);
+                    localStorage.setItem(THEME_KEY, next);
+                    updateThemeToggleTitle();
+                }
+
+                function cycleAccent() {
+                    const cur = root.getAttribute('data-accent') || ACCENTS[0];
+                    const next = ACCENTS[(ACCENTS.indexOf(cur) + 1) % ACCENTS.length];
+                    root.setAttribute('data-accent', next);
+                    localStorage.setItem(ACCENT_KEY, next);
+                }
+
+                function updateThemeToggleTitle() {
+                    if (!themeBtn) return;
+                    const cur = root.getAttribute('data-theme');
+                    themeBtn.title = `Switch theme (current: ${cur})`;
+                }
+
+                if (themeBtn) {
+                    themeBtn.addEventListener('click', cycleTheme);
+                    updateThemeToggleTitle();
+                }
+
+                if (accentBtn) {
+                    accentBtn.addEventListener('click', cycleAccent);
+                }
+
+                // Keyboard shortcuts
+                window.addEventListener('keydown', (e) => {
+                    const isMac = navigator.platform.toUpperCase().includes('MAC');
+                    if ((isMac ? e.metaKey : e.ctrlKey) && e.key.toLowerCase() === 'j') {
+                        e.preventDefault();
+                        cycleTheme();
+                    }
+                    if ((isMac ? e.metaKey : e.ctrlKey) && e.key.toLowerCase() === 'k') {
+                        e.preventDefault();
+                        cycleAccent();
+                    }
+                });
+            })();
+
+            // Lightbox Logic (Optimized Global version)
+            (function () {
+                let currentLightboxIndex = -1;
+                let lightbox: HTMLElement | null;
+                let lightboxImg: HTMLImageElement | null;
+                let lastFocusedElement: HTMLElement | null = null;
+
+                function initLightbox() {
+                    if (document.querySelector('.lightbox-overlay')) return;
+                    
+                    lightbox = document.createElement('div');
+                    lightbox.className = 'lightbox-overlay';
+                    lightbox.setAttribute('role', 'dialog');
+                    lightbox.setAttribute('aria-modal', 'true');
+                    lightbox.setAttribute('aria-label', 'Image Lightbox');
+
+                    lightbox.innerHTML = `
+                    <button class="lightbox-close" aria-label="Close Lightbox">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </button>
+                    <button class="lightbox-nav lightbox-prev" aria-label="Previous Image">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
+                    </button>
+                    <div class="lightbox-content">
+                        <img class="lightbox-img" src="" alt="Expanded View" referrerpolicy="no-referrer" />
+                    </div>
+                    <button class="lightbox-nav lightbox-next" aria-label="Next Image">
+                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
+                    </button>
+                    `;
+                    document.body.appendChild(lightbox);
+                    lightboxImg = lightbox.querySelector('.lightbox-img');
+
+                    // Listeners
+                    lightbox.querySelector('.lightbox-close')?.addEventListener('click', closeLightbox);
+                    lightbox.querySelector('.lightbox-next')?.addEventListener('click', nextImage);
+                    lightbox.querySelector('.lightbox-prev')?.addEventListener('click', prevImage);
+                    lightbox.addEventListener('click', (e) => {
+                        if (e.target === lightbox) closeLightbox();
+                    });
+                }
+
+                (window as any).openLightbox = (input: number | string) => {
+                    if (!lightbox) initLightbox();
+                    lastFocusedElement = document.activeElement as HTMLElement;
+
+                    if (typeof input === 'number') {
+                        currentLightboxIndex = input;
+                        updateLightbox();
+                    } else if (typeof input === 'string') {
+                        currentLightboxIndex = -1;
+                        if (lightboxImg) lightboxImg.src = input;
+                        if (lightbox) {
+                            (lightbox.querySelector('.lightbox-next') as HTMLElement).style.display = 'none';
+                            (lightbox.querySelector('.lightbox-prev') as HTMLElement).style.display = 'none';
+                        }
+                    }
+
+                    if (lightbox) {
+                        lightbox.classList.add('open');
+                        document.body.style.overflow = 'hidden';
+                        (lightbox.querySelector('.lightbox-close') as HTMLElement).focus();
+                    }
+                };
+
+                function closeLightbox() {
+                    if (!lightbox) return;
+                    lightbox.classList.remove('open');
+                    document.body.style.overflow = '';
+                    (lightbox.querySelector('.lightbox-next') as HTMLElement).style.display = '';
+                    (lightbox.querySelector('.lightbox-prev') as HTMLElement).style.display = '';
+                    if (lastFocusedElement) lastFocusedElement.focus();
+                    setTimeout(() => {
+                        if (lightboxImg) lightboxImg.src = '';
+                    }, 300);
+                }
+
+                function updateLightbox() {
+                    const images = (window as any).GALLERY_IMAGES || [];
+                    if (currentLightboxIndex >= 0 && currentLightboxIndex < images.length) {
+                        const url = images[currentLightboxIndex];
+                        if (lightboxImg) lightboxImg.src = url;
+                        if (lightbox) {
+                            (lightbox.querySelector('.lightbox-next') as HTMLElement).style.display = images.length > 1 ? '' : 'none';
+                            (lightbox.querySelector('.lightbox-prev') as HTMLElement).style.display = images.length > 1 ? '' : 'none';
+                        }
+                    } else {
+                        if (lightbox) {
+                            (lightbox.querySelector('.lightbox-next') as HTMLElement).style.display = 'none';
+                            (lightbox.querySelector('.lightbox-prev') as HTMLElement).style.display = 'none';
+                        }
+                    }
+                }
+
+                function nextImage(e?: Event) {
+                    if (e) e.stopPropagation();
+                    const images = (window as any).GALLERY_IMAGES || [];
+                    if (images.length === 0 || currentLightboxIndex < 0) return;
+                    currentLightboxIndex = (currentLightboxIndex + 1) % images.length;
+                    updateLightbox();
+                }
+
+                function prevImage(e?: Event) {
+                    if (e) e.stopPropagation();
+                    const images = (window as any).GALLERY_IMAGES || [];
+                    if (images.length === 0 || currentLightboxIndex < 0) return;
+                    currentLightboxIndex = (currentLightboxIndex - 1 + images.length) % images.length;
+                    updateLightbox();
+                }
+
+                document.addEventListener('keydown', (e) => {
+                    if (!lightbox || !lightbox.classList.contains('open')) return;
+                    if (e.key === 'Escape') closeLightbox();
+                    if (e.key === 'ArrowRight') nextImage();
+                    if (e.key === 'ArrowLeft') prevImage();
+                });
+            })();
+        </script>
+	</body>
+</html>

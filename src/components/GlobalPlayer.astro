@@ -1,0 +1,56 @@
+---
+---
+<div id="global-player" class="player-bar fixed bottom-0 left-0 right-0 z-[60] border-t-2 border-[var(--rule)] bg-[var(--paper)] py-3 sm:py-4 px-4 sm:px-8 shadow-[0_-20px_50px_-12px_rgba(0,0,0,0.15)]">
+    <!-- Progress Indicator (Full width top) -->
+    <div id="playerProgressContainer" class="progress-bar-container absolute top-0 left-0 w-full group overflow-hidden">
+        <div id="playerProgressBar" class="progress-bar-fill w-0 h-1 bg-[var(--ink)]"></div>
+    </div>
+
+    <div class="mx-auto flex max-w-[1100px] items-center justify-between gap-4 sm:gap-8">
+        <!-- Episode Info (Left) -->
+        <div class="flex items-center gap-4 min-w-0 flex-1">
+            <div class="hidden sm:block w-12 h-12 rounded border border-[var(--rule)] bg-white p-1 flex-shrink-0 animate-pulse-slow">
+                <img id="playerThumbnail" src="/assets/img/podcast-logo.png" alt="Playing Now" class="w-full h-full object-contain grayscale">
+            </div>
+            <div class="min-w-0 pr-4">
+                <div id="prefixState" class="text-[9px] uppercase font-bold tracking-widest text-[var(--muted)] mb-0.5">Now Playing</div>
+                <h4 id="playerTitle" class="font-serif text-sm sm:text-base leading-tight truncate text-[var(--ink)]">Select an episode to play</h4>
+                <div id="playerMeta" class="text-[10px] sm:text-xs text-neutral-500 font-serif  mt-0.5">00:00 • 0:00</div>
+            </div>
+        </div>
+
+        <!-- Controls (Center/Right) -->
+        <div class="flex items-center gap-4 sm:gap-10 shrink-0">
+             <!-- Speed Selector -->
+             <div class="relative hidden sm:block">
+                <button id="speedToggle" class="text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded hover:bg-[var(--rule)]/5 transition-colors">
+                    1.0x
+                </button>
+                <div id="speedDropdown" class="speed-dropdown shadow-2xl transition-all duration-200">
+                    <div class="speed-option active" data-speed="1">1.0x</div>
+                    <div class="speed-option" data-speed="1.25">1.2x</div>
+                    <div class="speed-option" data-speed="1.5">1.5x</div>
+                    <div class="speed-option" data-speed="1.75">1.7x</div>
+                    <div class="speed-option" data-speed="2">2.0x</div>
+                </div>
+             </div>
+
+             <!-- Main Toggle (Play/Pause) -->
+             <button id="playerMainToggle" class="w-10 h-10 sm:w-14 sm:h-14 flex items-center justify-center rounded-full bg-[var(--ink)] text-[var(--paper)] hover:scale-105 active:scale-95 transition-all shadow-lg">
+                <svg id="playIconMain" class="w-6 h-6 sm:w-8 sm:h-8 fill-current" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z"/>
+                </svg>
+                <svg id="pauseIconMain" class="hidden w-6 h-6 sm:w-8 sm:h-8 fill-current" viewBox="0 0 24 24">
+                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                </svg>
+             </button>
+
+             <!-- Progress Text (Mobile/Simple) -->
+             <div class="text-[10px] font-bold uppercase tracking-widest text-[var(--muted)] min-w-[65px] text-right hidden lg:block">
+                <span id="playerCurrentTime">0:00</span> / <span id="playerDuration">0:00</span>
+             </div>
+        </div>
+    </div>
+</div>
+
+
