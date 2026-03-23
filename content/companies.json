@@ -1,29 +1,242 @@
 [
   {
-    "id": "tr",
-    "name": "Pouch",
+    "id": "sail-rides",
+    "name": "Sail rides",
     "industry": "Tech",
     "location": "Accra",
     "status": "Live",
-    "description": "The high-bandwidth audio-log for the African builder. Short, raw episodes featuring unfiltered voices from the ecosystem.",
-    "tags": ["Fintech"],
+    "description": "Sail is a ride-hailing aggregator that allows users to compare prices and availability across different transport services to find the most affordable and efficient ride.",
+    "tags": [
+      "Mobility",
+      "Software"
+    ],
     "founded": "2025",
-    "url": "https://www.pouchpay.app",
+    "url": "https://sailrides.co/",
     "cta": "Learn more",
-    "logo": "assets/img/podcast-logo.png"
+    "logo": "SR"
   },
   {
-    "id": "m2m",
-    "name": "Minutes 2 Match",
-    "industry": "Social",
-    "location": "Accra, GH",
-    "status": "Batch SR01",
-    "description": "A platform for sports enthusiasts to find matches and teammates in minutes. Connecting the city through play.",
-    "tags": ["Marketplace", "Sports", "Social"],
+    "id": "reveal-real-estate",
+    "name": "Reveal Real Estate",
+    "industry": "Tech",
+    "location": "Accra",
+    "status": "Live",
+    "description": "We help you invest in real estate with full transparency, expert guidance, and end-to-end support. Secure your dream property without the hassle.",
+    "tags": [
+      "Real Estate",
+      "Software"
+    ],
+    "founded": "2025",
+    "url": "https://reveal-real-estate.com",
+    "cta": "Learn more",
+    "logo": "RR"
+  },
+  {
+    "id": "pouch",
+    "name": "Pouch",
+    "industry": "Fintech",
+    "location": "Accra",
+    "status": "Live",
+    "description": "pouch provides the contactless apple pay experience, using mobile money.",
+    "tags": [
+      "Fintech",
+      "Software"
+    ],
+    "founded": "2025",
+    "url": "https://www.pouchpay.app/",
+    "cta": "Learn more",
+    "logo": "P"
+  },
+  {
+    "id": "chime-app",
+    "name": "Chime",
+    "industry": "Software",
+    "location": "Global",
+    "status": "Live",
+    "description": "A high-visibility productivity tool for macOS designed to ensure users never miss meetings by replacing subtle notifications with unmissable alerts.",
+    "tags": [
+      "Productivity",
+      "Software"
+    ],
+    "founded": "2025",
+    "url": "https://www.usechime.app/",
+    "cta": "Learn more",
+    "logo": "C"
+  },
+  {
+    "id": "ratecardly",
+    "name": "RateCardly",
+    "industry": "Creative",
+    "location": "Accra",
+    "status": "Live",
+    "description": "A professional platform that allows creators and freelancers to build and share digital, link-based rate cards for their services and pricing.",
+    "tags": [
+      "Creative",
+      "Software"
+    ],
     "founded": "2024",
-    "url": "#",
-    "cta": "Join App",
-    "logo": "M2M",
-    "logoAltTheme": "black"
+    "url": "https://ratecard.ly/",
+    "cta": "Learn more",
+    "logo": "RC"
+  },
+  {
+    "id": "echolift",
+    "name": "Echolift",
+    "industry": "Tech",
+    "location": "Accra",
+    "status": "Live",
+    "description": "A technology platform that simplifies the donation process by connecting donors directly with verified charities through a decentralized system.",
+    "tags": [
+      "Social Impact",
+      "Software"
+    ],
+    "founded": "2024",
+    "url": "https://www.echolift.org/",
+    "cta": "Learn more",
+    "logo": "EL"
+  },
+  {
+    "id": "jampolls",
+    "name": "JamPolls",
+    "industry": "Social",
+    "location": "Accra",
+    "status": "Live",
+    "description": "An audience engagement and polling platform designed for creators and brands to gather instant feedback through highly shareable, Gen Z-friendly polls.",
+    "tags": [
+      "Social",
+      "Creative"
+    ],
+    "founded": "2024",
+    "url": "https://jampolls.com/",
+    "cta": "Learn more",
+    "logo": "JP"
+  },
+  {
+    "id": "beeterty",
+    "name": "Beeterty",
+    "industry": "Fintech",
+    "location": "Accra",
+    "status": "Live",
+    "description": "A professional invoicing and financial management platform that helps African freelancers create branded invoices and track payments.",
+    "tags": [
+      "Fintech",
+      "Software"
+    ],
+    "founded": "2024",
+    "url": "https://beeterty.com/",
+    "cta": "Learn more",
+    "logo": "B"
+  },
+  {
+    "id": "skillsclub",
+    "name": "The Skill Club",
+    "industry": "Social",
+    "location": "Accra",
+    "status": "Live",
+    "description": "A career-focused community and talent marketplace that connects students and tech-savvy individuals in Ghana with internships and masterclasses.",
+    "tags": [
+      "Community",
+      "Social"
+    ],
+    "founded": "2024",
+    "url": "https://theskill.club/",
+    "cta": "Learn more",
+    "logo": "SC"
+  },
+  {
+    "id": "giftpal",
+    "name": "GiftPal",
+    "industry": "Software",
+    "location": "Accra",
+    "status": "Live",
+    "description": "An online gift registry and management platform that helps individuals and groups coordinate gift lists for occasions like weddings or holidays.",
+    "tags": [
+      "Lifestyle",
+      "Software"
+    ],
+    "founded": "2024",
+    "url": "https://giftpal.co/",
+    "cta": "Learn more",
+    "logo": "GP"
+  },
+  {
+    "id": "fitsynq",
+    "name": "FitSynQ",
+    "industry": "Software",
+    "location": "Accra",
+    "status": "Live",
+    "description": "A comprehensive gym management 'operating system' that automates member check-ins, multi-location billing, and class bookings.",
+    "tags": [
+      "Software",
+      "Health"
+    ],
+    "founded": "2024",
+    "url": "https://www.fitsynq.app/",
+    "cta": "Learn more",
+    "logo": "FS"
+  },
+  {
+    "id": "buukmenow",
+    "name": "BuukMeNow",
+    "industry": "Marketplace",
+    "location": "Accra",
+    "status": "Live",
+    "description": "A service discovery and appointment booking platform that connects users with local professionals in beauty, healthcare, and grooming.",
+    "tags": [
+      "Marketplace",
+      "Services"
+    ],
+    "founded": "2023",
+    "url": "https://buukmenow.com/",
+    "cta": "Learn more",
+    "logo": "BN"
+  },
+  {
+    "id": "gatepass",
+    "name": "GatePass",
+    "industry": "Fintech",
+    "location": "Accra",
+    "status": "Live",
+    "description": "A streamlined event ticketing platform that allows organizers to create events and sell digital tickets with secure QR codes for paperless entry.",
+    "tags": [
+      "Events",
+      "Fintech"
+    ],
+    "founded": "2024",
+    "url": "https://gatepass.so/",
+    "cta": "Learn more",
+    "logo": "GP"
+  },
+  {
+    "id": "golly-express",
+    "name": "Golly Express",
+    "industry": "Logistics",
+    "location": "Accra",
+    "status": "Live",
+    "description": "An international shipping and package forwarding platform that allows users to shop from global retailers and have their packages delivered locally.",
+    "tags": [
+      "Logistics",
+      "Software"
+    ],
+    "founded": "2024",
+    "url": "https://app.golly.live/",
+    "cta": "Learn more",
+    "logo": "GE"
+  },
+  {
+    "id": "thedsgnjunkies",
+    "name": "Thedsgnjunkies",
+    "industry": "Creative",
+    "location": "Accra",
+    "status": "Live",
+    "description": "An African creative community that empowers designers through mentorship, campus tours, and conferences like FiDCon.",
+    "tags": [
+      "Creative",
+      "Community"
+    ],
+    "founded": "2023",
+    "url": "https://thedsgnjunkies.com/",
+    "cta": "Learn more",
+    "logo": "DJ"
   }
 ]
