@@ -59,12 +59,14 @@
                         Back to Gazette
                     </a>
                     <button id="themeToggle"
-                        class="inline-flex items-center gap-2 rounded border border-[var(--rule)] px-2.5 py-1 text-xs font-semibold uppercase tracking-wider hover:opacity-90">
+                        class="inline-flex items-center gap-2 rounded border border-[var(--rule)] px-2.5 py-1 text-xs font-semibold uppercase tracking-wider hover:opacity-90"
+                        title="Switch theme (white → black → yellow)">
                         <span class="inline-block h-[10px] w-[10px] rounded-full bg-[var(--ink)]"></span>
                         Theme
                     </button>
                     <button id="accentToggle"
-                        class="inline-flex items-center gap-2 rounded border accent-border px-2.5 py-1 text-xs font-semibold uppercase tracking-wider accent-text hover:opacity-90">
+                        class="inline-flex items-center gap-2 rounded border accent-border px-2.5 py-1 text-xs font-semibold uppercase tracking-wider accent-text hover:opacity-90"
+                        title="Switch accent color">
                         <span class="inline-block h-[10px] w-[10px] rounded-full"
                             style="background: var(--accent)"></span>
                         Color
@@ -90,27 +92,27 @@
                     <span>Theme</span>
                     <div class="flex items-center gap-1">
                         <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#fbfaf7]"
-                            data-theme-swatch="white"></button>
+                            data-theme-swatch="white" aria-label="White theme"></button>
                         <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#0b0b0b]"
-                            data-theme-swatch="black"></button>
+                            data-theme-swatch="black" aria-label="Black theme"></button>
                         <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#fff7cc]"
-                            data-theme-swatch="yellow"></button>
+                            data-theme-swatch="yellow" aria-label="Yellow theme"></button>
                     </div>
                     <span class="mx-2 h-3 w-px bg-[var(--rule)]/30"></span>
                     <span>Color</span>
                     <div class="flex items-center gap-1">
                         <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#0ea5e9]"
-                            data-accent-swatch="blue"></button>
+                            data-accent-swatch="blue" aria-label="Blue"></button>
                         <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#10b981]"
-                            data-accent-swatch="emerald"></button>
+                            data-accent-swatch="emerald" aria-label="Emerald"></button>
                         <button class="h-[18px] w-[18px] rounded-full border border-[var(--rule)] bg-[#8b5cf6]"
-                            data-accent-swatch="violet"></button>
+                            data-accent-swatch="violet" aria-label="Violet"></button>
                         <button class="h-[18px] w-[18px] rounded-full border border border-[var(--rule)] bg-[#f59e0b]"
-                            data-accent-swatch="amber"></button>
+                            data-accent-swatch="amber" aria-label="Amber"></button>
                         <button class="h-[18px] w-[18px] rounded-full border border border-[var(--rule)] bg-[#ef4444]"
-                            data-accent-swatch="red"></button>
+                            data-accent-swatch="red" aria-label="Red"></button>
                         <button class="h-[18px] w-[18px] rounded-full border border border-[var(--rule)] bg-[#d946ef]"
-                            data-accent-swatch="fuchsia"></button>
+                            data-accent-swatch="fuchsia" aria-label="Fuchsia"></button>
                     </div>
                 </div>
             </div>
