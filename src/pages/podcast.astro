@@ -28,7 +28,12 @@ let episodes = [];
 let error = null;
 
 try {
-    const feed = await fetchWithRetry('https://anchor.fm/s/110059518/podcast/rss');
+    // Add cache-busting parameter to ensure we get the latest feed
+    const rssUrl = `https://anchor.fm/s/110059518/podcast/rss?t=${Date.now()}`;
+    const response = await fetch(rssUrl, { cache: 'no-store' });
+    const xml = await response.text();
+    const feed = await parser.parseString(xml);
+    
     episodes = feed.items.map(item => {
         const description = (item.contentSnippet || item.itunes?.summary || item.itunes?.subtitle || '')
             .replace(/<[^>]*>?/gm, '')
