@@ -8,6 +8,19 @@ interface Props {
 }
 
 const { title = "Sandbox Réseau Gazette", subtitle = "For Builders, Thinkers & Makers" } = Astro.props;
+const currentPath = Astro.url.pathname;
+
+const categories = [
+    { name: 'Gazette', href: '/', active: currentPath === '/' },
+    { name: 'Podcast', href: '/podcast', active: currentPath === '/podcast' },
+    { name: 'Gallery', href: '/gallery', active: currentPath === '/gallery' },
+    { name: 'Editions', href: '/editions', active: currentPath === '/editions' },
+    { name: 'Newsletters', href: '/newsletters', active: currentPath === '/newsletters' },
+    { name: 'Community', href: '/community', active: currentPath === '/community' },
+    { name: 'Registry', href: '/registry', active: currentPath === '/registry' },
+    { name: 'Handbook', href: '/handbook', active: currentPath === '/handbook' },
+    { name: 'Register', href: 'https://luma.com/sandbox-reseau', active: false, external: true },
+];
 ---
 
 <header class="border-b-[3px] border-[var(--rule)] border-double bg-[var(--paper)]">
@@ -50,4 +63,135 @@ const { title = "Sandbox Réseau Gazette", subtitle = "For Builders, Thinkers & 
     </div>
 </header>
 
-<div class="h-2 border-y border-[var(--rule)] banner"></div>
+<!-- Sticky Menu Toggle Bar -->
+<div class="sticky top-0 z-50 border-y border-[var(--rule)] bg-[var(--paper)] py-2 transition-shadow duration-300" id="sticky-menu-bar">
+    <div class="mx-auto flex max-w-[1100px] items-center justify-between px-4">
+        <button id="menu-open-btn" class="flex items-center gap-2 px-3 py-1 text-[11px] font-black uppercase tracking-[0.2em] hover:accent-text transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+            Menu
+        </button>
+        
+        <div class="flex items-center gap-4">
+             <span class="hidden sm:inline font-serif italic text-[12px] text-[var(--muted)]" id="global-status-label">Gazette Dispatch</span>
+             <a href="https://luma.com/sandbox-reseau" target="_blank" class="rounded bg-[var(--ink)] px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest text-[var(--paper)] hover:bg-[var(--accent)] transition-colors">
+                Register
+             </a>
+        </div>
+    </div>
+    <div class="absolute bottom-0 left-0 h-[2px] w-full bg-[var(--rule)]/5">
+        <div id="global-scroll-progress" class="h-full bg-[var(--accent)] transition-all duration-150" style="width: 0%"></div>
+    </div>
+</div>
+
+<div class="h-1 border-b border-[var(--rule)] banner"></div>
+
+<!-- Full Screen Overlay Menu -->
+<div id="full-screen-menu" class="fixed inset-0 z-[100] translate-y-full bg-[var(--paper)] transition-transform duration-700 ease-[cubic-bezier(0.85,0,0.15,1)]">
+    <div class="grain-overlay opacity-10"></div>
+    
+    <!-- Menu Header -->
+    <div class="flex items-center justify-between border-b border-[var(--rule)] px-6 py-6 md:px-12">
+        <div class="font-serif text-xl font-bold tracking-tight">Sandbox Réseau</div>
+        <button id="menu-close-btn" class="group flex h-12 w-12 items-center justify-center rounded-full border border-[var(--rule)]/20 transition-all hover:bg-[var(--ink)] hover:text-[var(--paper)]">
+             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform group-hover:rotate-90"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+    </div>
+
+    <!-- Menu Links -->
+    <div class="flex h-full flex-col items-center justify-center px-6 pb-24 overflow-y-auto">
+        <nav class="flex flex-col items-center gap-6 text-center py-12">
+            {categories.map((cat, i) => (
+                <div class="overflow-hidden">
+                    <a 
+                        href={cat.href}
+                        target={cat.external ? "_blank" : "_self"}
+                        class="menu-link block font-serif text-5xl font-bold tracking-tighter sm:text-7xl md:text-8xl hover:accent-text transition-all duration-300 transform hover:scale-105 opacity-0 translate-y-12"
+                        style={`transition-delay: ${i * 50}ms`}
+                    >
+                        {cat.name}
+                        {cat.external && <span class="ml-2 inline-block -translate-y-6 font-sans text-xs font-black uppercase tracking-[0.2em] text-[var(--muted)] opacity-50">Ext</span>}
+                    </a>
+                </div>
+            ))}
+        </nav>
+    </div>
+</div>
+
+<script>
+    function initMenu() {
+        const openBtn = document.getElementById('menu-open-btn');
+        const closeBtn = document.getElementById('menu-close-btn');
+        const menu = document.getElementById('full-screen-menu');
+        const stickyBar = document.getElementById('sticky-menu-bar');
+        const progress = document.getElementById('global-scroll-progress');
+        const label = document.getElementById('global-status-label');
+        const menuLinks = document.querySelectorAll('.menu-link');
+        const menuFooter = document.getElementById('menu-footer');
+
+        if (!openBtn || !closeBtn || !menu) return;
+
+        function toggleMenu(isOpen: boolean) {
+            if (isOpen) {
+                menu.classList.remove('translate-y-full');
+                document.body.style.overflow = 'hidden';
+                // Animate links
+                menuLinks.forEach((link, i) => {
+                    setTimeout(() => {
+                        link.classList.remove('opacity-0', 'translate-y-12');
+                    }, 300 + (i * 60));
+                });
+            } else {
+                menu.classList.add('translate-y-full');
+                document.body.style.overflow = '';
+                // Reset state for next time
+                menuLinks.forEach(link => {
+                    link.classList.add('opacity-0', 'translate-y-12');
+                });
+            }
+        }
+
+        openBtn.addEventListener('click', () => toggleMenu(true));
+        closeBtn.addEventListener('click', () => toggleMenu(false));
+        
+        // Close on link click (if internal)
+        menuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                const target = (link as HTMLAnchorElement).getAttribute('target');
+                if (target !== '_blank') toggleMenu(false);
+            });
+        });
+
+        // Sticky & Progress Logic
+        const handleScroll = () => {
+            if (window.scrollY > 150) {
+                stickyBar?.classList.add('shadow-xl');
+            } else {
+                stickyBar?.classList.remove('shadow-xl');
+            }
+
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            if (height > 0) {
+                const scrolledPercent = (winScroll / height) * 100;
+                if (progress) progress.style.width = scrolledPercent + "%";
+            }
+
+            if (window.location.pathname === '/' && label) {
+                const articles = document.querySelectorAll('article[id]');
+                let cur = "Dispatch";
+                articles.forEach(art => {
+                    if (window.scrollY >= (art as HTMLElement).offsetTop - 120) {
+                        cur = art.getAttribute('id') || "Dispatch";
+                    }
+                });
+                label.textContent = "Journal: " + cur.charAt(0).toUpperCase() + cur.slice(1);
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        handleScroll(); // Initial check
+    }
+
+    initMenu();
+    document.addEventListener('astro:after-swap', initMenu);
+</script>
