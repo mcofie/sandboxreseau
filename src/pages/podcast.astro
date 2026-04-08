@@ -1,60 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import GlobalPlayer from '../components/GlobalPlayer.astro';
-import Parser from 'rss-parser';
-
-const parser = new Parser({
-    customFields: {
-        item: [
-            ['itunes:duration', 'duration'],
-            ['itunes:summary', 'summary']
-        ]
-    }
-});
-
-async function fetchWithRetry(url, retries = 3) {
-    for (let i = 0; i < retries; i++) {
-        try {
-            return await parser.parseURL(url);
-        } catch (err) {
-            if (i === retries - 1) throw err;
-            console.log(`Fetch failed, retrying (${i + 1}/${retries})...`);
-            await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
-        }
-    }
-}
-
-let episodes = [];
-let error = null;
-
-try {
-    // Add cache-busting parameter to ensure we get the latest feed
-    const rssUrl = `https://anchor.fm/s/110059518/podcast/rss?t=${Date.now()}`;
-    const response = await fetch(rssUrl, { cache: 'no-store' });
-    const xml = await response.text();
-    const feed = await parser.parseString(xml);
-    
-    episodes = feed.items.map(item => {
-        const description = (item.contentSnippet || item.itunes?.summary || item.itunes?.subtitle || '')
-            .replace(/<[^>]*>?/gm, '')
-            .trim();
-        
-        return {
-            id: item.guid,
-            title: item.title,
-            description: description.substring(0, 180) + (description.length > 180 ? '...' : ''),
-            date: new Date(item.pubDate || '').toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }),
-            duration: item.itunes?.duration || '5:00',
-            thumbnail: item.itunes?.image?.href || item.itunes?.image || '/assets/img/podcast-logo.png',
-            audioUrl: item.enclosure?.url,
-            spotifyUrl: item.link,
-            appleUrl: 'https://podcasts.apple.com/gh/podcast/the-reverb/id1884282478'
-        };
-    });
-} catch (err) {
-    console.error('RSS Fetch Error:', err);
-    error = "Failed to load feed. Please check back later.";
-}
 
 const headerSubtitle = "Digital Audio-Log";
 ---
@@ -101,62 +47,25 @@ const headerSubtitle = "Digital Audio-Log";
         <div class="mb-12 flex items-center justify-between gap-4">
              <h3 class="font-serif text-2xl tracking-tight">Archive</h3>
              <div class="h-px flex-1 bg-[var(--rule)]/10"></div>
-             <div class="text-[11px] font-bold uppercase tracking-widest text-[var(--muted)]">{episodes.length} Episodes</div>
+             <div id="podcast-count" class="text-[11px] font-bold uppercase tracking-widest text-[var(--muted)]">Loading Episodes...</div>
         </div>
 
-        {error && <p class="text-center py-20 text-neutral-500 font-serif italic">{error}</p>}
+        <div id="podcast-error" class="hidden text-center py-20 text-neutral-500 font-serif italic"></div>
         
         <div id="podcast-archive" class="space-y-6">
-            {episodes.map(ep => (
-                <div class="episode-card group relative flex flex-col sm:flex-row gap-6 p-6 rounded border border-[var(--rule)] bg-[var(--paper)] hover:border-[var(--ink)] transition-all animate-enter" 
-                     data-episode-id={ep.id} 
-                     data-title={ep.title} 
-                     data-meta={`${ep.date} • ${ep.duration}`} 
-                     data-thumb={ep.thumbnail}
-                     data-audio-url={ep.audioUrl}>
-                    
-                    <div class="w-full aspect-square sm:w-40 sm:h-40 flex-shrink-0 bg-[var(--paper)] rounded border border-[var(--rule)] overflow-hidden relative group/art cursor-pointer" onclick={`openLightbox('${ep.thumbnail}')`}>
-                        <img src={ep.thumbnail} alt={ep.title} class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
-                        
-                        {ep.audioUrl && (
-                        <button class="play-btn absolute inset-0 flex items-center justify-center bg-[var(--ink)]/40 opacity-0 group-hover/art:opacity-100 transition-opacity text-[var(--paper)]">
-                            <div class="play-icon w-12 h-12 flex items-center justify-center rounded-full border-2 border-[var(--paper)]">
-                                <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
-                                    <path d="M8 5v14l11-7z"/>
-                                </svg>
-                            </div>
-                        </button>
-                        )}
-                    </div>
-                    
-                    <div class="flex-1 flex flex-col justify-between">
-                        <div>
-                            <div class="flex items-center gap-3 text-[10px] uppercase font-bold tracking-widest text-[var(--muted)] mb-2 text-neutral-400">
-                                 <span>{ep.date}</span>
-                                 <span class="w-1 h-1 rounded-full bg-[var(--rule)]"></span>
-                                 <span>{ep.duration}</span>
-                            </div>
-                            <h3 class="font-serif text-xl sm:text-2xl mb-2 text-[var(--ink)] group-hover:accent-text transition-colors">{ep.title}</h3>
-                            <p class="text-[14px] text-[var(--muted)] leading-relaxed mb-4">{ep.description}</p>
-                        </div>
-                        
-                        <div class="flex flex-wrap items-center justify-between gap-4 mt-auto">
-                            <div class="flex flex-wrap gap-2">
-                                <a href={ep.spotifyUrl} target="_blank" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[var(--rule)] text-[10px] font-bold uppercase tracking-widest hover:bg-[#1DB954] hover:text-white hover:border-[#1DB954] transition-all">
-                                    Spotify
-                                </a>
-                                <a href={ep.appleUrl} target="_blank" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[var(--rule)] text-[10px] font-bold uppercase tracking-widest hover:bg-[#8e3ee5] hover:text-white hover:border-[#8e3ee5] transition-all">
-                                    Apple
-                                </a>
-                            </div>
-                            
-                            <div class="audio-wave hidden group-[.is-playing]:flex">
-                                <div></div><div></div><div></div><div></div>
-                            </div>
+            <!-- Shimmers -->
+            <div class="podcast-shimmer space-y-6">
+                {[1, 2, 3].map(() => (
+                    <div class="flex flex-col sm:flex-row gap-6 p-6 rounded border border-[var(--rule)] bg-[var(--paper)] animate-pulse">
+                        <div class="w-full aspect-square sm:w-40 sm:h-40 bg-neutral-200 rounded"></div>
+                        <div class="flex-1 space-y-4">
+                            <div class="h-3 w-32 bg-neutral-200 rounded"></div>
+                            <div class="h-8 w-3/4 bg-neutral-200 rounded"></div>
+                            <div class="h-4 w-full bg-neutral-200 rounded"></div>
                         </div>
                     </div>
-                </div>
-            ))}
+                ))}
+            </div>
         </div>
 
         <!-- Subscribe CTA -->
@@ -181,29 +90,131 @@ const headerSubtitle = "Digital Audio-Log";
 
     <GlobalPlayer />
 
-    <script>
+    <script is:inline>
+        (async function fetchPodcastArchive() {
+            const archive = document.getElementById('podcast-archive');
+            const countDisplay = document.getElementById('podcast-count');
+            const errorDisplay = document.getElementById('podcast-error');
+            
+            try {
+                const rssUrl = `https://anchor.fm/s/110059518/podcast/rss?t=${Date.now()}`;
+                const response = await fetch(rssUrl);
+                const text = await response.text();
+                const parser = new DOMParser();
+                const xml = parser.parseFromString(text, "text/xml");
+                const items = xml.querySelectorAll("item");
+                
+                if (items.length > 0) {
+                    const itunesNamespace = "http://www.itunes.com/dtds/podcast-1.0.dtd";
+                    let html = '';
+                    
+                    items.forEach(item => {
+                        const title = item.querySelector("title")?.textContent || "The Reverb Episode";
+                        const guid = item.querySelector("guid")?.textContent || "";
+                        const pubDate = item.querySelector("pubDate")?.textContent || "";
+                        const spotifyUrl = item.querySelector("link")?.textContent || "#";
+                        const description = item.querySelector("description")?.textContent || "";
+                        const audioUrl = item.querySelector("enclosure")?.getAttribute("url") || "";
+                        
+                        const durationElement = item.getElementsByTagNameNS(itunesNamespace, "duration")[0];
+                        const duration = durationElement ? durationElement.textContent : "5:00";
+                        
+                        const imageElement = item.getElementsByTagNameNS(itunesNamespace, "image")[0];
+                        const thumb = imageElement ? imageElement.getAttribute("href") : "/assets/img/podcast-logo.png";
+                        
+                        const dateObj = new Date(pubDate);
+                        const formattedDate = dateObj.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+                        
+                        const cleanDesc = description.replace(/<[^>]*>?/gm, '').trim();
+                        const shortDesc = cleanDesc.substring(0, 180) + (cleanDesc.length > 180 ? '...' : '');
+
+                        html += `
+                            <div class="episode-card group relative flex flex-col sm:flex-row gap-6 p-6 rounded border border-[var(--rule)] bg-[var(--paper)] hover:border-[var(--ink)] transition-all animate-enter" 
+                                 data-episode-id="${guid}" 
+                                 data-title="${title}" 
+                                 data-meta="${formattedDate} • ${duration}" 
+                                 data-thumb="${thumb}"
+                                 data-audio-url="${audioUrl}">
+                                
+                                <div class="w-full aspect-square sm:w-40 sm:h-40 flex-shrink-0 bg-[var(--paper)] rounded border border-[var(--rule)] overflow-hidden relative group/art cursor-pointer" onclick="if(window.openLightbox) openLightbox('${thumb}')">
+                                    <img src="${thumb}" alt="${title}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
+                                    
+                                    ${audioUrl ? `
+                                    <button class="play-btn absolute inset-0 flex items-center justify-center bg-[var(--ink)]/40 opacity-0 group-hover/art:opacity-100 transition-opacity text-[var(--paper)]">
+                                        <div class="play-icon w-12 h-12 flex items-center justify-center rounded-full border-2 border-[var(--paper)]">
+                                            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                                                <path d="M8 5v14l11-7z"/>
+                                            </svg>
+                                        </div>
+                                    </button>
+                                    ` : ''}
+                                </div>
+                                
+                                <div class="flex-1 flex flex-col justify-between">
+                                    <div>
+                                        <div class="flex items-center gap-3 text-[10px] uppercase font-bold tracking-widest text-[var(--muted)] mb-2 text-neutral-400">
+                                             <span>${formattedDate}</span>
+                                             <span class="w-1 h-1 rounded-full bg-[var(--rule)]"></span>
+                                             <span>${duration}</span>
+                                        </div>
+                                        <h3 class="font-serif text-xl sm:text-2xl mb-2 text-[var(--ink)] group-hover:accent-text transition-colors">${title}</h3>
+                                        <p class="text-[14px] text-[var(--muted)] leading-relaxed mb-4">${shortDesc}</p>
+                                    </div>
+                                    
+                                    <div class="flex flex-wrap items-center justify-between gap-4 mt-auto">
+                                        <div class="flex flex-wrap gap-2">
+                                            <a href="${spotifyUrl}" target="_blank" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[var(--rule)] text-[10px] font-bold uppercase tracking-widest hover:bg-[#1DB954] hover:text-white hover:border-[#1DB954] transition-all">
+                                                Spotify
+                                            </a>
+                                            <a href="https://podcasts.apple.com/gh/podcast/the-reverb/id1884282478" target="_blank" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[var(--rule)] text-[10px] font-bold uppercase tracking-widest hover:bg-[#8e3ee5] hover:text-white hover:border-[#8e3ee5] transition-all">
+                                                Apple
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    
+                    if (archive) {
+                        archive.innerHTML = html;
+                        // Trigger visibility for dynamically added items
+                        archive.querySelectorAll('.animate-enter').forEach(el => {
+                            setTimeout(() => el.classList.add('visible'), 50);
+                        });
+                        initPodcastActions();
+                    }
+                    if (countDisplay) {
+                        countDisplay.textContent = `${items.length} Episodes`;
+                    }
+                }
+            } catch (e) {
+                console.error("Failed to fetch podcast archive:", e);
+                if (errorDisplay) {
+                   errorDisplay.textContent = "Failed to load archive. Please try refreshing.";
+                   errorDisplay.classList.remove('hidden');
+                }
+            }
+        })();
+
         document.addEventListener('astro:after-swap', initPodcastActions);
         function initPodcastActions() {
             document.querySelectorAll('.play-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.stopPropagation();
-                    const card = (btn.closest('.episode-card') as HTMLElement);
+                    const card = btn.closest('.episode-card');
                     if (card) {
                         const id = card.dataset.episodeId || '';
                         const url = card.dataset.audioUrl || '';
                         const title = card.dataset.title || '';
                         const meta = card.dataset.meta || '';
                         const thumb = card.dataset.thumb || '';
-                        if ((window as any).playEpisode) {
-                            (window as any).playEpisode(id, url, title, meta, thumb);
+                        if (window.playEpisode) {
+                            window.playEpisode(id, url, title, meta, thumb);
                         }
                     }
                 });
             });
         }
-        initPodcastActions();
-    </script>
-    <script>
-        // Podcast logic was here
     </script>
 </Layout>
