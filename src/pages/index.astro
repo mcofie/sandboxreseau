@@ -237,11 +237,13 @@ const galleryPreview = gallery.slice(0, 4);
 
     <script is:inline define:vars={{ galleryStrings: gallery.map(img => img.url) }}>
         // RSS Fetcher for Live Updates
-        (async function fetchLatestPodcast() {
+        async function fetchLatestPodcast() {
             const loader = document.getElementById('podcast-loader');
             const content = document.getElementById('podcast-content');
             const badge = document.getElementById('podcast-new-badge');
             
+            if (!loader || !content) return; // Not on a page with podcast section
+
             try {
                 const rssUrl = `https://anchor.fm/s/110059518/podcast/rss?t=${Date.now()}`;
                 const response = await fetch(rssUrl);
@@ -269,16 +271,27 @@ const galleryPreview = gallery.slice(0, 4);
                     // Check if "new" (published in the last 7 days)
                     const isNew = (Date.now() - dateObj.getTime()) < (7 * 24 * 60 * 60 * 1000);
                     
-                    // Clean description
-                    const cleanDesc = description.replace(/<[^>]*>?/gm, '').trim();
-                    const shortDesc = cleanDesc.substring(0, 150) + (cleanDesc.length > 150 ? '...' : '');
+                    // Clean and Decode description
+                    const decoder = document.createElement('div');
+                    decoder.innerHTML = description;
+                    const decodedDesc = decoder.textContent || decoder.innerText || "";
+                    const cleanDesc = decodedDesc.replace(/<[^>]*>?/gm, '').replace(/&quot;/g, '"').trim();
+                    // Ensure space after quotes if needed
+                    const formattedDesc = cleanDesc.replace(/"([A-Z])/g, '" $1');
+                    const shortDesc = formattedDesc.substring(0, 150) + (formattedDesc.length > 150 ? '...' : '');
 
                     // Update DOM
-                    document.getElementById('podcast-title').textContent = title;
-                    document.getElementById('podcast-desc').textContent = shortDesc;
-                    document.getElementById('podcast-meta').innerHTML = `<span>Dispatch: ${formattedDate}</span>`;
-                    document.getElementById('podcast-thumb').src = thumb;
-                    document.getElementById('podcast-spotify').href = link;
+                    const titleEl = document.getElementById('podcast-title');
+                    const descEl = document.getElementById('podcast-desc');
+                    const metaEl = document.getElementById('podcast-meta');
+                    const thumbEl = document.getElementById('podcast-thumb');
+                    const spotifyEl = document.getElementById('podcast-spotify');
+
+                    if (titleEl) titleEl.textContent = title;
+                    if (descEl) descEl.textContent = shortDesc;
+                    if (metaEl) metaEl.innerHTML = `<span>Dispatch: ${formattedDate}</span>`;
+                    if (thumbEl) thumbEl.src = thumb;
+                    if (spotifyEl) spotifyEl.href = link;
                     
                     if (isNew && badge) badge.classList.remove('hidden');
                     
@@ -293,7 +306,9 @@ const galleryPreview = gallery.slice(0, 4);
                 console.error("Failed to fetch live podcast:", e);
                 // On error, we could show a fallback message or just keep it hidden
             }
-        })();
+        }
+
+        document.addEventListener('astro:page-load', fetchLatestPodcast);
 
         // Set up gallery images for lightbox
         window.GALLERY_IMAGES = galleryStrings;

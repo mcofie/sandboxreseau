@@ -91,11 +91,13 @@ const headerSubtitle = "Digital Audio-Log";
     <GlobalPlayer />
 
     <script is:inline>
-        (async function fetchPodcastArchive() {
+        async function fetchPodcastArchive() {
             const archive = document.getElementById('podcast-archive');
             const countDisplay = document.getElementById('podcast-count');
             const errorDisplay = document.getElementById('podcast-error');
             
+            if (!archive) return; // Not on the podcast page
+
             try {
                 const rssUrl = `https://anchor.fm/s/110059518/podcast/rss?t=${Date.now()}`;
                 const response = await fetch(rssUrl);
@@ -125,8 +127,14 @@ const headerSubtitle = "Digital Audio-Log";
                         const dateObj = new Date(pubDate);
                         const formattedDate = dateObj.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
                         
-                        const cleanDesc = description.replace(/<[^>]*>?/gm, '').trim();
-                        const shortDesc = cleanDesc.substring(0, 180) + (cleanDesc.length > 180 ? '...' : '');
+                        // Clean and Decode description
+                        const decoder = document.createElement('div');
+                        decoder.innerHTML = description;
+                        const decodedDesc = decoder.textContent || decoder.innerText || "";
+                        const cleanDesc = decodedDesc.replace(/<[^>]*>?/gm, '').replace(/&quot;/g, '"').trim();
+                        // Ensure space after quotes if needed
+                        const formattedDesc = cleanDesc.replace(/"([A-Z])/g, '" $1');
+                        const shortDesc = formattedDesc.substring(0, 180) + (formattedDesc.length > 180 ? '...' : '');
 
                         html += `
                             <div class="episode-card group relative flex flex-col sm:flex-row gap-6 p-6 rounded border border-[var(--rule)] bg-[var(--paper)] hover:border-[var(--ink)] transition-all animate-enter" 
@@ -195,9 +203,8 @@ const headerSubtitle = "Digital Audio-Log";
                    errorDisplay.classList.remove('hidden');
                 }
             }
-        })();
+        }
 
-        document.addEventListener('astro:after-swap', initPodcastActions);
         function initPodcastActions() {
             document.querySelectorAll('.play-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
@@ -216,5 +223,8 @@ const headerSubtitle = "Digital Audio-Log";
                 });
             });
         }
+
+        // Initialize on both direct load and view transitions
+        document.addEventListener('astro:page-load', fetchPodcastArchive);
     </script>
 </Layout>
