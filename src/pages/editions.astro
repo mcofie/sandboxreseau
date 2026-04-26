@@ -25,7 +25,7 @@ const headerSubtitle = "Chronicle of Progress";
         </header>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="editions-grid">
-            {editions.map((edition, i) => (
+            {editions.slice().reverse().map((edition, i) => (
                 <div class="animate-enter">
                     <article 
                         class={`h-full flex flex-col group relative overflow-hidden rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_92%,var(--ink)_8%)] p-2 hatch ${edition.image ? 'cursor-zoom-in' : ''}`} 
