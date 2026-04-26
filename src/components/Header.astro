@@ -7,19 +7,24 @@ interface Props {
 	subtitle?: string;
 }
 
+import editions from '../data/editions.json';
+
 const { title = "Sandbox Réseau Gazette", subtitle = "For Builders, Thinkers & Makers" } = Astro.props;
 const currentPath = Astro.url.pathname;
 
+const latestEdition = editions[0]; // Assuming newest is first in JSON
+const volNo = `VOL · NO ${latestEdition.no}`;
+
 const categories = [
-    { name: 'Gazette', href: '/', active: currentPath === '/' },
-    { name: 'Podcast', href: '/podcast', active: currentPath === '/podcast' },
-    { name: 'Gallery', href: '/gallery', active: currentPath === '/gallery' },
-    { name: 'Editions', href: '/editions', active: currentPath === '/editions' },
-    { name: 'Newsletters', href: '/newsletters', active: currentPath === '/newsletters' },
-    { name: 'Community', href: '/community', active: currentPath === '/community' },
-    { name: 'Registry', href: '/registry', active: currentPath === '/registry' },
-    { name: 'Handbook', href: '/handbook', active: currentPath === '/handbook' },
-    { name: 'Register', href: 'https://luma.com/sandbox-reseau', active: false, external: true },
+    { name: 'Gazette', href: '/', description: 'Latest dispatches and community news', active: currentPath === '/' },
+    { name: 'Podcast', href: '/podcast', description: 'The high-bandwidth audio log', active: currentPath === '/podcast' },
+    { name: 'Gallery', href: '/gallery', description: 'Visual archive of past editions', active: currentPath === '/gallery' },
+    { name: 'Editions', href: '/editions', description: 'Explore our event history', active: currentPath === '/editions' },
+    { name: 'Newsletters', href: '/newsletters', description: 'Curated signals for builders', active: currentPath === '/newsletters' },
+    { name: 'Community', href: '/community', description: 'Meet the people in the network', active: currentPath === '/community' },
+    { name: 'Registry', href: '/registry', description: 'Directory of projects and makers', active: currentPath === '/registry' },
+    { name: 'Handbook', href: '/handbook', description: 'Our culture and coordination manual', active: currentPath === '/handbook' },
+    { name: 'Register', href: 'https://luma.com/sandbox-reseau', description: 'Join us for the next edition', active: false, external: true },
 ];
 ---
 
@@ -28,7 +33,7 @@ const categories = [
         <!-- Row 1: Utility -->
         <div class="flex flex-wrap items-center justify-between gap-3 py-2 text-[13px]">
             <div class="text-[var(--muted)]">
-                <span id="dateline">Monday, March 23, 2026</span> • Vol. 1, No. 1 • Accra
+                <span id="dateline">Monday, March 23, 2026</span> • {volNo} • Accra
             </div>
 
             <div class="flex items-center gap-2">
@@ -97,23 +102,53 @@ const categories = [
         </button>
     </div>
 
-    <!-- Menu Links -->
-    <div class="flex h-full flex-col items-center justify-center px-6 pb-24 overflow-y-auto">
-        <nav class="flex flex-col items-center gap-6 text-center py-12">
-            {categories.map((cat, i) => (
-                <div class="overflow-hidden">
-                    <a 
-                        href={cat.href}
-                        target={cat.external ? "_blank" : "_self"}
-                        class="menu-link block font-serif text-5xl font-bold tracking-tighter sm:text-7xl md:text-8xl hover:accent-text transition-all duration-300 transform hover:scale-105 opacity-0 translate-y-12"
-                        style={`transition-delay: ${i * 50}ms`}
-                    >
-                        {cat.name}
-                        {cat.external && <span class="ml-2 inline-block -translate-y-6 font-sans text-xs font-black uppercase tracking-[0.2em] text-[var(--muted)] opacity-50">Ext</span>}
-                    </a>
+    <!-- Menu Content -->
+    <div class="h-full overflow-y-auto px-6 py-12 md:px-12">
+        <div class="mx-auto max-w-[1200px]">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-8 md:gap-y-12">
+                {categories.map((cat, i) => (
+                    <div class="overflow-hidden group">
+                        <a 
+                            href={cat.href}
+                            target={cat.external ? "_blank" : "_self"}
+                            class="menu-link block opacity-0 translate-y-12 transition-all duration-500 ease-out"
+                            style={`transition-delay: ${i * 50}ms`}
+                        >
+                            <div class="flex items-start gap-4">
+                                <span class="font-sans text-[10px] font-bold text-[var(--muted)] mt-2">0{i + 1}</span>
+                                <div class="flex-1">
+                                    <div class="flex items-center gap-3">
+                                        <h2 class="font-serif text-4xl sm:text-5xl md:text-6xl tracking-tighter group-hover:accent-text transition-colors leading-none">
+                                            {cat.name}
+                                        </h2>
+                                        {cat.external && <span class="font-sans text-[10px] font-black uppercase tracking-[0.2em] text-[var(--muted)] opacity-50 px-2 py-0.5 border border-[var(--rule)] rounded">EXT</span>}
+                                    </div>
+                                    <p class="mt-2 font-serif italic text-sm md:text-base text-[var(--muted)] max-w-xs">
+                                        {cat.description}
+                                    </p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                ))}
+            </div>
+
+            <!-- Menu Footer -->
+            <div id="menu-footer" class="mt-24 border-t border-[var(--rule)] pt-12 grid grid-cols-1 sm:grid-cols-2 gap-8 pb-24">
+                <div class="opacity-0 translate-y-8 transition-all duration-500 delay-500">
+                    <h4 class="text-[10px] uppercase font-bold tracking-widest text-[var(--muted)] mb-4">Location</h4>
+                    <p class="font-serif text-lg">Accra, Ghana</p>
                 </div>
-            ))}
-        </nav>
+                <div class="opacity-0 translate-y-8 transition-all duration-500 delay-600">
+                    <h4 class="text-[10px] uppercase font-bold tracking-widest text-[var(--muted)] mb-4">Social</h4>
+                    <div class="flex flex-col gap-2">
+                        <a href="https://www.linkedin.com/company/sandbox-reseau/" target="_blank" class="font-serif text-lg hover:accent-text transition-colors">LinkedIn</a>
+                        <a href="https://www.youtube.com/@SandboxReseau" target="_blank" class="font-serif text-lg hover:accent-text transition-colors">YouTube</a>
+                        <a href="https://www.instagram.com/sandboxreseau?igsh=MTg5ZWt5a3lyZ21iMg%3D%3D&utm_source=qr" target="_blank" class="font-serif text-lg hover:accent-text transition-colors">Instagram</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -140,6 +175,15 @@ const categories = [
                         link.classList.remove('opacity-0', 'translate-y-12');
                     }, 300 + (i * 60));
                 });
+                // Animate footer
+                const footerChildren = menuFooter?.children;
+                if (footerChildren) {
+                    Array.from(footerChildren).forEach((child, i) => {
+                        setTimeout(() => {
+                            child.classList.remove('opacity-0', 'translate-y-8');
+                        }, 800 + (i * 100));
+                    });
+                }
             } else {
                 menu.classList.add('translate-y-full');
                 document.body.style.overflow = '';
@@ -147,6 +191,12 @@ const categories = [
                 menuLinks.forEach(link => {
                     link.classList.add('opacity-0', 'translate-y-12');
                 });
+                const footerChildren = menuFooter?.children;
+                if (footerChildren) {
+                    Array.from(footerChildren).forEach((child) => {
+                        child.classList.add('opacity-0', 'translate-y-8');
+                    });
+                }
             }
         }
 

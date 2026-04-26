@@ -1,7 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import editions from '../data/editions.json';
 
 const headerSubtitle = "The Culture Manual";
+const latestEdition = editions[0];
+const volNo = `VOL · NO ${latestEdition.no}`;
 ---
 
 <Layout 
@@ -14,7 +17,7 @@ const headerSubtitle = "The Culture Manual";
         <div class="mx-auto max-w-[1100px] px-4 py-16 text-center">
             <span
                 class="inline-block w-max border-y border-[var(--rule)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-[.2em] text-[var(--muted)] mb-5">
-                Vol. 1, No. 1
+                {volNo}
             </span>
             <h1 class="font-serif text-5xl sm:text-7xl leading-[.85] tracking-tighter mb-8">
                 The Community Handbook.

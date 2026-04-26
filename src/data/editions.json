@@ -1,12 +1,22 @@
 [
   {
     "vol": 1,
+    "no": 4,
+    "title": "Scaling Beyond Borders",
+    "description": "Exploring strategies for regional expansion and cross-border operations.",
+    "date": "26th June '26",
+    "status": "In Preparation",
+    "image": null,
+    "lumaUrl": "https://luma.com/sandbox-reseau"
+  },
+  {
+    "vol": 1,
     "no": 3,
     "title": "Dealing with regulators",
     "description": "Navigating compliance and policy in the regulatory landscape.",
     "date": "24th April '26",
-    "status": "In Preparation",
-    "image": null,
+    "status": "Past",
+    "image": "assets/img/vol3-regulators.jpg",
     "lumaUrl": "https://luma.com/sandbox-reseau"
   },
   {
@@ -16,7 +26,7 @@
     "description": "Unlocking growth channels and scaling access.",
     "date": "27th Feb '26",
     "status": "Past",
-    "image": "assets/img/vol2-theforge.jpg"
+    "image": "assets/img/vol2-distribution.jpg"
   },
   {
     "vol": 1,
