@@ -8,6 +8,79 @@
     "readTime": "4 min",
     "excerpt": "Welcome to our space for builders. No panels. No pitches. Just people in a room thinking out loud.",
     "tags": ["Community", "Build-Log", "Accra"],
+    "image": "/assets/img/newsletter-1.jpg",
     "content": "<p>Hi there,</p><p>This is the first of many updates you’ll receive from us this year. If you’re reading this, you’re officially part of the Sandbox Reseau community, and we’re glad to have you here.</p><p><em>Thanks for reading Sandbox Réseau! Subscribe for free to receive new posts and support my work.</em></p><p>At its core, Sandbox Reseau is a space for builders, founders, and change-makers to have honest conversations about what they’re building, what they’re learning, and what isn’t quite working yet.</p><p>No panels. No pitches. Just people in a room thinking out loud.</p><h3>What to expect in your inbox</h3><p>This newsletter is our “quiet corner of the internet.” We’ll keep it simple and consistent:</p><ul><li><strong>Ecosystem Updates: What’s happening in our world.</strong></li><li><strong>Opportunities: Funding, programs, and collaborations worth your time.</strong></li><li><strong>Community Spotlights: A look at a fellow builder and the problem they are solving.</strong></li><li><strong>Sound Bites: Insights from resource people on issues that matter.</strong></li></ul><h3>Upcoming Event: February Meetup</h3><p>Our first meetup of the year is happening on 27th February 2026.</p><blockquote><strong>Important: Timing Change</strong> To make the session more accessible, the event will now run from 15:00 – 17:00 GMT (instead of the previously communicated 17:00 – 19:00 GMT). We apologise for any inconvenience this shift may cause!</blockquote><p>Spots are limited and filling up quickly. If you haven’t registered yet, consider this your cue.</p><p><a href=\"https://luma.com/sandbox-reseau\" target=\"_blank\">Register here</a></p><h3>What are you building?</h3><p>We want to create a shared “Build-Log” so we can all be more aware of each other’s journeys. Whether it’s a global startup, a community project, or a weekend experiment, we want to hear about it.</p><p>This helps us know how to support, collaborate, and highlight your work in future spotlights.</p><p>Tell us about your project here:</p><p><a href=\"#\" style=\"display:inline-block; padding:12px 24px; background:var(--ink); color:var(--paper); text-decoration:none; font-weight:bold; font-size:14px; text-transform:uppercase; letter-spacing:0.1em;\">Fill out the Sandbox Build-Log</a></p><p>We’re excited about what we’ll build together this year. Thanks for being part of the journey.</p><p>Warm regards,</p><p><strong>The Sandbox Reseau Team</strong></p><p><em>Thanks for reading Sandbox Réseau!</em></p>"
+  },
+  {
+    "id": "distribution-playbook",
+    "issue": 2,
+    "title": "The Distribution Playbook: Building is only 20%",
+    "date": "27 February 2026",
+    "author": "The Sandbox Réseau Team",
+    "readTime": "5 min",
+    "excerpt": "Why building is only 20% of the battle. We dive into the distribution strategies that worked for founders in the room.",
+    "tags": ["Growth", "Strategy", "Ecosystem"],
+    "image": "/assets/img/gallery-v3-2.jpg",
+    "content": "<p>In this issue, we recap the intense conversations from our February meetup focused on distribution.</p><p>The consensus in the room was clear: <strong>Great products don't sell themselves.</strong> Especially not in markets where trust is the primary currency.</p><h3>Distribution as a Feature</h3><p>We explored how top African startups are building distribution into their product DNA from day one. It’s not just about marketing budgets; it’s about accessibility, local partnerships, and cultural relevance.</p><ul><li><strong>Leveraging existing networks:</strong> Why piggybacking on informal trade routes is often faster than building new ones.</li><li><strong>The Trust Deficit:</strong> How to overcome the initial resistance to new tech through community-led growth.</li><li><strong>Localization:</strong> Beyond language—translating your value proposition into the local context.</li></ul><p>Thanks for being part of the conversation. Stay tuned for our March edition where we tackle the elephant in the room: Regulators.</p>"
+  },
+  {
+    "id": "navigating-regulators",
+    "issue": 3,
+    "title": "Navigating the Regulators: Compliance as a Feature",
+    "date": "24 March 2026",
+    "author": "The Sandbox Réseau Team",
+    "readTime": "6 min",
+    "excerpt": "Compliance isn't a roadblock, it's a feature. Lessons on building trust with policy makers while moving fast.",
+    "tags": ["Policy", "Fintech", "Scale"],
+    "image": "/assets/img/gallery-v3-3.jpg",
+    "content": "<p>Our March meetup was a deep dive into the world of regulation. For many founders, regulators are seen as the final boss—unpredictable and powerful.</p><p>But the builders in the room shared a different perspective: <strong>Compliance is a competitive advantage.</strong></p><h3>Building for the Long Term</h3><p>If you're building in Fintech, Healthtech, or Logistics, the regulator is your most important stakeholder. We discussed:</p><ul><li><strong>Proactive Engagement:</strong> Why you should talk to regulators <em>before</em> you launch, not after you get a cease-and-desist.</li><li><strong>Regulatory Sandboxes:</strong> How to leverage existing frameworks to test innovation safely.</li><li><strong>Trust through Transparency:</strong> Building systems that are audit-ready from day one.</li></ul><p>We’re moving into April with a focus on Scaling Beyond Borders. It’s time to look outside our home markets.</p>"
+  },
+  {
+    "id": "scaling-beyond-borders",
+    "issue": 4,
+    "title": "Scaling Beyond Borders: Regional Expansion",
+    "date": "30 April 2026",
+    "author": "The Sandbox Réseau Team",
+    "readTime": "5 min",
+    "excerpt": "The continent is not a monolith. How builders are navigating cross-border complexity and regional expansion.",
+    "tags": ["Expansion", "Africa", "Founders"],
+    "image": "/assets/img/gallery-v3-4.jpg",
+    "content": "<p>As we wrap up April, the conversation has shifted toward the challenge of the 'Pan-African' dream.</p><p>Scaling from Accra to Lagos, or Nairobi to Abidjan, isn't just about changing currencies. It’s about navigating entirely different consumer behaviours, payment infrastructures, and legal hurdles.</p><h3>The Multi-Market Mindset</h3><p>Builders at our latest session shared their battle stories from the expansion frontlines:</p><ul><li><strong>Operational Complexity:</strong> Managing remote teams and local operations across borders.</li><li><strong>The Talent Gap:</strong> Finding and nurturing local talent in each new market.</li><li><strong>Product Adaptation:</strong> Knowing when to stick to your core product and when to pivot for a new territory.</li></ul><p>The journey is just beginning. See you in the next dispatch!</p>"
+  },
+  {
+    "id": "product-led-growth",
+    "issue": 5,
+    "title": "Product-Led Growth: The African Context",
+    "date": "31 May 2026",
+    "author": "The Sandbox Réseau Team",
+    "readTime": "4 min",
+    "excerpt": "How builders are shifting from sales-led to product-led growth in competitive markets.",
+    "tags": ["PLG", "Product", "Growth"],
+    "image": "/assets/img/gallery-v3-5.jpg",
+    "content": "<p>Content for the May dispatch is currently being curated from our upcoming sessions. Stay tuned for insights on PLG in Africa.</p>"
+  },
+  {
+    "id": "indie-making-africa",
+    "issue": 6,
+    "title": "The Rise of the Indie Maker in Africa",
+    "date": "30 June 2026",
+    "author": "The Sandbox Réseau Team",
+    "readTime": "5 min",
+    "excerpt": "Exploring the sustainable path of indie making and bootstrapping in the local ecosystem.",
+    "tags": ["Indie", "Bootstrapping", "Makers"],
+    "image": "/assets/img/gallery-v3-6.jpg",
+    "content": "<p>Content for the June dispatch is currently being curated. We'll be exploring the stories of builders who are carving their own paths.</p>"
+  },
+  {
+    "id": "ai-realities-accra",
+    "issue": 7,
+    "title": "AI Realities: Beyond the Hype in Accra",
+    "date": "31 July 2026",
+    "author": "The Sandbox Réseau Team",
+    "readTime": "6 min",
+    "excerpt": "Real-world applications of AI being built right here in the Sandbox.",
+    "tags": ["AI", "Innovation", "Accra"],
+    "image": "/assets/img/gallery-v3-7.jpg",
+    "content": "<p>Content for the July dispatch is currently being curated. We're looking at how AI is actually being used to solve local problems.</p>"
   }
 ]

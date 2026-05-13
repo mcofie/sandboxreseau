@@ -48,6 +48,16 @@ const { newsletter } = Astro.props;
             </div>
         </div>
 
+        {newsletter.image && (
+            <figure class="mb-16 overflow-hidden rounded border border-[var(--rule)] hatch">
+                <img 
+                    src={newsletter.image} 
+                    alt={newsletter.title} 
+                    class="aspect-video w-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
+                />
+            </figure>
+        )}
+
         <article class="prose-news max-w-[700px] mx-auto">
             <div class="newsletter-content-body font-serif text-[19px] sm:text-[21px] leading-relaxed text-[var(--ink)] opacity-90 space-y-7" set:html={newsletter.content}>
             </div>

@@ -2,98 +2,171 @@
 import Layout from '../layouts/Layout.astro';
 import registry from '../data/registry.json';
 
+const headerSubtitle = "Ecosystem Directory";
+
 const industries = ['All', ...new Set(registry.map(item => item.industry))];
+const totalCount = registry.length;
+const industryCount = new Set(registry.map(item => item.industry)).size;
+const foundedYears = registry.map(r => parseInt(r.founded)).sort();
+const yearRange = `${foundedYears[0]}–${foundedYears[foundedYears.length - 1]}`;
+const locationSet = new Set(registry.map(r => r.location));
+
+// Color map for industry badges
+const industryColors: Record<string, string> = {
+    'Tech': '#0ea5e9',
+    'Fintech': '#10b981',
+    'Software': '#8b5cf6',
+    'Creative': '#f59e0b',
+    'Social': '#ec4899',
+    'Marketplace': '#f97316',
+    'Logistics': '#14b8a6',
+};
 ---
 
 <Layout 
     title="Registry | Sandbox Réseau" 
-    description="Discover the products, startups, and organizations building in the Sandbox Réseau ecosystem."
+    description="Discover the products, startups, and organizations building in the Sandbox Réseau ecosystem. A curated directory of builders from Accra and beyond."
+    headerSubtitle={headerSubtitle}
 >
-    <!-- Static Header -->
-    <header class="mx-auto max-w-[1100px] px-4 py-8 md:py-12">
-        <div class="max-w-xl">
-            <span class="inline-block w-max border-y border-[var(--rule)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-[.2em] text-[var(--muted)] mb-3">
-                Index
-            </span>
-            <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl leading-tight mb-3">
-                The Ecosystem Registry.
-            </h2>
-            <p class="text-[var(--muted)] text-sm md:text-base leading-relaxed">
-                A directory of the products, startups, and organizations building in our ecosystem and connected to Sandbox Réseau.
-            </p>
-        </div>
-    </header>
-
-    <!-- Sticky Control Bar -->
-    <section class="sticky top-0 z-20 border-y border-[var(--rule)] bg-[var(--paper)]/95 backdrop-blur-md">
-        <div class="mx-auto max-w-[1100px] px-4 py-4">
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <!-- Search -->
-                <div class="w-full md:w-72">
-                    <div class="relative">
-                        <input type="text" id="companySearch" placeholder="Search entries..." aria-label="Search"
-                            class="search-input w-full rounded border border-[var(--rule)] bg-[var(--paper)] px-4 py-2 text-sm focus:border-[var(--accent)] outline-none transition-colors" />
-                        <div class="absolute right-3 top-2.5 text-[var(--muted)] pointer-events-none">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" /></svg>
-                        </div>
-                    </div>
+    <!-- Hero Header -->
+    <section class="border-b border-[var(--rule)]">
+        <div class="mx-auto max-w-[1100px] px-4 py-12 md:py-16">
+            <div class="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-8 items-end">
+                <div>
+                    <span class="inline-block w-max border-y border-[var(--rule)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-[.2em] text-[var(--muted)] mb-4 animate-enter">
+                        The Index
+                    </span>
+                    <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl leading-[.9] tracking-tighter mb-4 animate-enter">
+                        The Ecosystem Registry.
+                    </h1>
+                    <p class="text-[var(--muted)] text-sm md:text-base leading-relaxed max-w-xl animate-enter">
+                        A curated directory of the products, startups, and organizations connected to the Sandbox Réseau community. All builder-led. All shipping.
+                    </p>
                 </div>
 
-                <!-- Filters: Scrollable on Mobile -->
-                <div class="flex overflow-x-auto pb-1 md:pb-0 hide-scrollbar -mx-4 px-4 md:mx-0 md:px-0">
-                    <div class="flex gap-2 whitespace-nowrap">
-                        {industries.map((industry) => (
-                            <button 
-                                class={`filter-chip rounded-full border border-[var(--rule)] px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider hover:bg-[var(--accent)] hover:text-white transition-all ${industry === 'All' ? 'active bg-[var(--ink)] text-[var(--paper)] border-[var(--ink)]' : 'bg-[var(--paper)] text-[var(--muted)]'}`}
-                                data-filter={industry}
-                            >
-                                {industry}
-                            </button>
-                        ))}
+                <!-- Stats Cluster -->
+                <div class="flex flex-wrap gap-6 md:gap-8 animate-enter">
+                    <div class="text-center">
+                        <div class="font-serif text-3xl md:text-4xl tracking-tight">{totalCount}</div>
+                        <div class="text-[9px] font-bold uppercase tracking-widest text-[var(--muted)] mt-1">Entries</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="font-serif text-3xl md:text-4xl tracking-tight">{industryCount}</div>
+                        <div class="text-[9px] font-bold uppercase tracking-widest text-[var(--muted)] mt-1">Industries</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="font-serif text-3xl md:text-4xl tracking-tight">{yearRange}</div>
+                        <div class="text-[9px] font-bold uppercase tracking-widest text-[var(--muted)] mt-1">Founded</div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Main Content List -->
-    <main class="mx-auto max-w-[1100px] px-4 py-10">
-        <div class="flex flex-col gap-4" id="companyGrid">
-            {registry.map(company => (
-                <div class="company-card group flex flex-col sm:flex-row items-start gap-5 rounded border border-[var(--rule)] bg-[var(--paper)] p-6 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300" data-industry={company.industry} data-tags={company.tags.join(',')}>
-                    <!-- Badge Row Top (Industry, Status) - Always on Top -->
-                    <div class="flex-1 w-full">
-                        <div class="flex flex-row items-start gap-4 mb-4">
-                            <div class="company-logo-container w-12 h-12 sm:w-16 sm:h-16 rounded border border-[var(--rule)] bg-[var(--ink)] text-[var(--paper)] p-1.5 flex items-center justify-center overflow-hidden shrink-0 transition-colors duration-300">
-                                {(company.logo.startsWith('http') || company.logo.startsWith('/') || company.logo.startsWith('assets/') || company.logo.includes('.')) 
-                                    ? <img src={company.logo.startsWith('assets/') ? `/${company.logo}` : company.logo} alt={`${company.name} Logo`} class="w-full h-full object-contain brightness-[1.1] dark:brightness-100" />
-                                    : <span class="font-serif text-xl sm:text-2xl font-bold select-none">{company.logo}</span>
-                                }
-                            </div>
-                            <div class="flex-1 min-w-0 flex flex-col justify-center py-0.5">
-                                <div class="flex flex-wrap items-center gap-x-2 gap-y-1">
-                                    <h3 class="name font-serif text-xl sm:text-2xl font-bold leading-tight group-hover:accent-text transition-colors">{company.name}</h3>
-                                    <span class="px-2 py-0.5 rounded-full border border-[var(--rule)]/20 text-[8px] font-bold uppercase tracking-widest bg-[color:color-mix(in_oklab,var(--paper)_95%,var(--ink)_5%)]">{company.status === 'LIVE' ? '● ' + company.status : company.status}</span>
-                                </div>
-                                <span class="text-[10px] uppercase tracking-widest font-bold text-[var(--accent)] mt-1">{company.industry}</span>
-                            </div>
-                        </div>
-                        <p class="description text-sm text-[var(--muted)] leading-relaxed mb-4 max-w-2xl">
-                            {company.description}
-                        </p>
-                        <div class="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-[var(--rule)]/5">
-                            <div class="flex flex-wrap gap-2 items-center">
-                                <span class="text-[9px] font-bold uppercase tracking-widest text-[color:color-mix(in_oklab,var(--ink)_50%,var(--paper)_50%)]">Building in:</span>
-                                <span class="text-[10px] font-semibold text-[color:color-mix(in_oklab,var(--ink)_80%,var(--paper)_20%)]">{company.tags.join(' • ')}</span>
-                            </div>
-                            <div class="flex items-center gap-4 ml-auto">
-                                <span class="text-[11px] font-serif text-[var(--muted)]">{company.location || 'Global'}</span>
-                                <a href={company.url} target="_blank" rel="noopener noreferrer" class="text-[11px] font-bold uppercase tracking-widest hover:underline accent-text">{company.cta} →</a>
-                            </div>
+    <!-- Sticky Control Bar -->
+    <section class="registry-toolbar sticky top-[44px] z-20 border-b border-[var(--rule)] bg-[var(--paper)]" id="registryToolbar">
+        <div class="mx-auto max-w-[1100px] px-4 py-3">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+                <!-- Search -->
+                <div class="w-full md:w-72">
+                    <div class="relative">
+                        <input type="text" id="companySearch" placeholder="Search entries..." aria-label="Search registry"
+                            class="search-input w-full rounded border border-[var(--rule)] bg-[var(--paper)] px-4 py-2.5 text-sm focus:border-[var(--accent)] outline-none transition-colors" />
+                        <div class="absolute right-3 top-3 text-[var(--muted)] pointer-events-none">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" /></svg>
                         </div>
                     </div>
                 </div>
-            ))}
+
+                <div class="flex items-center gap-4">
+                    <!-- Result Count -->
+                    <span id="resultCount" class="text-[10px] font-bold uppercase tracking-widest text-[var(--muted)] whitespace-nowrap">
+                        {totalCount} entries
+                    </span>
+
+                    <!-- Filters: Scrollable on Mobile -->
+                    <div class="flex overflow-x-auto pb-1 md:pb-0 hide-scrollbar">
+                        <div class="flex gap-1.5 whitespace-nowrap">
+                            {industries.map((industry) => (
+                                <button 
+                                    class={`filter-chip rounded-full border border-[var(--rule)] px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider transition-all ${industry === 'All' ? 'active bg-[var(--ink)] text-[var(--paper)] border-[var(--ink)]' : 'bg-[var(--paper)] text-[var(--muted)] hover:border-[var(--ink)] hover:text-[var(--ink)]'}`}
+                                    data-filter={industry}
+                                >
+                                    {industry}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Grid -->
+    <main class="mx-auto max-w-[1100px] px-4 py-8 md:py-10">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="companyGrid">
+            {registry.map((company, i) => {
+                const color = industryColors[company.industry] || '#6B7280';
+                return (
+                    <a href={company.url} target="_blank" rel="noopener noreferrer"
+                       class="company-card group relative flex flex-col rounded border border-[var(--rule)] bg-[var(--paper)] p-5 transition-all duration-300 animate-enter"
+                       data-industry={company.industry} 
+                       data-tags={company.tags.join(',')}
+                       data-name={company.name.toLowerCase()}
+                       data-desc={company.description.toLowerCase()}>
+                        
+                        <!-- Top Row: Logo + Name + Industry -->
+                        <div class="flex items-start gap-4 mb-4">
+                            <div class="company-logo w-11 h-11 rounded-lg border border-[var(--rule)] flex items-center justify-center overflow-hidden shrink-0 transition-all duration-300"
+                                 style={`background: ${color}12; border-color: ${color}30`}>
+                                {(company.logo.startsWith('http') || company.logo.startsWith('/') || company.logo.startsWith('assets/') || company.logo.includes('.')) 
+                                    ? <img src={company.logo.startsWith('assets/') ? `/${company.logo}` : company.logo} alt={`${company.name} Logo`} class="w-full h-full object-contain" />
+                                    : <span class="font-serif text-sm font-bold select-none" style={`color: ${color}`}>{company.logo}</span>
+                                }
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    <h3 class="name font-serif text-lg font-bold leading-tight group-hover:accent-text transition-colors">{company.name}</h3>
+                                    <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[8px] font-bold uppercase tracking-widest"
+                                          style={`background: ${color}12; color: ${color}`}>
+                                        {company.industry}
+                                    </span>
+                                </div>
+                                <div class="flex items-center gap-2 mt-1">
+                                    <span class="text-[10px] text-[var(--muted)]">{company.location}</span>
+                                    <span class="w-0.5 h-0.5 rounded-full bg-[var(--muted)]"></span>
+                                    <span class="text-[10px] text-[var(--muted)]">Est. {company.founded}</span>
+                                    {company.status === 'Live' && (
+                                        <span class="inline-flex items-center gap-1 text-[9px] font-bold text-emerald-600">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                            Live
+                                        </span>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <p class="description text-[13px] text-[var(--muted)] leading-relaxed mb-4 flex-1">
+                            {company.description}
+                        </p>
+
+                        <!-- Footer: Tags + CTA -->
+                        <div class="flex items-center justify-between gap-3 pt-3 border-t border-[var(--rule)]/10">
+                            <div class="flex flex-wrap gap-1.5">
+                                {company.tags.map(tag => (
+                                    <span class="tag-chip px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider bg-[color:color-mix(in_oklab,var(--paper)_92%,var(--ink)_8%)] text-[var(--muted)]">
+                                        {tag}
+                                    </span>
+                                ))}
+                            </div>
+                            <span class="cta-arrow text-[10px] font-bold uppercase tracking-widest accent-text whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
+                                Visit →
+                            </span>
+                        </div>
+                    </a>
+                );
+            })}
         </div>
         
         <!-- Empty State -->
@@ -103,17 +176,83 @@ const industries = ['All', ...new Set(registry.map(item => item.industry))];
             <p class="text-[var(--muted)] text-sm">Try adjusting your search or filter to find what you're looking for.</p>
             <button id="clearFilters" class="mt-4 text-xs font-bold uppercase tracking-widest underline accent-text">Clear all filters</button>
         </div>
+
+        <!-- Submit CTA -->
+        <section class="mt-16 mb-8 animate-enter">
+            <div class="relative overflow-hidden rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_95%,var(--ink)_5%)] p-8 md:p-12">
+                <div class="absolute inset-0 hatch opacity-[0.02] pointer-events-none"></div>
+                <div class="relative z-10 grid grid-cols-1 md:grid-cols-[1fr_auto] gap-6 items-center">
+                    <div>
+                        <h3 class="font-serif text-2xl md:text-3xl tracking-tight mb-2">Building something?</h3>
+                        <p class="text-[var(--muted)] text-sm md:text-base leading-relaxed max-w-lg">
+                            If you're part of the Sandbox Réseau community and shipping a product, you belong here. Drop your project in <span class="font-bold text-[var(--ink)]">#show-your-work</span> on Discord and we'll add you to the registry.
+                        </p>
+                    </div>
+                    <a href="https://discord.gg/RMcBDRrV7x" target="_blank" rel="noreferrer"
+                       class="inline-flex items-center gap-3 rounded bg-[#5865F2] px-6 py-3 text-sm font-bold text-white uppercase tracking-widest hover:bg-[#4752C4] transition-all hover:shadow-[0_0_30px_rgba(88,101,242,0.3)] whitespace-nowrap self-start md:self-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 127.14 96.36" fill="currentColor" class="w-4 h-4">
+                            <path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.11,77.11,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22c2.36-24.44-2.85-48.47-18.9-72.15ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/>
+                        </svg>
+                        Join Discord
+                    </a>
+                </div>
+            </div>
+        </section>
     </main>
+</Layout>
 
-    <script>
-        import debounce from 'lodash-es/debounce';
+<style>
+    .filter-chip.active {
+        background-color: var(--ink);
+        color: var(--paper);
+        border-color: var(--ink);
+    }
 
-        const searchInput = document.getElementById('companySearch') as HTMLInputElement;
+    /* Card hover effects */
+    .company-card {
+        cursor: pointer;
+    }
+    .company-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 40px -12px rgba(0, 0, 0, 0.12);
+        border-color: var(--accent);
+    }
+
+    .company-card:hover .company-logo {
+        transform: scale(1.05);
+    }
+
+    /* Toolbar shadow on scroll */
+    .registry-toolbar {
+        transition: box-shadow 0.3s ease;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+    }
+    .registry-toolbar.scrolled {
+        box-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.08);
+    }
+</style>
+
+<script is:inline>
+    (function() {
+        // Native debounce (replaces lodash-es dependency)
+        function debounce(fn, ms) {
+            let timer;
+            return function() {
+                clearTimeout(timer);
+                timer = setTimeout(() => fn.apply(this, arguments), ms);
+            };
+        }
+
+        const searchInput = document.getElementById('companySearch');
         const companyGrid = document.getElementById('companyGrid');
         const emptyState = document.getElementById('emptyState');
-        const cards = document.querySelectorAll('.company-card') as NodeListOf<HTMLElement>;
+        const cards = document.querySelectorAll('.company-card');
         const filterChips = document.querySelectorAll('.filter-chip');
         const clearBtn = document.getElementById('clearFilters');
+        const resultCount = document.getElementById('resultCount');
+        const toolbar = document.getElementById('registryToolbar');
+        const totalCount = cards.length;
 
         let currentFilter = 'All';
         let currentSearch = '';
@@ -122,9 +261,9 @@ const industries = ['All', ...new Set(registry.map(item => item.industry))];
             let visibleCount = 0;
             
             cards.forEach(card => {
-                const name = card.querySelector('.name')?.textContent?.toLowerCase() || '';
-                const desc = card.querySelector('.description')?.textContent?.toLowerCase() || '';
-                const tags = card.getAttribute('data-tags')?.toLowerCase() || '';
+                const name = card.getAttribute('data-name') || '';
+                const desc = card.getAttribute('data-desc') || '';
+                const tags = (card.getAttribute('data-tags') || '').toLowerCase();
                 const industry = card.getAttribute('data-industry') || '';
 
                 const matchesSearch = !currentSearch || 
@@ -136,13 +275,20 @@ const industries = ['All', ...new Set(registry.map(item => item.industry))];
 
                 if (matchesSearch && matchesFilter) {
                     card.classList.remove('hidden');
-                    card.classList.add('flex');
                     visibleCount++;
                 } else {
-                    card.classList.remove('flex');
                     card.classList.add('hidden');
                 }
             });
+
+            // Update count
+            if (resultCount) {
+                if (currentFilter === 'All' && !currentSearch) {
+                    resultCount.textContent = totalCount + ' entries';
+                } else {
+                    resultCount.textContent = visibleCount + ' of ' + totalCount;
+                }
+            }
 
             if (visibleCount === 0) {
                 companyGrid?.classList.add('hidden');
@@ -153,9 +299,9 @@ const industries = ['All', ...new Set(registry.map(item => item.industry))];
             }
         };
 
-        // Debounced search
-        const handleSearch = debounce((e: Event) => {
-            currentSearch = (e.target as HTMLInputElement).value.toLowerCase();
+        // Search with native debounce
+        const handleSearch = debounce((e) => {
+            currentSearch = e.target.value.toLowerCase().trim();
             updateDisplay();
         }, 150);
 
@@ -165,9 +311,9 @@ const industries = ['All', ...new Set(registry.map(item => item.industry))];
         filterChips.forEach(chip => {
             chip.addEventListener('click', () => {
                 filterChips.forEach(c => {
-                    c.classList.remove('active', 'bg-[var(--ink)]', 'text-[var(--paper)]');
+                    c.classList.remove('active', 'bg-[var(--ink)]', 'text-[var(--paper)]', 'border-[var(--ink)]');
                 });
-                chip.classList.add('active', 'bg-[var(--ink)]', 'text-[var(--paper)]');
+                chip.classList.add('active', 'bg-[var(--ink)]', 'text-[var(--paper)]', 'border-[var(--ink)]');
                 
                 currentFilter = chip.getAttribute('data-filter') || 'All';
                 updateDisplay();
@@ -181,20 +327,38 @@ const industries = ['All', ...new Set(registry.map(item => item.industry))];
             currentFilter = 'All';
             
             filterChips.forEach(c => {
-                c.classList.remove('active', 'bg-[var(--ink)]', 'text-[var(--paper)]');
+                c.classList.remove('active', 'bg-[var(--ink)]', 'text-[var(--paper)]', 'border-[var(--ink)]');
                 if (c.getAttribute('data-filter') === 'All') {
-                    c.classList.add('active', 'bg-[var(--ink)]', 'text-[var(--paper)]');
+                    c.classList.add('active', 'bg-[var(--ink)]', 'text-[var(--paper)]', 'border-[var(--ink)]');
                 }
             });
             
             updateDisplay();
         });
-    </script>
-</Layout>
 
-<style>
-    .filter-chip.active {
-        background-color: var(--ink);
-        color: var(--paper);
-    }
-</style>
+        // Toolbar scroll shadow
+        if (toolbar) {
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 200) {
+                    toolbar.classList.add('scrolled');
+                } else {
+                    toolbar.classList.remove('scrolled');
+                }
+            }, { passive: true });
+        }
+
+        // Entrance animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, i) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, (i % 6) * 60);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.05 });
+
+        document.querySelectorAll('.animate-enter').forEach(el => observer.observe(el));
+    })();
+</script>

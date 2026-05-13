@@ -11,81 +11,99 @@ const headerSubtitle = "Digital Audio-Log";
     headerSubtitle={headerSubtitle}
 >
     <!-- Hero Section -->
-    <section class="border-b border-[var(--rule)] bg-[var(--paper)]">
-        <div class="mx-auto grid max-w-[1100px] grid-cols-1 gap-12 px-4 py-12 md:grid-cols-2">
-            <aside class="flex items-center justify-center lg:justify-end order-1 md:order-2">
-                <div class="relative group p-4 hatch rounded border border-[var(--rule)]">
-                    <img id="podcastCover" src="/assets/img/podcast-logo.png" alt="The Reverb Logo" class="w-64 h-64 sm:w-80 sm:h-80 rounded border border-[var(--rule)] shadow-2xl grayscale group-hover:grayscale-0 transition-all duration-700">
-                </div>
-            </aside>
-
-            <div class="flex flex-col justify-center order-2 md:order-1">
-                <span class="inline-block w-max border-y border-[var(--rule)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-[.2em] text-[var(--muted)] mb-5">
-                    Audio Dispatch
-                </span>
-                <h2 class="font-serif text-4xl sm:text-5xl lg:text-6xl leading-[.95] tracking-tight mb-6">
-                    The Reverb.
-                </h2>
-                <div class="text-[17px] text-[var(--muted)] leading-relaxed max-w-xl font-sans space-y-4">
-                    <p>The Reverb is a fast-paced tech podcast capturing real conversations from the Sandbox Réseau community.</p>
-                    <p>Each 5-minute episode distils insights, ideas, and lessons from builders actively creating, stitched together into a tight, signal-rich experience.</p>
-                    <p>No fillers. Just what people are building, thinking, and learning right now.</p>
-                </div>
-
-                <div class="mt-12 flex flex-wrap items-center gap-4">
-                    <a href="https://open.spotify.com/show/1mQUSNNpjenkeUiFVBXWCN" target="_blank" class="flex items-center justify-center rounded-full border border-[var(--rule)] px-6 py-2.5 text-[10px] font-black uppercase tracking-widest hover:bg-[#1DB954] hover:text-white hover:border-[#1DB954] transition-all">
-                        Spotify
-                    </a>
-                    <a href="https://podcasts.apple.com/gh/podcast/the-reverb/id1884282478" target="_blank" class="flex items-center justify-center rounded-full border border-[var(--rule)] px-6 py-2.5 text-[10px] font-black uppercase tracking-widest hover:bg-[#8e3ee5] hover:text-white hover:border-[#8e3ee5] transition-all">
-                        Apple
-                    </a>
-                </div>
+    <section class="border-b border-[var(--rule)]">
+        <div class="mx-auto max-w-[1100px] px-4 py-20 md:py-32 text-center">
+            <span
+                class="inline-block w-max border-y border-[var(--rule)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-[.2em] text-[var(--muted)] mb-6 animate-enter">
+                Audio Dispatch
+            </span>
+            <h1 class="font-serif text-5xl sm:text-7xl md:text-8xl leading-[.85] tracking-tighter mb-8 animate-enter">
+                The Reverb.
+            </h1>
+            <p class="mx-auto max-w-2xl text-[var(--muted)] text-base md:text-xl leading-relaxed font-serif animate-enter">
+                A fast-paced tech podcast capturing real conversations from the Sandbox Réseau community. No fillers. Just what people are building, thinking, and learning right now.
+            </p>
+            <div class="mt-10 flex flex-wrap items-center justify-center gap-4 animate-enter">
+                <a href="https://open.spotify.com/show/1mQUSNNpjenkeUiFVBXWCN" target="_blank"
+                    class="inline-flex items-center gap-2 rounded border border-[var(--rule)] px-6 py-3.5 text-sm font-bold uppercase tracking-widest hover:bg-[#1DB954] hover:text-white hover:border-[#1DB954] transition-all">
+                    Listen on Spotify
+                </a>
+                <a href="https://podcasts.apple.com/gh/podcast/the-reverb/id1884282478" target="_blank"
+                    class="inline-flex items-center gap-2 rounded border border-[var(--rule)] px-6 py-3.5 text-sm font-bold uppercase tracking-widest hover:bg-[#8e3ee5] hover:text-white hover:border-[#8e3ee5] transition-all">
+                    Listen on Apple
+                </a>
             </div>
         </div>
     </section>
 
-    <!-- Episodes Grid -->
-    <main class="mx-auto max-w-[1100px] px-4 py-12">
-        <div class="mb-12 flex items-center justify-between gap-4">
-             <h3 class="font-serif text-2xl tracking-tight">Archive</h3>
-             <div class="h-px flex-1 bg-[var(--rule)]/10"></div>
-             <div id="podcast-count" class="text-[11px] font-bold uppercase tracking-widest text-[var(--muted)]">Loading Episodes...</div>
-        </div>
+    <!-- Main: article stream -->
+    <main class="mx-auto max-w-[1100px] px-4 py-16 md:py-24">
+        <div class="grid grid-cols-1 gap-16 lg:grid-cols-[1fr_320px]">
+            <!-- Main Column: Archive -->
+            <div class="space-y-8">
+                <div class="mb-4 flex items-center justify-between gap-4 animate-enter">
+                    <h3 class="font-serif text-2xl tracking-tight">Archive</h3>
+                    <div class="h-px flex-1 bg-[var(--rule)]/10"></div>
+                    <div id="podcast-count" class="text-[11px] font-bold uppercase tracking-widest text-[var(--muted)]">Loading Episodes...</div>
+                </div>
 
-        <div id="podcast-error" class="hidden text-center py-20 text-neutral-500 font-serif italic"></div>
-        
-        <div id="podcast-archive" class="space-y-6">
-            <!-- Shimmers -->
-            <div class="podcast-shimmer space-y-6">
-                {[1, 2, 3].map(() => (
-                    <div class="flex flex-col sm:flex-row gap-6 p-6 rounded border border-[var(--rule)] bg-[var(--paper)] animate-pulse">
-                        <div class="w-full aspect-square sm:w-40 sm:h-40 bg-neutral-200 rounded"></div>
-                        <div class="flex-1 space-y-4">
-                            <div class="h-3 w-32 bg-neutral-200 rounded"></div>
-                            <div class="h-8 w-3/4 bg-neutral-200 rounded"></div>
-                            <div class="h-4 w-full bg-neutral-200 rounded"></div>
+                <div id="podcast-error" class="hidden text-center py-20 text-[var(--muted)] font-serif"></div>
+                
+                <div id="podcast-archive" class="space-y-6">
+                    <!-- Shimmers -->
+                    <div class="podcast-shimmer space-y-6">
+                        {[1, 2, 3].map(() => (
+                            <div class="flex flex-col sm:flex-row gap-6 p-6 rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_95%,var(--ink)_5%)] animate-pulse">
+                                <div class="w-full aspect-square sm:w-32 sm:h-32 bg-neutral-200/50 rounded border border-[var(--rule)]/20"></div>
+                                <div class="flex-1 space-y-4">
+                                    <div class="h-3 w-32 bg-neutral-200/50 rounded"></div>
+                                    <div class="h-6 w-3/4 bg-neutral-200/50 rounded"></div>
+                                    <div class="h-4 w-full bg-neutral-200/50 rounded"></div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Rail -->
+            <div class="space-y-8 lg:sticky lg:top-24 lg:self-start">
+                
+                <!-- Show Art Widget -->
+                <div class="rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_95%,var(--ink)_5%)] p-6 animate-enter text-center">
+                    <div class="relative group mx-auto w-48 h-48 mb-6">
+                        <img id="podcastCover" src="/assets/img/podcast-logo.png" alt="The Reverb Logo" class="w-full h-full rounded border border-[var(--rule)] shadow-lg grayscale transition-all duration-700 group-hover:grayscale-0">
+                    </div>
+                    <h3 class="font-serif text-xl mb-2 pb-4 border-b border-[var(--rule)]/20">The Reverb</h3>
+                    <p class="text-[12px] text-[var(--muted)] leading-relaxed m-0 pt-2">
+                        Short, high-bandwidth dispatches from African builders making things happen.
+                    </p>
+                </div>
+
+                <!-- Right Rail CTA -->
+                <div class="rounded border border-[var(--rule)] hatch p-6 relative overflow-hidden group animate-enter bg-[color:color-mix(in_oklab,var(--paper)_90%,var(--ink)_10%)] text-center">
+                    <div class="relative z-10">
+                        <h4 class="font-serif text-xl mb-2 text-[var(--ink)]">Never miss a pulse</h4>
+                        <p class="text-[13px] text-[var(--muted)] mb-5 leading-relaxed">
+                            Subscribe on your preferred platform for weekly dispatches.
+                        </p>
+                        <div class="flex flex-col gap-3">
+                            <a href="https://open.spotify.com/show/1mQUSNNpjenkeUiFVBXWCN" target="_blank"
+                                class="block w-full rounded border border-[var(--rule)] py-2.5 text-[10px] font-bold uppercase tracking-widest text-[var(--ink)] hover:bg-[#1DB954] hover:text-white hover:border-[#1DB954] transition-all bg-[var(--paper)]">
+                                Spotify
+                            </a>
+                            <a href="https://podcasts.apple.com/gh/podcast/the-reverb/id1884282478" target="_blank"
+                                class="block w-full rounded border border-[var(--rule)] py-2.5 text-[10px] font-bold uppercase tracking-widest text-[var(--ink)] hover:bg-[#8e3ee5] hover:text-white hover:border-[#8e3ee5] transition-all bg-[var(--paper)]">
+                                Apple
+                            </a>
+                            <a href="https://anchor.fm/s/110059518/podcast/rss" target="_blank"
+                                class="block w-full rounded border border-[var(--rule)] py-2.5 text-[10px] font-bold uppercase tracking-widest text-[var(--ink)] hover:bg-[var(--ink)] hover:text-[var(--paper)] transition-all bg-[var(--paper)]">
+                                RSS Feed
+                            </a>
                         </div>
                     </div>
-                ))}
-            </div>
-        </div>
+                </div>
 
-        <!-- Subscribe CTA -->
-        <div class="mt-28 mb-12 relative overflow-hidden rounded border border-[var(--rule)] bg-[var(--paper)] p-12 text-center animate-enter">
-            <div class="absolute inset-0 hatch opacity-[0.03] pointer-events-none"></div>
-            <div class="relative z-10">
-                <div class="mb-8 inline-block rounded border border-[var(--rule)] bg-[var(--paper)] p-2">
-                    <img src="/assets/img/podcast-logo.png" alt="Logo" class="w-12 h-12 grayscale">
-                </div>
-                <h3 class="font-serif text-3xl md:text-4xl mb-4 tracking-tight text-[var(--ink)]">Never miss a pulse.</h3>
-                <p class="text-[var(--muted)] mb-10 max-w-lg mx-auto font-serif text-lg leading-relaxed">
-                    Subscribe on your preferred platform for weekly dispatches from the Sandbox.
-                </p>
-                <div class="flex flex-wrap justify-center gap-6">
-                    <a href="https://open.spotify.com/show/1mQUSNNpjenkeUiFVBXWCN" target="_blank" class="text-xs font-bold uppercase tracking-widest underline decoration-2 underline-offset-4 hover:accent-text">Spotify</a>
-                    <a href="https://podcasts.apple.com/gh/podcast/the-reverb/id1884282478" target="_blank" class="text-xs font-bold uppercase tracking-widest underline decoration-2 underline-offset-4 hover:accent-text">Apple</a>
-                    <a href="https://anchor.fm/s/110059518/podcast/rss" target="_blank" class="text-xs font-bold uppercase tracking-widest underline decoration-2 underline-offset-4 hover:accent-text">RSS Feed</a>
-                </div>
             </div>
         </div>
     </main>
@@ -98,7 +116,7 @@ const headerSubtitle = "Digital Audio-Log";
             const countDisplay = document.getElementById('podcast-count');
             const errorDisplay = document.getElementById('podcast-error');
             
-            if (!archive) return; // Not on the podcast page
+            if (!archive) return;
 
             try {
                 const rssUrl = `https://anchor.fm/s/110059518/podcast/rss?t=${Date.now()}`;
@@ -129,30 +147,28 @@ const headerSubtitle = "Digital Audio-Log";
                         const dateObj = new Date(pubDate);
                         const formattedDate = dateObj.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
                         
-                        // Clean and Decode description
                         const decoder = document.createElement('div');
                         decoder.innerHTML = description;
                         const decodedDesc = decoder.textContent || decoder.innerText || "";
                         const cleanDesc = decodedDesc.replace(/<[^>]*>?/gm, '').replace(/&quot;/g, '"').trim();
-                        // Ensure space after quotes if needed
                         const formattedDesc = cleanDesc.replace(/"([A-Z])/g, '" $1');
                         const shortDesc = formattedDesc.substring(0, 180) + (formattedDesc.length > 180 ? '...' : '');
 
                         html += `
-                            <div class="episode-card group relative flex flex-col sm:flex-row gap-6 p-6 rounded border border-[var(--rule)] bg-[var(--paper)] hover:border-[var(--ink)] transition-all animate-enter" 
+                            <div class="episode-card group relative flex flex-col sm:flex-row gap-6 p-6 rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_97%,var(--ink)_3%)] hover:border-[var(--ink)] transition-all animate-enter" 
                                  data-episode-id="${guid}" 
                                  data-title="${title}" 
                                  data-meta="${formattedDate} • ${duration}" 
                                  data-thumb="${thumb}"
                                  data-audio-url="${audioUrl}">
                                 
-                                <div class="w-full aspect-square sm:w-40 sm:h-40 flex-shrink-0 bg-[var(--paper)] rounded border border-[var(--rule)] overflow-hidden relative group/art cursor-pointer" onclick="if(window.openLightbox) openLightbox('${thumb}')">
+                                <div class="w-full aspect-square sm:w-32 sm:h-32 flex-shrink-0 bg-[var(--paper)] rounded border border-[var(--rule)] overflow-hidden relative group/art cursor-pointer" onclick="if(window.openLightbox) openLightbox('${thumb}')">
                                     <img src="${thumb}" alt="${title}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
                                     
                                     ${audioUrl ? `
                                     <button class="play-btn absolute inset-0 flex items-center justify-center bg-[var(--ink)]/40 opacity-0 group-hover/art:opacity-100 transition-opacity text-[var(--paper)]">
-                                        <div class="play-icon w-12 h-12 flex items-center justify-center rounded-full border-2 border-[var(--paper)]">
-                                            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                                        <div class="play-icon w-10 h-10 flex items-center justify-center rounded-full border-2 border-[var(--paper)]">
+                                            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
                                                 <path d="M8 5v14l11-7z"/>
                                             </svg>
                                         </div>
@@ -162,24 +178,13 @@ const headerSubtitle = "Digital Audio-Log";
                                 
                                 <div class="flex-1 flex flex-col justify-between">
                                     <div>
-                                        <div class="flex items-center gap-3 text-[10px] uppercase font-bold tracking-widest text-[var(--muted)] mb-2 text-neutral-400">
+                                        <div class="flex items-center gap-3 text-[10px] uppercase font-bold tracking-widest text-[var(--muted)] mb-2">
                                              <span>${formattedDate}</span>
                                              <span class="w-1 h-1 rounded-full bg-[var(--rule)]"></span>
                                              <span>${duration}</span>
                                         </div>
                                         <h3 class="font-serif text-xl sm:text-2xl mb-2 text-[var(--ink)] group-hover:accent-text transition-colors">${title}</h3>
-                                        <p class="text-[14px] text-[var(--muted)] leading-relaxed mb-4">${shortDesc}</p>
-                                    </div>
-                                    
-                                    <div class="flex flex-wrap items-center justify-between gap-4 mt-auto">
-                                        <div class="flex flex-wrap gap-2">
-                                            <a href="${spotifyUrl}" target="_blank" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[var(--rule)] text-[10px] font-bold uppercase tracking-widest hover:bg-[#1DB954] hover:text-white hover:border-[#1DB954] transition-all">
-                                                Spotify
-                                            </a>
-                                            <a href="https://podcasts.apple.com/gh/podcast/the-reverb/id1884282478" target="_blank" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[var(--rule)] text-[10px] font-bold uppercase tracking-widest hover:bg-[#8e3ee5] hover:text-white hover:border-[#8e3ee5] transition-all">
-                                                Apple
-                                            </a>
-                                        </div>
+                                        <p class="text-[14px] text-[var(--muted)] leading-relaxed m-0">${shortDesc}</p>
                                     </div>
                                 </div>
                             </div>
@@ -188,7 +193,6 @@ const headerSubtitle = "Digital Audio-Log";
                     
                     if (archive) {
                         archive.innerHTML = html;
-                        // Trigger visibility for dynamically added items
                         archive.querySelectorAll('.animate-enter').forEach(el => {
                             setTimeout(() => el.classList.add('visible'), 50);
                         });
@@ -226,7 +230,21 @@ const headerSubtitle = "Digital Audio-Log";
             });
         }
 
-        // Initialize on both direct load and view transitions
         document.addEventListener('astro:page-load', fetchPodcastArchive);
+
+        (function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, i) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add('visible');
+                        }, (i % 6) * 80);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.animate-enter').forEach(el => observer.observe(el));
+        })();
     </script>
 </Layout>

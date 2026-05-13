@@ -25,7 +25,7 @@ const headerSubtitle = "The Dispatch Archive";
         </header>
 
         <div class="grid grid-cols-1 gap-12" id="newsletterList">
-            {newsletters.map((newsletter) => (
+            {newsletters.slice().reverse().map((newsletter) => (
                 <article class="group relative animate-enter">
                     <div class="flex flex-col md:flex-row gap-8 items-start">
                         <div class="w-full md:w-48 shrink-0 flex flex-col pt-1">
@@ -35,12 +35,27 @@ const headerSubtitle = "The Dispatch Archive";
                         </div>
 
                         <div class="flex-1">
-                            <h2 class="font-serif text-2xl sm:text-3xl lg:text-4xl mb-3 leading-tight group-hover:accent-text transition-colors">
-                                <a href={`/newsletters/${newsletter.id}`}>{newsletter.title}</a>
-                            </h2>
-                            <p class="text-[17px] text-neutral-600 leading-relaxed mb-6 font-serif ">
-                                "{newsletter.excerpt}"
-                            </p>
+                            <div class="flex flex-col lg:flex-row gap-8">
+                                {newsletter.image && (
+                                    <div class="w-full lg:w-72 shrink-0 overflow-hidden rounded border border-[var(--rule)] bg-[var(--paper)] hatch group">
+                                        <a href={`/newsletters/${newsletter.id}`} class="block overflow-hidden">
+                                            <img 
+                                                src={newsletter.image} 
+                                                alt={newsletter.title}
+                                                class="aspect-[16/10] w-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
+                                            />
+                                        </a>
+                                    </div>
+                                )}
+                                <div class="flex-1">
+                                    <h2 class="font-serif text-2xl sm:text-3xl lg:text-4xl mb-3 leading-tight group-hover:accent-text transition-colors">
+                                        <a href={`/newsletters/${newsletter.id}`}>{newsletter.title}</a>
+                                    </h2>
+                                    <p class="text-[17px] text-neutral-600 leading-relaxed mb-6 font-serif ">
+                                        "{newsletter.excerpt}"
+                                    </p>
+                                </div>
+                            </div>
                             <div class="flex flex-wrap items-center gap-6 text-[11px] font-semibold uppercase tracking-wider text-[var(--muted)]">
                                 <span class="flex items-center gap-2">
                                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>

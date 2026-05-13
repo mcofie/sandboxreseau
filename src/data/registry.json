@@ -13,7 +13,7 @@
     "founded": "2025",
     "url": "https://sailrides.co/",
     "cta": "Learn more",
-    "logo": "SR"
+    "logo": "/assets/img/logos/sail-rides.png"
   },
   {
     "id": "reveal-real-estate",
@@ -29,7 +29,7 @@
     "founded": "2025",
     "url": "https://reveal-real-estate.com",
     "cta": "Learn more",
-    "logo": "RR"
+    "logo": "/assets/img/logos/reveal-real-estate.png"
   },
   {
     "id": "pouch",
@@ -45,7 +45,7 @@
     "founded": "2025",
     "url": "https://www.pouchpay.app/",
     "cta": "Learn more",
-    "logo": "P"
+    "logo": "/assets/img/logos/pouch.png"
   },
   {
     "id": "chime-app",
@@ -61,7 +61,7 @@
     "founded": "2025",
     "url": "https://www.usechime.app/",
     "cta": "Learn more",
-    "logo": "C"
+    "logo": "/assets/img/logos/chime-app.png"
   },
   {
     "id": "ratecardly",
@@ -77,7 +77,7 @@
     "founded": "2024",
     "url": "https://ratecard.ly/",
     "cta": "Learn more",
-    "logo": "RC"
+    "logo": "/assets/img/logos/ratecardly.png"
   },
   {
     "id": "echolift",
@@ -93,7 +93,7 @@
     "founded": "2024",
     "url": "https://www.echolift.org/",
     "cta": "Learn more",
-    "logo": "EL"
+    "logo": "/assets/img/logos/echolift.png"
   },
   {
     "id": "jampolls",
@@ -109,7 +109,7 @@
     "founded": "2024",
     "url": "https://jampolls.com/",
     "cta": "Learn more",
-    "logo": "JP"
+    "logo": "/assets/img/logos/jampolls.png"
   },
   {
     "id": "beeterty",
@@ -125,7 +125,7 @@
     "founded": "2024",
     "url": "https://beeterty.com/",
     "cta": "Learn more",
-    "logo": "B"
+    "logo": "/assets/img/logos/beeterty.png"
   },
   {
     "id": "skillsclub",
@@ -141,7 +141,7 @@
     "founded": "2024",
     "url": "https://theskill.club/",
     "cta": "Learn more",
-    "logo": "SC"
+    "logo": "/assets/img/logos/skillsclub.png"
   },
   {
     "id": "giftpal",
@@ -157,7 +157,7 @@
     "founded": "2024",
     "url": "https://giftpal.co/",
     "cta": "Learn more",
-    "logo": "GP"
+    "logo": "/assets/img/logos/giftpal.png"
   },
   {
     "id": "fitsynq",
@@ -173,7 +173,7 @@
     "founded": "2024",
     "url": "https://www.fitsynq.app/",
     "cta": "Learn more",
-    "logo": "FS"
+    "logo": "/assets/img/logos/fitsynq.png"
   },
   {
     "id": "buukmenow",
@@ -189,7 +189,7 @@
     "founded": "2023",
     "url": "https://buukmenow.com/",
     "cta": "Learn more",
-    "logo": "BN"
+    "logo": "/assets/img/logos/buukmenow.png"
   },
   {
     "id": "gatepass",
@@ -205,7 +205,7 @@
     "founded": "2024",
     "url": "https://gatepass.so/",
     "cta": "Learn more",
-    "logo": "GP"
+    "logo": "/assets/img/logos/gatepass.png"
   },
   {
     "id": "golly-express",
@@ -221,7 +221,7 @@
     "founded": "2024",
     "url": "https://app.golly.live/",
     "cta": "Learn more",
-    "logo": "GE"
+    "logo": "/assets/img/logos/golly-express.png"
   },
   {
     "id": "thedsgnjunkies",
@@ -237,6 +237,198 @@
     "founded": "2023",
     "url": "https://thedsgnjunkies.com/",
     "cta": "Learn more",
-    "logo": "DJ"
+    "logo": "/assets/img/logos/thedsgnjunkies.png"
+  },
+  {
+    "id": "clerra",
+    "name": "Clerra",
+    "industry": "Tech",
+    "location": "Accra",
+    "status": "Live",
+    "description": "An AI-powered legal practice management platform with case tracking, billing automation, document insights, and fast legal research — all in one place.",
+    "tags": [
+      "Legal Tech",
+      "AI"
+    ],
+    "founded": "2025",
+    "url": "http://clerra.app/",
+    "cta": "Learn more",
+    "logo": "/assets/img/logos/clerra.png"
+  },
+  {
+    "id": "openprop",
+    "name": "OpenProp Africa",
+    "industry": "Marketplace",
+    "location": "Accra",
+    "status": "Live",
+    "description": "A property and home essentials marketplace in Ghana. Buy, rent, or sell property, shop furniture and appliances, and book moving, cleaning, and home services.",
+    "tags": [
+      "Real Estate",
+      "Marketplace"
+    ],
+    "founded": "2025",
+    "url": "https://openprop.africa/",
+    "cta": "Learn more",
+    "logo": "/assets/img/logos/openprop.png"
+  },
+  {
+    "id": "nightmarket",
+    "name": "Night Market",
+    "industry": "Marketplace",
+    "location": "Accra",
+    "status": "Live",
+    "description": "A local commerce platform that brings your favorite neighborhood vendors online — order from the Night Market and get it delivered in minutes.",
+    "tags": [
+      "Commerce",
+      "Delivery"
+    ],
+    "founded": "2025",
+    "url": "https://nightmarketgh.com/",
+    "cta": "Learn more",
+    "logo": "/assets/img/logos/nightmarket.png"
+  },
+  {
+    "id": "newcomma",
+    "name": "NewComma",
+    "industry": "Creative",
+    "location": "Accra",
+    "status": "Live",
+    "description": "A social recruitment platform connecting creative talent across Africa and its diaspora with jobs, grants, and resources. Build your portfolio and grow your network.",
+    "tags": [
+      "Creative",
+      "Talent"
+    ],
+    "founded": "2025",
+    "url": "https://home.newcomma.com/",
+    "cta": "Learn more",
+    "logo": "/assets/img/logos/newcomma.png"
+  },
+  {
+    "id": "budgeai",
+    "name": "Budge AI",
+    "industry": "Fintech",
+    "location": "Accra",
+    "status": "Live",
+    "description": "An AI-powered expense tracker that auto-syncs transactions from SMS and email, giving users real-time visibility into their spending without manual entry.",
+    "tags": [
+      "Fintech",
+      "AI"
+    ],
+    "founded": "2025",
+    "url": "https://www.budgeai.com/",
+    "cta": "Learn more",
+    "logo": "/assets/img/logos/budgeai.png"
+  },
+  {
+    "id": "gaderin",
+    "name": "Gaderin",
+    "industry": "Marketplace",
+    "location": "Accra",
+    "status": "Live",
+    "description": "A curated experiences marketplace for Accra — discover and book activities, cultural events, food tours, art, and adventures hosted by locals.",
+    "tags": [
+      "Experiences",
+      "Marketplace"
+    ],
+    "founded": "2025",
+    "url": "http://thegaderin.com/",
+    "cta": "Learn more",
+    "logo": "/assets/img/logos/gaderin.png"
+  },
+  {
+    "id": "kixara",
+    "name": "Kixara",
+    "industry": "Tech",
+    "location": "Accra",
+    "status": "Live",
+    "description": "An e-commerce and marketing platform that lets businesses launch online stores and send bulk WhatsApp campaigns to thousands of contacts.",
+    "tags": [
+      "Commerce",
+      "Marketing"
+    ],
+    "founded": "2025",
+    "url": "https://www.kixara.com/",
+    "cta": "Learn more",
+    "logo": "/assets/img/logos/kixara.png"
+  },
+  {
+    "id": "piply",
+    "name": "Piply",
+    "industry": "Software",
+    "location": "Accra",
+    "status": "Live",
+    "description": "An AI study workspace for students that turns notes into flashcards, quizzes, and mind maps instantly — study smarter, retain more, and show up ready for exams.",
+    "tags": [
+      "EdTech",
+      "AI"
+    ],
+    "founded": "2025",
+    "url": "https://piply.ai/",
+    "cta": "Learn more",
+    "logo": "/assets/img/logos/piply.png"
+  },
+  {
+    "id": "pastcare",
+    "name": "PastCare",
+    "industry": "Software",
+    "location": "Accra",
+    "status": "Live",
+    "description": "A comprehensive church management platform for tracking members, attendance, donations, and events — designed for modern congregations with a free plan available.",
+    "tags": [
+      "SaaS",
+      "Community"
+    ],
+    "founded": "2025",
+    "url": "https://pastcare.app/",
+    "cta": "Learn more",
+    "logo": "/assets/img/logos/pastcare.png"
+  },
+  {
+    "id": "aldincycles",
+    "name": "Aldin Cycles",
+    "industry": "Tech",
+    "location": "Accra",
+    "status": "Live",
+    "description": "Ghana's first bike-sharing company — providing affordable, eco-friendly urban mobility through a network of shared bicycles across the city.",
+    "tags": [
+      "Mobility",
+      "CleanTech"
+    ],
+    "founded": "2024",
+    "url": "https://www.aldincycles.com",
+    "cta": "Learn more",
+    "logo": "/assets/img/logos/aldincycles.png"
+  },
+  {
+    "id": "susupaa",
+    "name": "SusuPaa",
+    "industry": "Fintech",
+    "location": "Accra",
+    "status": "Live",
+    "description": "A digital savings management platform that modernizes the traditional West African 'susu' system — helping groups and institutions manage collective savings securely.",
+    "tags": [
+      "Fintech",
+      "Savings"
+    ],
+    "founded": "2025",
+    "url": "https://susupaa.com/",
+    "cta": "Learn more",
+    "logo": "/assets/img/logos/susupaa.png"
+  },
+  {
+    "id": "ridekrom",
+    "name": "Krom",
+    "industry": "Tech",
+    "location": "Accra",
+    "status": "Live",
+    "description": "A carpooling platform connecting drivers and passengers traveling the same routes across Ghana — affordable rides, split costs, verified profiles, and secure payments.",
+    "tags": [
+      "Mobility",
+      "Software"
+    ],
+    "founded": "2025",
+    "url": "https://ridekrom.com/",
+    "cta": "Learn more",
+    "logo": "/assets/img/logos/ridekrom.png"
   }
 ]

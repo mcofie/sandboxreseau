@@ -1,139 +1,266 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
-const headerSubtitle = "Network of Builders";
+const headerSubtitle = "The Community";
+
+const discordInvite = "https://discord.gg/RMcBDRrV7x";
+
+const channels = [
+    { name: "show-your-work", desc: "Share what you're building. Screenshots, links, updates." },
+    { name: "feedback-wanted", desc: "Post your product, get honest feedback from builders." },
+    { name: "testing-pool", desc: "Need testers? The community is your first 50 users." },
+    { name: "funding-talk", desc: "Raising capital? Looking for investors? Discuss here." },
+    { name: "wins", desc: "Celebrate the build. First user, revenue, or hire." },
+];
+
+const roles = [
+    { label: "Founder", color: "#EAB308", emoji: "🟡" },
+    { label: "Core Team", color: "#f3f3f3", emoji: "⚪" },
+    { label: "Moderator", color: "#22C55E", emoji: "🟢" },
+    { label: "Reverb Alumni", color: "#A855F7", emoji: "🟣" },
+    { label: "Edition Attendee", color: "#3B82F6", emoji: "🔵" },
+    { label: "Investor", color: "#14B8A6", emoji: "🟢" },
+    { label: "Builder", color: "#6B7280", emoji: "⚫" },
+];
+
+const values = [
+    "Build in public.",
+    "Be useful. Bring signal, not noise.",
+    "Be honest, not harsh.",
+    "What's shared here stays here.",
+    "One strike policy.",
+];
+
+const audience = [
+    "Founders and engineers building products in Ghana and West Africa",
+    "Designers, data people, indie makers, and the product-curious",
+    "Diaspora builders who want to stay connected to Accra's ecosystem",
+    "Anyone with a builder's mindset — beginner-friendly, curiosity is enough",
+];
 ---
 
 <Layout 
     title="Community | Sandbox Réseau" 
-    description="Join the Sandbox Réseau community. Connect with engineers, designers, and founders in Accra."
+    description="Join the Sandbox Réseau Discord. Connect with builders, founders, and engineers in Accra and the diaspora. High-signal, no fluff."
     headerSubtitle={headerSubtitle}
 >
-    <!-- Header Hero -->
-    <section class="border-b border-[var(--rule)] bg-[var(--paper)]">
-        <div class="mx-auto max-w-[1100px] px-4 py-16 text-center">
+    <!-- Hero Section -->
+    <section class="border-b border-[var(--rule)]">
+        <div class="mx-auto max-w-[1100px] px-4 py-20 md:py-32 text-center">
             <span
-                class="inline-block w-max border-y border-[var(--rule)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-[.2em] text-[var(--muted)] mb-5">
-                The Network
+                class="inline-block w-max border-y border-[var(--rule)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-[.2em] text-[var(--muted)] mb-6 animate-enter">
+                High-Signal, No Fluff
             </span>
-            <h1 class="font-serif text-5xl sm:text-7xl leading-[.85] tracking-tighter mb-8">
-                Connect with the Pulse.
+            <h1 class="font-serif text-5xl sm:text-7xl md:text-8xl leading-[.85] tracking-tighter mb-8 animate-enter">
+                The Room is Open.
             </h1>
-            <p class="mx-auto max-w-2xl text-[var(--muted)] text-base md:text-xl leading-relaxed font-serif ">
-                A curated community of makers shaping the next wave of innovation. Join us to find your next collaborator, mentor, or friend.
+            <p class="mx-auto max-w-2xl text-[var(--muted)] text-base md:text-xl leading-relaxed font-serif animate-enter">
+                Sandbox Réseau is where Accra's builders connect, build in public, and hold each other accountable. Our community lives on Discord.
             </p>
+            <div class="mt-10 flex flex-wrap items-center justify-center gap-4 animate-enter">
+                <a href={discordInvite} target="_blank" rel="noreferrer" id="hero-discord-cta"
+                    class="discord-cta inline-flex items-center gap-3 rounded bg-[#5865F2] px-7 py-3.5 text-sm font-bold text-white uppercase tracking-widest hover:bg-[#4752C4] transition-all hover:shadow-[0_0_30px_rgba(88,101,242,0.4)]">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 127.14 96.36" fill="currentColor" class="w-5 h-5">
+                        <path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.11,77.11,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22c2.36-24.44-2.85-48.47-18.9-72.15ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/>
+                    </svg>
+                    Join the Discord
+                </a>
+                <a href="#about" id="hero-learn-more"
+                    class="inline-flex items-center gap-2 rounded border border-[var(--rule)] px-6 py-3.5 text-sm font-bold uppercase tracking-widest hover:bg-[var(--ink)] hover:text-[var(--paper)] transition-all">
+                    Learn more <span class="text-lg leading-none">↓</span>
+                </a>
+            </div>
         </div>
     </section>
 
-    <!-- Main Content -->
-    <main class="mx-auto max-w-[1100px] px-4 py-20">
-        <!-- Community Values -->
-        <section class="mb-24">
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div class="value-card rounded border border-[var(--rule)] p-6 bg-[color:color-mix(in_oklab,var(--paper)_97%,var(--ink)_3%)]">
-                    <div class="w-12 h-12 rounded-full accent-bg flex items-center justify-center mb-4 text-white shadow-lg">
-                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
-                        </svg>
-                    </div>
-                    <h4 class="font-serif text-xl mb-2">Signal Over Noise</h4>
-                    <p class="text-sm text-[var(--muted)] leading-relaxed">We prioritize substance over hype, real work over performative gestures.</p>
-                </div>
+    <!-- Main: article stream -->
+    <main class="mx-auto max-w-[1100px] px-4 py-16 md:py-24" id="about">
+        <div class="grid grid-cols-1 gap-16 lg:grid-cols-[1fr_320px]">
+            <!-- Main Column -->
+            <div class="space-y-16">
+                <!-- Who It's For -->
+                <article class="prose-like animate-enter">
+                    <h3 class="mb-1 font-serif text-[28px] leading-tight tracking-[-.005em]">Who It's For</h3>
+                    <p class="text-neutral-600 mb-6">Built for builders, wherever you are.</p>
+                    <ul class="ml-5 list-disc font-sans space-y-2">
+                        {audience.map((item) => (
+                            <li>{item}</li>
+                        ))}
+                    </ul>
+                </article>
 
-                <div class="value-card rounded border border-[var(--rule)] p-6 bg-[color:color-mix(in_oklab,var(--paper)_97%,var(--ink)_3%)]">
-                    <div class="w-12 h-12 rounded-full accent-bg flex items-center justify-center mb-4 text-white shadow-lg">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18" />
-                        </svg>
+                <!-- Channels -->
+                <article class="prose-like animate-enter">
+                    <h3 class="mb-1 font-serif text-[28px] leading-tight">Inside the Server</h3>
+                    <p class="text-neutral-600 mb-6">Our channels are optimized for work and feedback.</p>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {channels.map((ch, i) => (
+                            <div class="channel-card group rounded border border-[var(--rule)] p-5 bg-[color:color-mix(in_oklab,var(--paper)_95%,var(--ink)_5%)] hover:border-[#5865F2] transition-all">
+                                <div class="flex items-center gap-2 mb-3">
+                                    <span class="text-[#5865F2] text-lg font-bold opacity-60 group-hover:opacity-100 transition-opacity">#</span>
+                                    <span class="font-bold text-[var(--ink)] tracking-wide">{ch.name}</span>
+                                </div>
+                                <p class="text-[14px] text-neutral-600 leading-relaxed m-0">{ch.desc}</p>
+                            </div>
+                        ))}
                     </div>
-                    <h4 class="font-serif text-xl mb-2">Learn in Public</h4>
-                    <p class="text-sm text-[var(--muted)] leading-relaxed">Share your journey, mistakes, and breakthroughs openly with the community.</p>
-                </div>
+                </article>
 
-                <div class="value-card rounded border border-[var(--rule)] p-6 bg-[color:color-mix(in_oklab,var(--paper)_97%,var(--ink)_3%)]">
-                    <div class="w-12 h-12 rounded-full accent-bg flex items-center justify-center mb-4 text-white shadow-lg">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
-                        </svg>
-                    </div>
-                    <h4 class="font-serif text-xl mb-2">Collaborate Generously</h4>
-                    <p class="text-sm text-[var(--muted)] leading-relaxed">Help others freely, share resources, and lift the whole community up.</p>
-                </div>
+                <!-- Community Pillars -->
+                <article class="prose-like animate-enter">
+                    <h3 class="mb-1 font-serif text-[28px] leading-tight">The Pillars</h3>
+                    <p class="text-neutral-600 mb-6">How we interact both online and offline.</p>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4 p-5 rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_95%,var(--ink)_5%)]">
+                            <div class="w-10 h-10 rounded-full border border-[var(--rule)] flex items-center justify-center shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"/></svg>
+                            </div>
+                            <div>
+                                <h4 class="font-serif text-[18px] text-[var(--ink)] mb-1">Monthly Meetups</h4>
+                                <p class="text-[14px] text-neutral-600 mb-2">We meet monthly in Accra. Builder demos, mini-talks, and open networking.</p>
+                                <a href="/editions" class="text-[12px] font-bold uppercase tracking-widest text-[var(--ink)] hover:text-[var(--accent)] underline decoration-[var(--rule)] underline-offset-4">See past editions →</a>
+                            </div>
+                        </div>
 
-                <div class="value-card rounded border border-[var(--rule)] p-6 bg-[color:color-mix(in_oklab,var(--paper)_97%,var(--ink)_3%)]">
-                    <div class="w-12 h-12 rounded-full accent-bg flex items-center justify-center mb-4 text-white shadow-lg">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
-                        </svg>
+                        <div class="flex items-start gap-4 p-5 rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_95%,var(--ink)_5%)]">
+                            <div class="w-10 h-10 rounded-full border border-[var(--rule)] flex items-center justify-center shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z"/></svg>
+                            </div>
+                            <div>
+                                <h4 class="font-serif text-[18px] text-[var(--ink)] mb-1">The Reverb</h4>
+                                <p class="text-[14px] text-neutral-600 mb-2">Our podcast featuring builders from the community. 5 minutes. No fluff.</p>
+                                <a href="/podcast" class="text-[12px] font-bold uppercase tracking-widest text-[var(--ink)] hover:text-[var(--accent)] underline decoration-[var(--rule)] underline-offset-4">Listen now →</a>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4 p-5 rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_95%,var(--ink)_5%)]">
+                            <div class="w-10 h-10 rounded-full border border-[var(--rule)] flex items-center justify-center shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/></svg>
+                            </div>
+                            <div>
+                                <h4 class="font-serif text-[18px] text-[var(--ink)] mb-1">The Pitch</h4>
+                                <p class="text-[14px] text-neutral-600 mb-2">Our pitch competition. 6–8 founders. One stage. Real judges.</p>
+                                <a href="/the-pitch" class="text-[12px] font-bold uppercase tracking-widest text-[var(--ink)] hover:text-[var(--accent)] underline decoration-[var(--rule)] underline-offset-4">Learn more →</a>
+                            </div>
+                        </div>
                     </div>
-                    <h4 class="font-serif text-xl mb-2">Ship Faster Together</h4>
-                    <p class="text-sm text-[var(--muted)] leading-relaxed">Progress over polish. Build momentum with accountability partners.</p>
-                </div>
+                </article>
+
+                <!-- The Rules -->
+                <article class="prose-like animate-enter">
+                    <h3 class="mb-1 font-serif text-[28px] leading-tight">The Code</h3>
+                    <p class="text-neutral-600 mb-6">How we operate and interact.</p>
+                    <div class="space-y-0 border-t border-[var(--rule)]/20">
+                        {values.map((v, i) => (
+                            <div class="flex items-center gap-4 py-4 border-b border-[var(--rule)]/20">
+                                <span class="text-[11px] font-bold text-[var(--muted)] tabular-nums w-6">0{i + 1}</span>
+                                <span class="font-serif text-[18px] text-[var(--ink)]">"{v}"</span>
+                            </div>
+                        ))}
+                    </div>
+                </article>
             </div>
-        </section>
 
-        <!-- Dynamic Join Options -->
-        <section class="max-w-[900px] mx-auto mb-32">
-            <h3 class="font-serif text-3xl mb-12 text-center tracking-tight">Ways to Connect.</h3>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- Discord -->
-                <a href="https://discord.gg/sandboxreseau" target="_blank" class="group community-card relative overflow-hidden rounded border-2 border-[#5865F2] p-8 bg-white shadow-sm hover:shadow-2xl hover:-translate-y-1 transition-all">
-                    <div class="absolute -top-3 right-6 bg-[#5865F2] text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full z-10">Most Active</div>
-                    <div class="flex items-start gap-6">
-                        <div class="w-14 h-14 rounded-2xl bg-[#5865F2] flex items-center justify-center shrink-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 127.14 96.36" fill="white" class="w-8 h-8">
-                                <path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.11,77.11,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22c2.36-24.44-2.85-48.47-18.9-72.15ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z" />
+            <!-- Right Rail -->
+            <div class="space-y-8 lg:sticky lg:top-24 lg:self-start">
+                
+                <!-- Roles Widget -->
+                <div class="rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_95%,var(--ink)_5%)] p-6 animate-enter">
+                    <h3 class="font-serif text-xl mb-4 pb-4 border-b border-[var(--rule)]">Server Roles</h3>
+                    <div class="flex flex-col gap-2 mb-6">
+                        {roles.map((role) => (
+                            <div class="flex items-center gap-3">
+                                <span class="w-2.5 h-2.5 rounded-full flex-shrink-0" style={`background: ${role.color}`}></span>
+                                <span class="font-bold text-[13px] text-[var(--ink)]">{role.label}</span>
+                            </div>
+                        ))}
+                    </div>
+                    <p class="text-[12px] text-neutral-500 leading-relaxed m-0 pb-2 border-b border-[var(--rule)]/20">
+                        Everyone joins as a Builder. Roles are earned through showing up, shipping, and contributing.
+                    </p>
+                </div>
+
+                <!-- Right Rail CTA -->
+                <div class="rounded border border-[var(--rule)] hatch p-6 relative overflow-hidden group animate-enter bg-[color:color-mix(in_oklab,var(--paper)_90%,var(--ink)_10%)] text-center">
+                    <div class="relative z-10">
+                        <div class="w-12 h-12 mx-auto rounded-full bg-[#5865F2] flex items-center justify-center text-white mb-4 shadow-lg group-hover:scale-110 transition-transform">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 127.14 96.36" fill="currentColor" class="w-6 h-6">
+                                <path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.11,77.11,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22c2.36-24.44-2.85-48.47-18.9-72.15ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/>
                             </svg>
                         </div>
-                        <div>
-                            <h4 class="font-serif text-2xl mb-2 text-[#5865F2]">Discord.</h4>
-                            <p class="text-neutral-600 text-[15px] leading-relaxed mb-4">The digital headquarters for async coordination, project feedback, and daily builder banter.</p>
-                            <span class="text-xs font-bold uppercase tracking-widest underline underline-offset-4 decoration-2">Enter Server →</span>
-                        </div>
+                        <h4 class="font-serif text-xl mb-2 text-[var(--ink)]">Enter the Room</h4>
+                        <p class="text-[13px] text-neutral-600 mb-5 leading-relaxed">
+                            Start building in public and connect with the ecosystem today.
+                        </p>
+                        <a href={discordInvite} target="_blank" rel="noreferrer"
+                            class="block w-full rounded bg-[var(--ink)] py-3 text-xs font-bold uppercase tracking-widest text-[var(--paper)] hover:opacity-90 transition-opacity">
+                            Join Discord
+                        </a>
                     </div>
-                </a>
+                </div>
 
-                <!-- WhatsApp -->
-                <a href="https://chat.whatsapp.com/..." class="group community-card relative overflow-hidden rounded border-2 border-[#25D366] p-8 bg-white shadow-sm hover:shadow-2xl hover:-translate-y-1 transition-all">
-                    <div class="flex items-start gap-6">
-                        <div class="w-14 h-14 rounded-2xl bg-[#25D366] flex items-center justify-center shrink-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="white">
-                                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.652zm6.599-3.351c1.47.884 3.193 1.352 4.957 1.353 5.409 0 9.809-4.4 9.812-9.808.001-2.621-1.02-5.086-2.875-6.941-1.856-1.856-4.321-2.875-6.942-2.875-5.41 0-9.81 4.401-9.813 9.809 0 1.83.504 3.614 1.458 5.207l-.956 3.491 3.57-.936c.001 0 0 0 .001 0zm11.367-7.251c-.33-.164-1.951-.964-2.254-1.074-.303-.11-.523-.164-.743.164-.219.328-.85.164-1.042.054-.192-.109-.403-.401-.733-.565-.274-.135-.558-.328-.842-.51-.284-.182-.569-.364-.853-.546-.33-.164-.633-.328-.88-.492-.247-.164-.467-.328-.659-.438-.192-.11-.33-.164-.33-.164-.137-.082-.26-.131-.368-.146-.108-.015-.203.023-.277.106-.074.083-.303.296-.303.722 0 .427.311.84.355.895.044.055.612.935 1.484 1.312.207.09.418.156.621.213.203.057.408.08.611.103.202.022.406.044.609.066.203.022.302.011.302.011.45.067.854.128 1.205.183.351.055.65.111.897.166.248.055.44.11.577.166s.219.109.33.164.33-.164.44-.328c.11-.164.44-1.144.55-1.308.11-.164.219-.328.219-.547 0-.219-.11-.383-.219-.547z"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <h4 class="font-serif text-2xl mb-2 text-[#25D366]">WhatsApp.</h4>
-                            <p class="text-neutral-600 text-[15px] leading-relaxed mb-4">Real-time alerts for meetups, impromptu happy hours, and high-priority dispatches.</p>
-                            <span class="text-xs font-bold uppercase tracking-widest underline underline-offset-4 decoration-2">Join Channel →</span>
-                        </div>
-                    </div>
-                </a>
             </div>
-        </section>
-
-        <!-- Dynamic Registry / People Section (Placeholder) -->
-        <div class="text-center py-20 border-t border-[var(--rule)]/10">
-            <h3 class="font-serif text-2xl mb-4 italic">“Surround yourself with people who make you better.”</h3>
-            <p class="text-[var(--muted)] text-sm uppercase tracking-[.2em] font-bold">The Sandbox Philosophy</p>
         </div>
     </main>
 </Layout>
 
+<style>
+    /* Discord CTA glow pulse */
+    .discord-cta {
+        position: relative;
+    }
+    .discord-cta::before {
+        content: "";
+        position: absolute;
+        inset: -1px;
+        border-radius: inherit;
+        background: linear-gradient(135deg, #5865F2, #7B8AF9);
+        opacity: 0;
+        z-index: -1;
+        transition: opacity 0.3s ease;
+        filter: blur(12px);
+    }
+    .discord-cta:hover::before {
+        opacity: 0.5;
+    }
+
+    /* Channel card hover effect */
+    .channel-card {
+        transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+    .channel-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 30px -12px rgba(88, 101, 242, 0.15);
+    }
+</style>
+
 <script is:inline>
-     // Entrance Animation Logic
-     (function() {
+    (function() {
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry, i) => {
                 if (entry.isIntersecting) {
                     setTimeout(() => {
                         entry.target.classList.add('visible');
-                    }, (i % 4) * 100);
+                    }, (i % 6) * 80);
                     observer.unobserve(entry.target);
                 }
             });
         }, { threshold: 0.1 });
 
-        document.querySelectorAll('.value-card, .community-card').forEach(el => observer.observe(el));
+        document.querySelectorAll('.animate-enter').forEach(el => observer.observe(el));
+
+        // Smooth scroll for "Learn more" link
+        const learnMore = document.getElementById('hero-learn-more');
+        if (learnMore) {
+            learnMore.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.getElementById('about');
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        }
     })();
 </script>

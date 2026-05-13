@@ -9,65 +9,53 @@ const galleryPreview = gallery.slice(0, 4);
 ---
 
 <Layout>
-    <section class="border-b border-[var(--rule)]">
-        <div class="mx-auto grid max-w-[1100px] grid-cols-1 gap-6 px-4 py-6 md:grid-cols-2">
-            <!-- Hero copy -->
-            <div class="flex flex-col justify-center">
-                <span
-                    class="inline-block w-max border-y border-[var(--rule)] px-2 py-1 text-[11px] font-semibold uppercase tracking-[.2em] text-[color:color-mix(in_oklab,var(--ink)_45%,var(--paper)_55%)]">
-                    Front Page
-                </span>
-                <h2 class="mt-3 font-serif text-3xl leading-tight sm:text-4xl">
-                    Where Africa’s founders and builders connect, collaborate, and shape the future.
-                </h2>
-                <p class="mt-2 text-[16px] text-neutral-600">
-                    Builder demos, mini-talks, and open networking. Signal over noise; progress over polish.
-                </p>
-
-                <div class="mt-4 flex flex-wrap gap-2">
-                    <a href="https://luma.com/sandbox-reseau" target="_blank" rel="noreferrer"
-                        class="rounded bg-[var(--ink)] px-4 py-2 text-sm text-[var(--paper)] hover:opacity-90">Register
-                        on
-                        Luma</a>
-                    <a href="#format"
-                        class="rounded border accent-border px-4 py-2 text-sm accent-text hover:accent-hover">See the
-                        format</a>
-                </div>
+    <section class="relative z-[60] overflow-hidden border-b border-[var(--rule)] bg-[var(--paper)]">
+        <div class="absolute inset-0 z-0 pointer-events-none">
+            <img src="/assets/img/RNBL3150.jpg" alt="Sandbox Réseau Background" class="w-full h-full object-cover grayscale opacity-60" />
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent to-[var(--paper)]"></div>
+        </div>
+        <div class="relative z-10 mx-auto max-w-[1100px] px-4 py-20 md:py-32 text-center">
+            <span class="inline-block w-max border-y border-[var(--rule)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-[.2em] text-[var(--muted)] mb-6 animate-enter">
+                Front Page
+            </span>
+            <h1 class="font-serif text-5xl sm:text-7xl md:text-8xl leading-[.85] tracking-tighter mb-8 animate-enter">
+                Sandbox Réseau.
+            </h1>
+            <p class="mx-auto max-w-2xl text-[var(--muted)] text-base md:text-xl leading-relaxed font-serif animate-enter">
+                Where Africa’s founders and builders connect, collaborate, and shape the future. Builder demos, mini-talks, and open networking. Signal over noise; progress over polish.
+            </p>
+            <div class="mt-10 flex flex-wrap items-center justify-center gap-4 animate-enter">
+                <a href="https://luma.com/sandbox-reseau" target="_blank" rel="noreferrer"
+                    class="inline-flex items-center gap-2 rounded border border-[var(--rule)] bg-[var(--ink)] px-6 py-3.5 text-sm font-bold uppercase tracking-widest text-[var(--paper)] hover:bg-[var(--accent)] transition-all">
+                    Register on Luma
+                </a>
+                <a href="#about"
+                    class="inline-flex items-center gap-2 rounded border border-[var(--rule)] px-6 py-3.5 text-sm font-bold uppercase tracking-widest hover:bg-[var(--ink)] hover:text-[var(--paper)] transition-all">
+                    See the format <span class="text-lg leading-none">↓</span>
+                </a>
             </div>
-
-            <!-- Hero image -->
-            <figure class="relative h-full w-full overflow-hidden rounded border border-[var(--rule)] hatch">
-                <img src="/assets/img/RNBL3150.jpg" alt="Sandbox Réseau in Accra." fetchpriority="high" decoding="sync"
-                    class="aspect-[16/10] h-full w-full object-cover grayscale" />
-                <figcaption class="mt-2 text-[13px] text-[color:color-mix(in_oklab,var(--ink)_65%,var(--paper)_35%)]">
-                    <em class="font-serif">Attendees connect during Sandbox Réseau in Accra.</em>
-                    <span class="small-caps"> Photograph by Sandbox Team</span>.
-                </figcaption>
-            </figure>
         </div>
     </section>
 
-
-
     <!-- Main: article stream + sticky right rail -->
-    <main class="mx-auto max-w-[1100px] px-4">
-        <div class="grid grid-cols-1 gap-8 py-6 lg:grid-cols-[1fr_320px]">
+    <main class="mx-auto max-w-[1100px] px-4 py-16 md:py-24">
+        <div class="grid grid-cols-1 gap-16 lg:grid-cols-[1fr_320px]">
             <!-- Article stream -->
-            <div class="space-y-8">
+            <div class="space-y-16">
+                
                 <article id="about" class="prose-like">
                     <h3 class="mb-1 font-serif text-[28px] leading-tight tracking-[-.005em]">A Space for Founders, Builders & Makers</h3>
-                    <p class="text-neutral-600">Where sandbox experimentation meets intentional networking.</p>
-                    <div class="mb-2 text-[13px] text-neutral-500">The Brief Overview</div>
+                    <p class="text-neutral-600 mb-6">Where sandbox experimentation meets intentional networking.</p>
                     <p><strong>Sandbox Réseau</strong> is a creative-tech meetup designed to bring together builders, thinkers, and makers who are shaping the next wave of innovation in Africa.</p>
-                    <p>Born from the spirit of <em>sandbox experimentation</em> and the French word <em>“réseau”</em> — meaning <em>network</em> — this event celebrates connection, collaboration, and creation.</p>
+                    <p>Born from the spirit of sandbox experimentation and the French word “réseau” — meaning network — this event celebrates connection, collaboration, and creation.</p>
                     <p>It’s a space where developers, designers, founders, and product lovers step out of their silos to share ideas, showcase what they’re building, and find new energy in community.</p>
                 </article>
 
                 <article id="purpose" class="prose-like">
                     <h3 class="mb-1 font-serif text-[28px] leading-tight">The Purpose</h3>
-                    <p class="text-neutral-600">Nurturing a network of curious minds who build the future.</p>
+                    <p class="text-neutral-600 mb-6">Nurturing a network of curious minds who build the future.</p>
                     <p>Sandbox Réseau exists to:</p>
-                    <ul class="ml-5 list-disc font-sans">
+                    <ul class="ml-5 list-disc font-sans space-y-2">
                         <li><strong>Connect</strong> creators across disciplines.</li>
                         <li><strong>Inspire</strong> through shared stories, projects, and challenges.</li>
                         <li><strong>Collaborate</strong> on new ideas and ventures born from genuine connection.</li>
@@ -76,10 +64,10 @@ const galleryPreview = gallery.slice(0, 4);
 
                 <article id="format" class="prose-like">
                     <h3 class="mb-1 font-serif text-[28px] leading-tight">The Experience</h3>
-                    <p class="text-neutral-600">Intimate, thoughtful, and electric — a blend of knowledge and culture.</p>
-                    <ul class="ml-5 list-disc font-sans">
+                    <p class="text-neutral-600 mb-6">Intimate, thoughtful, and electric — a blend of knowledge and culture.</p>
+                    <ul class="ml-5 list-disc font-sans space-y-2">
                         <li><strong>Builder Demos</strong> — real projects, raw prototypes, honest lessons.</li>
-                        <li><strong>Mini-Talks & Firesides</strong> — short, punchy insights from innovators.</li>
+                        <li><strong>Featured Talks or Firesides</strong> — short, punchy insights from innovators.</li>
                         <li><strong>Open Network Sessions</strong> — meet, mingle, and connect intentionally.</li>
                         <li><strong>Showcase Wall</strong> — where attendees post what they’re working on or what help they need.</li>
                     </ul>
@@ -87,14 +75,14 @@ const galleryPreview = gallery.slice(0, 4);
 
                 <article class="prose-like">
                     <h3 class="mb-1 font-serif text-[28px] leading-tight">Who’s It For?</h3>
-                    <p class="text-neutral-600">Engineers, designers, founders, data/ML folks, indie makers — and the
+                    <p class="text-neutral-600 mb-6">Engineers, designers, founders, data/ML folks, indie makers — and the
                         product-curious.</p>
                     <p>Beginner-friendly by design. Curiosity and a builder’s mindset are enough.</p>
                 </article>
 
                 <article id="highlights" class="prose-like">
                     <h3 class="mb-1 font-serif text-[28px] leading-tight">Visual Dispatch</h3>
-                    <p class="text-neutral-600">A glimpse into the energy and conversations at Sandbox Réseau.</p>
+                    <p class="text-neutral-600 mb-6">A glimpse into the energy and conversations at Sandbox Réseau.</p>
                     <div class="mt-4 aspect-video overflow-hidden rounded border border-[var(--rule)] bg-black hatch">
                         <iframe 
                             width="100%" 
@@ -111,7 +99,7 @@ const galleryPreview = gallery.slice(0, 4);
 
                 <article id="details" class="prose-like">
                     <h3 class="mb-1 font-serif text-[28px] leading-tight">Details & Logistics</h3>
-                    <p><strong>When:</strong> Dates announced on Luma. <a class="underline accent-text"
+                    <p><strong>When:</strong> Dates announced on Luma. <a class="underline decoration-[var(--rule)] hover:accent-text"
                             href="https://luma.com/sandbox-reseau" target="_blank" rel="noreferrer">Check schedule</a>.
                     </p>
                     <p><strong>Where:</strong> Accra. Venue shared with confirmed guests to keep the room intentional.
@@ -123,9 +111,9 @@ const galleryPreview = gallery.slice(0, 4);
 
                 <article class="prose-like">
                     <h3 class="mb-1 font-serif text-[28px] leading-tight">Previous Editions</h3>
-                    <p class="text-neutral-600">Snapshots from our last meetup. See the vibe for yourself.</p>
+                    <p class="text-neutral-600 mb-6">Snapshots from our last meetup. See the vibe for yourself.</p>
 
-                    <div class="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                    <div class="grid grid-cols-2 gap-3 sm:grid-cols-2 lg:grid-cols-3">
                         {gallery.slice(0, 12).map((img, i) => (
                             <div class="group relative aspect-square w-full overflow-hidden rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_90%,var(--ink)_10%)] animate-enter">
                                 <img 
@@ -134,16 +122,15 @@ const galleryPreview = gallery.slice(0, 4);
                                     onclick={`openLightbox('${img.url}')`}
                                     loading="lazy" 
                                     decoding="async"
-                                    class="h-full w-full object-cover transition duration-500 group-hover:scale-105 cursor-zoom-in" 
+                                    class="h-full w-full object-cover transition duration-500 group-hover:scale-105 cursor-zoom-in grayscale group-hover:grayscale-0" 
                                 />
                             </div>
                         ))}
                     </div>
-                    <p class="mt-2 text-[13px] text-neutral-500 ">Want only high-signal connection? Join the next
-                        one.</p>
+                    <p class="mt-6 text-[14px] text-[var(--muted)]">Want only high-signal connection? Join the next one.</p>
                     <div class="mt-3">
                         <a href="/gallery"
-                            class="inline-flex items-center gap-1 text-sm font-semibold underline decoration-[var(--rule)] underline-offset-2 hover:decoration-2">
+                            class="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest underline decoration-[var(--rule)] underline-offset-4 hover:accent-text transition-colors">
                             View Full Gallery <span>→</span>
                         </a>
                     </div>
@@ -154,40 +141,40 @@ const galleryPreview = gallery.slice(0, 4);
                         <h3 class="font-serif text-[28px] leading-tight m-0">Tune In: The Reverb</h3>
                         <span id="podcast-new-badge" class="hidden text-[10px] uppercase font-bold tracking-widest text-[var(--accent)] bg-[var(--accent)]/5 px-2 py-0.5 rounded border border-[var(--accent)]/10 animate-pulse">New Episode</span>
                     </div>
-                    <p class="text-neutral-600">The high-bandwidth audio-log for the African builder.</p>
+                    <p class="text-neutral-600 mb-6">The high-bandwidth audio-log for the African builder.</p>
                     
-                    <div id="podcast-loader" class="mt-4 flex flex-col gap-6 sm:flex-row animate-pulse">
-                        <div class="w-full sm:w-1/3 aspect-square bg-neutral-200 rounded border border-[var(--rule)]"></div>
-                        <div class="flex-1 space-y-3">
-                            <div class="h-3 w-24 bg-neutral-200 rounded"></div>
-                            <div class="h-6 w-3/4 bg-neutral-200 rounded"></div>
-                            <div class="h-4 w-full bg-neutral-200 rounded"></div>
-                            <div class="h-4 w-5/6 bg-neutral-200 rounded"></div>
+                    <div id="podcast-loader" class="flex flex-col gap-6 sm:flex-row animate-pulse">
+                        <div class="w-full sm:w-1/3 aspect-square bg-neutral-200/50 rounded border border-[var(--rule)]/20"></div>
+                        <div class="flex-1 space-y-4">
+                            <div class="h-3 w-24 bg-neutral-200/50 rounded"></div>
+                            <div class="h-6 w-3/4 bg-neutral-200/50 rounded"></div>
+                            <div class="h-4 w-full bg-neutral-200/50 rounded"></div>
+                            <div class="h-4 w-5/6 bg-neutral-200/50 rounded"></div>
                         </div>
                     </div>
 
-                    <div id="podcast-content" class="hidden mt-4 flex flex-col gap-6 sm:flex-row">
+                    <div id="podcast-content" class="hidden flex flex-col gap-6 sm:flex-row">
                         <div class="w-full sm:w-1/3 group relative aspect-square sm:aspect-auto">
                             <img id="podcast-thumb" src="/assets/img/podcast-logo.png" alt="The Reverb Podcast Logo" class="w-full rounded border border-[var(--rule)] shadow-sm grayscale hover:grayscale-0 transition-all duration-700" />
-                            <a id="podcast-play-link" href="/podcast" class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/40 transition-opacity rounded">
-                                <div class="w-12 h-12 rounded-full border-2 border-white flex items-center justify-center text-white">
+                            <a id="podcast-play-link" href="/podcast" class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-[var(--ink)]/40 transition-opacity rounded">
+                                <div class="w-12 h-12 rounded-full border-2 border-[var(--paper)] flex items-center justify-center text-[var(--paper)]">
                                      <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                                 </div>
                             </a>
                         </div>
                         <div class="flex-1 flex flex-col">
-                            <div id="podcast-meta" class="flex items-center gap-2 text-[10px] uppercase font-bold tracking-widest text-neutral-400 mb-1">
+                            <div id="podcast-meta" class="flex items-center gap-2 text-[10px] uppercase font-bold tracking-widest text-[var(--muted)] mb-2">
                             </div>
                             <h4 id="podcast-title" class="font-serif text-xl mb-2 text-[var(--ink)] leading-snug"></h4>
-                            <p id="podcast-desc" class="text-sm text-neutral-600 mb-4"></p>
+                            <p id="podcast-desc" class="text-[14px] text-neutral-600 mb-4 leading-relaxed"></p>
                             
                             <div class="mt-auto flex flex-wrap gap-2">
                                 <a id="podcast-spotify" href="https://open.spotify.com/show/1mQUSNNpjenkeUiFVBXWCN" target="_blank" rel="noreferrer"
-                                    class="inline-flex items-center gap-2 rounded border border-[var(--rule)] px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest hover:bg-[#1DB954] hover:text-white hover:border-[#1DB954] transition-all">
+                                    class="inline-flex items-center gap-2 rounded border border-[var(--rule)] px-4 py-2 text-[10px] font-bold uppercase tracking-widest hover:bg-[#1DB954] hover:text-white hover:border-[#1DB954] transition-all">
                                     Spotify
                                 </a>
                                 <a href="/podcast" 
-                                    class="inline-flex items-center gap-2 rounded border border-[var(--rule)] px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest hover:bg-[var(--ink)] hover:text-white transition-all">
+                                    class="inline-flex items-center gap-2 rounded border border-[var(--rule)] px-4 py-2 text-[10px] font-bold uppercase tracking-widest hover:bg-[var(--ink)] hover:text-white transition-all">
                                     Archive
                                 </a>
                             </div>
@@ -197,7 +184,8 @@ const galleryPreview = gallery.slice(0, 4);
 
                 <article id="faq" class="prose-like">
                     <h3 class="mb-1 font-serif text-[28px] leading-tight">FAQ</h3>
-                    <ul class="ml-5 list-disc font-sans">
+                    <p class="text-neutral-600 mb-6">Common questions.</p>
+                    <ul class="ml-5 list-disc font-sans space-y-2">
                         <li><strong>Beginner-friendly?</strong> Yes.</li>
                         <li><strong>Finished product required?</strong> No — prototypes welcome.</li>
                         <li><strong>Pitches?</strong> Keep it useful and grounded; salesy pitches discouraged.</li>
@@ -206,41 +194,41 @@ const galleryPreview = gallery.slice(0, 4);
                     </ul>
                 </article>
 
-                <article id="register" class="prose-like">
-                    <h3 class="mb-1 font-serif text-[28px] leading-tight">Register</h3>
-                    <p>Reserve your seat on Luma to receive date announcements, venue details, and demo sign-up links.
-                    </p>
-                    <p><a class="underline accent-text" href="https://luma.com/sandbox-reseau" target="_blank"
-                            rel="noreferrer">Register
-                            on Luma →</a></p>
-                </article>
             </div>
 
             <!-- Sticky right rail -->
-            <aside class="top-6 h-max space-y-4 lg:sticky">
-                <div
-                    class="rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_92%,var(--ink)_8%)] p-4">
-                    <h4 class="m-0 font-serif text-lg">At a Glance</h4>
-                    <ul class="mt-2 grid gap-2 text-[15px] leading-6 font-sans">
-                        <li><strong>Overview</strong> — experimentation meets networking.</li>
-                        <li><strong>Purpose</strong> — nurture a network of curious minds.</li>
-                        <li><strong>Experience</strong> — demos, talks, and connection.</li>
-                        <li><strong>Highlights</strong> — watch the visual dispatch.</li>
-                        <li><strong>Details</strong> — when, where, how to demo.</li>
-                        <li><strong>Podcast</strong> — the high-bandwidth audio-log.</li>
-                        <li><strong>FAQ</strong> — beginner-friendly, cadence, notes.</li>
+            <aside class="space-y-8 lg:sticky lg:top-24 lg:self-start">
+                
+                <div class="rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_95%,var(--ink)_5%)] p-6 animate-enter">
+                    <h4 class="m-0 font-serif text-xl pb-4 border-b border-[var(--rule)]/20">At a Glance</h4>
+                    <ul class="mt-4 flex flex-col gap-3 text-[14px] leading-relaxed font-sans text-[var(--muted)]">
+                        <li><strong class="text-[var(--ink)]">Overview</strong> — experimentation meets networking.</li>
+                        <li><strong class="text-[var(--ink)]">Purpose</strong> — nurture a network of curious minds.</li>
+                        <li><strong class="text-[var(--ink)]">Experience</strong> — demos, talks, and connection.</li>
+                        <li><strong class="text-[var(--ink)]">Highlights</strong> — watch the visual dispatch.</li>
+                        <li><strong class="text-[var(--ink)]">Details</strong> — when, where, how to demo.</li>
+                        <li><strong class="text-[var(--ink)]">Podcast</strong> — the high-bandwidth audio-log.</li>
+                        <li><strong class="text-[var(--ink)]">FAQ</strong> — beginner-friendly, cadence, notes.</li>
                     </ul>
-                    <a href="https://luma.com/sandbox-reseau" target="_blank" rel="noreferrer"
-                        class="mt-3 inline-block rounded accent-bg px-3.5 py-2 text-sm text-white hover:opacity-90">
-                        Register on Luma
-                    </a>
                 </div>
 
-                <div class="rounded border border-[var(--rule)] p-4">
-                    <h4 class="m-0 font-serif text-lg">Next Edition: {nextEdition.title}</h4>
-                    <p class="mt-2 text-sm text-neutral-600">{nextEdition.date} — {nextEdition.description}</p>
-                    <a href="/editions" class="text-sm underline accent-text">View details →</a>
+                <div class="rounded border border-[var(--rule)] hatch p-6 relative overflow-hidden group animate-enter bg-[color:color-mix(in_oklab,var(--paper)_90%,var(--ink)_10%)] text-center">
+                    <div class="relative z-10">
+                        <div class="w-12 h-12 mx-auto rounded-full border-[2px] border-[var(--paper)] bg-[var(--ink)] flex items-center justify-center text-[var(--paper)] mb-4 shadow-lg">
+                            <span class="font-serif text-xl leading-none pt-1">S</span>
+                        </div>
+                        <h4 class="font-serif text-xl mb-2 text-[var(--ink)]">Next Edition</h4>
+                        <p class="text-[13px] text-neutral-600 mb-5 leading-relaxed">
+                            {nextEdition.date} — {nextEdition.description}
+                        </p>
+                        <a href="https://luma.com/sandbox-reseau" target="_blank" rel="noreferrer"
+                            class="block w-full rounded bg-[var(--ink)] py-3 text-xs font-bold uppercase tracking-widest text-[var(--paper)] hover:opacity-90 transition-opacity">
+                            Register on Luma
+                        </a>
+                        <a href="/editions" class="mt-4 inline-block text-[10px] font-bold uppercase tracking-widest underline decoration-[var(--rule)] hover:accent-text transition-colors">View details →</a>
+                    </div>
                 </div>
+
             </aside>
         </div>
     </main>
@@ -252,7 +240,7 @@ const galleryPreview = gallery.slice(0, 4);
             const content = document.getElementById('podcast-content');
             const badge = document.getElementById('podcast-new-badge');
             
-            if (!loader || !content) return; // Not on a page with podcast section
+            if (!loader || !content) return; 
 
             try {
                 const rssUrl = `https://anchor.fm/s/110059518/podcast/rss?t=${Date.now()}`;
@@ -269,28 +257,22 @@ const galleryPreview = gallery.slice(0, 4);
                     const link = firstItem.querySelector("link")?.textContent || "https://open.spotify.com/show/1mQUSNNpjenkeUiFVBXWCN";
                     const description = firstItem.querySelector("description")?.textContent || "";
                     
-                    // itunes:image
                     const itunesNamespace = "http://www.itunes.com/dtds/podcast-1.0.dtd";
                     const imageElement = firstItem.getElementsByTagNameNS(itunesNamespace, "image")[0];
                     const thumb = imageElement ? imageElement.getAttribute("href") : "/assets/img/podcast-logo.png";
                     
-                    // Format date
                     const dateObj = new Date(pubDate);
                     const formattedDate = dateObj.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
                     
-                    // Check if "new" (published in the last 7 days)
                     const isNew = (Date.now() - dateObj.getTime()) < (7 * 24 * 60 * 60 * 1000);
                     
-                    // Clean and Decode description
                     const decoder = document.createElement('div');
                     decoder.innerHTML = description;
                     const decodedDesc = decoder.textContent || decoder.innerText || "";
                     const cleanDesc = decodedDesc.replace(/<[^>]*>?/gm, '').replace(/&quot;/g, '"').trim();
-                    // Ensure space after quotes if needed
                     const formattedDesc = cleanDesc.replace(/"([A-Z])/g, '" $1');
                     const shortDesc = formattedDesc.substring(0, 150) + (formattedDesc.length > 150 ? '...' : '');
 
-                    // Update DOM
                     const titleEl = document.getElementById('podcast-title');
                     const descEl = document.getElementById('podcast-desc');
                     const metaEl = document.getElementById('podcast-meta');
@@ -308,13 +290,11 @@ const galleryPreview = gallery.slice(0, 4);
                     if (loader) loader.classList.add('hidden');
                     if (content) {
                         content.classList.remove('hidden');
-                        // Trigger visibility logic
                         setTimeout(() => content.classList.add('visible'), 50);
                     }
                 }
             } catch (e) {
                 console.error("Failed to fetch live podcast:", e);
-                // On error, we could show a fallback message or just keep it hidden
             }
         }
 
@@ -323,51 +303,20 @@ const galleryPreview = gallery.slice(0, 4);
         // Set up gallery images for lightbox
         window.GALLERY_IMAGES = galleryStrings;
 
-        // Scroll & Sticky Logic
-        (function () {
-            const secondaryNav = document.getElementById('secondaryNav');
-            const progressBar = document.getElementById('progressBar');
-            const readingState = document.getElementById('readingState');
-            const sections = document.querySelectorAll('article[id]');
-
-            if (!secondaryNav) return;
-
-            const navTop = secondaryNav.offsetTop;
-
-            function handleScroll() {
-                const scrolled = window.scrollY;
-
-                // Sticky class
-                if (scrolled > navTop) {
-                    secondaryNav.classList.add('is-stuck');
-                    if (readingState) readingState.style.opacity = '1';
-                } else {
-                    secondaryNav.classList.remove('is-stuck');
-                    if (readingState) readingState.style.opacity = '0';
-                }
-
-                // Progress Bar
-                const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-                const scrolledPercent = (winScroll / height) * 100;
-                if (progressBar) progressBar.style.width = scrolledPercent + "%";
-
-                // Active Section
-                let currentSection = "Digest";
-                sections.forEach(section => {
-                    const sectionTop = section.offsetTop - 100;
-                    if (scrolled >= sectionTop) {
-                        currentSection = section.getAttribute('id') || "Digest";
+        (function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, i) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add('visible');
+                        }, (i % 6) * 80);
+                        observer.unobserve(entry.target);
                     }
                 });
+            }, { threshold: 0.1 });
 
-                if (readingState) {
-                    readingState.textContent = `Section: ${currentSection.replace('-', ' ')}`;
-                }
-            }
-
-            window.addEventListener('scroll', handleScroll);
-            handleScroll(); // Init
+            document.querySelectorAll('.animate-enter').forEach(el => observer.observe(el));
         })();
+
     </script>
 </Layout>

@@ -21,9 +21,9 @@ const categories = [
     { name: 'Gallery', href: '/gallery', description: 'Visual archive of past editions', active: currentPath === '/gallery' },
     { name: 'Editions', href: '/editions', description: 'Explore our event history', active: currentPath === '/editions' },
     { name: 'Newsletters', href: '/newsletters', description: 'Curated signals for builders', active: currentPath === '/newsletters' },
-    { name: 'Community', href: '/community', description: 'Meet the people in the network', active: currentPath === '/community' },
+    { name: 'Community', href: '/community', description: 'Join the builders on Discord', active: currentPath === '/community' },
     { name: 'Registry', href: '/registry', description: 'Directory of projects and makers', active: currentPath === '/registry' },
-    { name: 'Handbook', href: '/handbook', description: 'Our culture and coordination manual', active: currentPath === '/handbook' },
+    { name: 'The Pitch', href: '/the-pitch', description: 'Our flagship pitch competition', active: currentPath === '/the-pitch' },
     { name: 'Register', href: 'https://luma.com/sandbox-reseau', description: 'Join us for the next edition', active: false, external: true },
 ];
 ---
@@ -77,7 +77,7 @@ const categories = [
         </button>
         
         <div class="flex items-center gap-4">
-             <span class="hidden sm:inline font-serif italic text-[12px] text-[var(--muted)]" id="global-status-label">Gazette Dispatch</span>
+             <span class="hidden sm:inline font-serif text-[12px] text-[var(--muted)]" id="global-status-label">Gazette Dispatch</span>
              <a href="https://luma.com/sandbox-reseau" target="_blank" class="rounded bg-[var(--ink)] px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest text-[var(--paper)] hover:bg-[var(--accent)] transition-colors">
                 Register
              </a>
@@ -123,7 +123,7 @@ const categories = [
                                         </h2>
                                         {cat.external && <span class="font-sans text-[10px] font-black uppercase tracking-[0.2em] text-[var(--muted)] opacity-50 px-2 py-0.5 border border-[var(--rule)] rounded">EXT</span>}
                                     </div>
-                                    <p class="mt-2 font-serif italic text-sm md:text-base text-[var(--muted)] max-w-xs">
+                                    <p class="mt-2 font-serif text-sm md:text-base text-[var(--muted)] max-w-xs">
                                         {cat.description}
                                     </p>
                                 </div>

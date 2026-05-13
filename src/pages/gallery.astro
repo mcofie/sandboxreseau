@@ -10,20 +10,23 @@ const headerSubtitle = "The Archive";
     description="Snapshots from previous Sandbox Réseau editions in Accra."
     headerSubtitle={headerSubtitle}
 >
-    <main class="mx-auto max-w-[1100px] px-4 py-10">
-        <header class="mb-12 max-w-2xl">
+    <!-- Hero Section -->
+    <section class="border-b border-[var(--rule)]">
+        <div class="mx-auto max-w-[1100px] px-4 py-20 md:py-32 text-center">
             <span
-                class="inline-block w-max border-y border-[var(--rule)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-[.2em] text-[var(--muted)] mb-3">
+                class="inline-block w-max border-y border-[var(--rule)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-[.2em] text-[var(--muted)] mb-6 animate-enter">
                 Exhibition
             </span>
-            <h2 class="font-serif text-3xl sm:text-4xl leading-tight mb-4">
+            <h1 class="font-serif text-5xl sm:text-7xl md:text-8xl leading-[.85] tracking-tighter mb-8 animate-enter">
                 Captured Moments.
-            </h2>
-            <p class="text-[var(--muted)] text-sm md:text-base leading-relaxed">
+            </h1>
+            <p class="mx-auto max-w-2xl text-[var(--muted)] text-base md:text-xl leading-relaxed font-serif animate-enter">
                 A visual record of the builders, thinkers, and makers who have shared their work and energy with our ecosystem since Vol. 1.
             </p>
-        </header>
+        </div>
+    </section>
 
+    <main class="mx-auto max-w-[1100px] px-4 py-16 md:py-24">
         <div class="masonry-grid" id="galleryContainer">
             {gallery.map((img, i) => (
                 <div class="masonry-item animate-enter">

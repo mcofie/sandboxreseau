@@ -10,20 +10,23 @@ const headerSubtitle = "Chronicle of Progress";
     description="Explore previous editions of Sandbox Réseau, featuring builder demos, talks, and community snapshots."
     headerSubtitle={headerSubtitle}
 >
-    <main class="mx-auto max-w-[1100px] px-4 py-10">
-        <header class="mb-12 max-w-2xl">
+    <!-- Hero Section -->
+    <section class="border-b border-[var(--rule)]">
+        <div class="mx-auto max-w-[1100px] px-4 py-20 md:py-32 text-center">
             <span
-                class="inline-block w-max border-y border-[var(--rule)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-[.2em] text-[var(--muted)] mb-3">
+                class="inline-block w-max border-y border-[var(--rule)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-[.2em] text-[var(--muted)] mb-6 animate-enter">
                 The Archive
             </span>
-            <h2 class="font-serif text-3xl sm:text-4xl leading-tight mb-4">
+            <h1 class="font-serif text-5xl sm:text-7xl md:text-8xl leading-[.85] tracking-tighter mb-8 animate-enter">
                 Previous Gatherings.
-            </h2>
-            <p class="text-[var(--muted)] text-sm md:text-base leading-relaxed">
+            </h1>
+            <p class="mx-auto max-w-2xl text-[var(--muted)] text-base md:text-xl leading-relaxed font-serif animate-enter">
                 Every edition is a new chapter in the Sandbox story. Revisit the demos, the insights, and the atmosphere of past meetups.
             </p>
-        </header>
+        </div>
+    </section>
 
+    <main class="mx-auto max-w-[1100px] px-4 py-16 md:py-24">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="editions-grid">
             {editions.slice().reverse().map((edition, i) => (
                 <div class="animate-enter">
@@ -48,7 +51,7 @@ const headerSubtitle = "Chronicle of Progress";
                         
                         {!edition.image && (
                              <div class="aspect-[4/3] border border-[var(--rule)] shrink-0 bg-[color:color-mix(in_oklab,var(--paper)_80%,var(--ink)_20%)] flex items-center justify-center">
-                                <span class="font-serif text-neutral-400 italic">No image available</span>
+                                <span class="font-serif text-neutral-400">No image available</span>
                              </div>
                         )}
 
