@@ -1,6 +1,5 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import newsletters from '../../data/newsletters.json';
 
 const headerSubtitle = "The Dispatch Archive";
 ---
@@ -10,84 +9,48 @@ const headerSubtitle = "The Dispatch Archive";
     description="Read previous issues of The Sandbox Réseau Dispatch, our weekly update on the Accra tech ecosystem."
     headerSubtitle={headerSubtitle}
 >
-    <main class="mx-auto max-w-[1100px] px-4 py-12">
-        <header class="mb-16 max-w-2xl">
-            <span
-                class="inline-block w-max border-y border-[var(--rule)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-[.2em] text-[var(--muted)] mb-3">
+    <!-- Hero Header -->
+    <section class="border-b border-[var(--rule)]">
+        <div class="mx-auto max-w-[1100px] px-4 py-20 md:py-32 text-center">
+            <span class="inline-block w-max border-y border-[var(--rule)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-[.2em] text-[var(--muted)] mb-6 animate-enter">
                 The Archive
             </span>
-            <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl leading-tight mb-4 tracking-tight">
+            <h1 class="font-serif text-5xl sm:text-7xl md:text-8xl leading-[.85] tracking-tighter mb-8 animate-enter">
                 The Gazette Dispatch.
             </h1>
-            <p class="text-[var(--muted)] text-sm md:text-lg leading-relaxed font-serif ">
+            <p class="mx-auto max-w-2xl text-[var(--muted)] text-base md:text-xl leading-relaxed font-serif animate-enter">
                 Deep dives into building, product strategy, and the cultural shifts defining the next wave of African innovation.
             </p>
-        </header>
+        </div>
+    </section>
 
-        <div class="grid grid-cols-1 gap-12" id="newsletterList">
-            {newsletters.slice().reverse().map((newsletter) => (
-                <article class="group relative animate-enter">
-                    <div class="flex flex-col md:flex-row gap-8 items-start">
-                        <div class="w-full md:w-48 shrink-0 flex flex-col pt-1">
-                             <div class="text-[10px] font-bold uppercase tracking-[.2em] text-[var(--muted)] mb-2">Issue {newsletter.issue}</div>
-                             <div class="text-[13px] font-serif  text-neutral-500">{newsletter.date}</div>
-                             <div class="mt-4 h-px w-12 bg-[var(--rule)]/20 group-hover:w-full transition-all duration-500"></div>
-                        </div>
-
-                        <div class="flex-1">
-                            <div class="flex flex-col lg:flex-row gap-8">
-                                {newsletter.image && (
-                                    <div class="w-full lg:w-72 shrink-0 overflow-hidden rounded border border-[var(--rule)] bg-[var(--paper)] hatch group">
-                                        <a href={`/newsletters/${newsletter.id}`} class="block overflow-hidden">
-                                            <img 
-                                                src={newsletter.image} 
-                                                alt={newsletter.title}
-                                                class="aspect-[16/10] w-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
-                                            />
-                                        </a>
-                                    </div>
-                                )}
-                                <div class="flex-1">
-                                    <h2 class="font-serif text-2xl sm:text-3xl lg:text-4xl mb-3 leading-tight group-hover:accent-text transition-colors">
-                                        <a href={`/newsletters/${newsletter.id}`}>{newsletter.title}</a>
-                                    </h2>
-                                    <p class="text-[17px] text-neutral-600 leading-relaxed mb-6 font-serif ">
-                                        "{newsletter.excerpt}"
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="flex flex-wrap items-center gap-6 text-[11px] font-semibold uppercase tracking-wider text-[var(--muted)]">
-                                <span class="flex items-center gap-2">
-                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                                    {newsletter.author}
-                                </span>
-                                <span class="flex items-center gap-2">
-                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                    {newsletter.readTime} read
-                                </span>
-                                <div class="flex items-center gap-2 ml-auto">
-                                    {newsletter.tags.map(tag => <span class="px-2 py-0.5 rounded-full border border-[var(--rule)]/20 text-[9px]">{tag}</span>)}
-                                </div>
-                                <a href={`/newsletters/${newsletter.id}`} class="underline accent-text font-bold uppercase tracking-widest text-[10px] ml-4">
-                                    Read Full Dispatch →
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-            ))}
+    <!-- Main Content / Coming Soon -->
+    <main class="mx-auto max-w-[1100px] px-4 py-16 md:py-24">
+        <div class="flex flex-col items-center justify-center py-16 md:py-24 animate-enter">
+            <div class="w-16 h-16 rounded-full border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_90%,var(--ink)_10%)] hatch flex items-center justify-center mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-[var(--ink)]">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+                </svg>
+            </div>
+            <h2 class="font-serif text-3xl md:text-4xl mb-4 tracking-tight">The Dispatch is Returning.</h2>
+            <p class="text-[var(--muted)] max-w-md text-center text-sm md:text-base leading-relaxed mb-10">
+                We are currently rebooting our editorial engine. Subscribe via our community channels to be notified when Volume 2 drops.
+            </p>
+            <a href="https://discord.gg/RMcBDRrV7x" target="_blank" rel="noreferrer"
+                class="inline-flex items-center gap-2 rounded border border-[var(--rule)] bg-[var(--ink)] px-8 py-4 text-sm font-bold uppercase tracking-widest text-[var(--paper)] hover:bg-[var(--accent)] transition-all">
+                Join the Discord
+            </a>
         </div>
     </main>
 
     <script is:inline>
-        // Entrance Animation Logic
         (function() {
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach((entry, i) => {
                     if (entry.isIntersecting) {
                         setTimeout(() => {
                             entry.target.classList.add('visible');
-                        }, i * 150);
+                        }, (i % 3) * 150);
                         observer.unobserve(entry.target);
                     }
                 });
