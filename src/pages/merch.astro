@@ -1,0 +1,163 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const headerSubtitle = "Sandbox Réseau Supply";
+
+// Merch data — extend this array as new items are added
+const merchItems = [
+    {
+        title: "Builder's Heavyweight Tee",
+        description: "A premium 250gsm organic cotton t-shirt with subtle Sandbox branding. Designed for long shipping sessions.",
+        price: "₵250",
+        status: "coming-soon",
+        image: "/assets/img/merch-tee.jpg"
+    },
+    {
+        title: "The Founders Dad Cap",
+        description: "Classic unstructured 6-panel cap. Washed cotton twill with an embroidered 'Sandbox Réseau' crest.",
+        price: "₵150",
+        status: "coming-soon",
+        image: "/assets/img/merch-cap.jpg"
+    },
+    {
+        title: "Premium Oversized Hoodie",
+        description: "400gsm heavyweight french terry cotton hoodie. Drop shoulder, relaxed fit with tonal embroidered branding.",
+        price: "₵450",
+        status: "coming-soon",
+        image: "/assets/img/merch-hoodie.jpg"
+    },
+    {
+        title: "Heavyweight Canvas Tote",
+        description: "12oz organic cotton canvas tote bag with reinforced handles. Large enough for a 16-inch laptop and daily carry.",
+        price: "₵120",
+        status: "coming-soon",
+        image: "/assets/img/merch-tote.jpg"
+    },
+    {
+        title: "Insulated Water Bottle",
+        description: "Matte black stainless steel double-walled insulated bottle. Keeps drinks cold for 24 hours or hot for 12 hours. Engraved logo.",
+        price: "₵200",
+        status: "coming-soon",
+        image: "/assets/img/merch-bottle.jpg"
+    },
+    {
+        title: "Ceramic Builder's Mug",
+        description: "Minimalist matte ceramic mug. Perfect for early mornings and late night shipping sessions.",
+        price: "₵100",
+        status: "coming-soon",
+        image: "/assets/img/merch-mug.jpg"
+    },
+    {
+        title: "Ecosystem Sticker Pack",
+        description: "Die-cut vinyl stickers featuring Sandbox Réseau branding. Matte finish, weather-resistant, perfect for laptop lids.",
+        price: "₵50",
+        status: "coming-soon",
+        image: "/assets/img/merch-stickers.jpg"
+    }
+];
+---
+
+<Layout 
+    title="Merch | Sandbox Réseau" 
+    description="Official Sandbox Réseau merchandise. High quality apparel for builders and makers in the Accra tech ecosystem."
+    headerSubtitle={headerSubtitle}
+>
+    <!-- Hero Header -->
+    <section class="border-b border-[var(--rule)]">
+        <div class="mx-auto max-w-[1100px] px-4 py-20 md:py-32 text-center">
+            <span class="inline-block w-max border-y border-[var(--rule)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-[.2em] text-[var(--muted)] mb-6 animate-enter">
+                Sandbox Supply
+            </span>
+            <h1 class="font-serif text-5xl sm:text-7xl md:text-8xl leading-[.85] tracking-tighter mb-8 animate-enter">
+                Merchandise.
+            </h1>
+            <p class="mx-auto max-w-2xl text-[var(--muted)] text-base md:text-xl leading-relaxed font-serif animate-enter">
+                Uniforms for the builders, thinkers, and makers shaping Africa's future. Premium quality, limited runs.
+            </p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="mx-auto max-w-[1100px] px-4 py-16 md:py-24">
+        <div class="grid grid-cols-1 gap-16 lg:grid-cols-[1fr_320px]">
+            
+            <!-- Merch Items Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 h-fit">
+                {merchItems.map((item) => (
+                    <article class="group animate-enter">
+                        <div class="rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_95%,var(--ink)_5%)] overflow-hidden flex flex-col h-full">
+                            
+                            <!-- Product Image Placeholder -->
+                            <div class="relative border-b border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_88%,var(--ink)_12%)] aspect-square flex items-center justify-center hatch">
+                                <div class="relative z-10 text-center">
+                                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full border-2 border-[var(--ink)] mb-4">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-[var(--ink)]">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                                        </svg>
+                                    </div>
+                                    <h3 class="font-serif text-lg tracking-tight px-4">{item.title}</h3>
+                                </div>
+                            </div>
+
+                            <!-- Product Details -->
+                            <div class="p-6 flex flex-col flex-1">
+                                <div class="flex items-center justify-between mb-4">
+                                    <h3 class="font-serif text-xl tracking-tight leading-tight">{item.title}</h3>
+                                    <span class="font-bold text-[var(--ink)]">{item.price}</span>
+                                </div>
+                                <p class="text-[14px] text-[var(--muted)] leading-relaxed mb-6 flex-1">
+                                    {item.description}
+                                </p>
+
+                                <div class="pt-4 border-t border-[var(--rule)]/10">
+                                    {item.status === 'available' ? (
+                                        <button class="w-full rounded border border-[var(--rule)] bg-[var(--ink)] py-3 text-xs font-bold uppercase tracking-widest text-[var(--paper)] hover:bg-[var(--accent)] transition-all">
+                                            Pre-Order Now
+                                        </button>
+                                    ) : (
+                                        <span class="flex items-center justify-center gap-2 w-full rounded border border-[var(--rule)]/20 bg-[var(--paper)] py-3 text-xs font-bold uppercase tracking-widest text-[var(--muted)]">
+                                            <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                                            Dropping Soon
+                                        </span>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                ))}
+            </div>
+
+            <!-- Sticky Right Rail -->
+            <aside class="space-y-8 lg:sticky lg:top-24 lg:self-start">
+                
+                <div class="rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_95%,var(--ink)_5%)] p-6 animate-enter">
+                    <h4 class="m-0 font-serif text-xl pb-4 border-b border-[var(--rule)]/20">The Supply Drop</h4>
+                    <p class="mt-4 text-[14px] text-[var(--muted)] leading-relaxed">
+                        Sandbox Supply produces limited run items designed for our community. We prioritize high-quality fabrics and minimal branding.
+                    </p>
+                    <p class="mt-3 text-[14px] text-[var(--muted)] leading-relaxed">
+                        Join the community to get early access to upcoming drops.
+                    </p>
+                </div>
+
+            </aside>
+        </div>
+    </main>
+
+    <script is:inline>
+        (function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, i) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add('visible');
+                        }, (i % 4) * 100);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.animate-enter').forEach(el => observer.observe(el));
+        })();
+    </script>
+</Layout>
