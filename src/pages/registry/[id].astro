@@ -1,0 +1,373 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import registry from '../../data/registry.json'; // Force reload registry data 10
+
+export function getStaticPaths() {
+  return registry.map((company) => ({
+    params: { id: company.id },
+    props: { company },
+  }));
+}
+
+const { id } = Astro.params;
+const company = registry.find((c) => c.id === id) || Astro.props.company;
+
+// Color map for industry theme accents
+const industryColors: Record<string, string> = {
+    'Tech': '#0ea5e9',
+    'Fintech': '#10b981',
+    'Software': '#8b5cf6',
+    'Creative': '#f59e0b',
+    'Social': '#ec4899',
+    'Marketplace': '#f97316',
+    'Logistics': '#14b8a6',
+};
+const accentColor = industryColors[company.industry] || '#6B7280';
+
+// Find up to 3 similar startups (excluding itself)
+const similarStartups = registry
+    .filter(item => item.id !== company.id && (item.industry === company.industry || item.tags.some(t => company.tags.includes(t))))
+    .slice(0, 3);
+---
+
+<Layout 
+    title={`${company.name} | Ecosystem Registry — Sandbox Réseau`}
+    description={company.description}
+    headerSubtitle="Ecosystem Startup Profile"
+>
+    <main class="mx-auto max-w-[1100px] px-4 py-12 md:py-20">
+        <!-- Breadcrumb Navigation -->
+        <nav class="flex flex-wrap items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-muted mb-8 animate-enter">
+            <a href="/registry" class="hover:accent-text transition-colors">Registry</a>
+            <span class="opacity-30">/</span>
+            <span class="text-ink">{company.name}</span>
+        </nav>
+
+        <!-- Profile Hero Panel -->
+        <section class="border border-rule rounded bg-paper p-6 md:p-12 relative overflow-hidden mb-8 animate-enter">
+            <div class="absolute inset-0 hatch opacity-[0.015] pointer-events-none"></div>
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 relative z-10 w-full">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+                    <!-- Large Logo Box -->
+                    <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-xl border border-rule-20 flex items-center justify-center overflow-hidden shrink-0 transition-transform duration-500 hover:scale-105"
+                         style={`background: ${accentColor}0e; border-color: ${accentColor}25`}>
+                        {(company.logo.startsWith('http') || company.logo.startsWith('/') || company.logo.startsWith('assets/') || company.logo.includes('.')) 
+                            ? <img src={company.logo.startsWith('assets/') ? `/${company.logo}` : company.logo} alt={`${company.name} Logo`} class="w-full h-full object-contain p-2" />
+                            : <span class="font-serif text-3xl font-bold select-none" style={`color: ${accentColor}`}>{company.logo}</span>
+                        }
+                    </div>
+
+                    <!-- Company Identifiers -->
+                    <div>
+                        <div class="flex items-center gap-3 flex-wrap">
+                            <h1 class="font-serif text-3xl sm:text-5xl font-bold tracking-tight text-ink">{company.name}</h1>
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-widest"
+                                  style={`background: ${accentColor}12; color: ${accentColor}`}>
+                                {company.industry}
+                            </span>
+                        </div>
+                        <div class="flex items-center gap-3 mt-2 flex-wrap">
+                            <span class="text-xs text-muted flex items-center gap-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" /></svg>
+                                {company.location}
+                            </span>
+                            <span class="w-1 h-1 rounded-full bg-rule-20"></span>
+                            <span class="text-xs text-muted">Founded {company.founded}</span>
+                            {company.status === 'Live' && (
+                                <>
+                                    <span class="w-1 h-1 rounded-full bg-rule-20"></span>
+                                    <span class="inline-flex items-center gap-1 text-xs font-bold text-emerald-600">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                        Live
+                                    </span>
+                                </>
+                            )}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Primary Website Action -->
+                <a href={company.url} target="_blank" rel="noopener noreferrer"
+                   class="inline-flex items-center justify-center gap-2 rounded bg-ink text-paper hover-bg-accent hover:text-white px-6 py-3.5 text-xs font-bold uppercase tracking-widest transition-all duration-300 shadow-[0_4px_14px_rgba(0,0,0,0.05)] hover:shadow-[0_4px_20px_rgba(0,0,0,0.15)] whitespace-nowrap w-fit">
+                    Visit Website
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
+                </a>
+            </div>
+        </section>
+
+        <!-- Key Metrics Grid -->
+        <section class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12 animate-enter">
+            <div class="border border-rule-10 rounded bg-mix-3 p-4 flex flex-col justify-between">
+                <span class="text-[9px] font-bold uppercase tracking-widest text-muted">Industry</span>
+                <span class="font-serif text-lg font-bold text-ink mt-2">{company.industry}</span>
+            </div>
+            <div class="border border-rule-10 rounded bg-mix-3 p-4 flex flex-col justify-between">
+                <span class="text-[9px] font-bold uppercase tracking-widest text-muted">Founded</span>
+                <span class="font-serif text-lg font-bold text-ink mt-2">{company.founded}</span>
+            </div>
+            <div class="border border-rule-10 rounded bg-mix-3 p-4 flex flex-col justify-between">
+                <span class="text-[9px] font-bold uppercase tracking-widest text-muted">Team Size</span>
+                <span class="font-serif text-lg font-bold text-ink mt-2">{company.teamSize || "1–10 employees"}</span>
+            </div>
+            <div class="border border-rule-10 rounded bg-mix-3 p-4 flex flex-col justify-between">
+                <span class="text-[9px] font-bold uppercase tracking-widest text-muted">Funding Stage</span>
+                <span class="font-serif text-lg font-bold text-ink mt-2">{company.funding || "Bootstrapped"}</span>
+            </div>
+        </section>
+
+        <!-- Two-Column Profile Content -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 mb-16 items-start">
+            <!-- Left Main Column -->
+            <section class="md:col-span-8 space-y-12 animate-enter">
+                <!-- Description -->
+                <div class="border border-rule-10 rounded bg-paper p-6 md:p-8">
+                    <h2 class="font-serif text-xl sm:text-2xl font-bold mb-6 text-ink pb-3 border-b border-rule-10">About {company.name}</h2>
+                    <div class="prose-like text-[14px] sm:text-[15px] leading-relaxed text-muted space-y-4">
+                        {company.longDescription ? (
+                            company.longDescription.split('\n\n').map(p => <p>{p}</p>)
+                        ) : (
+                            <p>{company.description}</p>
+                        )}
+                    </div>
+                </div>
+
+                <!-- Active Founders Section -->
+                <div class="space-y-6 animate-enter">
+                    <h2 class="font-serif text-2xl font-bold text-ink pb-3 border-b border-rule-10">Active Founders</h2>
+                    {company.founders && company.founders.length > 0 ? (
+                        <div class="space-y-4">
+                            {company.founders.map(founder => {
+                                const initials = founder.name.split(' ').map(n => n[0]).join('');
+                                return (
+                                    <div class="flex flex-col sm:flex-row items-start gap-6 p-6 border border-rule-10 rounded bg-mix-2 transition-all duration-300 hover:shadow-[0_4px_25px_rgba(0,0,0,0.05)] hover-border-accent group">
+                                        <!-- Avatar / Photo -->
+                                        <div class="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-lg border border-rule-10 overflow-hidden shrink-0 flex items-center justify-center font-bold text-lg sm:text-xl select-none tracking-widest transition-transform duration-300 group-hover:scale-102"
+                                             style={founder.avatar ? "" : `background: ${accentColor}12; color: ${accentColor}; border-color: ${accentColor}30`}>
+                                            {founder.avatar ? (
+                                                <img src={founder.avatar} alt={`${founder.name}`} class="w-full h-full object-cover" />
+                                            ) : (
+                                                <span>{initials}</span>
+                                            )}
+                                        </div>
+                                        
+                                        <!-- Info Column -->
+                                        <div class="flex-1 min-w-0">
+                                            <!-- Name + Socials -->
+                                            <div class="flex items-center gap-2.5 flex-wrap">
+                                                <h3 class="font-serif text-lg sm:text-xl font-bold text-ink leading-tight">{founder.name}</h3>
+                                                <div class="flex items-center gap-1.5 shrink-0">
+                                                    {founder.twitter && (
+                                                        <a href={founder.twitter} target="_blank" rel="noopener noreferrer" 
+                                                           class="text-muted hover:text-ink transition-colors p-0.5 inline-flex items-center" aria-label={`${founder.name}'s Twitter/X`}>
+                                                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                                                        </a>
+                                                    )}
+                                                    {founder.linkedin && (
+                                                        <a href={founder.linkedin} target="_blank" rel="noopener noreferrer" 
+                                                           class="text-muted hover:text-[#0077b5] transition-colors p-0.5 inline-flex items-center" aria-label={`${founder.name}'s LinkedIn`}>
+                                                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                                                        </a>
+                                                    )}
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Role/Title -->
+                                            <p class="text-xs sm:text-sm text-muted font-sans mt-0.5 font-medium leading-normal">{founder.role}</p>
+                                            
+                                            <!-- Biography -->
+                                            {founder.bio && (
+                                                <p class="text-[13px] sm:text-[14px] text-muted leading-relaxed mt-2.5">
+                                                    {founder.bio}
+                                                </p>
+                                            )}
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    ) : (
+                        <div class="border border-rule-10 rounded-xl bg-mix-2 p-6">
+                            <p class="text-xs text-muted leading-relaxed">
+                                This startup is builder-led by Sandbox Réseau community members. If you are the builder or founder of this project, drop a message in <span class="font-bold text-ink">#show-your-work</span> on Discord and we'll add your profile details here!
+                            </p>
+                        </div>
+                    )}
+                </div>
+            </section>
+
+            <!-- Right Sidebar Column -->
+            <section class="md:col-span-4 space-y-6 animate-enter">
+                <!-- Sidebar Widget -->
+                <div class="border border-rule-10 rounded bg-paper p-6">
+                    <h3 class="font-serif text-sm font-bold mb-4 text-ink uppercase tracking-wide">Quick Profile</h3>
+                    
+                    <!-- Stats Rows -->
+                    <div class="space-y-4 text-xs">
+                        <div class="flex justify-between py-2 border-b border-rule-5">
+                            <span class="text-muted">Status</span>
+                            <span class="font-bold text-emerald-600 flex items-center gap-1">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                {company.status}
+                            </span>
+                        </div>
+                        <div class="flex justify-between py-2 border-b border-rule-5">
+                            <span class="text-muted">Founded</span>
+                            <span class="font-bold text-ink">{company.founded}</span>
+                        </div>
+                        <div class="flex justify-between py-2 border-b border-rule-5">
+                            <span class="text-muted">HQ</span>
+                            <span class="font-bold text-ink">{company.location}</span>
+                        </div>
+                    </div>
+
+                    <!-- Connect / Socials -->
+                    <div class="mt-6">
+                        <h4 class="text-[10px] uppercase font-bold tracking-widest text-muted mb-3">Links & Socials</h4>
+                        <div class="flex flex-wrap gap-2">
+                            <a href={company.url} target="_blank" rel="noopener noreferrer" 
+                               class="inline-flex items-center gap-1.5 px-3 py-1.5 border border-rule-10 rounded bg-mix-3 hover:border-[var(--accent)] hover:text-[var(--accent)] text-xs font-bold uppercase tracking-wider transition-all">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10zM2 12h20"/></svg>
+                                Website
+                            </a>
+                            {company.socials?.twitter && (
+                                <a href={company.socials.twitter} target="_blank" rel="noopener noreferrer"
+                                   class="inline-flex items-center gap-1.5 px-3 py-1.5 border border-rule-10 rounded bg-mix-3 hover:border-[#1da1f2] hover:text-[#1da1f2] text-xs font-bold uppercase tracking-wider transition-all">
+                                    <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                                    Twitter
+                                </a>
+                            )}
+                            {company.socials?.linkedin && (
+                                <a href={company.socials.linkedin} target="_blank" rel="noopener noreferrer"
+                                   class="inline-flex items-center gap-1.5 px-3 py-1.5 border border-rule-10 rounded bg-mix-3 hover:border-[#0077b5] hover:text-[#0077b5] text-xs font-bold uppercase tracking-wider transition-all">
+                                    <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                                    LinkedIn
+                                </a>
+                            )}
+                        </div>
+                    </div>
+
+                    <!-- Tags / Stack -->
+                    <div class="mt-6 border-t border-rule-5 pt-6">
+                        <h4 class="text-[10px] uppercase font-bold tracking-widest text-muted mb-3">Sectors & Tags</h4>
+                        <div class="flex flex-wrap gap-1.5">
+                            {company.tags.map(tag => (
+                                <span class="px-2.5 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider bg-mix-7 text-muted">
+                                    {tag}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Back button link -->
+                <a href="/registry" class="flex items-center justify-center gap-2 border border-rule-25 hover:border-ink rounded px-6 py-3 text-xs font-bold uppercase tracking-widest transition-all">
+                    ← Back to Registry
+                </a>
+            </section>
+        </div>
+
+        <!-- Similar Startups Slider/Grid -->
+        {similarStartups.length > 0 && (
+            <section class="mt-16 pt-12 border-t border-rule-15 animate-enter">
+                <div class="flex items-end justify-between mb-8">
+                    <div>
+                        <span class="inline-block border-y border-rule px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-[.2em] text-muted mb-3">Recommendations</span>
+                        <h2 class="font-serif text-2xl md:text-3xl tracking-tight text-ink">Similar ecosystem builders.</h2>
+                    </div>
+                    <a href="/registry" class="hidden sm:inline-block text-xs font-bold uppercase tracking-widest underline hover:accent-text transition-colors">See all →</a>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    {similarStartups.map(item => {
+                        const col = industryColors[item.industry] || '#6B7280';
+                        return (
+                            <a href={`/registry/${item.id}`} 
+                               class="border border-rule-10 rounded bg-paper p-5 flex flex-col justify-between hover-border-accent hover:-translate-y-0.5 transition-all duration-300 group">
+                                <div>
+                                    <div class="flex items-center gap-3 mb-4">
+                                        <div class="w-8 h-8 rounded border border-rule-10 flex items-center justify-center overflow-hidden shrink-0"
+                                             style={`background: ${col}10; border-color: ${col}25`}>
+                                            {(item.logo.startsWith('http') || item.logo.startsWith('/') || item.logo.startsWith('assets/') || item.logo.includes('.')) 
+                                                ? <img src={item.logo.startsWith('assets/') ? `/${item.logo}` : item.logo} alt={`${item.name} Logo`} class="w-full h-full object-contain p-1" />
+                                                : <span class="font-serif text-xs font-bold" style={`color: ${col}`}>{item.logo}</span>
+                                            }
+                                        </div>
+                                        <h3 class="font-serif font-bold text-sm text-ink group-hover:accent-text transition-colors truncate">{item.name}</h3>
+                                    </div>
+                                    <p class="text-xs text-muted leading-relaxed line-clamp-2 mb-4">{item.description}</p>
+                                </div>
+                                <div class="flex items-center justify-between pt-3 border-t border-rule-5 text-[9px] font-bold uppercase tracking-wider text-muted">
+                                    <span>{item.industry}</span>
+                                    <span class="group-hover:accent-text transition-colors group-hover:translate-x-0.5 duration-300">View →</span>
+                                </div>
+                            </a>
+                        );
+                    })}
+                </div>
+            </section>
+        )}
+    </main>
+</Layout>
+
+<style>
+    /* Profile specific styles */
+    .prose-like p {
+        margin-bottom: 1.25rem;
+    }
+    .prose-like p:last-child {
+        margin-bottom: 0;
+    }
+
+    /* Core Palette mappings mapping to theme variables */
+    .text-ink {
+        color: var(--ink);
+    }
+    .text-muted {
+        color: var(--muted);
+    }
+    .text-paper {
+        color: var(--paper);
+    }
+    .bg-paper {
+        background-color: var(--paper);
+    }
+    .bg-ink {
+        background-color: var(--ink);
+    }
+    .border-rule {
+        border-color: var(--rule);
+    }
+    .border-rule-5 {
+        border-color: color-mix(in oklab, var(--rule) 5%, transparent);
+    }
+    .border-rule-10 {
+        border-color: color-mix(in oklab, var(--rule) 10%, transparent);
+    }
+    .border-rule-15 {
+        border-color: color-mix(in oklab, var(--rule) 15%, transparent);
+    }
+    .border-rule-20 {
+        border-color: color-mix(in oklab, var(--rule) 20%, transparent);
+    }
+    .border-rule-25 {
+        border-color: color-mix(in oklab, var(--rule) 25%, transparent);
+    }
+    .bg-mix-2 {
+        background-color: color-mix(in oklab, var(--paper) 98%, var(--ink) 2%);
+    }
+    .bg-mix-3 {
+        background-color: color-mix(in oklab, var(--paper) 97%, var(--ink) 3%);
+    }
+    .bg-mix-7 {
+        background-color: color-mix(in oklab, var(--paper) 93%, var(--ink) 7%);
+    }
+    .hover-bg-accent:hover {
+        background-color: var(--accent);
+    }
+    .hover-border-accent:hover {
+        border-color: var(--accent);
+    }
+    .hover-bg-rule-5:hover {
+        background-color: color-mix(in oklab, var(--rule) 5%, transparent);
+    }
+</style>

@@ -13,7 +13,24 @@
     "founded": "2025",
     "url": "https://sailrides.co/",
     "cta": "Learn more",
-    "logo": "/assets/img/logos/sail-rides.png"
+    "logo": "/assets/img/logos/sail-rides.png",
+    "teamSize": "1–10",
+    "funding": "Pre-seed",
+    "socials": {
+      "twitter": "https://twitter.com/sailrides",
+      "linkedin": "https://www.linkedin.com/company/sailrides"
+    },
+    "founders": [
+      {
+        "name": "Aikins Laryea",
+        "role": "Founder & CEO",
+        "linkedin": "https://linkedin.com/in/aikins-laryea",
+        "twitter": "https://x.com/aikins01",
+        "avatar": "/assets/img/founders/aikins-laryea.jpg",
+        "bio": "Aikins Laryea is a full-stack engineer building the ultimate ride-hailing and delivery aggregator in West Africa. He believes in validating product demand through early design posts on X and LinkedIn."
+      }
+    ],
+    "longDescription": "Sail rides is a leading ride-hailing aggregator operating in Accra, Ghana. It brings transparency and efficiency to the local transportation ecosystem by allowing commuters to compare ride costs, arrival times, and services across multiple platforms simultaneously. Users save money and find the fastest rides, while drivers benefit from optimized demand distribution."
   },
   {
     "id": "reveal-real-estate",
@@ -26,10 +43,18 @@
       "Real Estate",
       "Software"
     ],
-    "founded": "2025",
+    "founded": "2024",
     "url": "https://reveal-real-estate.com",
     "cta": "Learn more",
-    "logo": "/assets/img/logos/reveal-real-estate.png"
+    "logo": "/assets/img/logos/reveal-real-estate.png",
+    "founders": [
+      {
+        "name": "Hannah Lormenyo",
+        "role": "Founder & CEO",
+        "linkedin": "https://linkedin.com/in/hannah-lormenyo",
+        "bio": "Hannah founded Reveal Real Estate to help individuals and diaspora investors securely invest in Ghanaian property through land verification, construction oversight, and end-to-end project management."
+      }
+    ]
   },
   {
     "id": "pouch",
@@ -45,13 +70,21 @@
     "founded": "2025",
     "url": "https://www.pouchpay.app/",
     "cta": "Learn more",
-    "logo": "/assets/img/logos/pouch.png"
+    "logo": "/assets/img/logos/pouch.svg",
+    "founders": [
+      {
+        "name": "Kweku Ayepah",
+        "role": "Founder & CEO",
+        "linkedin": "https://linkedin.com/in/kweku-ayepah",
+        "bio": "Kweku is building a contactless Apple Pay-like experience using mobile money in Ghana, bringing NFC-powered tap-to-pay to the local payments ecosystem."
+      }
+    ]
   },
   {
     "id": "chime-app",
     "name": "Chime",
     "industry": "Software",
-    "location": "Global",
+    "location": "Accra",
     "status": "Live",
     "description": "A high-visibility productivity tool for macOS designed to ensure users never miss meetings by replacing subtle notifications with unmissable alerts.",
     "tags": [
@@ -61,7 +94,16 @@
     "founded": "2025",
     "url": "https://www.usechime.app/",
     "cta": "Learn more",
-    "logo": "/assets/img/logos/chime-app.png"
+    "logo": "/assets/img/logos/chime-app.png",
+    "founders": [
+      {
+        "name": "Derrick Tsorme",
+        "role": "Founder & Design Engineer",
+        "linkedin": "https://linkedin.com/in/tsormed",
+        "twitter": "https://x.com/uxderrick",
+        "bio": "Derrick is a Design Engineer and indie maker who builds and ships macOS desktop utilities. He created Chime to replace subtle meeting notifications with full-screen, unmissable alerts."
+      }
+    ]
   },
   {
     "id": "ratecardly",
@@ -74,10 +116,20 @@
       "Creative",
       "Software"
     ],
-    "founded": "2024",
+    "founded": "2023",
     "url": "https://ratecard.ly/",
     "cta": "Learn more",
-    "logo": "/assets/img/logos/ratecardly.png"
+    "logo": "/assets/img/logos/ratecardly.png",
+    "founders": [
+      {
+        "name": "Theophilus Arthur",
+        "role": "Product Lead",
+        "linkedin": "https://linkedin.com/in/theophilus-arthur",
+        "twitter": "https://x.com/hellotheophilus",
+        "avatar": "/assets/img/founders/theophilus-arthur.png",
+        "bio": "Theophilus is a product designer building digital link-based rate cards for creators and freelancers. He focuses on capturing value early and testing iterations with active community builders."
+      }
+    ]
   },
   {
     "id": "echolift",
@@ -90,10 +142,19 @@
       "Social Impact",
       "Software"
     ],
-    "founded": "2024",
+    "founded": "2025",
     "url": "https://www.echolift.org/",
     "cta": "Learn more",
-    "logo": "/assets/img/logos/echolift.png"
+    "logo": "/assets/img/logos/echolift.png",
+    "founders": [
+      {
+        "name": "Chisom Nwankwo",
+        "role": "Founder & CEO",
+        "linkedin": "https://linkedin.com/in/chisom-nwankwo",
+        "twitter": "https://x.com/chisom_nwankwo",
+        "bio": "Chisom is a software engineer building decentralized donation channels for verified charities. He scaled Echolift's volunteer community across engineering, product, and design."
+      }
+    ]
   },
   {
     "id": "jampolls",
@@ -109,7 +170,16 @@
     "founded": "2024",
     "url": "https://jampolls.com/",
     "cta": "Learn more",
-    "logo": "/assets/img/logos/jampolls.png"
+    "logo": "/assets/img/logos/jampolls.png",
+    "founders": [
+      {
+        "name": "Charles Kojo Peprah",
+        "role": "Founder & CEO",
+        "linkedin": "https://linkedin.com/in/charles-kojo-peprah",
+        "twitter": "https://x.com/charles_kojo",
+        "bio": "Charles is a product engineer building interactive polling widgets for creators and brands. He focuses on building audience intelligence tools that find traction in politics and media."
+      }
+    ]
   },
   {
     "id": "beeterty",
@@ -122,10 +192,20 @@
       "Fintech",
       "Software"
     ],
-    "founded": "2024",
+    "founded": "2023",
     "url": "https://beeterty.com/",
     "cta": "Learn more",
-    "logo": "/assets/img/logos/beeterty.png"
+    "logo": "/assets/img/logos/beeterty.png",
+    "founders": [
+      {
+        "name": "Yoofi Graham",
+        "role": "Co-founder & CEO",
+        "linkedin": "https://linkedin.com/in/yoofi-graham",
+        "twitter": "https://x.com/yoofi_graham",
+        "avatar": "/assets/img/founders/yoofi-graham.jpg",
+        "bio": "Yoofi is a software developer building payment and invoicing tools for African freelancers. He advocates for launching early to gather immediate feedback."
+      }
+    ]
   },
   {
     "id": "skillsclub",
@@ -138,10 +218,19 @@
       "Community",
       "Social"
     ],
-    "founded": "2024",
+    "founded": "2021",
     "url": "https://theskill.club/",
     "cta": "Learn more",
-    "logo": "/assets/img/logos/skillsclub.png"
+    "logo": "/assets/img/logos/skillsclub.png",
+    "founders": [
+      {
+        "name": "Sedem Balfour",
+        "role": "Founder & CEO",
+        "linkedin": "https://linkedin.com/in/sedem-balfour",
+        "twitter": "https://x.com/sedem_balfour",
+        "bio": "Sedem is an ecosystem builder who previously served as Ecosystem Manager at Hacklab Foundation and Startup Grind Chapter Director for KNUST. He founded Skill Club to bridge the gap between African talent and startups through high-touch, manual matching."
+      }
+    ]
   },
   {
     "id": "giftpal",
@@ -154,10 +243,19 @@
       "Lifestyle",
       "Software"
     ],
-    "founded": "2024",
+    "founded": "2022",
     "url": "https://giftpal.co/",
     "cta": "Learn more",
-    "logo": "/assets/img/logos/giftpal.png"
+    "logo": "/assets/img/logos/giftpal.png",
+    "founders": [
+      {
+        "name": "Nicholas Mamiya",
+        "role": "Co-founder & Engineer",
+        "linkedin": "https://linkedin.com/in/nicholas-mamiya",
+        "twitter": "https://x.com/_nicholaschun",
+        "bio": "Nicholas is a software engineer and cloud architect who built GiftPal as gifting infrastructure for brands and platforms, enabling loyalty cards, bulk gifting campaigns, and embeddable APIs."
+      }
+    ]
   },
   {
     "id": "fitsynq",
@@ -173,7 +271,16 @@
     "founded": "2024",
     "url": "https://www.fitsynq.app/",
     "cta": "Learn more",
-    "logo": "/assets/img/logos/fitsynq.png"
+    "logo": "/assets/img/logos/fitsynq.png",
+    "founders": [
+      {
+        "name": "Selorm Foli",
+        "role": "Founder & CEO",
+        "linkedin": "https://linkedin.com/in/selorm-foli",
+        "twitter": "https://x.com/SelormFoli2",
+        "bio": "Selorm is a software engineer building gym management software to replace clipboards, WhatsApp groups, and spreadsheets with a centralized digital dashboard for fitness businesses in Ghana."
+      }
+    ]
   },
   {
     "id": "buukmenow",
@@ -189,7 +296,21 @@
     "founded": "2023",
     "url": "https://buukmenow.com/",
     "cta": "Learn more",
-    "logo": "/assets/img/logos/buukmenow.png"
+    "logo": "/assets/img/logos/buukmenow.png",
+    "founders": [
+      {
+        "name": "Peter Onisha Peregbakumo",
+        "role": "Co-founder & Lead Engineer",
+        "linkedin": "https://linkedin.com/in/peter-onisha-peregbakumo",
+        "bio": "Peter is a software engineer building booking and scheduling infrastructure for service-based businesses in Ghana."
+      },
+      {
+        "name": "Michael Sarpong",
+        "role": "Co-founder & COO",
+        "linkedin": "https://linkedin.com/in/michael-sarpong",
+        "bio": "Michael oversees operations at BuukMeNow, driving adoption among student entrepreneurs and small businesses across Ghanaian universities."
+      }
+    ]
   },
   {
     "id": "gatepass",
@@ -202,10 +323,25 @@
       "Events",
       "Fintech"
     ],
-    "founded": "2024",
+    "founded": "2025",
     "url": "https://gatepass.so/",
     "cta": "Learn more",
-    "logo": "/assets/img/logos/gatepass.png"
+    "logo": "/assets/img/logos/gatepass.png",
+    "founders": [
+      {
+        "name": "Samuel Allotey",
+        "role": "Co-founder",
+        "linkedin": "https://linkedin.com/in/samuel-allotey",
+        "twitter": "https://x.com/samuel_allotey",
+        "bio": "Samuel is a designer and community organizer building paperless QR-based event check-in systems and coordinating the FiDCon conference."
+      },
+      {
+        "name": "Maxwell Cofie",
+        "role": "Co-founder",
+        "linkedin": "https://linkedin.com/in/maxwell-cofie",
+        "bio": "Maxwell is a builder and community architect behind Sandbox Réseau. He co-founded GatePass to simplify event ticketing and gate entry for organizers in Accra."
+      }
+    ]
   },
   {
     "id": "golly-express",
@@ -221,7 +357,16 @@
     "founded": "2024",
     "url": "https://app.golly.live/",
     "cta": "Learn more",
-    "logo": "/assets/img/logos/golly-express.png"
+    "logo": "/assets/img/logos/golly-express.png",
+    "founders": [
+      {
+        "name": "Solomon Opoku",
+        "role": "Founder & CEO",
+        "linkedin": "https://linkedin.com/in/solomon-opoku",
+        "twitter": "https://x.com/soulpee",
+        "bio": "Solomon (Soulpee) is a software engineer building cross-border e-commerce and freight forwarding infrastructure, making international shopping accessible to Ghanaians."
+      }
+    ]
   },
   {
     "id": "thedsgnjunkies",
@@ -234,10 +379,19 @@
       "Creative",
       "Community"
     ],
-    "founded": "2023",
+    "founded": "2022",
     "url": "https://thedsgnjunkies.com/",
     "cta": "Learn more",
-    "logo": "/assets/img/logos/thedsgnjunkies.png"
+    "logo": "/assets/img/logos/thedsgnjunkies.png",
+    "founders": [
+      {
+        "name": "Samuel Allotey",
+        "role": "Founder",
+        "linkedin": "https://linkedin.com/in/samuel-allotey",
+        "twitter": "https://x.com/samuel_allotey",
+        "bio": "Samuel is a designer and community organizer building platform tools for African creatives and coordinating the FiDCon conference."
+      }
+    ]
   },
   {
     "id": "clerra",
@@ -253,7 +407,17 @@
     "founded": "2025",
     "url": "http://clerra.app/",
     "cta": "Learn more",
-    "logo": "/assets/img/logos/clerra.png"
+    "logo": "/assets/img/logos/clerra.png",
+    "founders": [
+      {
+        "name": "Richmond Agbavor",
+        "role": "Co-founder & CEO",
+        "linkedin": "https://linkedin.com/in/richmond-agbavor",
+        "twitter": "https://x.com/agbavorrichmond",
+        "avatar": "/assets/img/founders/richmond-agbavor.jpg",
+        "bio": "Richmond is a product designer building an AI-native legal case management OS. He validates features using mockups to get lawyers' payment intent before coding."
+      }
+    ]
   },
   {
     "id": "openprop",
@@ -266,10 +430,20 @@
       "Real Estate",
       "Marketplace"
     ],
-    "founded": "2025",
+    "founded": "2024",
     "url": "https://openprop.africa/",
     "cta": "Learn more",
-    "logo": "/assets/img/logos/openprop.png"
+    "logo": "/assets/img/logos/openprop.png",
+    "founders": [
+      {
+        "name": "Joseph Mensah",
+        "role": "Founder & CEO",
+        "linkedin": "https://linkedin.com/in/joseph-mensah",
+        "twitter": "https://x.com/joeysimms9",
+        "avatar": "/assets/img/founders/joseph-mensah.jpg",
+        "bio": "Joseph is a software engineer building digital home discovery platforms in Ghana. He leverages high-fidelity virtual tours and end-to-end move-in infrastructure."
+      }
+    ]
   },
   {
     "id": "nightmarket",
@@ -282,26 +456,52 @@
       "Commerce",
       "Delivery"
     ],
-    "founded": "2025",
+    "founded": "2021",
     "url": "https://nightmarketgh.com/",
     "cta": "Learn more",
-    "logo": "/assets/img/logos/nightmarket.png"
+    "logo": "/assets/img/logos/nightmarket.png",
+    "founders": [
+      {
+        "name": "Harold Benji",
+        "role": "Co-founder & CEO",
+        "linkedin": "https://www.linkedin.com/in/harold-benji-444348193/",
+        "twitter": "https://x.com/harold_benji",
+        "bio": "Harold is a software builder creating digital trade networks for night vendors in Accra. He validates ideas by identifying real manual workarounds before building code."
+      }
+    ]
   },
   {
     "id": "newcomma",
     "name": "NewComma",
     "industry": "Creative",
-    "location": "Accra",
+    "location": "London, UK",
     "status": "Live",
     "description": "A social recruitment platform connecting creative talent across Africa and its diaspora with jobs, grants, and resources. Build your portfolio and grow your network.",
     "tags": [
       "Creative",
       "Talent"
     ],
-    "founded": "2025",
+    "founded": "2021",
     "url": "https://home.newcomma.com/",
     "cta": "Learn more",
-    "logo": "/assets/img/logos/newcomma.png"
+    "logo": "/assets/img/logos/newcomma.png",
+    "founders": [
+      {
+        "name": "Natalie Narh",
+        "role": "Co-founder & CEO",
+        "linkedin": "https://linkedin.com/in/natalie-narh",
+        "twitter": "https://x.com/nataliiee_n",
+        "avatar": "/assets/img/founders/natalie-narh.jpg",
+        "bio": "Natalie is an award-winning creative director and advocate for spotlighting African creative talent globally."
+      },
+      {
+        "name": "Nigel Atta-Mensah",
+        "role": "Co-founder & COO",
+        "linkedin": "https://linkedin.com/in/nigel-atta-mensah",
+        "twitter": "https://x.com/nigel_am",
+        "bio": "Nigel is an operations leader building recruitment networks for African creative talent."
+      }
+    ]
   },
   {
     "id": "budgeai",
@@ -314,10 +514,20 @@
       "Fintech",
       "AI"
     ],
-    "founded": "2025",
+    "founded": "2023",
     "url": "https://www.budgeai.com/",
     "cta": "Learn more",
-    "logo": "/assets/img/logos/budgeai.png"
+    "logo": "/assets/img/logos/budgeai.png",
+    "founders": [
+      {
+        "name": "Andrew Glago",
+        "role": "Co-founder & CEO",
+        "linkedin": "https://linkedin.com/in/andrew-glago",
+        "twitter": "https://x.com/a11rew",
+        "avatar": "/assets/img/founders/andrew-glago.jpg",
+        "bio": "Andrew is a software engineer building personal finance tools for African users. He pivoted Budge AI to push notifications and SMS parsing when banking APIs proved unreliable."
+      }
+    ]
   },
   {
     "id": "gaderin",
@@ -333,7 +543,17 @@
     "founded": "2025",
     "url": "http://thegaderin.com/",
     "cta": "Learn more",
-    "logo": "/assets/img/logos/gaderin.png"
+    "logo": "/assets/img/logos/gaderin.png",
+    "founders": [
+      {
+        "name": "Cornelius Owusu-Ansah",
+        "role": "Founder & CEO",
+        "linkedin": "https://linkedin.com/in/cornelius-owusu-ansah",
+        "twitter": "https://x.com/thecornisians",
+        "avatar": "/assets/img/founders/cornelius-owusu-ansah.jpg",
+        "bio": "Cornelius is a software engineer and designer building curated experiences for the African creative class. He shares how a sudden surge of social media word-of-mouth test-stresses tech products."
+      }
+    ]
   },
   {
     "id": "kixara",
@@ -346,10 +566,18 @@
       "Commerce",
       "Marketing"
     ],
-    "founded": "2025",
+    "founded": "2023",
     "url": "https://www.kixara.com/",
     "cta": "Learn more",
-    "logo": "/assets/img/logos/kixara.png"
+    "logo": "/assets/img/logos/kixara.png",
+    "founders": [
+      {
+        "name": "Joycelyn Otchere",
+        "role": "Co-founder",
+        "linkedin": "https://linkedin.com/in/joycelyn-otchere",
+        "bio": "Joycelyn is a Business Intelligence Analyst and speaker at the Girls in Technology Summit. She co-founded Kixara to enable African businesses to sell online and reach customers via WhatsApp."
+      }
+    ]
   },
   {
     "id": "piply",
@@ -362,10 +590,18 @@
       "EdTech",
       "AI"
     ],
-    "founded": "2025",
+    "founded": "2026",
     "url": "https://piply.ai/",
     "cta": "Learn more",
-    "logo": "/assets/img/logos/piply.png"
+    "logo": "/assets/img/logos/piply.png",
+    "founders": [
+      {
+        "name": "Andrews Boateng",
+        "role": "Founder & CEO",
+        "linkedin": "https://linkedin.com/in/andrews-boateng",
+        "bio": "Andrews is building an AI-powered study platform that helps students organize course materials, create quizzes and flashcards, and plan focused study sessions with active recall techniques."
+      }
+    ]
   },
   {
     "id": "pastcare",
@@ -378,10 +614,19 @@
       "SaaS",
       "Community"
     ],
-    "founded": "2025",
+    "founded": "2020",
     "url": "https://pastcare.app/",
     "cta": "Learn more",
-    "logo": "/assets/img/logos/pastcare.png"
+    "logo": "/assets/img/logos/pastcare.png",
+    "founders": [
+      {
+        "name": "Reuben Frimpong",
+        "role": "Founder & CEO",
+        "linkedin": "https://linkedin.com/in/reuben-frimpong",
+        "twitter": "https://x.com/reuben_frimpong",
+        "bio": "Reuben is a software engineer building church management portals. He started development during the 2020 pandemic to automate member communication and attendance."
+      }
+    ]
   },
   {
     "id": "aldincycles",
@@ -394,10 +639,24 @@
       "Mobility",
       "CleanTech"
     ],
-    "founded": "2024",
+    "founded": "2023",
     "url": "https://www.aldincycles.com",
     "cta": "Learn more",
-    "logo": "/assets/img/logos/aldincycles.png"
+    "logo": "/assets/img/logos/aldincycles.png",
+    "founders": [
+      {
+        "name": "Husamal Din Kofi Ahmed",
+        "role": "Co-founder & CEO",
+        "linkedin": "https://linkedin.com/in/husamal-din-kofi-ahmed",
+        "bio": "Husamal co-founded Aldin Cycles in 2023 to provide sustainable, affordable micro-mobility on university campuses in Ghana, starting at the University of Ghana, Legon."
+      },
+      {
+        "name": "Rene Atiso",
+        "role": "Co-founder & COO",
+        "linkedin": "https://linkedin.com/in/rene-atiso",
+        "bio": "Rene oversees marketing and operations at Aldin Cycles, scaling the campus bike-sharing fleet of standard and electric bicycles across Ghanaian universities."
+      }
+    ]
   },
   {
     "id": "susupaa",
@@ -413,7 +672,15 @@
     "founded": "2025",
     "url": "https://susupaa.com/",
     "cta": "Learn more",
-    "logo": "/assets/img/logos/susupaa.png"
+    "logo": "/assets/img/logos/susupaa.png",
+    "founders": [
+      {
+        "name": "Emmanuel Yeboah",
+        "role": "Co-founder & Lead Engineer",
+        "linkedin": "https://linkedin.com/in/emmanuel-yeboah",
+        "bio": "Emmanuel is a software engineer building fintech infrastructure to digitize Ghana's traditional rotational susu savings system, automating contributions, reminders, and member management."
+      }
+    ]
   },
   {
     "id": "ridekrom",
@@ -429,6 +696,182 @@
     "founded": "2025",
     "url": "https://ridekrom.com/",
     "cta": "Learn more",
-    "logo": "/assets/img/logos/ridekrom.png"
+    "logo": "/assets/img/logos/ridekrom.png",
+    "founders": [
+      {
+        "name": "Kobe Kwarteng",
+        "role": "Founder & CEO",
+        "linkedin": "https://linkedin.com/in/kobe-kwarteng",
+        "bio": "Kobe is building Ghana's inter-city carpooling network, connecting drivers and passengers along shared routes with verified profiles, in-app payments, and fair cost splitting."
+      }
+    ]
+  },
+  {
+    "id": "mande",
+    "name": "Mande",
+    "industry": "Tech",
+    "location": "Accra",
+    "status": "Live",
+    "description": "An AI-powered career companion for students that provides career readiness scores, personalized career matching, and 24/7 support to turn degrees into careers.",
+    "tags": [
+      "EdTech",
+      "AI"
+    ],
+    "founded": "2022",
+    "url": "https://mande.ai/",
+    "cta": "Learn more",
+    "logo": "/assets/img/logos/mande.png",
+    "teamSize": "1–10",
+    "funding": "Seed",
+    "socials": {
+      "twitter": "https://twitter.com/mande_ai",
+      "linkedin": "https://www.linkedin.com/company/mande-ai"
+    },
+    "founders": [
+      {
+        "name": "Joel Anaman",
+        "role": "Founder & CEO",
+        "linkedin": "https://linkedin.com/in/joelanaman",
+        "twitter": "https://x.com/jayanaman",
+        "bio": "Joel is a career coach and product manager who founded Mande to automate career readiness for African students and graduates. A pharmacist turned tech builder, he was selected for the Microsoft for Startups Founders Hub in 2023."
+      }
+    ],
+    "longDescription": "Mande is an AI-powered career companion designed specifically for students and recent graduates in Ghana. By offering career readiness scores, personalized job and internship matching, and 24/7 career guidance, Mande helps bridge the gap between classroom education and professional careers. The platform assists students in building premium resumes, practicing interview skills, and understanding their unique skills and fit."
+  },
+  {
+    "id": "tripoclock",
+    "name": "Trip o'clock",
+    "industry": "Tech",
+    "location": "Accra",
+    "status": "Live",
+    "description": "An AI-powered travel companion that helps you plan trips, find accommodations, book flights, get global e-SIMs, and discover destinations — all in one place.",
+    "tags": [
+      "Travel",
+      "AI"
+    ],
+    "founded": "2025",
+    "url": "https://tripoclock.com/",
+    "cta": "Learn more",
+    "logo": "/assets/img/logos/tripoclock.png",
+    "teamSize": "1–10",
+    "funding": "Seed",
+    "socials": {
+      "twitter": "https://twitter.com/tripoclock",
+      "linkedin": "https://www.linkedin.com/company/tripoclock"
+    },
+    "founders": [
+      {
+        "name": "Hope Adoli",
+        "role": "Co-founder",
+        "linkedin": "https://linkedin.com/in/hopeadoli",
+        "twitter": "https://x.com/uxkafui",
+        "bio": "Hope is a UX designer and product builder focused on travel technology. She co-founded Mizormor to make travel planning across Africa seamless and accessible."
+      },
+      {
+        "name": "Peter Sowah",
+        "role": "Co-founder & CTO",
+        "linkedin": "https://linkedin.com/in/petersowah",
+        "twitter": "https://x.com/petersowah_",
+        "bio": "Peter is a software engineer building the technical infrastructure behind Trip o'clock. He leads development of the AI-powered itinerary engine and eSIM integration."
+      }
+    ],
+    "longDescription": "Trip o'clock is an AI-powered travel planner that simplifies the journey from destination discovery to final booking. The platform integrates personalized itinerary generation, flight and hotel comparison, global e-SIM delivery, and activities recommendations into a single, cohesive travel companion. Ideal for modern travelers exploring the continent and beyond."
+  },
+  {
+    "id": "traaple",
+    "name": "Traaple",
+    "industry": "Marketplace",
+    "location": "Accra",
+    "status": "Live",
+    "description": "A discovery and booking platform reshaping the experience economy — connecting people to cultural activities, lifestyle services, events, entertainment, and everyday essentials.",
+    "tags": [
+      "Experiences",
+      "Marketplace"
+    ],
+    "founded": "2023",
+    "url": "https://traaple.com/",
+    "cta": "Learn more",
+    "logo": "/assets/img/logos/traaple.png",
+    "teamSize": "1–10",
+    "funding": "Bootstrapped",
+    "socials": {
+      "twitter": "https://twitter.com/traaple",
+      "linkedin": "https://www.linkedin.com/company/traaple"
+    },
+    "founders": [
+      {
+        "name": "Selase Kove-Seyram",
+        "role": "Founder & CEO",
+        "linkedin": "https://linkedin.com/in/selase-k-53b21112",
+        "twitter": "https://x.com/selasekove",
+        "bio": "Selase is a journalist, documentary filmmaker, and 2022 Nieman Fellow at Harvard. He founded Traaple after observing that travel information in Africa is fragmented and difficult for travelers to navigate."
+      }
+    ],
+    "longDescription": "Traaple is an experience discovery and booking marketplace focused on the African continent. Reshaping the experience economy, Traaple connects locals and travelers alike to unique cultural activities, local entertainment, lifestyle events, and host-led excursions across Ghana. It offers creators and experience hosts the tools to schedule, promote, and monetize their offerings effortlessly."
+  },
+  {
+    "id": "seesail",
+    "name": "Seesail",
+    "industry": "Fintech",
+    "location": "Accra",
+    "status": "Live",
+    "description": "An embedded finance platform that gives small businesses the same visibility, financing, and distribution power as enterprises — with AI-powered tools for smarter operations.",
+    "tags": [
+      "Fintech",
+      "AI"
+    ],
+    "founded": "2024",
+    "url": "https://getseesail.com",
+    "cta": "Learn more",
+    "logo": "/assets/img/logos/seesail.png",
+    "teamSize": "1–10",
+    "funding": "Pre-seed",
+    "socials": {
+      "twitter": "https://twitter.com/seesail",
+      "linkedin": "https://www.linkedin.com/company/seesail"
+    },
+    "founders": [
+      {
+        "name": "Victor Blavo",
+        "role": "Co-founder & CEO",
+        "linkedin": "https://linkedin.com/in/victor-blavo",
+        "bio": "Victor is a product design and engineering leader who previously served as Product Design Manager at Chipper Cash. He founded Seesail to give African SMBs enterprise-grade financial visibility and payment tools."
+      }
+    ],
+    "longDescription": "Seesail is an embedded finance platform that empowers African small and medium businesses (SMBs) with enterprise-grade financial visibility, cash flow management, and capital distribution tools. By integrating directly into existing workflows and utilizing AI-driven credit scoring, Seesail makes it easy for businesses to manage their resources and access flexible financing."
+  },
+  {
+    "id": "syio-labs",
+    "name": "Syio Labs",
+    "industry": "Creative",
+    "location": "Accra",
+    "status": "Live",
+    "description": "Helping tech startups build global products that shape the world through UI/UX design, branding, and development.",
+    "tags": [
+      "Design",
+      "Branding",
+      "Creative",
+      "Software"
+    ],
+    "founded": "2023",
+    "url": "https://www.syiolabs.com/",
+    "cta": "Learn more",
+    "logo": "/assets/img/logos/syiolabs.svg",
+    "teamSize": "1–10",
+    "funding": "Bootstrapped",
+    "socials": {
+      "twitter": "https://x.com/syiolabs",
+      "linkedin": "https://www.linkedin.com/company/syiolabs"
+    },
+    "founders": [
+      {
+        "name": "John St. Aïmond Banson",
+        "role": "Founder & Product Designer",
+        "linkedin": "https://peerlist.io/blarckat",
+        "twitter": "https://x.com/blarckat",
+        "bio": "John (blarckat) is a product designer and startup builder. He founded Syio Labs to help early-stage startups navigate the 0→1 phase through world-class branding, UI/UX design, and product validation."
+      }
+    ],
+    "longDescription": "Syio Labs is a premium design studio and product validation partner based in Accra, Ghana. Specializing in helping tech startups achieve product-market fit, Syio Labs provides high-fidelity UI/UX design, comprehensive design systems, cohesive brand identity, and front-end development. The studio is dedicated to turning complex technical concepts into immersive, user-friendly digital experiences that stand out."
   }
 ]

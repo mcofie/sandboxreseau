@@ -1,6 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import registry from '../data/registry.json';
+import registry from '../data/registry.json'; // Force reload registry data 8
 
 const headerSubtitle = "Ecosystem Directory";
 
@@ -104,7 +104,7 @@ const industryColors: Record<string, string> = {
             {registry.map((company, i) => {
                 const color = industryColors[company.industry] || '#6B7280';
                 return (
-                    <a href={company.url} target="_blank" rel="noopener noreferrer"
+                    <a href={`/registry/${company.id}`}
                        class="company-card group relative flex flex-col rounded border border-[var(--rule)] bg-[var(--paper)] p-5 transition-all duration-300 animate-enter"
                        data-industry={company.industry} 
                        data-tags={company.tags.join(',')}
@@ -157,7 +157,7 @@ const industryColors: Record<string, string> = {
                                 ))}
                             </div>
                             <span class="cta-arrow text-[10px] font-bold uppercase tracking-widest accent-text whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
-                                Visit →
+                                Profile →
                             </span>
                         </div>
                     </a>
