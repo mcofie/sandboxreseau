@@ -41,7 +41,7 @@ const headerSubtitle = "Digital Audio-Log";
         <div class="grid grid-cols-1 gap-16 lg:grid-cols-[1fr_320px]">
             <!-- Main Column: Archive -->
             <div class="space-y-8">
-                <div class="mb-4 flex items-center justify-between gap-4 animate-enter">
+                <div class="archive-scroll-target mb-4 flex items-center justify-between gap-4 animate-enter">
                     <h3 class="font-serif text-2xl tracking-tight">Archive</h3>
                     <div class="h-px flex-1 bg-[var(--rule)]/10"></div>
                     <div id="podcast-count" class="text-[11px] font-bold uppercase tracking-widest text-[var(--muted)]">Loading Episodes...</div>
@@ -64,6 +64,9 @@ const headerSubtitle = "Digital Audio-Log";
                         ))}
                     </div>
                 </div>
+
+                <!-- Pagination -->
+                <div id="podcast-pagination"></div>
             </div>
 
             <!-- Right Rail -->
@@ -111,6 +114,11 @@ const headerSubtitle = "Digital Audio-Log";
     <GlobalPlayer />
 
     <script is:inline>
+        const EPISODES_PER_PAGE = 6;
+        let allEpisodeCards = [];
+        let currentPage = 1;
+        let totalPages = 1;
+
         async function fetchPodcastArchive() {
             const archive = document.getElementById('podcast-archive');
             const countDisplay = document.getElementById('podcast-count');
@@ -128,7 +136,7 @@ const headerSubtitle = "Digital Audio-Log";
                 
                 if (items.length > 0) {
                     const itunesNamespace = "http://www.itunes.com/dtds/podcast-1.0.dtd";
-                    let html = '';
+                    allEpisodeCards = [];
                     
                     items.forEach(item => {
                         const title = item.querySelector("title")?.textContent || "The Reverb Episode";
@@ -154,7 +162,7 @@ const headerSubtitle = "Digital Audio-Log";
                         const formattedDesc = cleanDesc.replace(/"([A-Z])/g, '" $1');
                         const shortDesc = formattedDesc.substring(0, 180) + (formattedDesc.length > 180 ? '...' : '');
 
-                        html += `
+                        allEpisodeCards.push(`
                             <div class="episode-card group relative flex flex-col sm:flex-row gap-6 p-6 rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_97%,var(--ink)_3%)] hover:border-[var(--ink)] transition-all animate-enter" 
                                  data-episode-id="${guid}" 
                                  data-title="${title}" 
@@ -188,16 +196,13 @@ const headerSubtitle = "Digital Audio-Log";
                                     </div>
                                 </div>
                             </div>
-                        `;
+                        `);
                     });
                     
-                    if (archive) {
-                        archive.innerHTML = html;
-                        archive.querySelectorAll('.animate-enter').forEach(el => {
-                            setTimeout(() => el.classList.add('visible'), 50);
-                        });
-                        initPodcastActions();
-                    }
+                    totalPages = Math.ceil(allEpisodeCards.length / EPISODES_PER_PAGE);
+                    currentPage = 1;
+                    renderPage(currentPage);
+
                     if (countDisplay) {
                         countDisplay.textContent = `${items.length} Episodes`;
                     }
@@ -209,6 +214,118 @@ const headerSubtitle = "Digital Audio-Log";
                    errorDisplay.classList.remove('hidden');
                 }
             }
+        }
+
+        function renderPage(page) {
+            const archive = document.getElementById('podcast-archive');
+            if (!archive) return;
+
+            currentPage = page;
+            const start = (page - 1) * EPISODES_PER_PAGE;
+            const end = start + EPISODES_PER_PAGE;
+            const pageCards = allEpisodeCards.slice(start, end);
+
+            archive.innerHTML = pageCards.join('');
+            
+            // Animate cards in
+            archive.querySelectorAll('.animate-enter').forEach((el, i) => {
+                setTimeout(() => el.classList.add('visible'), i * 60);
+            });
+
+            initPodcastActions();
+            renderPagination();
+
+            // Scroll to top of archive
+            const archiveHeader = document.querySelector('.archive-scroll-target');
+            if (archiveHeader && page > 1) {
+                archiveHeader.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        function renderPagination() {
+            const container = document.getElementById('podcast-pagination');
+            if (!container || totalPages <= 1) {
+                if (container) container.innerHTML = '';
+                return;
+            }
+
+            const maxVisible = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+            let endPage = Math.min(totalPages, startPage + maxVisible - 1);
+            if (endPage - startPage + 1 < maxVisible) {
+                startPage = Math.max(1, endPage - maxVisible + 1);
+            }
+
+            let html = `<nav class="flex items-center justify-center gap-2 pt-12 pb-4" aria-label="Podcast archive pagination">`;
+
+            // Previous button
+            html += `<button 
+                onclick="renderPage(${currentPage - 1})" 
+                ${currentPage === 1 ? 'disabled' : ''}
+                class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded border text-[11px] font-bold uppercase tracking-widest transition-all
+                       ${currentPage === 1 
+                         ? 'border-[var(--rule)]/30 text-[var(--muted)]/40 cursor-not-allowed' 
+                         : 'border-[var(--rule)] text-[var(--muted)] hover:border-[var(--ink)] hover:text-[var(--ink)]'}">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg>
+                Prev
+            </button>`;
+
+            // First page + ellipsis
+            if (startPage > 1) {
+                html += pageButton(1);
+                if (startPage > 2) {
+                    html += `<span class="px-1 text-[var(--muted)]/40 text-sm select-none">…</span>`;
+                }
+            }
+
+            // Page number buttons
+            for (let i = startPage; i <= endPage; i++) {
+                html += pageButton(i);
+            }
+
+            // Last page + ellipsis
+            if (endPage < totalPages) {
+                if (endPage < totalPages - 1) {
+                    html += `<span class="px-1 text-[var(--muted)]/40 text-sm select-none">…</span>`;
+                }
+                html += pageButton(totalPages);
+            }
+
+            // Next button
+            html += `<button 
+                onclick="renderPage(${currentPage + 1})" 
+                ${currentPage === totalPages ? 'disabled' : ''}
+                class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded border text-[11px] font-bold uppercase tracking-widest transition-all
+                       ${currentPage === totalPages 
+                         ? 'border-[var(--rule)]/30 text-[var(--muted)]/40 cursor-not-allowed' 
+                         : 'border-[var(--rule)] text-[var(--muted)] hover:border-[var(--ink)] hover:text-[var(--ink)]'}">
+                Next
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+            </button>`;
+
+            html += `</nav>`;
+
+            // Page info
+            const startEp = (currentPage - 1) * EPISODES_PER_PAGE + 1;
+            const endEp = Math.min(currentPage * EPISODES_PER_PAGE, allEpisodeCards.length);
+            html += `<p class="text-center text-[11px] font-bold uppercase tracking-widest text-[var(--muted)]/60 pb-2">
+                Showing ${startEp}–${endEp} of ${allEpisodeCards.length}
+            </p>`;
+
+            container.innerHTML = html;
+        }
+
+        function pageButton(num) {
+            const isActive = num === currentPage;
+            return `<button 
+                onclick="renderPage(${num})" 
+                class="w-10 h-10 rounded border text-sm font-bold transition-all
+                       ${isActive 
+                         ? 'bg-[var(--ink)] text-[var(--paper)] border-[var(--ink)]' 
+                         : 'border-[var(--rule)] text-[var(--muted)] hover:border-[var(--ink)] hover:text-[var(--ink)]'}"
+                ${isActive ? 'aria-current="page"' : ''}>
+                ${num}
+            </button>`;
         }
 
         function initPodcastActions() {
@@ -230,6 +347,9 @@ const headerSubtitle = "Digital Audio-Log";
             });
         }
 
+        // Expose renderPage globally for onclick handlers
+        window.renderPage = renderPage;
+
         document.addEventListener('astro:page-load', fetchPodcastArchive);
 
         (function() {
@@ -248,3 +368,4 @@ const headerSubtitle = "Digital Audio-Log";
         })();
     </script>
 </Layout>
+

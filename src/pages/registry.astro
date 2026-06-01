@@ -173,6 +173,9 @@ const industryColors: Record<string, string> = {
             <button id="clearFilters" class="mt-4 text-xs font-bold uppercase tracking-widest underline accent-text">Clear all filters</button>
         </div>
 
+        <!-- Pagination -->
+        <div id="registryPagination"></div>
+
         <!-- Submit CTA -->
         <section class="mt-16 mb-8 animate-enter">
             <div class="relative overflow-hidden rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_95%,var(--ink)_5%)] p-8 md:p-12">
@@ -231,7 +234,9 @@ const industryColors: Record<string, string> = {
 
 <script is:inline>
     (function() {
-        // Native debounce (replaces lodash-es dependency)
+        const ITEMS_PER_PAGE = 12;
+
+        // Native debounce
         function debounce(fn, ms) {
             let timer;
             return function() {
@@ -243,7 +248,8 @@ const industryColors: Record<string, string> = {
         const searchInput = document.getElementById('companySearch');
         const companyGrid = document.getElementById('companyGrid');
         const emptyState = document.getElementById('emptyState');
-        const cards = document.querySelectorAll('.company-card');
+        const paginationContainer = document.getElementById('registryPagination');
+        const cards = Array.from(document.querySelectorAll('.company-card'));
         const filterChips = document.querySelectorAll('.filter-chip');
         const clearBtn = document.getElementById('clearFilters');
         const resultCount = document.getElementById('resultCount');
@@ -252,11 +258,10 @@ const industryColors: Record<string, string> = {
 
         let currentFilter = 'All';
         let currentSearch = '';
+        let currentPage = 1;
 
-        const updateDisplay = () => {
-            let visibleCount = 0;
-            
-            cards.forEach(card => {
+        function getFilteredCards() {
+            return cards.filter(card => {
                 const name = card.getAttribute('data-name') || '';
                 const desc = card.getAttribute('data-desc') || '';
                 const tags = (card.getAttribute('data-tags') || '').toLowerCase();
@@ -269,18 +274,48 @@ const industryColors: Record<string, string> = {
                 
                 const matchesFilter = currentFilter === 'All' || industry === currentFilter;
 
-                if (matchesSearch && matchesFilter) {
-                    card.classList.remove('hidden');
-                    visibleCount++;
-                } else {
-                    card.classList.add('hidden');
-                }
+                return matchesSearch && matchesFilter;
             });
+        }
+
+        function isFiltering() {
+            return currentSearch !== '' || currentFilter !== 'All';
+        }
+
+        const updateDisplay = () => {
+            const filtered = getFilteredCards();
+            const visibleCount = filtered.length;
+
+            if (isFiltering()) {
+                // When searching/filtering: show all matching, no pagination
+                cards.forEach(card => card.classList.add('hidden'));
+                filtered.forEach(card => card.classList.remove('hidden'));
+                if (paginationContainer) paginationContainer.innerHTML = '';
+            } else {
+                // Paginated view
+                const totalPages = Math.ceil(visibleCount / ITEMS_PER_PAGE);
+                if (currentPage > totalPages) currentPage = totalPages || 1;
+
+                const start = (currentPage - 1) * ITEMS_PER_PAGE;
+                const end = start + ITEMS_PER_PAGE;
+
+                cards.forEach(card => card.classList.add('hidden'));
+                filtered.slice(start, end).forEach((card, i) => {
+                    card.classList.remove('hidden');
+                    // Re-trigger entrance animation
+                    card.classList.remove('visible');
+                    setTimeout(() => card.classList.add('visible'), i * 50);
+                });
+
+                renderPagination(totalPages, visibleCount);
+            }
 
             // Update count
             if (resultCount) {
-                if (currentFilter === 'All' && !currentSearch) {
-                    resultCount.textContent = totalCount + ' entries';
+                if (!isFiltering()) {
+                    const start = (currentPage - 1) * ITEMS_PER_PAGE + 1;
+                    const end = Math.min(currentPage * ITEMS_PER_PAGE, visibleCount);
+                    resultCount.textContent = start + '–' + end + ' of ' + visibleCount + ' entries';
                 } else {
                     resultCount.textContent = visibleCount + ' of ' + totalCount;
                 }
@@ -289,15 +324,86 @@ const industryColors: Record<string, string> = {
             if (visibleCount === 0) {
                 companyGrid?.classList.add('hidden');
                 emptyState?.classList.remove('hidden');
+                if (paginationContainer) paginationContainer.innerHTML = '';
             } else {
                 companyGrid?.classList.remove('hidden');
                 emptyState?.classList.add('hidden');
             }
         };
 
+        function renderPagination(totalPages, totalItems) {
+            if (!paginationContainer || totalPages <= 1) {
+                if (paginationContainer) paginationContainer.innerHTML = '';
+                return;
+            }
+
+            const maxVisible = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+            let endPage = Math.min(totalPages, startPage + maxVisible - 1);
+            if (endPage - startPage + 1 < maxVisible) {
+                startPage = Math.max(1, endPage - maxVisible + 1);
+            }
+
+            let html = '<nav class="flex items-center justify-center gap-2 pt-12 pb-4" aria-label="Registry pagination">';
+
+            // Prev
+            html += '<button ' + (currentPage === 1 ? 'disabled' : '') + ' data-page="' + (currentPage - 1) + '" class="pagination-btn inline-flex items-center gap-1.5 px-4 py-2.5 rounded border text-[11px] font-bold uppercase tracking-widest transition-all ' + (currentPage === 1 ? 'border-[var(--rule)]/30 text-[var(--muted)]/40 cursor-not-allowed' : 'border-[var(--rule)] text-[var(--muted)] hover:border-[var(--ink)] hover:text-[var(--ink)]') + '">';
+            html += '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg>Prev</button>';
+
+            // First + ellipsis
+            if (startPage > 1) {
+                html += pgBtn(1);
+                if (startPage > 2) html += '<span class="px-1 text-[var(--muted)]/40 text-sm select-none">…</span>';
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                html += pgBtn(i);
+            }
+
+            // Last + ellipsis
+            if (endPage < totalPages) {
+                if (endPage < totalPages - 1) html += '<span class="px-1 text-[var(--muted)]/40 text-sm select-none">…</span>';
+                html += pgBtn(totalPages);
+            }
+
+            // Next
+            html += '<button ' + (currentPage === totalPages ? 'disabled' : '') + ' data-page="' + (currentPage + 1) + '" class="pagination-btn inline-flex items-center gap-1.5 px-4 py-2.5 rounded border text-[11px] font-bold uppercase tracking-widest transition-all ' + (currentPage === totalPages ? 'border-[var(--rule)]/30 text-[var(--muted)]/40 cursor-not-allowed' : 'border-[var(--rule)] text-[var(--muted)] hover:border-[var(--ink)] hover:text-[var(--ink)]') + '">';
+            html += 'Next<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>';
+
+            html += '</nav>';
+
+            // Showing counter
+            const startItem = (currentPage - 1) * ITEMS_PER_PAGE + 1;
+            const endItem = Math.min(currentPage * ITEMS_PER_PAGE, totalItems);
+            html += '<p class="text-center text-[11px] font-bold uppercase tracking-widest text-[var(--muted)]/60 pb-2">Showing ' + startItem + '–' + endItem + ' of ' + totalItems + '</p>';
+
+            paginationContainer.innerHTML = html;
+
+            // Attach click handlers
+            paginationContainer.querySelectorAll('.pagination-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const page = parseInt(btn.getAttribute('data-page'));
+                    if (page && page >= 1 && page <= totalPages) {
+                        currentPage = page;
+                        updateDisplay();
+                        // Scroll to grid
+                        if (toolbar) {
+                            toolbar.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                    }
+                });
+            });
+        }
+
+        function pgBtn(num) {
+            const isActive = num === currentPage;
+            return '<button data-page="' + num + '" class="pagination-btn w-10 h-10 rounded border text-sm font-bold transition-all ' + (isActive ? 'bg-[var(--ink)] text-[var(--paper)] border-[var(--ink)]' : 'border-[var(--rule)] text-[var(--muted)] hover:border-[var(--ink)] hover:text-[var(--ink)]') + '"' + (isActive ? ' aria-current="page"' : '') + '>' + num + '</button>';
+        }
+
         // Search with native debounce
         const handleSearch = debounce((e) => {
             currentSearch = e.target.value.toLowerCase().trim();
+            currentPage = 1;
             updateDisplay();
         }, 150);
 
@@ -312,6 +418,7 @@ const industryColors: Record<string, string> = {
                 chip.classList.add('active', 'bg-[var(--ink)]', 'text-[var(--paper)]', 'border-[var(--ink)]');
                 
                 currentFilter = chip.getAttribute('data-filter') || 'All';
+                currentPage = 1;
                 updateDisplay();
             });
         });
@@ -321,6 +428,7 @@ const industryColors: Record<string, string> = {
             if (searchInput) searchInput.value = '';
             currentSearch = '';
             currentFilter = 'All';
+            currentPage = 1;
             
             filterChips.forEach(c => {
                 c.classList.remove('active', 'bg-[var(--ink)]', 'text-[var(--paper)]', 'border-[var(--ink)]');
@@ -356,5 +464,8 @@ const industryColors: Record<string, string> = {
         }, { threshold: 0.05 });
 
         document.querySelectorAll('.animate-enter').forEach(el => observer.observe(el));
+
+        // Initial paginated render
+        updateDisplay();
     })();
 </script>
