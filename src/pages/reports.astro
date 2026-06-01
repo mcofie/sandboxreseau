@@ -6,13 +6,14 @@ const headerSubtitle = "Research & Intelligence";
 // Reports data — extend this array as new PDFs are added
 const reports = [
     {
-        title: "State of Accra Startup Report",
+        title: "The State of Accra's Startup Ecosystem",
+        subtitle: "2026 Edition",
         description: "A comprehensive analysis of the startup landscape in Accra — funding trends, sector breakdowns, founder demographics, and ecosystem maturity indicators.",
-        date: "Coming 2026",
-        pages: "",
-        tags: ["Ecosystem", "Accra", "Startups"],
-        pdf: "",
-        status: "coming-soon",
+        date: "June 2026",
+        pages: "42",
+        tags: ["Ecosystem", "Accra", "Startups", "2026"],
+        pdf: "/assets/docs/reports/state-of-accra-startup-ecosystem-2026.pdf",
+        status: "available",
         bgImage: "/assets/img/state-of-accra-report-bg.png"
     },
 ];
@@ -48,7 +49,7 @@ const reports = [
                     <article class="group animate-enter">
                         <div class="rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_95%,var(--ink)_5%)] overflow-hidden">
                             
-                            <!-- Report Cover / Placeholder -->
+                            <!-- Report Cover -->
                             <div class:list={[
                                 "relative border-b border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_88%,var(--ink)_12%)] text-center overflow-hidden min-h-[300px] flex items-center justify-center",
                                 { "hatch": !report.bgImage, "px-8 py-16 md:px-16 md:py-24": !report.bgImage }
@@ -72,11 +73,32 @@ const reports = [
 
                             <!-- Report Details -->
                             <div class="p-6 md:p-8">
+                                <div class="flex items-center gap-3 mb-3">
+                                    <span class="text-[10px] font-bold uppercase tracking-widest text-[var(--muted)]">{report.date}</span>
+                                    {report.pages && (
+                                        <>
+                                        <span class="w-1 h-1 rounded-full bg-[var(--rule)]"></span>
+                                        <span class="text-[10px] font-bold uppercase tracking-widest text-[var(--muted)]">{report.pages} pages</span>
+                                        </>
+                                    )}
+                                    {report.status === 'available' && (
+                                        <>
+                                        <span class="w-1 h-1 rounded-full bg-[var(--rule)]"></span>
+                                        <span class="text-[10px] font-bold uppercase tracking-widest text-emerald-600">PDF</span>
+                                        </>
+                                    )}
+                                </div>
+
+                                <h2 class="font-serif text-2xl md:text-3xl tracking-tight mb-1">{report.title}</h2>
+                                {report.subtitle && (
+                                    <p class="font-serif text-lg text-[var(--muted)] mb-4">{report.subtitle}</p>
+                                )}
+
                                 <p class="text-[14px] text-[var(--muted)] leading-relaxed mb-6">
                                     {report.description}
                                 </p>
 
-                                <div class="flex flex-wrap items-center gap-3 mb-6">
+                                <div class="flex flex-wrap items-center gap-2 mb-6">
                                     {report.tags.map(tag => (
                                         <span class="px-2.5 py-1 rounded-full text-[9px] font-bold uppercase tracking-widest bg-[color:color-mix(in_oklab,var(--paper)_90%,var(--ink)_10%)] text-[var(--muted)] border border-[var(--rule)]/10">
                                             {tag}
@@ -84,24 +106,33 @@ const reports = [
                                     ))}
                                 </div>
 
-                                <div class="flex items-center gap-4 pt-4 border-t border-[var(--rule)]/10">
+                                <div class="flex flex-wrap items-center gap-3 pt-5 border-t border-[var(--rule)]/10">
                                     {report.status === 'available' && (
-                                        <a href={report.pdf} target="_blank" rel="noreferrer"
-                                            class="inline-flex items-center gap-2 rounded border border-[var(--rule)] bg-[var(--ink)] px-6 py-3 text-xs font-bold uppercase tracking-widest text-[var(--paper)] hover:bg-[var(--accent)] transition-all">
+                                        <>
+                                        <button 
+                                            data-pdf={report.pdf}
+                                            data-title={report.title}
+                                            class="report-view-btn inline-flex items-center gap-2 rounded border border-[var(--ink)] bg-[var(--ink)] px-6 py-3 text-xs font-bold uppercase tracking-widest text-[var(--paper)] hover:opacity-90 transition-all">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                            </svg>
+                                            Read Report
+                                        </button>
+                                        <a href={report.pdf} download 
+                                            class="inline-flex items-center gap-2 rounded border border-[var(--rule)] px-6 py-3 text-xs font-bold uppercase tracking-widest text-[var(--muted)] hover:border-[var(--ink)] hover:text-[var(--ink)] transition-all">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
                                             </svg>
                                             Download PDF
                                         </a>
+                                        </>
                                     )}
                                     {report.status === 'coming-soon' && (
                                         <span class="inline-flex items-center gap-2 rounded border border-[var(--rule)]/20 px-6 py-3 text-xs font-bold uppercase tracking-widest text-[var(--muted)]">
                                             <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
                                             Coming Soon
                                         </span>
-                                    )}
-                                    {report.pages && (
-                                        <span class="text-[10px] font-bold uppercase tracking-widest text-[var(--muted)]">{report.pages} pages</span>
                                     )}
                                 </div>
                             </div>
@@ -140,8 +171,87 @@ const reports = [
         </div>
     </main>
 
+    <!-- PDF Viewer Modal -->
+    <div id="pdfViewerModal" class="fixed inset-0 z-[999] hidden">
+        <!-- Backdrop -->
+        <div id="pdfViewerBackdrop" class="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
+
+        <!-- Viewer Container -->
+        <div class="relative z-10 flex flex-col h-full">
+            <!-- Toolbar -->
+            <div class="flex items-center justify-between px-4 md:px-8 py-4 bg-black/40 backdrop-blur-xl border-b border-white/10">
+                <div class="flex items-center gap-4 min-w-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-white/60 shrink-0">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+                    </svg>
+                    <h3 id="pdfViewerTitle" class="text-white text-sm md:text-base font-bold truncate"></h3>
+                </div>
+                <div class="flex items-center gap-3 shrink-0">
+                    <a id="pdfDownloadLink" href="#" download
+                        class="inline-flex items-center gap-2 px-4 py-2 rounded border border-white/20 text-white text-[10px] font-bold uppercase tracking-widest hover:bg-white/10 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                        </svg>
+                        Download
+                    </a>
+                    <button id="pdfViewerClose" class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white/10 transition-colors" aria-label="Close viewer">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- PDF Iframe -->
+            <div class="flex-1 relative">
+                <iframe id="pdfViewerFrame" class="absolute inset-0 w-full h-full border-0" src=""></iframe>
+            </div>
+        </div>
+    </div>
+
     <script is:inline>
         (function() {
+            // PDF Viewer Modal
+            const modal = document.getElementById('pdfViewerModal');
+            const backdrop = document.getElementById('pdfViewerBackdrop');
+            const frame = document.getElementById('pdfViewerFrame');
+            const titleEl = document.getElementById('pdfViewerTitle');
+            const downloadLink = document.getElementById('pdfDownloadLink');
+            const closeBtn = document.getElementById('pdfViewerClose');
+
+            function openViewer(pdfUrl, title) {
+                if (!modal || !frame) return;
+                frame.src = pdfUrl;
+                if (titleEl) titleEl.textContent = title;
+                if (downloadLink) downloadLink.href = pdfUrl;
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeViewer() {
+                if (!modal || !frame) return;
+                modal.classList.add('hidden');
+                frame.src = '';
+                document.body.style.overflow = '';
+            }
+
+            // View buttons
+            document.querySelectorAll('.report-view-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const pdf = btn.getAttribute('data-pdf');
+                    const title = btn.getAttribute('data-title');
+                    if (pdf) openViewer(pdf, title || 'Report');
+                });
+            });
+
+            // Close handlers
+            closeBtn?.addEventListener('click', closeViewer);
+            backdrop?.addEventListener('click', closeViewer);
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeViewer();
+            });
+
+            // Entrance animations
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach((entry, i) => {
                     if (entry.isIntersecting) {
