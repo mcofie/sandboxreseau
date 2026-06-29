@@ -1,12 +1,22 @@
 [
   {
     "vol": 1,
+    "no": 5,
+    "title": "TBA",
+    "description": "Details for the next meetup are being finalized. Join us on August 28th!",
+    "date": "28th Aug '26",
+    "status": "In Preparation",
+    "image": null,
+    "lumaUrl": "https://luma.com/sandbox-reseau"
+  },
+  {
+    "vol": 1,
     "no": 4,
     "title": "Scaling Beyond Borders",
     "description": "Exploring strategies for regional expansion and cross-border operations.",
     "date": "26th June '26",
-    "status": "In Preparation",
-    "image": null,
+    "status": "Past",
+    "image": "assets/img/vol4-scaling.jpg",
     "lumaUrl": "https://luma.com/sandbox-reseau"
   },
   {
