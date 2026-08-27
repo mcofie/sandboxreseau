@@ -873,5 +873,212 @@
       }
     ],
     "longDescription": "Syio Labs is a premium design studio and product validation partner based in Accra, Ghana. Specializing in helping tech startups achieve product-market fit, Syio Labs provides high-fidelity UI/UX design, comprehensive design systems, cohesive brand identity, and front-end development. The studio is dedicated to turning complex technical concepts into immersive, user-friendly digital experiences that stand out."
+  },
+  {
+    "id": "rivia-clinics",
+    "name": "Rivia Clinics",
+    "industry": "Tech",
+    "location": "Accra",
+    "status": "Live",
+    "description": "A multi-specialty clinic chain offering comprehensive employee healthcare through a single annual fee — with virtual care, pharmacy, lab, and specialist services across Ghana.",
+    "tags": [
+      "Healthcare",
+      "Software"
+    ],
+    "founded": "2023",
+    "url": "https://riviaclinics.com/",
+    "cta": "Learn more",
+    "logo": "/assets/img/logos/rivia-clinics.png",
+    "founders": [
+      {
+        "name": "Isidore Kpotufe",
+        "role": "Founder & CEO",
+        "linkedin": "https://www.linkedin.com/in/isidore-kpotufe",
+        "twitter": "",
+        "avatar": "",
+        "bio": "Isidore Kpotufe is a serial entrepreneur reshaping primary healthcare in Ghana. He previously founded the bus-sharing startup Stabus (acquired by Treepz) and was recognized as the 'Most Outstanding Start-Up CEO' at the 2024 Ghana CEO Awards."
+      }
+    ]
+  },
+  {
+    "id": "megaquest",
+    "name": "MegaQuest",
+    "industry": "Tech",
+    "location": "Accra",
+    "status": "Live",
+    "description": "A voice-first research platform that helps you collect rich, authentic audio responses and transform them into actionable, AI-driven insights in multiple languages.",
+    "tags": [
+      "Research",
+      "AI"
+    ],
+    "founded": "2024",
+    "url": "https://megaquest.io/",
+    "cta": "Learn more",
+    "logo": "/assets/img/logos/megaquest.svg",
+    "founders": [
+      {
+        "name": "Francis Val-Neboh",
+        "role": "CEO & Head of Growth",
+        "linkedin": "https://www.linkedin.com/in/francisvalneboh",
+        "twitter": "",
+        "avatar": "",
+        "bio": "Francis is an award-winning tech entrepreneur and AI integration specialist. He leads MegaQuest in utilizing AI-driven insights to scale qualitative research."
+      }
+    ]
+  },
+  {
+    "id": "bitspenda",
+    "name": "BitSpenda",
+    "industry": "Fintech",
+    "location": "Accra",
+    "status": "Live",
+    "description": "A cryptocurrency exchange platform that lets users buy and sell Bitcoin seamlessly using mobile money — bridging crypto and everyday payments in Ghana.",
+    "tags": [
+      "Fintech",
+      "Crypto"
+    ],
+    "founded": "2024",
+    "url": "https://www.bitspenda.app/",
+    "cta": "Learn more",
+    "logo": "/assets/img/logos/bitspenda.png",
+    "founders": [
+      {
+        "name": "Bright Kportiklah",
+        "role": "Founder & Software Engineer",
+        "linkedin": "https://www.linkedin.com/in/bright-kportiklah",
+        "twitter": "https://x.com/bitcoin_dua",
+        "avatar": "",
+        "bio": "Bright is a software engineer and Bitcoin developer recognized for his contributions to grassroots Bitcoin adoption in Africa. He also serves as a technical advisor for Bitcoin Dua."
+      }
+    ]
+  },
+  {
+    "id": "stacx",
+    "name": "STACX",
+    "industry": "Creative",
+    "location": "Accra",
+    "status": "Live",
+    "description": "The content creator CRM built for influencers — manage brand deals, track payments and invoices, organize deliverables, and grow your creator income from one clean dashboard.",
+    "tags": [
+      "Creative",
+      "Software"
+    ],
+    "founded": "2025",
+    "url": "https://getstacx.com/",
+    "cta": "Learn more",
+    "logo": "/assets/img/logos/stacx.png",
+    "founders": [
+      {
+        "name": "Desmond Ofori Appiah",
+        "role": "Founder & Creator",
+        "linkedin": "https://www.linkedin.com/in/dessyocean",
+        "twitter": "https://x.com/dessy_ocean",
+        "avatar": "/assets/img/founders/dessy-ocean.png",
+        "bio": "Known as Dessy Ocean, Desmond is a prominent tech content creator and entrepreneur in Ghana. He built STACX to solve the administrative challenges faced by the creator economy."
+      }
+    ]
+  },
+  {
+    "id": "phundit",
+    "name": "Phundit",
+    "industry": "Fintech",
+    "location": "Accra",
+    "status": "Live",
+    "description": "A guided savings platform that helps you build your emergency fund step by step — save consistently, grow your money with interest, and earn rewards for your progress.",
+    "tags": [
+      "Fintech",
+      "Savings"
+    ],
+    "founded": "2025",
+    "url": "https://phundit.app/",
+    "cta": "Learn more",
+    "logo": "/assets/img/logos/phundit.png",
+    "founders": [
+      {
+        "name": "Peter Tokor",
+        "role": "Co-Founder & CEO",
+        "linkedin": "https://www.linkedin.com/in/peter-tokor",
+        "twitter": "",
+        "avatar": "",
+        "bio": "Peter is an entrepreneur and systems thinker with a background in Renewable Energy Engineering. Before Phundit, he co-founded Airrandz, a last-mile logistics company."
+      }
+    ]
+  },
+  {
+    "id": "boostmate",
+    "name": "BoostMate",
+    "industry": "Tech",
+    "location": "Accra",
+    "status": "Live",
+    "description": "An ambassador marketing platform that helps brands connect with passionate advocates, launch campaigns, and amplify reach organically through authentic connections.",
+    "tags": [
+      "Marketing",
+      "Software"
+    ],
+    "founded": "2024",
+    "url": "https://www.theboostmate.com/",
+    "cta": "Learn more",
+    "logo": "/assets/img/logos/boostmate.png",
+    "founders": [
+      {
+        "name": "Augusta Addy",
+        "role": "Co-Founder & CEO",
+        "linkedin": "https://www.linkedin.com/in/augusta-addy",
+        "twitter": "",
+        "avatar": "",
+        "bio": "Augusta co-founded BoostMate after participating in the MEST Africa incubation program. She previously worked in the startup ecosystem as an Experience Lead at Heny."
+      }
+    ]
+  },
+  {
+    "id": "speso",
+    "name": "Speso",
+    "industry": "Fintech",
+    "location": "Accra",
+    "status": "Live",
+    "description": "A next-gen super app for everyday payments — send money to friends and family quickly across banks and mobile money, and discover other services through mini apps.",
+    "tags": [
+      "Fintech",
+      "Payments"
+    ],
+    "founded": "2022",
+    "url": "https://speso.co/",
+    "cta": "Learn more",
+    "logo": "/assets/img/logos/speso.png",
+    "founders": []
+  },
+  {
+    "id": "bmptbooks",
+    "name": "BMPT Books",
+    "industry": "Software",
+    "location": "Accra",
+    "status": "Live",
+    "description": "A cloud accounting platform for businesses — manage invoicing, expenses, payroll, inventory, bank reconciliation, and financial reporting from anywhere, on any device.",
+    "tags": [
+      "SaaS",
+      "Fintech"
+    ],
+    "founded": "2018",
+    "url": "https://bmptbooks.com/",
+    "cta": "Learn more",
+    "logo": "/assets/img/logos/bmptbooks.png",
+    "founders": [
+      {
+        "name": "Charles Yeboah Frimpong",
+        "role": "Director",
+        "linkedin": "",
+        "twitter": "",
+        "avatar": "",
+        "bio": "Charles is an entrepreneur associated with BMPT Solutions and serves as a Director for BMPT Books. He also maintains a long-standing role at Ishmael Yamson & Associates."
+      },
+      {
+        "name": "Kingsley Adu-wiredu",
+        "role": "Co-Founder / Director",
+        "linkedin": "",
+        "twitter": "",
+        "avatar": "",
+        "bio": "Kingsley frequently partners with Charles Yeboah Frimpong in managing and promoting BMPT Books as an accounting software platform for small businesses."
+      }
+    ]
   }
 ]
