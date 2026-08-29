@@ -1,13 +1,22 @@
 [
   {
     "vol": 1,
-    "no": 5,
+    "no": 6,
     "title": "TBA",
-    "description": "Details for the next meetup are being finalized. Join us on August 28th!",
-    "date": "28th Aug '26",
+    "description": "Details for the next meetup are being finalized. Join us on October 30th!",
+    "date": "30th Oct '26",
     "status": "In Preparation",
     "image": null,
     "lumaUrl": "https://luma.com/sandbox-reseau"
+  },
+  {
+    "vol": 1,
+    "no": 5,
+    "title": "Pivoting Under Pressure",
+    "description": "Insights on navigating major product pivots and building cross-border infrastructure.",
+    "date": "28th Aug '26",
+    "status": "Past",
+    "image": "assets/img/vol5-pivoting.jpg"
   },
   {
     "vol": 1,
