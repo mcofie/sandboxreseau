@@ -181,7 +181,7 @@
                         Apple
                     </a>
                     <div class="h-8 w-px bg-[var(--rule)] mx-2 hidden sm:block"></div>
-                    <button onclick="navigator.clipboard.writeText('https://anchor.fm/s/110059518/podcast/rss'); alert('Feed URL copied!');" class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-[var(--muted)] hover:text-[var(--ink)] transition-colors">
+                    <button onclick="navigator.clipboard.writeText('https://api.substack.com/feed/podcast/7581260.rss'); alert('Feed URL copied!');" class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-[var(--muted)] hover:text-[var(--ink)] transition-colors">
                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
                         Copy RSS
                     </button>
@@ -356,7 +356,7 @@
             await DB.init();
             
             // Fetch and render from LIVE RSS feed
-            ContentManager.renderPodcastFromRSS('podcast-archive', 'https://anchor.fm/s/110059518/podcast/rss');
+            ContentManager.renderPodcastFromRSS('podcast-archive', 'https://api.substack.com/feed/podcast/7581260.rss');
             
             // SEO: Inject Structured Data
             ContentManager.injectStructuredData('podcast');

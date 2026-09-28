@@ -243,7 +243,7 @@ const galleryPreview = gallery.slice(0, 4);
             if (!loader || !content) return; 
 
             try {
-                const rssUrl = `https://anchor.fm/s/110059518/podcast/rss?t=${Date.now()}`;
+                const rssUrl = `/api/rss`;
                 const response = await fetch(rssUrl);
                 const text = await response.text();
                 const parser = new DOMParser();

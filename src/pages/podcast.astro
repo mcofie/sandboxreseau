@@ -99,7 +99,7 @@ const headerSubtitle = "Digital Audio-Log";
                                 class="block w-full rounded border border-[var(--rule)] py-2.5 text-[10px] font-bold uppercase tracking-widest text-[var(--ink)] hover:bg-[#8e3ee5] hover:text-white hover:border-[#8e3ee5] transition-all bg-[var(--paper)]">
                                 Apple
                             </a>
-                            <a href="https://anchor.fm/s/110059518/podcast/rss" target="_blank"
+                            <a href="https://api.substack.com/feed/podcast/7581260.rss" target="_blank"
                                 class="block w-full rounded border border-[var(--rule)] py-2.5 text-[10px] font-bold uppercase tracking-widest text-[var(--ink)] hover:bg-[var(--ink)] hover:text-[var(--paper)] transition-all bg-[var(--paper)]">
                                 RSS Feed
                             </a>
@@ -127,7 +127,7 @@ const headerSubtitle = "Digital Audio-Log";
             if (!archive) return;
 
             try {
-                const rssUrl = `https://anchor.fm/s/110059518/podcast/rss?t=${Date.now()}`;
+                const rssUrl = `/api/rss`;
                 const response = await fetch(rssUrl);
                 const text = await response.text();
                 const parser = new DOMParser();
@@ -147,7 +147,8 @@ const headerSubtitle = "Digital Audio-Log";
                         const audioUrl = item.querySelector("enclosure")?.getAttribute("url") || "";
                         
                         const durationElement = item.getElementsByTagNameNS(itunesNamespace, "duration")[0];
-                        const duration = durationElement ? durationElement.textContent : "5:00";
+                        const rawDuration = durationElement ? durationElement.textContent.trim() : "300";
+                        const duration = rawDuration.includes(':') ? rawDuration : `${Math.floor(rawDuration / 60)}:${String(rawDuration % 60).padStart(2, '0')}`;
                         
                         const imageElement = item.getElementsByTagNameNS(itunesNamespace, "image")[0];
                         const thumb = imageElement ? imageElement.getAttribute("href") : "/assets/img/podcast-logo.png";
