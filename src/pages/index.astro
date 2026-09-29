@@ -237,8 +237,8 @@ const latestEpisode = podcastEpisodes.length > 0 ? podcastEpisodes[0] : null;
     </main>
 
     <script is:inline define:vars={{ galleryStrings: gallery.map(img => img.url), latestEpisode }}>
-        // Load latest podcast from build-time data
-        function loadLatestPodcast() {
+        // Load latest podcast from build-time data (or fallback)
+        async function loadLatestPodcast() {
             const loader = document.getElementById('podcast-loader');
             const content = document.getElementById('podcast-content');
             const badge = document.getElementById('podcast-new-badge');
@@ -246,7 +246,18 @@ const latestEpisode = podcastEpisodes.length > 0 ? podcastEpisodes[0] : null;
             if (!loader || !content) return; 
 
             try {
-                const ep = latestEpisode;
+                let ep = latestEpisode;
+
+                if (!ep) {
+                    try {
+                        const res = await fetch('/data/podcast-episodes.json');
+                        if (res.ok) {
+                            const list = await res.json();
+                            if (list && list.length > 0) ep = list[0];
+                        }
+                    } catch (_) {}
+                }
+
                 if (!ep) return;
 
                 const dateObj = new Date(ep.pubDate);
