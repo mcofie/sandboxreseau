@@ -1,7 +1,11 @@
 /**
  * Fetches and parses podcast episodes from the Substack RSS feed at build time.
  * This runs server-side during `astro build` so there are no CORS issues.
+ * Uses rss-parser for robust XML parsing with fallback to local cached data
+ * in case Substack or Cloudflare blocks the build environment (e.g., GitHub Actions).
  */
+import Parser from 'rss-parser';
+import cachedEpisodes from '../data/cached-episodes.json';
 
 export interface PodcastEpisode {
   title: string;
@@ -16,7 +20,23 @@ export interface PodcastEpisode {
 
 const RSS_FEED_URL = 'https://api.substack.com/feed/podcast/7581260.rss';
 
-function formatDuration(raw: string): string {
+type CustomFeed = {};
+type CustomItem = {
+  itunes?: {
+    duration?: string;
+    image?: string;
+    author?: string;
+    explicit?: string;
+  };
+  enclosure?: {
+    url?: string;
+    length?: string;
+    type?: string;
+  };
+};
+
+function formatDuration(raw: string | undefined): string {
+  if (!raw) return '5:00';
   const trimmed = raw.trim();
   if (trimmed.includes(':')) return trimmed;
   const totalSeconds = parseInt(trimmed, 10);
@@ -39,61 +59,78 @@ function stripHtml(html: string): string {
 }
 
 export async function fetchPodcastEpisodes(): Promise<PodcastEpisode[]> {
+  const parser: Parser<CustomFeed, CustomItem> = new Parser({
+    customFields: {
+      item: [
+        ['itunes:duration', 'itunes.duration'],
+        ['itunes:image', 'itunes.image', { keepArray: false }],
+        ['itunes:author', 'itunes.author'],
+        ['itunes:explicit', 'itunes.explicit'],
+      ],
+    },
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+      'Accept': 'application/rss+xml, application/xml, text/xml;q=0.9, */*;q=0.8',
+    },
+    requestOptions: {
+      timeout: 10000,
+    },
+  });
+
   try {
-    const response = await fetch(RSS_FEED_URL);
-    if (!response.ok) {
-      console.error(`RSS fetch failed: ${response.status}`);
-      return [];
+    console.log(`[podcast] Fetching RSS from ${RSS_FEED_URL}...`);
+    const feed = await parser.parseURL(RSS_FEED_URL);
+    console.log(`[podcast] Fetched ${feed.items?.length ?? 0} episodes from RSS feed.`);
+
+    if (!feed.items || feed.items.length === 0) {
+      console.warn('[podcast] No items found in RSS feed. Falling back to cached episodes.');
+      return cachedEpisodes as PodcastEpisode[];
     }
 
-    const xml = await response.text();
+    const episodes: PodcastEpisode[] = feed.items.map((item) => {
+      const rawDesc = item.contentSnippet || item.content || item.summary || '';
+      const cleanDesc = stripHtml(rawDesc).substring(0, 250);
 
-    // Parse XML manually since we're in Node (no DOMParser)
-    const episodes: PodcastEpisode[] = [];
-    const items = xml.split('<item>').slice(1); // Skip channel header
+      // Extract itunes:image href - rss-parser stores it as an object with $ attrs
+      let thumb = '/assets/img/podcast-logo.png';
+      const itunesImage = (item as any)['itunes:image'] || (item as any).itunes?.image;
+      if (itunesImage) {
+        if (typeof itunesImage === 'string') {
+          thumb = itunesImage;
+        } else if (itunesImage.$ && itunesImage.$.href) {
+          thumb = itunesImage.$.href;
+        } else if (itunesImage.href) {
+          thumb = itunesImage.href;
+        }
+      }
 
-    for (const item of items) {
-      const getTag = (tag: string): string => {
-        // Handle CDATA sections
-        const cdataMatch = item.match(new RegExp(`<${tag}>\\s*<!\\[CDATA\\[([\\s\\S]*?)\\]\\]>\\s*</${tag}>`));
-        if (cdataMatch) return cdataMatch[1].trim();
-        const match = item.match(new RegExp(`<${tag}>([\\s\\S]*?)</${tag}>`));
-        return match ? match[1].trim() : '';
-      };
+      // Extract duration
+      const rawDuration = (item as any)['itunes:duration'] || (item as any).itunes?.duration;
+      let durationStr = '5:00';
+      if (rawDuration) {
+        if (typeof rawDuration === 'string') {
+          durationStr = formatDuration(rawDuration);
+        } else if (rawDuration._) {
+          durationStr = formatDuration(rawDuration._);
+        }
+      }
 
-      const getAttr = (tag: string, attr: string): string => {
-        const match = item.match(new RegExp(`<${tag}[^>]*${attr}="([^"]*)"`, 'i'));
-        return match ? match[1] : '';
-      };
-
-      const title = getTag('title');
-      const guid = getTag('guid');
-      const pubDate = getTag('pubDate');
-      const link = getTag('link');
-      const rawDesc = getTag('description');
-      const audioUrl = getAttr('enclosure', 'url');
-      const rawDuration = getTag('itunes:duration');
-      const thumb = getAttr('itunes:image', 'href');
-
-      const cleanDesc = stripHtml(rawDesc)
-        .replace(/"([A-Z])/g, '" $1')
-        .substring(0, 250);
-
-      episodes.push({
-        title,
-        guid,
-        pubDate,
-        link,
+      return {
+        title: item.title || 'The Reverb Episode',
+        guid: item.guid || (item as any).id || '',
+        pubDate: item.pubDate || '',
+        link: item.link || '#',
         description: cleanDesc,
-        audioUrl,
-        duration: formatDuration(rawDuration || '300'),
-        thumb: thumb || '/assets/img/podcast-logo.png',
-      });
-    }
+        audioUrl: item.enclosure?.url || '',
+        duration: durationStr,
+        thumb,
+      };
+    });
 
+    console.log(`[podcast] Successfully parsed ${episodes.length} episodes from live RSS.`);
     return episodes;
   } catch (e) {
-    console.error('Failed to fetch podcast RSS:', e);
-    return [];
+    console.warn(`[podcast] Live RSS fetch failed (${(e as Error)?.message || e}). Falling back to ${cachedEpisodes.length} cached episodes.`);
+    return cachedEpisodes as PodcastEpisode[];
   }
 }

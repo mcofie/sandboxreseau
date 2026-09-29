@@ -126,7 +126,7 @@ const episodes = await fetchPodcastEpisodes();
         let currentPage = 1;
         let totalPages = 1;
 
-        function loadPodcastArchive() {
+        async function loadPodcastArchive() {
             const archive = document.getElementById('podcast-archive');
             const countDisplay = document.getElementById('podcast-count');
             const errorDisplay = document.getElementById('podcast-error');
@@ -134,7 +134,20 @@ const episodes = await fetchPodcastEpisodes();
             if (!archive) return;
 
             try {
-                const episodes = window.__PODCAST_EPISODES__ || [];
+                let episodes = window.__PODCAST_EPISODES__ || [];
+
+                // Client-side fallback if build-time data was empty
+                if (episodes.length === 0) {
+                    try {
+                        const res = await fetch('/data/podcast-episodes.json');
+                        if (res.ok) {
+                            episodes = await res.json();
+                            window.__PODCAST_EPISODES__ = episodes;
+                        }
+                    } catch (fetchErr) {
+                        console.warn("Fallback fetch failed:", fetchErr);
+                    }
+                }
                 
                 if (episodes.length > 0) {
                     allEpisodeCards = [];
