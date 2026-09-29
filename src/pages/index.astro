@@ -3,9 +3,12 @@ import Layout from '../layouts/Layout.astro';
 import editions from '../data/editions.json';
 import gallery from '../data/gallery.json';
 import { Image } from 'astro:assets';
+import { fetchPodcastEpisodes } from '../lib/podcast';
 
 const nextEdition = editions.find(e => e.status === 'In Preparation') || editions[0];
 const galleryPreview = gallery.slice(0, 4);
+const podcastEpisodes = await fetchPodcastEpisodes();
+const latestEpisode = podcastEpisodes.length > 0 ? podcastEpisodes[0] : null;
 ---
 
 <Layout>
@@ -233,9 +236,9 @@ const galleryPreview = gallery.slice(0, 4);
         </div>
     </main>
 
-    <script is:inline define:vars={{ galleryStrings: gallery.map(img => img.url) }}>
-        // RSS Fetcher for Live Updates
-        async function fetchLatestPodcast() {
+    <script is:inline define:vars={{ galleryStrings: gallery.map(img => img.url), latestEpisode }}>
+        // Load latest podcast from build-time data
+        function loadLatestPodcast() {
             const loader = document.getElementById('podcast-loader');
             const content = document.getElementById('podcast-content');
             const badge = document.getElementById('podcast-new-badge');
@@ -243,62 +246,39 @@ const galleryPreview = gallery.slice(0, 4);
             if (!loader || !content) return; 
 
             try {
-                const rssUrl = `/api/rss`;
-                const response = await fetch(rssUrl);
-                const text = await response.text();
-                const parser = new DOMParser();
-                const xml = parser.parseFromString(text, "text/xml");
-                const items = xml.querySelectorAll("item");
+                const ep = latestEpisode;
+                if (!ep) return;
+
+                const dateObj = new Date(ep.pubDate);
+                const formattedDate = dateObj.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+                const isNew = (Date.now() - dateObj.getTime()) < (7 * 24 * 60 * 60 * 1000);
+                const shortDesc = ep.description.substring(0, 150) + (ep.description.length > 150 ? '...' : '');
+
+                const titleEl = document.getElementById('podcast-title');
+                const descEl = document.getElementById('podcast-desc');
+                const metaEl = document.getElementById('podcast-meta');
+                const thumbEl = document.getElementById('podcast-thumb');
+                const spotifyEl = document.getElementById('podcast-spotify');
+
+                if (titleEl) titleEl.textContent = ep.title;
+                if (descEl) descEl.textContent = shortDesc;
+                if (metaEl) metaEl.innerHTML = `<span>Dispatch: ${formattedDate}</span>`;
+                if (thumbEl) thumbEl.src = ep.thumb;
+                if (spotifyEl) spotifyEl.href = ep.link;
                 
-                if (items.length > 0) {
-                    const firstItem = items[0];
-                    const title = firstItem.querySelector("title")?.textContent || "The Reverb Episode";
-                    const pubDate = firstItem.querySelector("pubDate")?.textContent || "";
-                    const link = firstItem.querySelector("link")?.textContent || "https://open.spotify.com/show/1mQUSNNpjenkeUiFVBXWCN";
-                    const description = firstItem.querySelector("description")?.textContent || "";
-                    
-                    const itunesNamespace = "http://www.itunes.com/dtds/podcast-1.0.dtd";
-                    const imageElement = firstItem.getElementsByTagNameNS(itunesNamespace, "image")[0];
-                    const thumb = imageElement ? imageElement.getAttribute("href") : "/assets/img/podcast-logo.png";
-                    
-                    const dateObj = new Date(pubDate);
-                    const formattedDate = dateObj.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
-                    
-                    const isNew = (Date.now() - dateObj.getTime()) < (7 * 24 * 60 * 60 * 1000);
-                    
-                    const decoder = document.createElement('div');
-                    decoder.innerHTML = description;
-                    const decodedDesc = decoder.textContent || decoder.innerText || "";
-                    const cleanDesc = decodedDesc.replace(/<[^>]*>?/gm, '').replace(/&quot;/g, '"').trim();
-                    const formattedDesc = cleanDesc.replace(/"([A-Z])/g, '" $1');
-                    const shortDesc = formattedDesc.substring(0, 150) + (formattedDesc.length > 150 ? '...' : '');
-
-                    const titleEl = document.getElementById('podcast-title');
-                    const descEl = document.getElementById('podcast-desc');
-                    const metaEl = document.getElementById('podcast-meta');
-                    const thumbEl = document.getElementById('podcast-thumb');
-                    const spotifyEl = document.getElementById('podcast-spotify');
-
-                    if (titleEl) titleEl.textContent = title;
-                    if (descEl) descEl.textContent = shortDesc;
-                    if (metaEl) metaEl.innerHTML = `<span>Dispatch: ${formattedDate}</span>`;
-                    if (thumbEl) thumbEl.src = thumb;
-                    if (spotifyEl) spotifyEl.href = link;
-                    
-                    if (isNew && badge) badge.classList.remove('hidden');
-                    
-                    if (loader) loader.classList.add('hidden');
-                    if (content) {
-                        content.classList.remove('hidden');
-                        setTimeout(() => content.classList.add('visible'), 50);
-                    }
+                if (isNew && badge) badge.classList.remove('hidden');
+                
+                if (loader) loader.classList.add('hidden');
+                if (content) {
+                    content.classList.remove('hidden');
+                    setTimeout(() => content.classList.add('visible'), 50);
                 }
             } catch (e) {
-                console.error("Failed to fetch live podcast:", e);
+                console.error("Failed to load podcast:", e);
             }
         }
 
-        document.addEventListener('astro:page-load', fetchLatestPodcast);
+        document.addEventListener('astro:page-load', loadLatestPodcast);
 
         // Set up gallery images for lightbox
         window.GALLERY_IMAGES = galleryStrings;

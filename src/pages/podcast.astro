@@ -1,8 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import GlobalPlayer from '../components/GlobalPlayer.astro';
+import { fetchPodcastEpisodes } from '../lib/podcast';
 
 const headerSubtitle = "Digital Audio-Log";
+const episodes = await fetchPodcastEpisodes();
 ---
 
 <Layout 
@@ -113,13 +115,18 @@ const headerSubtitle = "Digital Audio-Log";
 
     <GlobalPlayer />
 
+    <!-- Build-time episode data injected as JSON -->
+    <script is:inline define:vars={{ episodes }}>
+        window.__PODCAST_EPISODES__ = episodes;
+    </script>
+
     <script is:inline>
         const EPISODES_PER_PAGE = 6;
         let allEpisodeCards = [];
         let currentPage = 1;
         let totalPages = 1;
 
-        async function fetchPodcastArchive() {
+        function loadPodcastArchive() {
             const archive = document.getElementById('podcast-archive');
             const countDisplay = document.getElementById('podcast-count');
             const errorDisplay = document.getElementById('podcast-error');
@@ -127,54 +134,28 @@ const headerSubtitle = "Digital Audio-Log";
             if (!archive) return;
 
             try {
-                const rssUrl = `/api/rss`;
-                const response = await fetch(rssUrl);
-                const text = await response.text();
-                const parser = new DOMParser();
-                const xml = parser.parseFromString(text, "text/xml");
-                const items = xml.querySelectorAll("item");
+                const episodes = window.__PODCAST_EPISODES__ || [];
                 
-                if (items.length > 0) {
-                    const itunesNamespace = "http://www.itunes.com/dtds/podcast-1.0.dtd";
+                if (episodes.length > 0) {
                     allEpisodeCards = [];
                     
-                    items.forEach(item => {
-                        const title = item.querySelector("title")?.textContent || "The Reverb Episode";
-                        const guid = item.querySelector("guid")?.textContent || "";
-                        const pubDate = item.querySelector("pubDate")?.textContent || "";
-                        const spotifyUrl = item.querySelector("link")?.textContent || "#";
-                        const description = item.querySelector("description")?.textContent || "";
-                        const audioUrl = item.querySelector("enclosure")?.getAttribute("url") || "";
-                        
-                        const durationElement = item.getElementsByTagNameNS(itunesNamespace, "duration")[0];
-                        const rawDuration = durationElement ? durationElement.textContent.trim() : "300";
-                        const duration = rawDuration.includes(':') ? rawDuration : `${Math.floor(rawDuration / 60)}:${String(rawDuration % 60).padStart(2, '0')}`;
-                        
-                        const imageElement = item.getElementsByTagNameNS(itunesNamespace, "image")[0];
-                        const thumb = imageElement ? imageElement.getAttribute("href") : "/assets/img/podcast-logo.png";
-                        
-                        const dateObj = new Date(pubDate);
+                    episodes.forEach(ep => {
+                        const dateObj = new Date(ep.pubDate);
                         const formattedDate = dateObj.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
-                        
-                        const decoder = document.createElement('div');
-                        decoder.innerHTML = description;
-                        const decodedDesc = decoder.textContent || decoder.innerText || "";
-                        const cleanDesc = decodedDesc.replace(/<[^>]*>?/gm, '').replace(/&quot;/g, '"').trim();
-                        const formattedDesc = cleanDesc.replace(/"([A-Z])/g, '" $1');
-                        const shortDesc = formattedDesc.substring(0, 180) + (formattedDesc.length > 180 ? '...' : '');
+                        const shortDesc = ep.description.substring(0, 180) + (ep.description.length > 180 ? '...' : '');
 
                         allEpisodeCards.push(`
                             <div class="episode-card group relative flex flex-col sm:flex-row gap-6 p-6 rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_97%,var(--ink)_3%)] hover:border-[var(--ink)] transition-all animate-enter" 
-                                 data-episode-id="${guid}" 
-                                 data-title="${title}" 
-                                 data-meta="${formattedDate} • ${duration}" 
-                                 data-thumb="${thumb}"
-                                 data-audio-url="${audioUrl}">
+                                 data-episode-id="${ep.guid}" 
+                                 data-title="${ep.title}" 
+                                 data-meta="${formattedDate} • ${ep.duration}" 
+                                 data-thumb="${ep.thumb}"
+                                 data-audio-url="${ep.audioUrl}">
                                 
-                                <div class="w-full aspect-square sm:w-32 sm:h-32 flex-shrink-0 bg-[var(--paper)] rounded border border-[var(--rule)] overflow-hidden relative group/art cursor-pointer" onclick="if(window.openLightbox) openLightbox('${thumb}')">
-                                    <img src="${thumb}" alt="${title}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
+                                <div class="w-full aspect-square sm:w-32 sm:h-32 flex-shrink-0 bg-[var(--paper)] rounded border border-[var(--rule)] overflow-hidden relative group/art cursor-pointer" onclick="if(window.openLightbox) openLightbox('${ep.thumb}')">
+                                    <img src="${ep.thumb}" alt="${ep.title}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
                                     
-                                    ${audioUrl ? `
+                                    ${ep.audioUrl ? `
                                     <button class="play-btn absolute inset-0 flex items-center justify-center bg-[var(--ink)]/40 opacity-0 group-hover/art:opacity-100 transition-opacity text-[var(--paper)]">
                                         <div class="play-icon w-10 h-10 flex items-center justify-center rounded-full border-2 border-[var(--paper)]">
                                             <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
@@ -190,9 +171,9 @@ const headerSubtitle = "Digital Audio-Log";
                                         <div class="flex items-center gap-3 text-[10px] uppercase font-bold tracking-widest text-[var(--muted)] mb-2">
                                              <span>${formattedDate}</span>
                                              <span class="w-1 h-1 rounded-full bg-[var(--rule)]"></span>
-                                             <span>${duration}</span>
+                                             <span>${ep.duration}</span>
                                         </div>
-                                        <h3 class="font-serif text-xl sm:text-2xl mb-2 text-[var(--ink)] group-hover:accent-text transition-colors">${title}</h3>
+                                        <h3 class="font-serif text-xl sm:text-2xl mb-2 text-[var(--ink)] group-hover:accent-text transition-colors">${ep.title}</h3>
                                         <p class="text-[14px] text-[var(--muted)] leading-relaxed m-0">${shortDesc}</p>
                                     </div>
                                 </div>
@@ -205,11 +186,19 @@ const headerSubtitle = "Digital Audio-Log";
                     renderPage(currentPage);
 
                     if (countDisplay) {
-                        countDisplay.textContent = `${items.length} Episodes`;
+                        countDisplay.textContent = `${episodes.length} Episodes`;
+                    }
+                } else {
+                    if (errorDisplay) {
+                       errorDisplay.textContent = "No episodes available. Please check back soon.";
+                       errorDisplay.classList.remove('hidden');
+                    }
+                    if (countDisplay) {
+                        countDisplay.textContent = '0 Episodes';
                     }
                 }
             } catch (e) {
-                console.error("Failed to fetch podcast archive:", e);
+                console.error("Failed to load podcast archive:", e);
                 if (errorDisplay) {
                    errorDisplay.textContent = "Failed to load archive. Please try refreshing.";
                    errorDisplay.classList.remove('hidden');
@@ -351,7 +340,7 @@ const headerSubtitle = "Digital Audio-Log";
         // Expose renderPage globally for onclick handlers
         window.renderPage = renderPage;
 
-        document.addEventListener('astro:page-load', fetchPodcastArchive);
+        document.addEventListener('astro:page-load', loadPodcastArchive);
 
         (function() {
             const observer = new IntersectionObserver((entries) => {
@@ -369,4 +358,3 @@ const headerSubtitle = "Digital Audio-Log";
         })();
     </script>
 </Layout>
-
