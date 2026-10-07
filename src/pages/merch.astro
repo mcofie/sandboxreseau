@@ -13,15 +13,15 @@ const supportTiers = [
     { amount: 'Any amount', title: 'Give what you can', desc: 'Every contribution, big or small, keeps the room open.' },
 ];
 
-// Merch data: extend this array as new items are added. Set status to 'available' to enable pre-orders.
+// Merch data: extend this array as new items are added. artScale shrinks bulky product shots so they sit evenly with the rest. Set status to 'available' to enable pre-orders.
 const merchItems = [
-    { title: 'Builder’s Heavyweight Tee', description: 'A premium 250gsm organic cotton t-shirt with subtle Sandbox branding. Designed for long shipping sessions.', price: '₵250', status: 'coming-soon' },
-    { title: 'The Founders Dad Cap', description: 'Classic unstructured 6-panel cap. Washed cotton twill with an embroidered “Sandbox Réseau” crest.', price: '₵150', status: 'coming-soon' },
-    { title: 'Premium Oversized Hoodie', description: '400gsm heavyweight french terry cotton hoodie. Drop shoulder, relaxed fit with tonal embroidered branding.', price: '₵450', status: 'coming-soon' },
-    { title: 'Heavyweight Canvas Tote', description: '12oz organic cotton canvas tote with reinforced handles. Fits a 16-inch laptop and daily carry.', price: '₵120', status: 'coming-soon' },
-    { title: 'Insulated Water Bottle', description: 'Matte black double-walled stainless steel. Cold for 24 hours, hot for 12. Engraved logo.', price: '₵200', status: 'coming-soon' },
-    { title: 'Ceramic Builder’s Mug', description: 'Minimalist matte ceramic mug. For early mornings and late-night shipping sessions.', price: '₵100', status: 'coming-soon' },
-    { title: 'Ecosystem Sticker Pack', description: 'Die-cut vinyl stickers with Sandbox Réseau branding. Matte, weather-resistant, made for laptop lids.', price: '₵50', status: 'coming-soon' },
+    { title: 'Builder’s Heavyweight Tee', image: '/assets/img/merch-tee.webp', description: 'A premium 250gsm organic cotton t-shirt with subtle Sandbox branding. Designed for long shipping sessions.', price: '₵250', status: 'coming-soon' },
+    { title: 'The Founders Dad Cap', image: '/assets/img/merch-cap.webp', artScale: 0.72, description: 'Classic unstructured 6-panel cap. Washed cotton twill with an embroidered “Sandbox Réseau” crest.', price: '₵150', status: 'coming-soon' },
+    { title: 'Premium Oversized Hoodie', image: '/assets/img/merch-hoodie.webp', description: '400gsm heavyweight french terry cotton hoodie. Drop shoulder, relaxed fit with tonal embroidered branding.', price: '₵450', status: 'coming-soon' },
+    { title: 'Heavyweight Canvas Tote', image: '/assets/img/merch-tote.webp', description: '12oz organic cotton canvas tote with reinforced handles. Fits a 16-inch laptop and daily carry.', price: '₵120', status: 'coming-soon' },
+    { title: 'Insulated Water Bottle', image: '/assets/img/merch-bottle.webp', description: 'Matte black double-walled stainless steel. Cold for 24 hours, hot for 12. Engraved logo.', price: '₵200', status: 'coming-soon' },
+    { title: 'Ceramic Builder’s Mug', image: '/assets/img/merch-mug.webp', artScale: 0.72, description: 'Minimalist matte ceramic mug. For early mornings and late-night shipping sessions.', price: '₵100', status: 'coming-soon' },
+    { title: 'Ecosystem Sticker Pack', image: '/assets/img/merch-stickers.webp', description: 'Die-cut vinyl stickers with Sandbox Réseau branding. Matte, weather-resistant, made for laptop lids.', price: '₵50', status: 'coming-soon' },
 ];
 ---
 
@@ -79,8 +79,7 @@ const merchItems = [
                 {merchItems.map((item) => (
                     <article class="merch-card">
                         <div class="merch-art">
-                            <span class="merch-art-brand">Sandbox Supply</span>
-                            <span class="merch-art-name">{item.title}</span>
+                            <img src={item.image} alt={item.title} loading="lazy" decoding="async" style={item.artScale ? `--art-scale:${item.artScale}` : undefined} />
                             <span class="merch-chip">{item.status === 'available' ? 'Available' : 'Dropping soon'}</span>
                         </div>
                         <div class="merch-card-copy">
@@ -141,9 +140,9 @@ const merchItems = [
     .merch-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px}
     .merch-card{display:flex;flex-direction:column;overflow:hidden;border:1px solid rgba(10,10,10,.1);border-radius:28px;transition:border-color .3s}
     .merch-card:hover{border-color:rgba(10,10,10,.25)}
-    .merch-art{position:relative;display:flex;flex-direction:column;justify-content:center;aspect-ratio:4/3;padding:28px;background:#f5f5f5}
-    .merch-art-brand{color:#a1a1a1;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase}
-    .merch-art-name{max-width:14ch;margin-top:8px;font:italic 26px/1.15 'Libre Baskerville',Georgia,serif;letter-spacing:-.02em}
+    .merch-art{position:relative;display:flex;align-items:center;justify-content:center;aspect-ratio:4/3;padding:28px;background:#f5f5f5;overflow:hidden}
+    .merch-art img{width:calc(100% * var(--art-scale, 1));height:calc(100% * var(--art-scale, 1));object-fit:contain;filter:drop-shadow(0 12px 18px rgba(0,0,0,.12));transition:transform .5s cubic-bezier(.22,1,.36,1)}
+    .merch-card:hover .merch-art img{transform:scale(1.04)}
     .merch-chip{position:absolute;top:16px;right:16px;padding:4px 10px;border-radius:999px;background:#fff;color:#6b6b6b;font-size:12px;font-weight:500}
     .merch-card-copy{display:flex;flex:1;flex-direction:column;padding:24px}
     .merch-card-top{display:flex;align-items:baseline;justify-content:space-between;gap:12px}

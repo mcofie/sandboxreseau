@@ -15,7 +15,10 @@ const editionCards = [...editions].sort((a, b) => b.no - a.no).map((edition) => 
         vol: String(edition.no).padStart(2, '0'),
         name: upcoming ? 'Up next' : edition.title,
         image: edition.image ? `/${edition.image}` : '/assets/img/RNBL3150.webp',
-        caption: upcoming ? `${edition.date} · Accra. Details are being finalised. Save your seat on Luma.` : `${edition.date} · ${edition.description}`,
+        date: `${edition.date} · Accra`,
+        summary: upcoming ? 'Details are being finalised. Save your seat on Luma.' : edition.description,
+        action: upcoming ? 'Save your seat' : 'See the edition',
+        upcoming,
         href: upcoming ? edition.lumaUrl || 'https://luma.com/sandbox-reseau' : '/editions',
         external: upcoming,
     };
@@ -158,7 +161,11 @@ const featuredBuilders = ['Pouch', 'Chime', 'STACX', 'Speso', 'Phundit', 'Clerra
                                 <img src={card.image} alt="" loading="lazy" />
                                 <span class="edition-pill"><span>{card.name}</span><span class="edition-pill-vol">Vol. {card.vol}</span></span>
                             </div>
-                            <figcaption>{card.caption}</figcaption>
+                            <figcaption>
+                                <span class="edition-date">{card.upcoming && <span class="edition-live" aria-hidden="true"></span>}{card.date}</span>
+                                <span class="edition-summary">{card.summary}</span>
+                                <span class="edition-action">{card.action}<svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d={card.external ? 'M5 11 11 5M6 5h5v5' : 'M3 8h9M8.5 4.5 12 8l-3.5 3.5'} /></svg></span>
+                            </figcaption>
                         </a>
                     </figure>
                 ))}
@@ -441,7 +448,13 @@ const featuredBuilders = ['Pouch', 'Chime', 'STACX', 'Speso', 'Phundit', 'Clerra
     .edition-pill{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);display:flex;align-items:center;gap:10px;max-width:calc(100% - 32px);padding:6px 6px 6px 16px;border:1px solid rgba(255,255,255,.25);border-radius:999px;background:rgba(255,255,255,.15);color:#fff;font-size:15px;font-weight:600;white-space:nowrap;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
     .edition-pill>span:first-child{overflow:hidden;text-overflow:ellipsis}
     .edition-pill-vol{flex-shrink:0;padding:4px 10px;border-radius:999px;background:rgba(0,0,0,.35);color:rgba(255,255,255,.9);font-size:12px;font-weight:500;line-height:1}
-    .edition-slide figcaption{margin-top:16px;padding:0 4px;color:#6b6b6b;font-size:15px;line-height:1.5}
+    .edition-slide figcaption{display:flex;flex-direction:column;gap:8px;margin-top:18px;padding:0 4px}
+    .edition-date{display:inline-flex;align-items:center;gap:8px;color:#8a8a8a;font-size:13px;font-weight:500;font-variant-numeric:tabular-nums;letter-spacing:.01em}
+    .edition-live{width:7px;height:7px;border-radius:50%;background:#8fbf24;box-shadow:0 0 0 3px rgba(143,191,36,.18)}
+    /* Two lines everywhere so the action links line up across the rail. */
+    .edition-summary{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;min-height:3em;color:#171816;font-size:16px;font-weight:500;line-height:1.5;text-wrap:pretty}
+    .edition-action{display:inline-flex;align-items:center;gap:6px;width:max-content;margin-top:2px;color:#0a0a0a;font-size:14px;font-weight:600;border-bottom:1px solid rgba(10,10,10,.2);padding-bottom:2px;transition:border-color .2s,gap .2s}
+    .edition-slide a:hover .edition-action{gap:9px;border-color:#0a0a0a}
     @media(max-width:639px){.editions-rail{padding:48px 0}.editions-rail-head{padding:0 24px}.editions-rail-nav{display:none}.editions-track{--rail-inset:1.5rem}.edition-slide{width:280px}}
     .resources-section{width:100%;max-width:1040px;margin:0 auto;padding:64px 32px}
     .resources-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px 32px}
@@ -478,4 +491,14 @@ const featuredBuilders = ['Pouch', 'Chime', 'STACX', 'Speso', 'Phundit', 'Clerra
     /* Stacked: the copy card hugs its content and the photo keeps a fixed shape instead of a tall min-height. */
     @media(max-width:1023px){.format-cards{grid-template-columns:1fr}.format-card{min-height:0}.format-card-copy{padding:48px}.format-card-copy .format-cta{align-self:flex-start;margin-top:32px;padding:0 28px}.format-carousel{aspect-ratio:4/3}}
     @media(max-width:639px){.home-hero{padding:80px 12px 0}.hero-sound{right:14px;bottom:14px;width:40px;height:40px}.about-strip{margin:-28px 0 48px;padding:0 12px}.about-strip-inner{padding:76px 24px 48px}.about-strip h2{font-size:22px}.about-strip .about-statement{font-size:26px}.about-strip:not(.builders-strip) .about-strip-inner{padding:88px 24px 64px}.about-strip h2 br{display:none}.builders-strip{margin:48px 0}.builders-strip .about-strip-inner{padding-top:48px}.about-logos{gap:20px 28px;margin-top:48px}.about-logos li{font-size:15px}.about-strip .builders-cta{margin-top:40px}.format-cards{gap:12px;padding:48px 16px}.format-card{border-radius:24px}.format-card-copy{padding:28px 24px}.format-card-copy p{margin-top:14px;font-size:16px}.format-parts{gap:14px;margin-top:24px}.format-part-img{width:72px;height:72px}.format-parts li{font-size:12px}.format-card-copy .format-cta{align-self:stretch;height:52px;margin-top:24px}.format-carousel{aspect-ratio:4/5}.format-slide figcaption{top:14px;left:14px;font-size:12px}.format-dots{bottom:14px}}
+    /* Phones: the report list becomes a swipeable rail of cards (like the editions rail) instead of cramped rows. */
+    @media(max-width:639px){
+        .resource-list{flex-direction:row;gap:12px;margin:0 -24px;padding:0 24px 4px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-left:24px;scrollbar-width:none}
+        .resource-list::-webkit-scrollbar{display:none}
+        .resource-item,.resource-item:first-child{flex:0 0 74%;flex-direction:column;gap:14px;padding:0;scroll-snap-align:start}
+        .resource-item+.resource-item{border-top:0}
+        .resource-thumb{width:100%;aspect-ratio:16/9;border-radius:18px}
+        .resource-item-copy{padding:0 2px}
+        .resource-item h3{font-size:16px}
+    }
 </style>

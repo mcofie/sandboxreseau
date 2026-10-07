@@ -18,7 +18,7 @@ const platforms = [
 >
     <main class="podcast-page">
         <section class="reverb-hero" aria-labelledby="reverb-title">
-            <div class="reverb-hero-card">
+            <div class="reverb-hero-card cta-doodles">
                 <div class="reverb-hero-copy">
                     <span class="reverb-pill"><span class="reverb-dot" aria-hidden="true"></span>Podcast · {episodes.length} episodes</span>
                     <h1 id="reverb-title">The Reverb.</h1>
@@ -69,6 +69,8 @@ const platforms = [
     .podcast-page{font-family:Inter,system-ui,sans-serif;color:#0a0a0a}
     .reverb-hero{max-width:1040px;margin:0 auto;padding:120px 32px 0}
     .reverb-hero-card{display:grid;grid-template-columns:1.3fr .7fr;align-items:center;gap:48px;padding:56px;border-radius:28px;background:#f5f5f5}
+    /* Only the top-right spiral; the sweep would sit under the hero copy. */
+    .reverb-hero-card.cta-doodles::before{content:none}
     .reverb-pill{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border:1px solid rgba(10,10,10,.1);border-radius:999px;background:#fff;color:#6b6b6b;font-size:13px;font-weight:500}
     .reverb-dot{width:7px;height:7px;border-radius:50%;background:#8fbf24}
     .reverb-hero h1{margin:24px 0 0;font-size:clamp(2.5rem,1.6rem + 3vw,4rem);font-weight:600;line-height:1.02;letter-spacing:-.03em;color:#0a0a0a}
