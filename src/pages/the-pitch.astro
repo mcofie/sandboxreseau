@@ -13,7 +13,7 @@ const timeline = [
     { date: 'Nov 2026', label: 'Applications open', desc: 'Submit your startup for consideration. Open to all builders in the ecosystem.' },
     { date: 'Dec 2026', label: 'Shortlist announced', desc: '6–8 founders are selected to pitch based on traction, team, and market potential.' },
     { date: 'Jan 2027', label: 'Pitch prep', desc: 'Selected founders get mentorship, rehearsals, and feedback from past founders.' },
-    { date: 'Feb 2027', label: 'The Pitch — live', desc: 'One stage. Real judges. A live audience. The founders pitch for real.' },
+    { date: 'Feb 2027', label: 'The Pitch, live', desc: 'One stage. Real judges. A live audience. The founders pitch for real.' },
 ];
 
 const criteria = [
@@ -24,9 +24,9 @@ const criteria = [
 ];
 
 const faqs = [
-    { question: 'Who can apply?', answer: 'Any early-stage founder building a product — based in Ghana, West Africa, or the diaspora.' },
+    { question: 'Who can apply?', answer: 'Any early-stage founder building a product, based in Ghana, West Africa, or the diaspora.' },
     { question: 'What stage should my startup be at?', answer: 'Pre-seed to seed. You should have a working product or strong prototype with some validation.' },
-    { question: 'Do I need a pitch deck?', answer: 'Not for the application. If selected, you’ll pitch live on stage — slides optional.' },
+    { question: 'Do I need a pitch deck?', answer: 'Not for the application. If selected, you’ll pitch live on stage. Slides optional.' },
     { question: 'What do winners get?', answer: 'Details on prizes, mentorship, and exposure will be announced in November.' },
     { question: 'Is there a fee?', answer: 'No. The Pitch is free to apply and free to attend.' },
 ];
@@ -41,11 +41,11 @@ const faqs = [
     <main class="pitch-page">
         <section class="pitch-hero" data-dark-hero aria-labelledby="pitch-title">
             <div class="pitch-hero-frame">
-                <img src="/assets/img/gallery-v3-8.jpg" alt="" />
+                <img src="/assets/img/gallery-v3-8.webp" alt="" fetchpriority="high" decoding="async" />
                 <div class="pitch-hero-copy">
                     <span class="pitch-pill"><span class="pitch-dot" aria-hidden="true"></span>February 2027 · Accra</span>
                     <h1 id="pitch-title">The Pitch.</h1>
-                    <p>6–8 founders. One stage. Real judges. A live audience of builders, investors, and operators. No fluff — just what you’re building and why it matters.</p>
+                    <p>6–8 founders. One stage. Real judges. A live audience of builders, investors, and operators. No fluff. Just what you’re building and why it matters.</p>
                     <div class="pitch-hero-actions">
                         <span class="pitch-status">Applications open November 2026</span>
                         <a class="pitch-glass" href="#format">See the format</a>
@@ -66,7 +66,7 @@ const faqs = [
         <section class="pitch-split" id="format" aria-labelledby="pitch-format-title">
             <div class="pitch-card pitch-card-copy">
                 <h2 id="pitch-format-title">A stage that matches your ambition.</h2>
-                <p>The Pitch is Sandbox Réseau’s flagship pitch competition — a live event where early-stage founders present their startups to a panel of judges and a room full of builders, operators, and investors.</p>
+                <p>The Pitch is Sandbox Réseau’s flagship pitch competition: a live event where early-stage founders present their startups to a panel of judges and a room full of builders, operators, and investors.</p>
                 <p>It’s not a demo day. It’s not a panel. It’s a stage. You have 5 minutes to make your case, followed by 3 minutes of real questions from people who’ve been in the trenches.</p>
             </div>
             <div class="pitch-card pitch-card-timeline">

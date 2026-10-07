@@ -7,7 +7,7 @@ const audience = [
     'Founders and engineers building products in Ghana and West Africa',
     'Designers, data people, indie makers, and the product-curious',
     'Diaspora builders who want to stay connected to Accra’s ecosystem',
-    'Anyone with a builder’s mindset — beginner-friendly, curiosity is enough',
+    'Anyone with a builder’s mindset. Beginner-friendly, curiosity is enough',
 ];
 
 const channels = [
@@ -52,7 +52,7 @@ const roles = [
     <main class="community-page">
         <section class="community-hero" data-dark-hero aria-labelledby="community-title">
             <div class="community-hero-frame">
-                <img src="/assets/img/community-hero.jpg" alt="" />
+                <img src="/assets/img/community-hero.webp" alt="" fetchpriority="high" decoding="async" />
                 <div class="community-hero-copy">
                     <span class="community-hero-pill"><span aria-hidden="true"></span>High-signal, no fluff</span>
                     <h1 id="community-title">The room is open.</h1>
@@ -80,7 +80,7 @@ const roles = [
                 </div>
                 <div class="community-card community-card-dark">
                     <h2>The code.</h2>
-                    <p class="community-card-lede">How we operate and interact — online and in the room.</p>
+                    <p class="community-card-lede">How we operate and interact, online and in the room.</p>
                     <ol class="community-values">
                         {values.map((value, index) => (
                             <li><span>{String(index + 1).padStart(2, '0')}</span>{value}</li>

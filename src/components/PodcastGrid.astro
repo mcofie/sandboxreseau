@@ -1,4 +1,5 @@
 ---
+import { getImage, inferRemoteSize } from 'astro:assets';
 import type { PodcastEpisode } from '../lib/podcast';
 
 interface Props {
@@ -9,11 +10,25 @@ interface Props {
 
 const { episodes, pageSize } = Astro.props;
 
-const cards = episodes.map((episode) => {
-    const match = episode.title.match(/^#(\d+)\s*[–—-]\s*(.+)$/);
+// Substack serves episode covers at full size (~3000px, 400KB+), so build a small WebP copy for the cards.
+async function cardArt(src: string) {
+    if (!src.startsWith('http')) return src;
+    try {
+        // Scale both sides together; passing only a width keeps the original height and squashes the art.
+        const { width, height } = await inferRemoteSize(src);
+        const targetWidth = Math.min(640, width);
+        const targetHeight = Math.round((height / width) * targetWidth);
+        return (await getImage({ src, width: targetWidth, height: targetHeight, format: 'webp', quality: 75 })).src;
+    } catch {
+        return src;
+    }
+}
+
+const cards = await Promise.all(episodes.map(async (episode) => {
+    const match = episode.title.match(/^#(\d+)\s*[:–-]\s*(.+)$/);
     const date = new Date(episode.pubDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
-    return { ...episode, number: match?.[1] ?? '', shortTitle: match?.[2] ?? episode.title, date };
-});
+    return { ...episode, art: await cardArt(episode.thumb), number: match?.[1] ?? '', shortTitle: match?.[2] ?? episode.title, date };
+}));
 const hasMore = pageSize !== undefined && cards.length > pageSize;
 ---
 
@@ -26,7 +41,7 @@ const hasMore = pageSize !== undefined && cards.length > pageSize;
                 <p>{episode.date} · {episode.duration}</p>
             </div>
             <div class="podcast-card-art">
-                <img src={episode.thumb} alt="" loading="lazy" />
+                <img src={episode.art} alt="" width="640" height="640" loading="lazy" decoding="async" />
                 <span class="podcast-play"><svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M4.5 3.2v9.6L12.5 8z" /></svg>Play episode</span>
             </div>
         </a>

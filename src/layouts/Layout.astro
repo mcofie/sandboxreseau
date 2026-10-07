@@ -18,7 +18,7 @@ const {
     title = 'Sandbox Réseau | The Builders’ Gathering in Accra',
     description = 'A gathering in Accra for Africa’s founders, builders, and curious minds. Builder demos, mini-talks, and open networking. Signal over noise; progress over polish.',
     image = '/assets/img/social-preview.jpg',
-    imageAlt = 'Sandbox Réseau — where Africa’s founders and builders connect.',
+    imageAlt = 'Sandbox Réseau: where Africa’s founders and builders connect.',
 } = Astro.props;
 
 // Social platforms need absolute URLs; `site` comes from astro.config.
@@ -67,7 +67,10 @@ const isDefaultImage = image === '/assets/img/social-preview.jpg';
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
+        <!-- Only the weights in use; loaded without blocking first paint (system fonts show until it arrives). -->
+        <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Libre+Baskerville:ital@0;1&display=swap" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Libre+Baskerville:ital@0;1&display=swap" media="print" onload="this.media='all'" />
+        <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Libre+Baskerville:ital@0;1&display=swap" /></noscript>
 
         <ClientRouter />
 	</head>
