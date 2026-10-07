@@ -273,9 +273,9 @@ button:active {
 }
 
 
-/* Podcast Player Enhancements */
+/* Podcast Player */
 .player-bar {
-    transform: translateY(100%);
+    transform: translateY(calc(100% + 24px));
     transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -283,28 +283,45 @@ button:active {
     transform: translateY(0);
 }
 
+.player-card {
+    background: #0a0a0a;
+    color: #fff;
+    font-family: Inter, system-ui, sans-serif;
+    box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+}
+
+.player-eyebrow {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #d3fa69;
+}
+
+/* 12px tall hit area with a 3px visible track along the card's bottom edge */
 .progress-bar-container {
-    height: 4px;
-    background: color-mix(in oklab, var(--rule) 10%, transparent);
+    display: flex;
+    align-items: flex-end;
+    height: 12px;
     cursor: pointer;
-    position: relative;
+    background: linear-gradient(to top, rgba(255, 255, 255, 0.12) 3px, transparent 3px);
 }
 
 .progress-bar-fill {
-    height: 100%;
-    background: var(--ink);
-    width: 0%;
     position: relative;
+    width: 0%;
+    height: 3px;
+    background: #d3fa69;
 }
 
 .progress-bar-fill::after {
     content: "";
     position: absolute;
-    right: -4px;
+    right: -5px;
     top: -4px;
-    width: 12px;
-    height: 12px;
-    background: var(--ink);
+    width: 10px;
+    height: 10px;
+    background: #d3fa69;
     border-radius: 50%;
     opacity: 0;
     transition: opacity 0.2s;
@@ -338,17 +355,34 @@ button:active {
 .audio-wave div:nth-child(3) { animation-delay: 0.2s; }
 .audio-wave div:nth-child(4) { animation-delay: 0.3s; }
 
-/* Custom Playback Speed Dropdown */
+/* Playback Speed */
+.speed-toggle {
+    height: 32px;
+    min-width: 48px;
+    padding: 0 10px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    transition: background-color 0.2s;
+}
+
+.speed-toggle:hover {
+    background: rgba(255, 255, 255, 0.18);
+}
+
 .speed-dropdown {
     position: absolute;
-    bottom: calc(100% + 12px);
+    bottom: calc(100% + 14px);
     right: 0;
-    background: var(--paper);
-    border: 1px solid var(--rule);
-    border-radius: 4px;
-    padding: 4px;
+    min-width: 88px;
+    padding: 6px;
+    border-radius: 14px;
+    background: #1c1c1c;
+    box-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08) inset;
     display: none;
-    box-shadow: 0 10px 30px -10px rgba(0,0,0,0.15);
 }
 
 .speed-dropdown.active {
@@ -356,23 +390,81 @@ button:active {
 }
 
 .speed-option {
-    padding: 6px 12px;
-    font-size: 11px;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
+    padding: 7px 12px;
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 13px;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
     cursor: pointer;
-    border-radius: 2px;
 }
 
 .speed-option:hover {
-    background: var(--ink);
-    color: var(--paper);
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
 }
 
 .speed-option.active {
-    background: var(--accent);
-    color: white;
+    background: #d3fa69;
+    color: #0a0a0a;
+}
+
+/* Hand-drawn accents tucked into the corners of the closing CTA cards */
+.cta-doodles {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+}
+
+.cta-doodles::before,
+.cta-doodles::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    background: center / contain no-repeat;
+    pointer-events: none;
+    transition: clip-path 1.3s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.cta-doodles::before {
+    left: 0;
+    bottom: 0;
+    width: clamp(150px, 28%, 300px);
+    aspect-ratio: 1425 / 816;
+    background-image: url("/assets/img/cta-doodle-sweep.svg");
+    transform: translate(-18%, 22%);
+}
+
+.cta-doodles::after {
+    top: 0;
+    right: 0;
+    width: clamp(96px, 16%, 170px);
+    aspect-ratio: 1102 / 1299;
+    background-image: url("/assets/img/cta-doodle-spiral.svg");
+    transform: translate(18%, -16%);
+}
+
+/* Dark cards: render the black line art as pure white */
+.cta-doodles--light::before,
+.cta-doodles--light::after {
+    filter: brightness(0) invert(1);
+}
+
+@media (max-width: 639px) {
+    .cta-doodles::before { width: 132px; opacity: .55; }
+    .cta-doodles::after { width: 80px; opacity: .55; }
+}
+
+/* Wipe the line art in like it's being drawn: sweep left→right, then spiral top→bottom */
+.cta-doodles[data-doodles="armed"]::before { clip-path: inset(0 100% 0 0); }
+.cta-doodles[data-doodles="armed"]::after { clip-path: inset(0 0 100% 0); }
+.cta-doodles[data-doodles="drawn"]::before,
+.cta-doodles[data-doodles="drawn"]::after { clip-path: inset(0); }
+.cta-doodles[data-doodles="drawn"]::after { transition-delay: 0.45s; }
+
+@media (prefers-reduced-motion: reduce) {
+    .cta-doodles::before,
+    .cta-doodles::after { transition: none; }
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */

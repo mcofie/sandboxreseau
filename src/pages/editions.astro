@@ -27,7 +27,7 @@ const imageSrc = (image: string) => (image.startsWith('http') ? image : `/${imag
 
         {upcoming && (
             <section class="next-edition" aria-labelledby="next-edition-title">
-                <div class="next-edition-copy">
+                <div class="next-edition-copy cta-doodles cta-doodles--light">
                     <span class="next-edition-tag"><span aria-hidden="true"></span>Up next · {vol(upcoming.no)}</span>
                     <h2 id="next-edition-title">{upcoming.date}<span>Accra, Ghana</span></h2>
                     <p>{upcoming.title !== 'TBA' ? `${upcoming.title}. ` : ''}{upcoming.description}</p>
@@ -73,7 +73,7 @@ const imageSrc = (image: string) => (image.startsWith('http') ? image : `/${imag
             </section>
         )}
 
-        <section class="editions-cta" aria-labelledby="editions-cta-title">
+        <section class="editions-cta cta-doodles" aria-labelledby="editions-cta-title">
             <h2 id="editions-cta-title">See you in the next room.</h2>
             <p>Bring a question, a rough prototype, or just an open mind.</p>
             <div class="editions-cta-actions">

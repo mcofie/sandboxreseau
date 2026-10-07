@@ -194,7 +194,7 @@ const isDefaultImage = image === '/assets/img/social-preview.jpg';
                             const s = (opt as HTMLElement).dataset.speed;
                             if (s) {
                                 audio.playbackRate = parseFloat(s);
-                                if (speedToggle) speedToggle.textContent = s + 'x';
+                                if (speedToggle) speedToggle.textContent = opt.textContent;
                                 document.querySelectorAll('.speed-option').forEach(o => o.classList.remove('active'));
                                 opt.classList.add('active');
                                 document.getElementById('speedDropdown')?.classList.remove('active');
@@ -351,6 +351,27 @@ const isDefaultImage = image === '/assets/img/social-preview.jpg';
 
             document.addEventListener('astro:after-swap', initEntranceAnimations);
             initEntranceAnimations();
+
+            // --- CTA DOODLES: draw in once the card scrolls into view ---
+            // Cards are only hidden once JS has armed them, so they still show without JS.
+            function initDoodles() {
+                const cards = document.querySelectorAll('.cta-doodles:not([data-doodles])');
+                if (!cards.length || !('IntersectionObserver' in window)) return;
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach((entry) => {
+                        if (!entry.isIntersecting) return;
+                        entry.target.setAttribute('data-doodles', 'drawn');
+                        observer.unobserve(entry.target);
+                    });
+                }, { threshold: 0.35 });
+                cards.forEach((card) => {
+                    card.setAttribute('data-doodles', 'armed');
+                    observer.observe(card);
+                });
+            }
+
+            document.addEventListener('astro:after-swap', initDoodles);
+            initDoodles();
         </script>
 	</body>
 </html>

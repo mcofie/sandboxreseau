@@ -1,56 +1,53 @@
 ---
 ---
-<div id="global-player" class="player-bar fixed bottom-0 left-0 right-0 z-[60] border-t-2 border-[var(--rule)] bg-[var(--paper)] py-3 sm:py-4 px-4 sm:px-8 shadow-[0_-20px_50px_-12px_rgba(0,0,0,0.15)]">
-    <!-- Progress Indicator (Full width top) -->
-    <div id="playerProgressContainer" class="progress-bar-container absolute top-0 left-0 w-full group overflow-hidden">
-        <div id="playerProgressBar" class="progress-bar-fill w-0 h-1 bg-[var(--ink)]"></div>
-    </div>
-
-    <div class="mx-auto flex max-w-[1100px] items-center justify-between gap-4 sm:gap-8">
-        <!-- Episode Info (Left) -->
-        <div class="flex items-center gap-4 min-w-0 flex-1">
-            <div class="hidden sm:block w-12 h-12 rounded border border-[var(--rule)] bg-white p-1 flex-shrink-0 animate-pulse-slow">
-                <img id="playerThumbnail" alt="Playing Now" class="w-full h-full object-contain grayscale">
+<div id="global-player" class="player-bar fixed inset-x-0 bottom-0 z-[60] px-3 pb-3 sm:px-4 sm:pb-4 pointer-events-none">
+    <div class="player-card pointer-events-auto relative mx-auto max-w-[1040px] rounded-[20px] sm:rounded-[24px]">
+        <div class="flex items-center gap-3 sm:gap-5 px-3 py-3 sm:px-5 sm:py-4">
+            <!-- Episode Info -->
+            <div class="flex min-w-0 flex-1 items-center gap-3 sm:gap-4">
+                <div class="h-11 w-11 sm:h-12 sm:w-12 flex-shrink-0 overflow-hidden rounded-xl bg-white">
+                    <img id="playerThumbnail" alt="" class="h-full w-full object-cover">
+                </div>
+                <div class="min-w-0">
+                    <div id="prefixState" class="player-eyebrow mb-0.5 hidden sm:block">Now Playing</div>
+                    <h4 id="playerTitle" class="truncate text-sm sm:text-[15px] font-semibold leading-tight text-white">Select an episode to play</h4>
+                    <div id="playerMeta" class="mt-0.5 truncate text-xs text-white/55">00:00 • 0:00</div>
+                </div>
             </div>
-            <div class="min-w-0 pr-4">
-                <div id="prefixState" class="text-[9px] uppercase font-bold tracking-widest text-[var(--muted)] mb-0.5">Now Playing</div>
-                <h4 id="playerTitle" class="font-serif text-sm sm:text-base leading-tight truncate text-[var(--ink)]">Select an episode to play</h4>
-                <div id="playerMeta" class="text-[10px] sm:text-xs text-neutral-500 font-serif  mt-0.5">00:00 • 0:00</div>
+
+            <!-- Controls -->
+            <div class="flex shrink-0 items-center gap-2 sm:gap-4">
+                <div class="hidden md:block text-xs font-medium tabular-nums text-white/55">
+                    <span id="playerCurrentTime">0:00</span> / <span id="playerDuration">0:00</span>
+                </div>
+
+                <!-- Speed Selector -->
+                <div class="relative">
+                    <button id="speedToggle" type="button" aria-label="Playback speed" class="speed-toggle">1.0x</button>
+                    <div id="speedDropdown" class="speed-dropdown">
+                        <div class="speed-option active" data-speed="1">1.0x</div>
+                        <div class="speed-option" data-speed="1.25">1.25x</div>
+                        <div class="speed-option" data-speed="1.5">1.5x</div>
+                        <div class="speed-option" data-speed="1.75">1.75x</div>
+                        <div class="speed-option" data-speed="2">2.0x</div>
+                    </div>
+                </div>
+
+                <!-- Play/Pause -->
+                <button id="playerMainToggle" type="button" aria-label="Play or pause" class="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-white text-[#0a0a0a] transition-transform hover:scale-105 active:scale-95">
+                    <svg id="playIconMain" class="h-5 w-5 sm:h-6 sm:w-6 fill-current translate-x-[1px]" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+                    <svg id="pauseIconMain" class="hidden h-5 w-5 sm:h-6 sm:w-6 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                    </svg>
+                </button>
             </div>
         </div>
 
-        <!-- Controls (Center/Right) -->
-        <div class="flex items-center gap-4 sm:gap-10 shrink-0">
-             <!-- Speed Selector -->
-             <div class="relative hidden sm:block">
-                <button id="speedToggle" class="text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded hover:bg-[var(--rule)]/5 transition-colors">
-                    1.0x
-                </button>
-                <div id="speedDropdown" class="speed-dropdown shadow-2xl transition-all duration-200">
-                    <div class="speed-option active" data-speed="1">1.0x</div>
-                    <div class="speed-option" data-speed="1.25">1.2x</div>
-                    <div class="speed-option" data-speed="1.5">1.5x</div>
-                    <div class="speed-option" data-speed="1.75">1.7x</div>
-                    <div class="speed-option" data-speed="2">2.0x</div>
-                </div>
-             </div>
-
-             <!-- Main Toggle (Play/Pause) -->
-             <button id="playerMainToggle" class="w-10 h-10 sm:w-14 sm:h-14 flex items-center justify-center rounded-full bg-[var(--ink)] text-[var(--paper)] hover:scale-105 active:scale-95 transition-all shadow-lg">
-                <svg id="playIconMain" class="w-6 h-6 sm:w-8 sm:h-8 fill-current" viewBox="0 0 24 24">
-                    <path d="M8 5v14l11-7z"/>
-                </svg>
-                <svg id="pauseIconMain" class="hidden w-6 h-6 sm:w-8 sm:h-8 fill-current" viewBox="0 0 24 24">
-                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
-                </svg>
-             </button>
-
-             <!-- Progress Text (Mobile/Simple) -->
-             <div class="text-[10px] font-bold uppercase tracking-widest text-[var(--muted)] min-w-[65px] text-right hidden lg:block">
-                <span id="playerCurrentTime">0:00</span> / <span id="playerDuration">0:00</span>
-             </div>
+        <!-- Progress (bottom edge of the card; tall hit area, thin track) -->
+        <div id="playerProgressContainer" class="progress-bar-container absolute inset-x-0 bottom-0 overflow-hidden rounded-b-[20px] sm:rounded-b-[24px]">
+            <div id="playerProgressBar" class="progress-bar-fill"></div>
         </div>
     </div>
 </div>
-
-

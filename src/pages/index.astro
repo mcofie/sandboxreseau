@@ -94,7 +94,7 @@ const featuredBuilders = ['Pouch', 'Chime', 'STACX', 'Speso', 'Phundit', 'Clerra
         </section>
 
         <section class="format-cards" id="experience" aria-labelledby="format-cards-title">
-            <div class="format-card format-card-copy">
+            <div class="format-card format-card-copy cta-doodles">
                 <div>
                     <h2 id="format-cards-title">Three parts.<br />One evening.</h2>
                     <p>Builders demo what they’re making. A few people a step ahead share short, honest talks. Then the floor opens up: trade ideas, make introductions, start something.</p>
@@ -151,7 +151,7 @@ const featuredBuilders = ['Pouch', 'Chime', 'STACX', 'Speso', 'Phundit', 'Clerra
         </section>
 
         <section class="about-strip builders-strip" aria-labelledby="builders-strip-title">
-            <div class="about-strip-inner">
+            <div class="about-strip-inner cta-doodles">
                 <h2 id="builders-strip-title">The people building these companies <br />found their room at Sandbox Réseau.</h2>
                 <ul class="about-logos">
                     {featuredBuilders.map((company) => (
@@ -320,6 +320,10 @@ const featuredBuilders = ['Pouch', 'Chime', 'STACX', 'Speso', 'Phundit', 'Clerra
     .hero-poster{position:absolute;inset:0;z-index:-3;width:100%;height:100%;object-fit:cover}
     .hero-video{position:absolute;top:50%;left:50%;z-index:-2;width:max(100%,177.78cqh);height:max(100%,56.25cqw);pointer-events:none;border:0;opacity:0;transform:translate(-50%,-50%) scale(1.2);transition:opacity .8s ease}
     .hero-video.is-ready{opacity:1}
+    /* A tall portrait frame crops a 16:9 video to a sliver, so narrow screens get a shape closer to the footage */
+    @media(max-height:560px) and (orientation:landscape){.hero-frame{height:84svh;min-height:0}}
+    @media(max-width:1023px) and (orientation:portrait){.hero-frame{height:auto;min-height:0;aspect-ratio:4/3}}
+    @media(max-width:639px) and (orientation:portrait){.hero-frame{aspect-ratio:1/1;border-radius:24px}.hero-video{transform:translate(-50%,-50%) scale(1.1)}}
     /* Sizes mirror nor.ma: 1040px container, 28px radii, sm = 640px, lg = 1024px */
     .about-strip{position:relative;z-index:0;margin:-32px 0 64px;padding:0 16px}
     .about-strip-inner{max-width:1920px;margin:0 auto;padding:96px 24px 64px;background:#f5f5f5;border-radius:0 0 28px 28px;text-align:center}
@@ -385,9 +389,8 @@ const featuredBuilders = ['Pouch', 'Chime', 'STACX', 'Speso', 'Phundit', 'Clerra
     @media(max-width:639px){.editions-rail{padding:48px 0}.editions-rail-head{padding:0 24px}.editions-rail-nav{display:none}.editions-track{--rail-inset:1.5rem}.edition-slide{width:280px}}
     .resources-section{width:100%;max-width:1040px;margin:0 auto;padding:64px 32px}
     .resources-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px 32px}
-    .resources-head>div{max-width:26ch}
-    .resources-head h2{margin:0;font-size:clamp(1.5rem,1.15rem + 1.5vw,2.25rem);font-weight:600;line-height:1.1;letter-spacing:-.015em;text-wrap:balance;color:#0a0a0a}
-    .resources-head p{max-width:46ch;margin:16px 0 0;color:#6b6b6b;font-size:17px;line-height:1.5}
+    .resources-head h2{max-width:18ch;margin:0;font-size:clamp(1.5rem,1.15rem + 1.5vw,2.25rem);font-weight:600;line-height:1.1;letter-spacing:-.015em;text-wrap:balance;color:#0a0a0a}
+    .resources-head p{max-width:48ch;margin:16px 0 0;color:#6b6b6b;font-size:17px;line-height:1.5}
     .resources-all{display:inline-flex;flex-shrink:0;align-items:center;gap:6px;color:#6b6b6b;font-size:14px;font-weight:500;text-decoration:none;transition:color .2s}
     .resources-all:hover{color:#0a0a0a}
     .resources-all svg,.resource-read svg{transition:transform .2s cubic-bezier(.22,1,.36,1)}
@@ -418,5 +421,5 @@ const featuredBuilders = ['Pouch', 'Chime', 'STACX', 'Speso', 'Phundit', 'Clerra
     @media(max-width:639px){.faq-section{padding:48px 24px}}
     /* Stacked: the copy card hugs its content and the photo keeps a fixed shape instead of a tall min-height. */
     @media(max-width:1023px){.format-cards{grid-template-columns:1fr}.format-card{min-height:0}.format-card-copy{padding:48px}.format-card-copy .format-cta{align-self:flex-start;margin-top:32px;padding:0 28px}.format-carousel{aspect-ratio:4/3}}
-    @media(max-width:639px){.home-hero{padding:12px 12px 0}.hero-frame{height:84svh;min-height:480px}.about-strip{margin:-28px 0 48px;padding:0 12px}.about-strip-inner{padding:76px 24px 48px}.about-strip h2{font-size:22px}.about-strip .about-statement{font-size:26px}.about-strip:not(.builders-strip) .about-strip-inner{padding:88px 24px 64px}.about-strip h2 br{display:none}.builders-strip{margin:48px 0}.builders-strip .about-strip-inner{padding-top:48px}.about-logos{gap:20px 28px;margin-top:48px}.about-logos li{font-size:15px}.about-strip .builders-cta{margin-top:40px}.format-cards{gap:12px;padding:48px 16px}.format-card{border-radius:24px}.format-card-copy{padding:28px 24px}.format-card-copy p{margin-top:14px;font-size:16px}.format-card-copy .format-cta{align-self:stretch;height:52px;margin-top:24px}.format-carousel{aspect-ratio:4/5}.format-slide figcaption{top:14px;left:14px;font-size:12px}.format-dots{bottom:14px}}
+    @media(max-width:639px){.home-hero{padding:12px 12px 0}.about-strip{margin:-28px 0 48px;padding:0 12px}.about-strip-inner{padding:76px 24px 48px}.about-strip h2{font-size:22px}.about-strip .about-statement{font-size:26px}.about-strip:not(.builders-strip) .about-strip-inner{padding:88px 24px 64px}.about-strip h2 br{display:none}.builders-strip{margin:48px 0}.builders-strip .about-strip-inner{padding-top:48px}.about-logos{gap:20px 28px;margin-top:48px}.about-logos li{font-size:15px}.about-strip .builders-cta{margin-top:40px}.format-cards{gap:12px;padding:48px 16px}.format-card{border-radius:24px}.format-card-copy{padding:28px 24px}.format-card-copy p{margin-top:14px;font-size:16px}.format-card-copy .format-cta{align-self:stretch;height:52px;margin-top:24px}.format-carousel{aspect-ratio:4/5}.format-slide figcaption{top:14px;left:14px;font-size:12px}.format-dots{bottom:14px}}
 </style>

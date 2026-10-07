@@ -32,7 +32,7 @@ const pastCount = editions.filter((edition) => edition.status === 'Past').length
         </section>
 
         <section class="gallery-cta" aria-labelledby="gallery-cta-title">
-            <div class="gallery-cta-card">
+            <div class="gallery-cta-card cta-doodles">
                 <h2 id="gallery-cta-title">Be in the next frame.</h2>
                 <p>{nextEdition ? `Vol. ${String(nextEdition.no).padStart(2, '0')} is coming up on ${nextEdition.date} in Accra.` : 'The next edition is coming up in Accra.'} Bring what you’re building.</p>
                 <a class="gallery-cta-button" href={nextEdition?.lumaUrl || 'https://luma.com/sandbox-reseau'} target="_blank" rel="noreferrer">
