@@ -29,7 +29,8 @@ const menuLinks = [
 const isCurrent = (href: string) => href === currentPath || (href !== '/' && currentPath.startsWith(`${href}/`));
 ---
 
-<header class="site-header" data-site-header>
+<!-- Solid by default so it reads on white before the script runs; it goes light only over a dark hero. -->
+<header class="site-header is-scrolled" data-site-header>
     <div class="site-nav">
         <a class="nav-pill site-brand" href="/" aria-label="Sandbox Réseau home"><Logo class="site-logo" aria-hidden="true" /></a>
         <nav class="nav-pill site-links" aria-label="Main navigation">
@@ -87,10 +88,16 @@ const isCurrent = (href: string) => href === currentPath || (href !== '/' && cur
         toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
     }
 
-    // Light pills only read over a dark hero; pages without one get the solid style from the start.
+    // Light pills only read over a dark hero, so use them only while the hero is behind the nav.
+    // Pages without one, and the home page on phones (where the hero starts below the nav), begin solid.
     function updateHeader() {
-        const overHero = document.querySelector('[data-dark-hero]') && window.scrollY <= window.innerHeight * 0.6;
-        els().header?.classList.toggle('is-scrolled', !overHero);
+        const { header } = els();
+        const hero = document.querySelector<HTMLElement>('[data-dark-hero]');
+        const nav = header?.querySelector('.site-nav')?.getBoundingClientRect();
+        // The hero sections are padded, so the dark area starts below the section's own top edge.
+        const heroTop = hero ? hero.getBoundingClientRect().top + parseFloat(getComputedStyle(hero).paddingTop) : Infinity;
+        const overHero = !!nav && heroTop <= nav.top + nav.height / 2 && window.scrollY <= window.innerHeight * 0.6;
+        header?.classList.toggle('is-scrolled', !overHero);
     }
 
     document.addEventListener('click', (event) => {
