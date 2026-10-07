@@ -12,13 +12,14 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@tailwindcss/vite": "^4.2.2",
-    "astro": "^6.0.8",
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.3.6",
     "rss-parser": "^3.13.0",
-    "tailwindcss": "^4.2.2"
+    "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
     "@types/lodash-es": "^4.17.12",
-    "lodash-es": "^4.17.23"
+    "lodash-es": "^4.18.1",
+    "vite": "^8.3.3"
   }
 }
