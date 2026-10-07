@@ -89,13 +89,17 @@ const featuredBuilders = ['Pouch', 'Chime', 'STACX', 'Speso', 'Phundit', 'Clerra
             <div class="hero-frame">
                 <img class="hero-poster" src="/assets/img/hero-poster.webp" alt="" width="1280" height="720" fetchpriority="high" decoding="async" />
                 <iframe id="hero-video" class="hero-video" data-src="https://www.youtube-nocookie.com/embed/qSOznAR_sLs?autoplay=1&mute=1&controls=0&loop=1&playlist=qSOznAR_sLs&playsinline=1&rel=0&modestbranding=1&cc_load_policy=0&iv_load_policy=3&disablekb=1&enablejsapi=1" title="Sandbox Réseau event highlights" allow="autoplay; encrypted-media; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" tabindex="-1" aria-hidden="true"></iframe>
+                <button type="button" class="hero-sound" data-hero-sound aria-pressed="false" aria-label="Turn sound on" hidden>
+                    <svg class="hero-sound-off" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z" /><path d="m22 9-6 6M16 9l6 6" /></svg>
+                    <svg class="hero-sound-on" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z" /><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13" /></svg>
+                </button>
                 <h1 class="sr-only">Sandbox Réseau: make room for what’s next.</h1>
             </div>
         </section>
 
         <section class="about-strip" aria-labelledby="about-strip-title">
             <div class="about-strip-inner">
-                <h2 id="about-strip-title" class="about-statement">Where Africa’s founders and builders connect, collaborate, and shape the future. <span>Builder demos, mini-talks, and open networking. Signal over noise; progress over polish.</span></h2>
+                <h2 id="about-strip-title" class="about-statement">Where Africa’s founders and builders connect, collaborate, and shape the future. <span>Builder demos, mini-talks, and open networking.</span></h2>
             </div>
         </section>
 
@@ -217,7 +221,7 @@ const featuredBuilders = ['Pouch', 'Chime', 'STACX', 'Speso', 'Phundit', 'Clerra
 <script>
     // YouTube ignores cc_load_policy when the viewer has captions on (or for muted autoplay),
     // so unload the captions module through the player API once the video starts.
-    type YTPlayer = { unloadModule(name: string): void };
+    type YTPlayer = { unloadModule(name: string): void; mute(): void; unMute(): void; setVolume(volume: number): void };
     type YTNamespace = { Player: new (el: HTMLElement, opts: object) => YTPlayer };
     const w = window as typeof window & { YT?: YTNamespace; onYouTubeIframeAPIReady?: () => void };
 
@@ -226,12 +230,33 @@ const featuredBuilders = ['Pouch', 'Chime', 'STACX', 'Speso', 'Phundit', 'Clerra
         if (!iframe || !w.YT?.Player) return;
         new w.YT.Player(iframe, {
             events: {
+                onReady: (event: { target: YTPlayer }) => bindHeroSound(event.target),
                 onStateChange: (event: { target: YTPlayer; data: number }) => {
                     if (event.data !== 1) return; // 1 = playing
                     event.target.unloadModule('captions');
                     event.target.unloadModule('cc');
                 },
             },
+        });
+    }
+
+    // The video autoplays muted (browsers require it); this button lets visitors opt into sound.
+    function bindHeroSound(player: YTPlayer) {
+        const button = document.querySelector<HTMLButtonElement>('[data-hero-sound]');
+        if (!button) return;
+        button.hidden = false;
+        button.addEventListener('click', () => {
+            const soundOn = button.getAttribute('aria-pressed') !== 'true';
+            if (soundOn) {
+                // Don't talk over the podcast player.
+                (window as typeof window & { SBR_AUDIO?: HTMLAudioElement }).SBR_AUDIO?.pause();
+                player.unMute();
+                player.setVolume(100);
+            } else {
+                player.mute();
+            }
+            button.setAttribute('aria-pressed', String(soundOn));
+            button.setAttribute('aria-label', soundOn ? 'Turn sound off' : 'Turn sound on');
         });
     }
 
@@ -331,6 +356,12 @@ const featuredBuilders = ['Pouch', 'Chime', 'STACX', 'Speso', 'Phundit', 'Clerra
     .hero-poster{position:absolute;inset:0;z-index:-3;width:100%;height:100%;object-fit:cover}
     .hero-video{position:absolute;top:50%;left:50%;z-index:-2;width:max(100%,177.78cqh);height:max(100%,56.25cqw);pointer-events:none;border:0;opacity:0;transform:translate(-50%,-50%) scale(1.2);transition:opacity .8s ease}
     .hero-video.is-ready{opacity:1}
+    .hero-sound{position:absolute;right:20px;bottom:20px;z-index:2;display:grid;place-items:center;width:44px;height:44px;padding:0;border:1px solid rgba(255,255,255,.25);border-radius:999px;background:rgba(0,0,0,.35);color:#fff;cursor:pointer;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);transition:background-color .2s,transform .2s}
+    .hero-sound[hidden]{display:none}
+    .hero-sound:hover{background:rgba(0,0,0,.55)}
+    .hero-sound:active{transform:scale(.94)}
+    .hero-sound:focus-visible{outline:2px solid #fff;outline-offset:3px}
+    .hero-sound[aria-pressed="true"] .hero-sound-off,.hero-sound:not([aria-pressed="true"]) .hero-sound-on{display:none}
     /* A tall portrait frame crops a 16:9 video to a sliver, so narrow screens get a shape closer to the footage */
     @media(max-height:560px) and (orientation:landscape){.hero-frame{height:84svh;min-height:0}}
     @media(max-width:1023px) and (orientation:portrait){.hero-frame{height:auto;min-height:0;aspect-ratio:4/3}}
@@ -446,5 +477,5 @@ const featuredBuilders = ['Pouch', 'Chime', 'STACX', 'Speso', 'Phundit', 'Clerra
     @media(max-width:639px){.faq-section{padding:48px 24px}}
     /* Stacked: the copy card hugs its content and the photo keeps a fixed shape instead of a tall min-height. */
     @media(max-width:1023px){.format-cards{grid-template-columns:1fr}.format-card{min-height:0}.format-card-copy{padding:48px}.format-card-copy .format-cta{align-self:flex-start;margin-top:32px;padding:0 28px}.format-carousel{aspect-ratio:4/3}}
-    @media(max-width:639px){.home-hero{padding:12px 12px 0}.about-strip{margin:-28px 0 48px;padding:0 12px}.about-strip-inner{padding:76px 24px 48px}.about-strip h2{font-size:22px}.about-strip .about-statement{font-size:26px}.about-strip:not(.builders-strip) .about-strip-inner{padding:88px 24px 64px}.about-strip h2 br{display:none}.builders-strip{margin:48px 0}.builders-strip .about-strip-inner{padding-top:48px}.about-logos{gap:20px 28px;margin-top:48px}.about-logos li{font-size:15px}.about-strip .builders-cta{margin-top:40px}.format-cards{gap:12px;padding:48px 16px}.format-card{border-radius:24px}.format-card-copy{padding:28px 24px}.format-card-copy p{margin-top:14px;font-size:16px}.format-parts{gap:14px;margin-top:24px}.format-part-img{width:72px;height:72px}.format-parts li{font-size:12px}.format-card-copy .format-cta{align-self:stretch;height:52px;margin-top:24px}.format-carousel{aspect-ratio:4/5}.format-slide figcaption{top:14px;left:14px;font-size:12px}.format-dots{bottom:14px}}
+    @media(max-width:639px){.home-hero{padding:12px 12px 0}.hero-sound{right:14px;bottom:14px;width:40px;height:40px}.about-strip{margin:-28px 0 48px;padding:0 12px}.about-strip-inner{padding:76px 24px 48px}.about-strip h2{font-size:22px}.about-strip .about-statement{font-size:26px}.about-strip:not(.builders-strip) .about-strip-inner{padding:88px 24px 64px}.about-strip h2 br{display:none}.builders-strip{margin:48px 0}.builders-strip .about-strip-inner{padding-top:48px}.about-logos{gap:20px 28px;margin-top:48px}.about-logos li{font-size:15px}.about-strip .builders-cta{margin-top:40px}.format-cards{gap:12px;padding:48px 16px}.format-card{border-radius:24px}.format-card-copy{padding:28px 24px}.format-card-copy p{margin-top:14px;font-size:16px}.format-parts{gap:14px;margin-top:24px}.format-part-img{width:72px;height:72px}.format-parts li{font-size:12px}.format-card-copy .format-cta{align-self:stretch;height:52px;margin-top:24px}.format-carousel{aspect-ratio:4/5}.format-slide figcaption{top:14px;left:14px;font-size:12px}.format-dots{bottom:14px}}
 </style>
