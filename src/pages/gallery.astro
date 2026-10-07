@@ -10,7 +10,7 @@ const pastCount = editions.filter((edition) => edition.status === 'Past').length
 <Layout
     title="Gallery | Sandbox Réseau"
     description="Snapshots from previous Sandbox Réseau editions in Accra."
-    image={gallery[0].url}
+    image={gallery[0].url.replace(/\.webp$/, '.jpg')}
     imageAlt={gallery[0].title}
 >
     <main class="gallery-page">

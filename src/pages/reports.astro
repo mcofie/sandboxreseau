@@ -19,7 +19,7 @@ const latestNotes = [...newsletters]
 <Layout
     title="Reports | Sandbox Réseau"
     description="Research reports and ecosystem intelligence from Sandbox Réseau. Download PDF publications on the African startup landscape."
-    image="/assets/img/state-of-accra-report-bg.png"
+    image="/assets/img/state-of-accra-report-bg.jpg"
     imageAlt="The State of Accra’s Startup Ecosystem 2026 report cover"
 >
     <main class="reports-page">
@@ -32,7 +32,7 @@ const latestNotes = [...newsletters]
         {featured && (
             <section class="report-feature" aria-labelledby="report-feature-title">
                 <div class="report-feature-art">
-                    {featured.bgImage ? <img src={featured.bgImage} alt="" /> : <span class="report-feature-fallback">{featured.title}</span>}
+                    {featured.bgImage ? <img src={featured.bgImage} alt="" decoding="async" /> : <span class="report-feature-fallback">{featured.title}</span>}
                     <span class="report-chip report-chip-left">Report</span>
                     {featured.pages && <span class="report-chip report-chip-right">{featured.pages} pages</span>}
                 </div>
@@ -82,7 +82,7 @@ const latestNotes = [...newsletters]
             <div class="reports-section-head">
                 <div>
                     <h2 id="reports-notes-title">Notes from the room.</h2>
-                    <p>Shorter reads from our newsletter — playbooks and lessons from each edition.</p>
+                    <p>Shorter reads from our newsletter: playbooks and lessons from each edition.</p>
                 </div>
                 <a href="https://mcofie.substack.com/" target="_blank" rel="noreferrer">Subscribe on Substack →</a>
             </div>

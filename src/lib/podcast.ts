@@ -46,6 +46,15 @@ function formatDuration(raw: string | undefined): string {
   return `${minutes}:${String(seconds).padStart(2, '0')}`;
 }
 
+/** Site copy avoids em dashes (U+2014): "#30 <dash> Title" becomes "#30: Title", any others become commas. */
+function withoutEmDashes(text: string): string {
+  return text.replace(/^(#\d+)\s*[\u2014\u2013-]\s*/, '$1: ').replace(/\s*\u2014\s*/g, ', ');
+}
+
+function cleanEpisode(episode: PodcastEpisode): PodcastEpisode {
+  return { ...episode, title: withoutEmDashes(episode.title), description: withoutEmDashes(episode.description) };
+}
+
 function stripHtml(html: string): string {
   return html
     .replace(/<[^>]*>?/gm, '')
@@ -84,7 +93,7 @@ export async function fetchPodcastEpisodes(): Promise<PodcastEpisode[]> {
 
     if (!feed.items || feed.items.length === 0) {
       console.warn('[podcast] No items found in RSS feed. Falling back to cached episodes.');
-      return cachedEpisodes as PodcastEpisode[];
+      return (cachedEpisodes as PodcastEpisode[]).map(cleanEpisode);
     }
 
     const episodes: PodcastEpisode[] = feed.items.map((item) => {
@@ -92,7 +101,7 @@ export async function fetchPodcastEpisodes(): Promise<PodcastEpisode[]> {
       const cleanDesc = stripHtml(rawDesc).substring(0, 250);
 
       // Extract itunes:image href - rss-parser stores it as an object with $ attrs
-      let thumb = '/assets/img/podcast-logo.png';
+      let thumb = '/assets/img/podcast-logo.webp';
       const itunesImage = (item as any)['itunes:image'] || (item as any).itunes?.image;
       if (itunesImage) {
         if (typeof itunesImage === 'string') {
@@ -128,9 +137,9 @@ export async function fetchPodcastEpisodes(): Promise<PodcastEpisode[]> {
     });
 
     console.log(`[podcast] Successfully parsed ${episodes.length} episodes from live RSS.`);
-    return episodes;
+    return episodes.map(cleanEpisode);
   } catch (e) {
     console.warn(`[podcast] Live RSS fetch failed (${(e as Error)?.message || e}). Falling back to ${cachedEpisodes.length} cached episodes.`);
-    return cachedEpisodes as PodcastEpisode[];
+    return (cachedEpisodes as PodcastEpisode[]).map(cleanEpisode);
   }
 }

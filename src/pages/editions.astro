@@ -37,7 +37,7 @@ const imageSrc = (image: string) => (image.startsWith('http') ? image : `/${imag
                     </a>
                 </div>
                 <div class="next-edition-art">
-                    <img src={upcoming.image ? imageSrc(upcoming.image) : '/assets/img/gallery-v3-8.jpg'} alt="" />
+                    <img src={upcoming.image ? imageSrc(upcoming.image) : '/assets/img/gallery-v3-8.webp'} alt="" decoding="async" />
                 </div>
             </section>
         )}
@@ -47,7 +47,7 @@ const imageSrc = (image: string) => (image.startsWith('http') ? image : `/${imag
                 <h2 id="past-title">Past editions.</h2>
                 <article class="edition-feature">
                     <button type="button" class="edition-photo" data-edition-photo={latest.image ? imageSrc(latest.image) : undefined} aria-label={`View photo from ${latest.title}`} disabled={!latest.image}>
-                        {latest.image && <img src={imageSrc(latest.image)} alt={latest.title} />}
+                        {latest.image && <img src={imageSrc(latest.image)} alt={latest.title} loading="lazy" decoding="async" />}
                         <span class="edition-vol">{vol(latest.no)}</span>
                     </button>
                     <div class="edition-feature-copy">

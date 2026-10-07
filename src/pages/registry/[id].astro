@@ -38,7 +38,7 @@ const initials = (name: string) => name.split(' ').map((part) => part[0]).join('
 ---
 
 <Layout
-    title={`${company.name} | Registry — Sandbox Réseau`}
+    title={`${company.name} | Registry | Sandbox Réseau`}
     description={company.description}
 >
     <main class="profile-page">
@@ -49,7 +49,7 @@ const initials = (name: string) => name.split(' ').map((part) => part[0]).join('
         </nav>
 
         <section class="profile-hero" aria-labelledby="profile-name">
-            <div class="profile-logo"><img src={logo} alt={`${company.name} logo`} /></div>
+            <div class="profile-logo"><img src={logo} alt={`${company.name} logo`} width="112" height="112" decoding="async" /></div>
             <div class="profile-hero-copy">
                 <div class="profile-badges">
                     {company.status === 'Live' && <span class="profile-badge"><span class="profile-dot" aria-hidden="true"></span>Live</span>}

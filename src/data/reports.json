@@ -2,7 +2,7 @@
     {
         "title": "The State of Accra's Startup Ecosystem",
         "subtitle": "2026 Edition",
-        "description": "A comprehensive analysis of the startup landscape in Accra — funding trends, sector breakdowns, founder demographics, and ecosystem maturity indicators.",
+        "description": "A comprehensive analysis of the startup landscape in Accra: funding trends, sector breakdowns, founder demographics, and ecosystem maturity indicators.",
         "date": "June 2026",
         "pages": "42",
         "tags": [
@@ -13,7 +13,7 @@
         ],
         "pdf": "/assets/docs/reports/state-of-accra-startup-ecosystem-2026.pdf",
         "status": "available",
-        "bgImage": "/assets/img/state-of-accra-report-bg.png"
+        "bgImage": "/assets/img/state-of-accra-report-bg.webp"
     },
     {
         "title": "The African Market Dynamics",
@@ -28,7 +28,7 @@
         ],
         "pdf": "",
         "status": "coming-soon",
-        "bgImage": "/assets/img/reports/african-market-dynamics.jpg"
+        "bgImage": "/assets/img/reports/african-market-dynamics.webp"
     },
     {
         "title": "Startup Metric Cheat Sheet",
@@ -42,7 +42,7 @@
         ],
         "pdf": "",
         "status": "coming-soon",
-        "bgImage": "/assets/img/reports/startup-metric-cheat-sheet.jpg"
+        "bgImage": "/assets/img/reports/startup-metric-cheat-sheet.webp"
     },
     {
         "title": "Early Startup Playbook",
@@ -56,12 +56,12 @@
         ],
         "pdf": "",
         "status": "coming-soon",
-        "bgImage": "/assets/img/reports/early-startup-playbook.jpg"
+        "bgImage": "/assets/img/reports/early-startup-playbook.webp"
     },
     {
         "title": "The Founder's Equity & ESOP Playbook",
         "subtitle": "Before You Split, Before You Grant",
-        "description": "How to split founder equity and set up an employee share option pool — before you split, before you grant.",
+        "description": "How to split founder equity and set up an employee share option pool. Before you split, before you grant.",
         "date": "",
         "pages": "",
         "tags": [
@@ -71,6 +71,6 @@
         ],
         "pdf": "",
         "status": "coming-soon",
-        "bgImage": "/assets/img/reports/founders-equity-esop-playbook.jpg"
+        "bgImage": "/assets/img/reports/founders-equity-esop-playbook.webp"
     }
 ]

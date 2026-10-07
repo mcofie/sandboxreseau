@@ -16,7 +16,7 @@
     "description": "Insights on navigating major product pivots and building cross-border infrastructure.",
     "date": "28th Aug '26",
     "status": "Past",
-    "image": "assets/img/vol5-pivoting.jpg"
+    "image": "assets/img/vol5-pivoting.webp"
   },
   {
     "vol": 1,
@@ -25,7 +25,7 @@
     "description": "Exploring strategies for regional expansion and cross-border operations.",
     "date": "26th June '26",
     "status": "Past",
-    "image": "assets/img/vol4-scaling.jpg",
+    "image": "assets/img/vol4-scaling.webp",
     "lumaUrl": "https://luma.com/sandbox-reseau"
   },
   {
@@ -35,7 +35,7 @@
     "description": "Navigating compliance and policy in the regulatory landscape.",
     "date": "24th April '26",
     "status": "Past",
-    "image": "assets/img/vol3-regulators.jpg",
+    "image": "assets/img/vol3-regulators.webp",
     "lumaUrl": "https://luma.com/sandbox-reseau"
   },
   {
@@ -45,7 +45,7 @@
     "description": "Unlocking growth channels and scaling access.",
     "date": "27th Feb '26",
     "status": "Past",
-    "image": "assets/img/vol2-distribution.jpg"
+    "image": "assets/img/vol2-distribution.webp"
   },
   {
     "vol": 1,
@@ -54,6 +54,6 @@
     "description": "Where the first sandbox was built.",
     "date": "11th Dec '25",
     "status": "Past",
-    "image": "assets/img/vol1-genesis.jpg"
+    "image": "assets/img/vol1-genesis.webp"
   }
 ]
