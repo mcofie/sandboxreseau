@@ -2,97 +2,138 @@
 import Layout from '../layouts/Layout.astro';
 import editions from '../data/editions.json';
 
-const headerSubtitle = "Chronicle of Progress";
+const LUMA_URL = 'https://luma.com/sandbox-reseau';
+const sorted = [...editions].sort((a, b) => b.no - a.no);
+const upcoming = sorted.find((edition) => edition.status === 'In Preparation');
+const past = sorted.filter((edition) => edition.status === 'Past');
+const [latest, ...earlier] = past;
+
+const vol = (no: number) => `Vol. ${String(no).padStart(2, '0')}`;
+const imageSrc = (image: string) => (image.startsWith('http') ? image : `/${image}`);
 ---
 
-<Layout 
-    title="Editions | Sandbox Réseau" 
+<Layout
+    title="Editions | Sandbox Réseau"
     description="Explore previous editions of Sandbox Réseau, featuring builder demos, talks, and community snapshots."
-    headerSubtitle={headerSubtitle}
+    image="/assets/img/vol5-pivoting.jpg"
+    imageAlt="Attendees at Sandbox Réseau Vol. 05 in Accra"
 >
-    <!-- Hero Section -->
-    <section class="border-b border-[var(--rule)]">
-        <div class="mx-auto max-w-[1100px] px-4 py-20 md:py-32 text-center">
-            <span
-                class="inline-block w-max border-y border-[var(--rule)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-[.2em] text-[var(--muted)] mb-6 animate-enter">
-                The Archive
-            </span>
-            <h1 class="font-serif text-5xl sm:text-7xl md:text-8xl leading-[.85] tracking-tighter mb-8 animate-enter">
-                Previous Gatherings.
-            </h1>
-            <p class="mx-auto max-w-2xl text-[var(--muted)] text-base md:text-xl leading-relaxed font-serif animate-enter">
-                Every edition is a new chapter in the Sandbox story. Revisit the demos, the insights, and the atmosphere of past meetups.
-            </p>
-        </div>
-    </section>
+    <main class="editions-page">
+        <section class="editions-head" aria-labelledby="editions-title">
+            <span class="editions-pill"><span aria-hidden="true"></span>Editions · {past.length} held in Accra{upcoming && ` · Next: ${upcoming.date}`}</span>
+            <h1 id="editions-title">Every edition, a new room.</h1>
+            <p>Every edition is a new chapter in the Sandbox story. Revisit the demos, the insights, and the atmosphere of past meetups.</p>
+        </section>
 
-    <main class="mx-auto max-w-[1100px] px-4 py-16 md:py-24">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="editions-grid">
-            {editions.slice().reverse().map((edition, i) => (
-                <div class="animate-enter">
-                    <article 
-                        class={`h-full flex flex-col group relative overflow-hidden rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_92%,var(--ink)_8%)] p-2 hatch ${edition.image ? 'cursor-zoom-in' : ''}`} 
-                        onclick={edition.image ? `openLightbox('${edition.image}')` : undefined}
-                    >
-                        {edition.image && (
-                            <div class="relative overflow-hidden aspect-[4/3] border border-[var(--rule)] shrink-0">
-                                <img 
-                                    src={edition.image.startsWith('http') ? edition.image : `/${edition.image}`} 
-                                    alt={edition.title} 
-                                    loading="lazy" 
-                                    decoding="async" 
-                                    class="w-full h-full object-cover grayscale transition duration-500 group-hover:grayscale-0 group-hover:scale-105" 
-                                />
-                                <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
-                                    <span class="text-white text-[10px] uppercase font-bold tracking-widest">View Highlight</span>
-                                </div>
-                            </div>
-                        )}
-                        
-                        {!edition.image && (
-                             <div class="aspect-[4/3] border border-[var(--rule)] shrink-0 bg-[color:color-mix(in_oklab,var(--paper)_80%,var(--ink)_20%)] flex items-center justify-center">
-                                <span class="font-serif text-neutral-400">No image available</span>
-                             </div>
-                        )}
-
-                        <div class="flex-1 p-4 flex flex-col">
-                            <div class="text-[10px] font-bold uppercase tracking-widest text-[var(--muted)] mb-2 flex items-center justify-between">
-                                <span>{edition.date}</span>
-                                <span class={`px-1.5 py-0.5 rounded border border-[var(--rule)]/20 ${edition.status === 'Complete' ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'}`}>
-                                    {edition.status}
-                                </span>
-                            </div>
-                            <h3 class="font-serif text-xl sm:text-2xl mb-2 leading-tight group-hover:accent-text transition-colors">{edition.title}</h3>
-                            <p class="text-sm text-neutral-600 mb-6 font-sans leading-relaxed line-clamp-3">
-                                {edition.description}
-                            </p>
-                            
-                            <div class="mt-auto pt-4 border-t border-[var(--rule)]/10 flex items-center justify-between">
-                                <span class="text-[10px] font-bold uppercase tracking-widest text-[var(--muted)]">VOL · NO {edition.no}</span>
-                                <span class="text-xs font-bold uppercase tracking-widest underline decoration-2 underline-offset-4 decoration-[var(--rule)]/0 group-hover:decoration-[var(--accent)] transition-all">Details →</span>
-                            </div>
-                        </div>
-                    </article>
+        {upcoming && (
+            <section class="next-edition" aria-labelledby="next-edition-title">
+                <div class="next-edition-copy">
+                    <span class="next-edition-tag"><span aria-hidden="true"></span>Up next · {vol(upcoming.no)}</span>
+                    <h2 id="next-edition-title">{upcoming.date}<span>Accra, Ghana</span></h2>
+                    <p>{upcoming.title !== 'TBA' ? `${upcoming.title}. ` : ''}{upcoming.description}</p>
+                    <a href={upcoming.lumaUrl || LUMA_URL} target="_blank" rel="noreferrer">
+                        Save your seat
+                        <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5" /></svg>
+                    </a>
                 </div>
-            ))}
-        </div>
+                <div class="next-edition-art">
+                    <img src={upcoming.image ? imageSrc(upcoming.image) : '/assets/img/gallery-v3-8.jpg'} alt="" />
+                </div>
+            </section>
+        )}
+
+        {latest && (
+            <section class="editions-section" aria-labelledby="past-title">
+                <h2 id="past-title">Past editions.</h2>
+                <article class="edition-feature">
+                    <button type="button" class="edition-photo" data-edition-photo={latest.image ? imageSrc(latest.image) : undefined} aria-label={`View photo from ${latest.title}`} disabled={!latest.image}>
+                        {latest.image && <img src={imageSrc(latest.image)} alt={latest.title} />}
+                        <span class="edition-vol">{vol(latest.no)}</span>
+                    </button>
+                    <div class="edition-feature-copy">
+                        <p class="edition-date">{latest.date} · Most recent</p>
+                        <h3>{latest.title}</h3>
+                        <p class="edition-desc">{latest.description}</p>
+                    </div>
+                </article>
+
+                <div class="edition-grid">
+                    {earlier.map((edition) => (
+                        <article class="edition-card">
+                            <button type="button" class="edition-photo" data-edition-photo={edition.image ? imageSrc(edition.image) : undefined} aria-label={`View photo from ${edition.title}`} disabled={!edition.image}>
+                                {edition.image && <img src={imageSrc(edition.image)} alt={edition.title} loading="lazy" />}
+                                <span class="edition-vol">{vol(edition.no)}</span>
+                            </button>
+                            <p class="edition-date">{edition.date}</p>
+                            <h3>{edition.title}</h3>
+                            <p class="edition-desc">{edition.description}</p>
+                        </article>
+                    ))}
+                </div>
+            </section>
+        )}
+
+        <section class="editions-cta" aria-labelledby="editions-cta-title">
+            <h2 id="editions-cta-title">See you in the next room.</h2>
+            <p>Bring a question, a rough prototype, or just an open mind.</p>
+            <div class="editions-cta-actions">
+                <a class="editions-black" href={upcoming?.lumaUrl || LUMA_URL} target="_blank" rel="noreferrer">Get an invite</a>
+                <a class="editions-outline" href="/gallery">Browse the gallery</a>
+            </div>
+        </section>
     </main>
-
-    <script is:inline>
-        // Entrance Animation Logic
-        (function() {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach((entry, i) => {
-                    if (entry.isIntersecting) {
-                        setTimeout(() => {
-                            entry.target.classList.add('visible');
-                        }, (i % 3) * 150);
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.1 });
-
-            document.querySelectorAll('.animate-enter').forEach(el => observer.observe(el));
-        })();
-    </script>
 </Layout>
+
+<script>
+    // Delegated once so it keeps working after view transitions; uses the global lightbox from Layout.
+    document.addEventListener('click', (event) => {
+        const photo = (event.target as Element).closest<HTMLElement>('[data-edition-photo]');
+        const openLightbox = (window as typeof window & { openLightbox?: (src: string) => void }).openLightbox;
+        if (photo?.dataset.editionPhoto && openLightbox) openLightbox(photo.dataset.editionPhoto);
+    });
+</script>
+
+<style>
+    .editions-page{max-width:1040px;margin:0 auto;padding:152px 32px 64px;font-family:Inter,system-ui,sans-serif;color:#0a0a0a}
+    .editions-pill{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border:1px solid rgba(10,10,10,.1);border-radius:999px;color:#6b6b6b;font-size:13px;font-weight:500}
+    .editions-pill span{width:7px;height:7px;border-radius:50%;background:#8fbf24}
+    .editions-head h1{max-width:14ch;margin:24px 0 0;font-size:clamp(2.5rem,1.6rem + 3vw,4rem);font-weight:600;line-height:1.02;letter-spacing:-.03em}
+    .editions-head>p{max-width:50ch;margin:20px 0 0;color:#6b6b6b;font-size:17px;line-height:1.5}
+    .editions-page h2{margin:0;font-size:clamp(1.5rem,1.15rem + 1.5vw,2.25rem);font-weight:600;line-height:1.1;letter-spacing:-.015em}
+    .next-edition{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:64px}
+    .next-edition-copy{display:flex;flex-direction:column;align-items:flex-start;padding:56px;border-radius:28px;background:#111;color:#fff}
+    .next-edition-tag{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.1);color:rgba(255,255,255,.85);font-size:13px;font-weight:500}
+    .next-edition-tag span{width:7px;height:7px;border-radius:50%;background:#d3fa69;box-shadow:0 0 0 4px rgba(211,250,105,.15)}
+    .next-edition h2{margin-top:28px;font-size:clamp(2.25rem,1.5rem + 2.6vw,3.5rem);line-height:1;letter-spacing:-.03em}
+    .next-edition h2 span{display:block;margin-top:10px;color:rgba(255,255,255,.55);font-size:clamp(1.125rem,.95rem + .7vw,1.375rem);font-weight:500;letter-spacing:-.01em}
+    .next-edition-copy p{max-width:36ch;margin:20px 0 0;flex:1;color:rgba(255,255,255,.7);font-size:16px;line-height:1.55}
+    .next-edition-copy a{display:inline-flex;align-items:center;gap:10px;height:48px;margin-top:32px;padding:0 24px;border-radius:999px;background:#fff;color:#0a0a0a;font-size:16px;font-weight:600;text-decoration:none;transition:background-color .2s}
+    .next-edition-copy a:hover{background:#d3fa69}
+    .next-edition-art{min-height:360px;overflow:hidden;border-radius:28px;background:#ececec}
+    .next-edition-art img{width:100%;height:100%;object-fit:cover}
+    .editions-section{margin-top:112px}
+    .edition-photo{position:relative;display:block;width:100%;padding:0;overflow:hidden;border:0;border-radius:24px;background:#f5f5f5;cursor:zoom-in}
+    .edition-photo:disabled{cursor:default}
+    .edition-photo img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.22,1,.36,1)}
+    .edition-photo:hover img{transform:scale(1.04)}
+    .edition-photo:focus-visible{outline:2px solid #0a0a0a;outline-offset:3px}
+    .edition-vol{position:absolute;top:16px;left:16px;padding:6px 12px;border-radius:999px;background:#d3fa69;color:#0a0a0a;font-size:12px;font-weight:700;letter-spacing:.04em}
+    .edition-date{margin:0;color:#a1a1a1;font-size:14px}
+    .edition-desc{margin:10px 0 0;color:#6b6b6b;font-size:16px;line-height:1.55}
+    .edition-feature{display:grid;grid-template-columns:1.4fr 1fr;align-items:center;gap:48px;margin-top:40px}
+    .edition-feature .edition-photo{aspect-ratio:16/10}
+    .edition-feature h3{margin:10px 0 0;font-size:clamp(1.75rem,1.3rem + 1.6vw,2.5rem);font-weight:600;line-height:1.08;letter-spacing:-.025em}
+    .edition-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:48px 16px;margin-top:64px}
+    .edition-card .edition-photo{aspect-ratio:4/3;margin-bottom:20px}
+    .edition-card h3{margin:6px 0 0;font-size:22px;font-weight:600;letter-spacing:-.015em}
+    .editions-cta{display:flex;flex-direction:column;align-items:center;margin-top:112px;padding:72px 32px;border-radius:28px;background:#f5f5f5;text-align:center}
+    .editions-cta p{margin:16px 0 0;color:#6b6b6b;font-size:17px;line-height:1.5}
+    .editions-cta-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:32px}
+    .editions-black,.editions-outline{display:inline-flex;align-items:center;height:48px;padding:0 24px;border-radius:999px;font-size:16px;font-weight:600;text-decoration:none;transition:background-color .2s,border-color .2s}
+    .editions-black{background:#0a0a0a;color:#fff}
+    .editions-black:hover{background:rgba(10,10,10,.9)}
+    .editions-outline{border:1px solid rgba(10,10,10,.12);background:#fff;color:#0a0a0a}
+    .editions-outline:hover{border-color:rgba(10,10,10,.4)}
+    @media(max-width:1023px){.next-edition,.edition-feature{grid-template-columns:1fr}.next-edition-art{min-height:280px}.edition-feature{gap:24px}}
+    @media(max-width:639px){.editions-page{padding:120px 24px 48px}.next-edition{margin-top:48px}.next-edition-copy{padding:32px 24px}.next-edition-art{min-height:220px}.editions-section,.editions-cta{margin-top:80px}.edition-grid{grid-template-columns:1fr;gap:40px;margin-top:48px}.editions-cta{padding:56px 24px}}
+</style>

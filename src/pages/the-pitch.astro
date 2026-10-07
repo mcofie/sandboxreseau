@@ -1,185 +1,169 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import FaqList from '../components/FaqList.astro';
 
-const headerSubtitle = "The Competition";
+const facts = [
+    { value: '6–8', label: 'Founders' },
+    { value: '5 min', label: 'Per pitch' },
+    { value: '3 min', label: 'Q&A' },
+    { value: '1', label: 'Stage' },
+];
 
 const timeline = [
-    { date: "Nov 2026", label: "Applications Open", desc: "Submit your startup for consideration. Open to all builders in the ecosystem." },
-    { date: "Dec 2026", label: "Shortlist Announced", desc: "6–8 founders are selected to pitch based on traction, team, and market potential." },
-    { date: "Jan 2027", label: "Pitch Prep", desc: "Selected founders get mentorship, rehearsals, and feedback from past founders." },
-    { date: "Feb 2027", label: "The Pitch — Live", desc: "One stage. Real judges. A live audience. The founders pitch for real." },
+    { date: 'Nov 2026', label: 'Applications open', desc: 'Submit your startup for consideration. Open to all builders in the ecosystem.' },
+    { date: 'Dec 2026', label: 'Shortlist announced', desc: '6–8 founders are selected to pitch based on traction, team, and market potential.' },
+    { date: 'Jan 2027', label: 'Pitch prep', desc: 'Selected founders get mentorship, rehearsals, and feedback from past founders.' },
+    { date: 'Feb 2027', label: 'The Pitch — live', desc: 'One stage. Real judges. A live audience. The founders pitch for real.' },
 ];
 
 const criteria = [
-    { title: "Traction", desc: "Show us what you've built and who's using it. Users, revenue, or validated demand." },
-    { title: "Team", desc: "Who's building this? We back founders who can ship and iterate." },
-    { title: "Market", desc: "Is this a real problem? How big is the opportunity?" },
-    { title: "Clarity", desc: "Can you explain what you do in 60 seconds? Signal, not fluff." },
+    { title: 'Traction', desc: 'Show us what you’ve built and who’s using it. Users, revenue, or validated demand.' },
+    { title: 'Team', desc: 'Who’s building this? We back founders who can ship and iterate.' },
+    { title: 'Market', desc: 'Is this a real problem? How big is the opportunity?' },
+    { title: 'Clarity', desc: 'Can you explain what you do in 60 seconds? Signal, not fluff.' },
+];
+
+const faqs = [
+    { question: 'Who can apply?', answer: 'Any early-stage founder building a product — based in Ghana, West Africa, or the diaspora.' },
+    { question: 'What stage should my startup be at?', answer: 'Pre-seed to seed. You should have a working product or strong prototype with some validation.' },
+    { question: 'Do I need a pitch deck?', answer: 'Not for the application. If selected, you’ll pitch live on stage — slides optional.' },
+    { question: 'What do winners get?', answer: 'Details on prizes, mentorship, and exposure will be announced in November.' },
+    { question: 'Is there a fee?', answer: 'No. The Pitch is free to apply and free to attend.' },
 ];
 ---
 
-<Layout 
-    title="The Pitch | Sandbox Réseau" 
+<Layout
+    title="The Pitch | Sandbox Réseau"
     description="The Pitch is Sandbox Réseau's pitch competition. 6–8 founders. One stage. Real judges. Coming February 2027."
-    headerSubtitle={headerSubtitle}
+    image="/assets/img/gallery-v3-8.jpg"
+    imageAlt="The main stage at a Sandbox Réseau edition in Accra"
 >
-    <!-- Hero Section -->
-    <section class="border-b border-[var(--rule)]">
-        <div class="mx-auto max-w-[1100px] px-4 py-20 md:py-32 text-center">
-            <span
-                class="inline-block w-max border-y border-[var(--rule)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-[.2em] text-[var(--muted)] mb-6 animate-enter">
-                February 2027 · Accra
-            </span>
-            <h1 class="font-serif text-5xl sm:text-7xl md:text-8xl leading-[.85] tracking-tighter mb-8 animate-enter">
-                The Pitch.
-            </h1>
-            <p class="mx-auto max-w-2xl text-[var(--muted)] text-base md:text-xl leading-relaxed font-serif animate-enter">
-                6–8 founders. One stage. Real judges. A live audience of builders, investors, and operators. No fluff — just what you're building and why it matters.
-            </p>
-            <div class="mt-10 flex flex-wrap items-center justify-center gap-4 animate-enter">
-                <span class="inline-flex items-center gap-2 rounded border border-[var(--rule)] px-6 py-3.5 text-sm font-bold uppercase tracking-widest text-[var(--muted)] cursor-default bg-[color:color-mix(in_oklab,var(--paper)_95%,var(--ink)_5%)]">
-                    <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
-                    Applications Open November 2026
-                </span>
-                <a href="#format"
-                    class="inline-flex items-center gap-2 rounded border border-[var(--rule)] px-6 py-3.5 text-sm font-bold uppercase tracking-widest hover:bg-[var(--ink)] hover:text-[var(--paper)] transition-all">
-                    See the format <span class="text-lg leading-none">↓</span>
+    <main class="pitch-page">
+        <section class="pitch-hero" data-dark-hero aria-labelledby="pitch-title">
+            <div class="pitch-hero-frame">
+                <img src="/assets/img/gallery-v3-8.jpg" alt="" />
+                <div class="pitch-hero-copy">
+                    <span class="pitch-pill"><span class="pitch-dot" aria-hidden="true"></span>February 2027 · Accra</span>
+                    <h1 id="pitch-title">The Pitch.</h1>
+                    <p>6–8 founders. One stage. Real judges. A live audience of builders, investors, and operators. No fluff — just what you’re building and why it matters.</p>
+                    <div class="pitch-hero-actions">
+                        <span class="pitch-status">Applications open November 2026</span>
+                        <a class="pitch-glass" href="#format">See the format</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <dl class="pitch-facts">
+            {facts.map((fact) => (
+                <div>
+                    <dt>{fact.label}</dt>
+                    <dd>{fact.value}</dd>
+                </div>
+            ))}
+        </dl>
+
+        <section class="pitch-split" id="format" aria-labelledby="pitch-format-title">
+            <div class="pitch-card pitch-card-copy">
+                <h2 id="pitch-format-title">A stage that matches your ambition.</h2>
+                <p>The Pitch is Sandbox Réseau’s flagship pitch competition — a live event where early-stage founders present their startups to a panel of judges and a room full of builders, operators, and investors.</p>
+                <p>It’s not a demo day. It’s not a panel. It’s a stage. You have 5 minutes to make your case, followed by 3 minutes of real questions from people who’ve been in the trenches.</p>
+            </div>
+            <div class="pitch-card pitch-card-timeline">
+                <h2>The timeline.</h2>
+                <ol>
+                    {timeline.map((step) => (
+                        <li>
+                            <span class="pitch-step-date">{step.date}</span>
+                            <h3>{step.label}</h3>
+                            <p>{step.desc}</p>
+                        </li>
+                    ))}
+                </ol>
+            </div>
+        </section>
+
+        <section class="pitch-section" aria-labelledby="pitch-criteria-title">
+            <h2 id="pitch-criteria-title">What we look for.</h2>
+            <p class="pitch-lede">Our evaluation criteria for the shortlist.</p>
+            <div class="pitch-criteria">
+                {criteria.map((item, index) => (
+                    <article>
+                        <span class="pitch-number">{String(index + 1).padStart(2, '0')}</span>
+                        <h3>{item.title}</h3>
+                        <p>{item.desc}</p>
+                    </article>
+                ))}
+            </div>
+        </section>
+
+        <section class="pitch-section" aria-labelledby="pitch-faq-title">
+            <h2 id="pitch-faq-title">Questions, answered.</h2>
+            <div class="pitch-faq"><FaqList items={faqs} idPrefix="pitch-faq" /></div>
+        </section>
+
+        <section class="pitch-cta" aria-labelledby="pitch-cta-title">
+            <div class="pitch-cta-card">
+                <h2 id="pitch-cta-title">Building something worth pitching?</h2>
+                <p>Applications open in November 2026. Join the community to hear first and start building in public today.</p>
+                <a class="pitch-cta-button" href="https://discord.gg/RMcBDRrV7x" target="_blank" rel="noreferrer">
+                    Join the Discord
+                    <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5" /></svg>
                 </a>
             </div>
-        </div>
-    </section>
-
-    <!-- Main: article stream -->
-    <main class="mx-auto max-w-[1100px] px-4 py-16 md:py-24">
-        <div class="grid grid-cols-1 gap-16 lg:grid-cols-[1fr_320px]">
-            <!-- Main Column -->
-            <div class="space-y-16">
-                <!-- What Is The Pitch -->
-                <article class="prose-like animate-enter" id="format">
-                    <h3 class="mb-1 font-serif text-[28px] leading-tight tracking-[-.005em]">What is The Pitch?</h3>
-                    <p class="text-neutral-600 mb-6">A stage that matches your ambition.</p>
-                    <p>The Pitch is Sandbox Réseau's flagship pitch competition — a live event where early-stage founders present their startups to a panel of judges and a room full of builders, operators, and investors.</p>
-                    <p>It's not a demo day. It's not a panel. It's a stage. You have 5 minutes to make your case, followed by 3 minutes of real questions from people who've been in the trenches.</p>
-                    
-                    <div class="mt-8 grid grid-cols-2 gap-4">
-                        <div class="p-5 rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_95%,var(--ink)_5%)]">
-                            <div class="font-serif text-3xl tracking-tight mb-1 text-[var(--ink)]">6–8</div>
-                            <div class="text-[10px] font-bold uppercase tracking-widest text-[var(--muted)]">Founders</div>
-                        </div>
-                        <div class="p-5 rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_95%,var(--ink)_5%)]">
-                            <div class="font-serif text-3xl tracking-tight mb-1 text-[var(--ink)]">5 min</div>
-                            <div class="text-[10px] font-bold uppercase tracking-widest text-[var(--muted)]">Per Pitch</div>
-                        </div>
-                        <div class="p-5 rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_95%,var(--ink)_5%)]">
-                            <div class="font-serif text-3xl tracking-tight mb-1 text-[var(--ink)]">3 min</div>
-                            <div class="text-[10px] font-bold uppercase tracking-widest text-[var(--muted)]">Q&A</div>
-                        </div>
-                        <div class="p-5 rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_95%,var(--ink)_5%)]">
-                            <div class="font-serif text-3xl tracking-tight mb-1 text-[var(--ink)]">1</div>
-                            <div class="text-[10px] font-bold uppercase tracking-widest text-[var(--muted)]">Stage</div>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- Selection Criteria -->
-                <article class="prose-like animate-enter">
-                    <h3 class="mb-1 font-serif text-[28px] leading-tight">What We Look For.</h3>
-                    <p class="text-neutral-600 mb-6">Our evaluation criteria for the shortlist.</p>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
-                        {criteria.map((c, i) => (
-                            <div class="rounded border border-[var(--rule)] p-5 bg-[color:color-mix(in_oklab,var(--paper)_95%,var(--ink)_5%)] transition-all hover:-translate-y-1 hover:shadow-xl">
-                                <div class="flex items-start gap-3">
-                                    <span class="text-[11px] font-bold text-[var(--muted)] mt-1 tabular-nums">0{i + 1}</span>
-                                    <div>
-                                        <strong class="block text-lg font-serif mb-2 text-[var(--ink)]">{c.title}</strong>
-                                        <p class="text-[14px] text-neutral-600 leading-relaxed m-0">{c.desc}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </article>
-
-                <!-- FAQ -->
-                <article class="prose-like animate-enter" id="faq">
-                    <h3 class="mb-1 font-serif text-[28px] leading-tight">FAQ.</h3>
-                    <p class="text-neutral-600 mb-4">Answers to common questions about The Pitch.</p>
-                    <ul class="ml-5 list-disc font-sans space-y-2">
-                        <li><strong>Who can apply?</strong> Any early-stage founder building a product — based in Ghana, West Africa, or the diaspora.</li>
-                        <li><strong>What stage?</strong> Pre-seed to seed. You should have a working product or strong prototype with some validation.</li>
-                        <li><strong>Pitch deck required?</strong> Not for the application. If selected, you'll pitch live on stage — slides optional.</li>
-                        <li><strong>What do winners get?</strong> Details on prizes, mentorship, and exposure announced in November.</li>
-                        <li><strong>Is there a fee?</strong> No. The Pitch is free to apply and free to attend.</li>
-                    </ul>
-                </article>
-            </div>
-
-            <!-- Right Rail (Timeline & CTA) -->
-            <div class="space-y-8 lg:sticky lg:top-24 lg:self-start">
-                <!-- Timeline Widget -->
-                <div class="rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_95%,var(--ink)_5%)] p-6 animate-enter">
-                    <h3 class="font-serif text-xl mb-6 pb-4 border-b border-[var(--rule)]">The Timeline</h3>
-                    <div class="space-y-6 relative before:absolute before:inset-0 before:ml-2.5 before:-translate-x-px before:h-full before:w-0.5 before:bg-gradient-to-b before:from-[var(--rule)] before:via-[var(--rule)] before:to-transparent">
-                        {timeline.map((step, i) => (
-                            <div class="relative flex items-start gap-4">
-                                <div class="absolute left-0 mt-1.5 w-5 h-5 rounded-full border-[2px] border-[var(--paper)] bg-[var(--ink)] shadow flex items-center justify-center z-10">
-                                    <div class="w-1.5 h-1.5 rounded-full bg-[var(--paper)]"></div>
-                                </div>
-                                <div class="pl-8">
-                                    <div class="text-[10px] font-bold uppercase tracking-widest text-[var(--accent)] mb-1">{step.date}</div>
-                                    <div class="font-serif text-[15px] text-[var(--ink)] mb-1">{step.label}</div>
-                                    <p class="text-[13px] text-[var(--muted)] leading-relaxed m-0">{step.desc}</p>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                <!-- Right Rail CTA -->
-                <div class="rounded border border-[var(--rule)] hatch p-6 relative overflow-hidden group animate-enter bg-[color:color-mix(in_oklab,var(--paper)_90%,var(--ink)_10%)] text-center">
-                    <div class="relative z-10">
-                        <div class="w-12 h-12 mx-auto rounded-full bg-[#5865F2] flex items-center justify-center text-white mb-4 shadow-lg group-hover:scale-110 transition-transform">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 127.14 96.36" fill="currentColor" class="w-6 h-6">
-                                <path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.11,77.11,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22c2.36-24.44-2.85-48.47-18.9-72.15ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/>
-                            </svg>
-                        </div>
-                        <h4 class="font-serif text-xl mb-2 text-[var(--ink)]">Join the Community</h4>
-                        <p class="text-[13px] text-neutral-600 mb-5 leading-relaxed">
-                            Start building in public and connect with the ecosystem today.
-                        </p>
-                        <a href="https://discord.gg/RMcBDRrV7x" target="_blank" rel="noreferrer"
-                            class="block w-full rounded bg-[var(--ink)] py-3 text-xs font-bold uppercase tracking-widest text-[var(--paper)] hover:opacity-90 transition-opacity">
-                            Join Discord
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
+        </section>
     </main>
 </Layout>
 
-<script is:inline>
-    (function() {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry, i) => {
-                if (entry.isIntersecting) {
-                    setTimeout(() => {
-                        entry.target.classList.add('visible');
-                    }, (i % 6) * 80);
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.animate-enter').forEach(el => observer.observe(el));
-
-        // Smooth scroll for format link
-        const formatLink = document.querySelector('a[href="#format"]');
-        if (formatLink) {
-            formatLink.addEventListener('click', function(e) {
-                e.preventDefault();
-                document.getElementById('format')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            });
-        }
-    })();
-</script>
+<style>
+    .pitch-page{font-family:Inter,system-ui,sans-serif;color:#0a0a0a}
+    .pitch-hero{padding:16px 16px 0}
+    .pitch-hero-frame{position:relative;isolation:isolate;display:flex;align-items:flex-end;min-height:min(78vh,720px);max-width:1920px;margin:0 auto;overflow:hidden;border-radius:28px;background:#111;color:#fff}
+    .pitch-hero-frame>img{position:absolute;inset:0;z-index:-2;width:100%;height:100%;object-fit:cover}
+    .pitch-hero-frame::after{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(0,0,0,.45) 0%,rgba(0,0,0,.2) 40%,rgba(0,0,0,.75) 100%)}
+    .pitch-hero-copy{width:100%;max-width:1040px;margin:0 auto;padding:160px 32px 56px}
+    .pitch-pill{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.15);color:rgba(255,255,255,.85);font-size:13px;font-weight:500;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+    .pitch-dot{width:7px;height:7px;border-radius:50%;background:#d3fa69}
+    .pitch-hero h1{margin:24px 0 0;font-size:clamp(3rem,1.8rem + 5vw,6rem);font-weight:600;line-height:.98;letter-spacing:-.04em}
+    .pitch-hero-copy>p{max-width:48ch;margin:20px 0 0;color:rgba(255,255,255,.8);font-size:17px;font-weight:500;line-height:1.5}
+    .pitch-hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+    .pitch-status{display:inline-flex;align-items:center;height:40px;padding:0 18px;border-radius:999px;background:#fff;color:#0a0a0a;font-size:14px;font-weight:500}
+    .pitch-glass{display:inline-flex;align-items:center;height:40px;padding:0 18px;border:1px solid rgba(255,255,255,.3);border-radius:999px;background:rgba(255,255,255,.1);color:#fff;font-size:14px;font-weight:500;text-decoration:none;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);transition:background-color .2s}
+    .pitch-glass:hover{background:rgba(255,255,255,.2)}
+    .pitch-facts{display:grid;grid-template-columns:repeat(4,1fr);max-width:976px;margin:16px auto 0;overflow:hidden;border:1px solid rgba(10,10,10,.1);border-radius:20px}
+    .pitch-facts div{display:flex;flex-direction:column;padding:24px;border-left:1px solid rgba(10,10,10,.1)}
+    .pitch-facts div:first-child{border-left:0}
+    .pitch-facts dd{order:-1;margin:0;font-size:clamp(1.5rem,1.2rem + 1vw,2rem);font-weight:600;letter-spacing:-.02em}
+    .pitch-facts dt{margin-top:4px;color:#a1a1a1;font-size:14px}
+    .pitch-split{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:1040px;margin:0 auto;padding:96px 32px 0;scroll-margin-top:80px}
+    .pitch-card{padding:56px;border-radius:28px}
+    .pitch-card h2,.pitch-section>h2,.pitch-cta-card h2{margin:0;font-size:clamp(1.5rem,1.15rem + 1.5vw,2.25rem);font-weight:600;line-height:1.1;letter-spacing:-.015em;text-wrap:balance}
+    .pitch-card-copy{background:#f5f5f5}
+    .pitch-card-copy h2{max-width:16ch}
+    .pitch-card-copy p{max-width:40ch;margin:20px 0 0;color:#6b6b6b;font-size:17px;line-height:1.55}
+    .pitch-card-timeline{background:#111;color:#fff}
+    .pitch-card-timeline ol{margin:32px 0 0;padding:0;list-style:none}
+    .pitch-card-timeline li{position:relative;padding:0 0 28px 28px}
+    .pitch-card-timeline li:last-child{padding-bottom:0}
+    .pitch-card-timeline li::before{content:'';position:absolute;top:6px;left:0;width:9px;height:9px;border-radius:50%;background:#d3fa69}
+    .pitch-card-timeline li:not(:last-child)::after{content:'';position:absolute;top:22px;bottom:4px;left:4px;width:1px;background:rgba(255,255,255,.2)}
+    .pitch-step-date{color:rgba(255,255,255,.55);font-size:13px;font-weight:500}
+    .pitch-card-timeline h3{margin:4px 0 0;font-size:18px;font-weight:600}
+    .pitch-card-timeline p{margin:6px 0 0;color:rgba(255,255,255,.7);font-size:15px;line-height:1.5}
+    .pitch-section{max-width:1040px;margin:0 auto;padding:112px 32px 0}
+    .pitch-lede{margin:16px 0 0;color:#6b6b6b;font-size:17px;line-height:1.5}
+    .pitch-criteria{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:48px}
+    .pitch-criteria article{padding:28px;border:1px solid rgba(10,10,10,.1);border-radius:28px;transition:border-color .3s}
+    .pitch-criteria article:hover{border-color:rgba(10,10,10,.25)}
+    .pitch-number{display:inline-flex;align-items:center;justify-content:center;height:28px;padding:0 8px;border:1px solid rgba(10,10,10,.1);border-radius:999px;color:#6b6b6b;font-size:13px;font-weight:600;font-variant-numeric:tabular-nums}
+    .pitch-criteria h3{margin:20px 0 0;font-size:19px;font-weight:600}
+    .pitch-criteria p{margin:8px 0 0;color:#6b6b6b;font-size:15px;line-height:1.5}
+    .pitch-faq{margin-top:48px}
+    .pitch-cta{max-width:1040px;margin:0 auto;padding:112px 32px 64px}
+    .pitch-cta-card{display:flex;flex-direction:column;align-items:center;padding:72px 32px;border-radius:28px;background:#f5f5f5;text-align:center}
+    .pitch-cta-card p{max-width:46ch;margin:16px 0 0;color:#6b6b6b;font-size:17px;line-height:1.5}
+    .pitch-cta-button{display:inline-flex;align-items:center;gap:10px;height:48px;margin-top:32px;padding:0 28px;border-radius:999px;background:#0a0a0a;color:#fff;font-size:16px;font-weight:600;text-decoration:none;transition:background-color .2s,transform .2s}
+    .pitch-cta-button:hover{background:rgba(10,10,10,.9)}.pitch-cta-button:active{transform:scale(.99)}
+    @media(max-width:1023px){.pitch-facts{margin:16px 32px 0}.pitch-split{grid-template-columns:1fr}.pitch-criteria{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:639px){.pitch-hero{padding:12px 12px 0}.pitch-hero-frame{min-height:84svh}.pitch-hero-copy{padding:140px 24px 40px}.pitch-facts{grid-template-columns:1fr 1fr;margin:12px 24px 0}.pitch-facts div:nth-child(odd){border-left:0}.pitch-facts div:nth-child(n+3){border-top:1px solid rgba(10,10,10,.1)}.pitch-split{padding:64px 24px 0}.pitch-card{padding:32px 24px}.pitch-section{padding:80px 24px 0}.pitch-criteria{grid-template-columns:1fr}.pitch-cta{padding:80px 24px 48px}.pitch-cta-card{padding:56px 24px}}
+</style>

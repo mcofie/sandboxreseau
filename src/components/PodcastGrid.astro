@@ -1,0 +1,89 @@
+---
+import type { PodcastEpisode } from '../lib/podcast';
+
+interface Props {
+    episodes: PodcastEpisode[];
+    /** Show this many cards up front and reveal the rest in batches with a "Load more" button. */
+    pageSize?: number;
+}
+
+const { episodes, pageSize } = Astro.props;
+
+const cards = episodes.map((episode) => {
+    const match = episode.title.match(/^#(\d+)\s*[–—-]\s*(.+)$/);
+    const date = new Date(episode.pubDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    return { ...episode, number: match?.[1] ?? '', shortTitle: match?.[2] ?? episode.title, date };
+});
+const hasMore = pageSize !== undefined && cards.length > pageSize;
+---
+
+<div class="podcast-grid" data-podcast-grid data-page-size={pageSize}>
+    {cards.map((episode, index) => (
+        <a class="podcast-card" href={episode.link} target="_blank" rel="noreferrer" hidden={hasMore && index >= pageSize!} data-episode-id={episode.guid} data-audio-url={episode.audioUrl} data-title={episode.title} data-meta={`${episode.date} • ${episode.duration}`} data-thumb={episode.thumb}>
+            <div class="podcast-card-copy">
+                <span class="podcast-number">{episode.number}</span>
+                <h3 title={episode.shortTitle}>{episode.shortTitle}</h3>
+                <p>{episode.date} · {episode.duration}</p>
+            </div>
+            <div class="podcast-card-art">
+                <img src={episode.thumb} alt="" loading="lazy" />
+                <span class="podcast-play"><svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M4.5 3.2v9.6L12.5 8z" /></svg>Play episode</span>
+            </div>
+        </a>
+    ))}
+</div>
+{hasMore && (
+    <div class="podcast-load-more">
+        <button type="button" data-podcast-more>Load more episodes</button>
+    </div>
+)}
+
+<script>
+    type PlayEpisode = (id: string, url: string, title: string, meta: string, thumb: string) => void;
+
+    // Delegated once on the document, so it survives view transitions without re-binding.
+    document.addEventListener('click', (event) => {
+        const target = event.target as Element;
+
+        const card = target.closest<HTMLAnchorElement>('.podcast-card');
+        if (card) {
+            const playEpisode = (window as typeof window & { playEpisode?: PlayEpisode }).playEpisode;
+            const { episodeId = '', audioUrl = '', title = '', meta = '', thumb = '' } = card.dataset;
+            // Play in the site player when it's available; otherwise follow the link to Substack.
+            if (!playEpisode || !audioUrl) return;
+            event.preventDefault();
+            playEpisode(episodeId, audioUrl, title, meta, thumb);
+            return;
+        }
+
+        const more = target.closest<HTMLButtonElement>('[data-podcast-more]');
+        const grid = more?.parentElement?.previousElementSibling as HTMLElement | null;
+        if (!more || !grid?.matches('[data-podcast-grid]')) return;
+        const hiddenCards = grid.querySelectorAll<HTMLElement>('.podcast-card[hidden]');
+        const pageSize = Number(grid.dataset.pageSize) || hiddenCards.length;
+        hiddenCards.forEach((card, i) => { if (i < pageSize) card.hidden = false; });
+        if (hiddenCards.length <= pageSize) more.parentElement!.remove();
+    });
+</script>
+
+<style>
+    .podcast-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .podcast-card{display:grid;grid-row:span 2;grid-template-rows:subgrid;row-gap:0;overflow:hidden;border:1px solid rgba(10,10,10,.1);border-radius:36px;background:#fff;color:inherit;text-decoration:none;transition:border-color .3s cubic-bezier(.22,1,.36,1)}
+    .podcast-card[hidden]{display:none}
+    .podcast-card:hover{border-color:rgba(10,10,10,.2)}
+    .podcast-card-copy{padding:28px}
+    .podcast-number{display:flex;align-items:center;justify-content:center;min-width:28px;height:28px;padding:0 6px;width:max-content;border:1px solid rgba(10,10,10,.1);border-radius:999px;color:#6b6b6b;font-size:13px;font-weight:600;font-variant-numeric:tabular-nums;transition:border-color .2s,color .2s}
+    .podcast-card:hover .podcast-number{border-color:rgba(10,10,10,.4);color:#0a0a0a}
+    .podcast-card h3{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;min-height:2.4em;margin:16px 0 0;font-size:clamp(1.0625rem,.9rem + .6vw,1.25rem);font-weight:600;line-height:1.2;letter-spacing:-.01em;color:#0a0a0a;text-wrap:balance}
+    .podcast-card-copy p{margin:6px 0 0;color:#6b6b6b;font-size:15px;line-height:1.45}
+    .podcast-card-art{position:relative;min-height:240px;aspect-ratio:1;overflow:hidden;border-top:1px solid rgba(10,10,10,.1);background:#f5f5f5}
+    .podcast-card-art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.22,1,.36,1)}
+    .podcast-card:hover .podcast-card-art img{transform:scale(1.05)}
+    .podcast-play{position:absolute;left:16px;bottom:16px;display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:rgba(0,0,0,.35);color:#fff;font-size:13px;font-weight:500;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);transition:background-color .2s}
+    .podcast-card:hover .podcast-play{background:rgba(0,0,0,.6)}
+    .podcast-load-more{display:flex;justify-content:center;margin-top:48px}
+    .podcast-load-more button{height:48px;padding:0 28px;border:1px solid rgba(10,10,10,.1);border-radius:999px;background:#fff;color:#0a0a0a;font:inherit;font-size:16px;font-weight:600;cursor:pointer;transition:border-color .2s}
+    .podcast-load-more button:hover{border-color:rgba(10,10,10,.4)}
+    @media(max-width:1023px){.podcast-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:639px){.podcast-grid{grid-template-columns:1fr}.podcast-card{grid-row:auto;grid-template-rows:auto auto}}
+</style>

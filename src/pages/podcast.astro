@@ -1,373 +1,92 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import GlobalPlayer from '../components/GlobalPlayer.astro';
+import PodcastGrid from '../components/PodcastGrid.astro';
 import { fetchPodcastEpisodes } from '../lib/podcast';
 
-const headerSubtitle = "Digital Audio-Log";
 const episodes = await fetchPodcastEpisodes();
+const platforms = [
+    { name: 'Spotify', href: 'https://open.spotify.com/show/1mQUSNNpjenkeUiFVBXWCN' },
+    { name: 'Apple Podcasts', href: 'https://podcasts.apple.com/gh/podcast/the-reverb/id1884282478' },
+    { name: 'Substack', href: 'https://thekompound.substack.com' },
+    { name: 'RSS', href: 'https://api.substack.com/feed/podcast/7581260.rss' },
+];
 ---
 
-<Layout 
-    title="The Reverb Podcast | Sandbox Réseau" 
+<Layout
+    title="The Reverb Podcast | Sandbox Réseau"
     description="The high-bandwidth audio-log for the African builder. Listen to the latest dispatches from the Sandbox Réseau ecosystem."
-    headerSubtitle={headerSubtitle}
 >
-    <!-- Hero Section -->
-    <section class="border-b border-[var(--rule)]">
-        <div class="mx-auto max-w-[1100px] px-4 py-20 md:py-32 text-center">
-            <span
-                class="inline-block w-max border-y border-[var(--rule)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-[.2em] text-[var(--muted)] mb-6 animate-enter">
-                Audio Dispatch
-            </span>
-            <h1 class="font-serif text-5xl sm:text-7xl md:text-8xl leading-[.85] tracking-tighter mb-8 animate-enter">
-                The Reverb.
-            </h1>
-            <p class="mx-auto max-w-2xl text-[var(--muted)] text-base md:text-xl leading-relaxed font-serif animate-enter">
-                A fast-paced tech podcast capturing real conversations from the Sandbox Réseau community. No fillers. Just what people are building, thinking, and learning right now.
-            </p>
-            <div class="mt-10 flex flex-wrap items-center justify-center gap-4 animate-enter">
-                <a href="https://open.spotify.com/show/1mQUSNNpjenkeUiFVBXWCN" target="_blank"
-                    class="inline-flex items-center gap-2 rounded border border-[var(--rule)] px-6 py-3.5 text-sm font-bold uppercase tracking-widest hover:bg-[#1DB954] hover:text-white hover:border-[#1DB954] transition-all">
-                    Listen on Spotify
-                </a>
-                <a href="https://podcasts.apple.com/gh/podcast/the-reverb/id1884282478" target="_blank"
-                    class="inline-flex items-center gap-2 rounded border border-[var(--rule)] px-6 py-3.5 text-sm font-bold uppercase tracking-widest hover:bg-[#8e3ee5] hover:text-white hover:border-[#8e3ee5] transition-all">
-                    Listen on Apple
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Main: article stream -->
-    <main class="mx-auto max-w-[1100px] px-4 py-16 md:py-24">
-        <div class="grid grid-cols-1 gap-16 lg:grid-cols-[1fr_320px]">
-            <!-- Main Column: Archive -->
-            <div class="space-y-8">
-                <div class="archive-scroll-target mb-4 flex items-center justify-between gap-4 animate-enter">
-                    <h3 class="font-serif text-2xl tracking-tight">Archive</h3>
-                    <div class="h-px flex-1 bg-[var(--rule)]/10"></div>
-                    <div id="podcast-count" class="text-[11px] font-bold uppercase tracking-widest text-[var(--muted)]">Loading Episodes...</div>
-                </div>
-
-                <div id="podcast-error" class="hidden text-center py-20 text-[var(--muted)] font-serif"></div>
-                
-                <div id="podcast-archive" class="space-y-6">
-                    <!-- Shimmers -->
-                    <div class="podcast-shimmer space-y-6">
-                        {[1, 2, 3].map(() => (
-                            <div class="flex flex-col sm:flex-row gap-6 p-6 rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_95%,var(--ink)_5%)] animate-pulse">
-                                <div class="w-full aspect-square sm:w-32 sm:h-32 bg-neutral-200/50 rounded border border-[var(--rule)]/20"></div>
-                                <div class="flex-1 space-y-4">
-                                    <div class="h-3 w-32 bg-neutral-200/50 rounded"></div>
-                                    <div class="h-6 w-3/4 bg-neutral-200/50 rounded"></div>
-                                    <div class="h-4 w-full bg-neutral-200/50 rounded"></div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                <!-- Pagination -->
-                <div id="podcast-pagination"></div>
-            </div>
-
-            <!-- Right Rail -->
-            <div class="space-y-8 lg:sticky lg:top-24 lg:self-start">
-                
-                <!-- Show Art Widget -->
-                <div class="rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_95%,var(--ink)_5%)] p-6 animate-enter text-center">
-                    <div class="relative group mx-auto w-48 h-48 mb-6">
-                        <img id="podcastCover" src="/assets/img/podcast-logo.png" alt="The Reverb Logo" class="w-full h-full rounded border border-[var(--rule)] shadow-lg grayscale transition-all duration-700 group-hover:grayscale-0">
-                    </div>
-                    <h3 class="font-serif text-xl mb-2 pb-4 border-b border-[var(--rule)]/20">The Reverb</h3>
-                    <p class="text-[12px] text-[var(--muted)] leading-relaxed m-0 pt-2">
-                        Short, high-bandwidth dispatches from African builders making things happen.
-                    </p>
-                </div>
-
-                <!-- Right Rail CTA -->
-                <div class="rounded border border-[var(--rule)] hatch p-6 relative overflow-hidden group animate-enter bg-[color:color-mix(in_oklab,var(--paper)_90%,var(--ink)_10%)] text-center">
-                    <div class="relative z-10">
-                        <h4 class="font-serif text-xl mb-2 text-[var(--ink)]">Never miss a pulse</h4>
-                        <p class="text-[13px] text-[var(--muted)] mb-5 leading-relaxed">
-                            Subscribe on your preferred platform for weekly dispatches.
-                        </p>
-                        <div class="flex flex-col gap-3">
-                            <a href="https://open.spotify.com/show/1mQUSNNpjenkeUiFVBXWCN" target="_blank"
-                                class="block w-full rounded border border-[var(--rule)] py-2.5 text-[10px] font-bold uppercase tracking-widest text-[var(--ink)] hover:bg-[#1DB954] hover:text-white hover:border-[#1DB954] transition-all bg-[var(--paper)]">
-                                Spotify
-                            </a>
-                            <a href="https://podcasts.apple.com/gh/podcast/the-reverb/id1884282478" target="_blank"
-                                class="block w-full rounded border border-[var(--rule)] py-2.5 text-[10px] font-bold uppercase tracking-widest text-[var(--ink)] hover:bg-[#8e3ee5] hover:text-white hover:border-[#8e3ee5] transition-all bg-[var(--paper)]">
-                                Apple
-                            </a>
-                            <a href="https://api.substack.com/feed/podcast/7581260.rss" target="_blank"
-                                class="block w-full rounded border border-[var(--rule)] py-2.5 text-[10px] font-bold uppercase tracking-widest text-[var(--ink)] hover:bg-[var(--ink)] hover:text-[var(--paper)] transition-all bg-[var(--paper)]">
-                                RSS Feed
-                            </a>
+    <main class="podcast-page">
+        <section class="reverb-hero" aria-labelledby="reverb-title">
+            <div class="reverb-hero-card">
+                <div class="reverb-hero-copy">
+                    <span class="reverb-pill"><span class="reverb-dot" aria-hidden="true"></span>Podcast · {episodes.length} episodes</span>
+                    <h1 id="reverb-title">The Reverb.</h1>
+                    <p>A fast-paced tech podcast capturing real conversations from the Sandbox Réseau community. No fillers. Just what people are building, thinking, and learning right now.</p>
+                    <div class="reverb-actions">
+                        {episodes.length > 0 && (
+                            <button type="button" class="reverb-play" data-play-latest>
+                                <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M4.5 3.2v9.6L12.5 8z" /></svg>
+                                Play latest episode
+                            </button>
+                        )}
+                        <div class="reverb-platforms">
+                            {platforms.map((platform) => (
+                                <a href={platform.href} target="_blank" rel="noreferrer">{platform.name}</a>
+                            ))}
                         </div>
                     </div>
                 </div>
-
+                <div class="reverb-cover">
+                    <img src="/assets/img/podcast-logo.png" alt="The Reverb podcast cover" />
+                </div>
             </div>
-        </div>
+        </section>
+
+        <section class="reverb-archive" aria-labelledby="reverb-archive-title">
+            <div class="reverb-archive-head">
+                <h2 id="reverb-archive-title">All episodes.</h2>
+                <p>Newest first · {episodes.length} episodes</p>
+            </div>
+            {episodes.length > 0 ? (
+                <PodcastGrid episodes={episodes} pageSize={9} />
+            ) : (
+                <p class="reverb-empty">No episodes available yet. Please check back soon.</p>
+            )}
+        </section>
     </main>
-
-    <GlobalPlayer />
-
-    <!-- Build-time episode data injected as JSON -->
-    <script is:inline define:vars={{ episodes }}>
-        window.__PODCAST_EPISODES__ = episodes;
-    </script>
-
-    <script is:inline>
-        const EPISODES_PER_PAGE = 6;
-        let allEpisodeCards = [];
-        let currentPage = 1;
-        let totalPages = 1;
-
-        async function loadPodcastArchive() {
-            const archive = document.getElementById('podcast-archive');
-            const countDisplay = document.getElementById('podcast-count');
-            const errorDisplay = document.getElementById('podcast-error');
-            
-            if (!archive) return;
-
-            try {
-                let episodes = window.__PODCAST_EPISODES__ || [];
-
-                // Client-side fallback if build-time data was empty
-                if (episodes.length === 0) {
-                    try {
-                        const res = await fetch('/data/podcast-episodes.json');
-                        if (res.ok) {
-                            episodes = await res.json();
-                            window.__PODCAST_EPISODES__ = episodes;
-                        }
-                    } catch (fetchErr) {
-                        console.warn("Fallback fetch failed:", fetchErr);
-                    }
-                }
-                
-                if (episodes.length > 0) {
-                    allEpisodeCards = [];
-                    
-                    episodes.forEach(ep => {
-                        const dateObj = new Date(ep.pubDate);
-                        const formattedDate = dateObj.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
-                        const shortDesc = ep.description.substring(0, 180) + (ep.description.length > 180 ? '...' : '');
-
-                        allEpisodeCards.push(`
-                            <div class="episode-card group relative flex flex-col sm:flex-row gap-6 p-6 rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_97%,var(--ink)_3%)] hover:border-[var(--ink)] transition-all animate-enter" 
-                                 data-episode-id="${ep.guid}" 
-                                 data-title="${ep.title}" 
-                                 data-meta="${formattedDate} • ${ep.duration}" 
-                                 data-thumb="${ep.thumb}"
-                                 data-audio-url="${ep.audioUrl}">
-                                
-                                <div class="w-full aspect-square sm:w-32 sm:h-32 flex-shrink-0 bg-[var(--paper)] rounded border border-[var(--rule)] overflow-hidden relative group/art cursor-pointer" onclick="if(window.openLightbox) openLightbox('${ep.thumb}')">
-                                    <img src="${ep.thumb}" alt="${ep.title}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
-                                    
-                                    ${ep.audioUrl ? `
-                                    <button class="play-btn absolute inset-0 flex items-center justify-center bg-[var(--ink)]/40 opacity-0 group-hover/art:opacity-100 transition-opacity text-[var(--paper)]">
-                                        <div class="play-icon w-10 h-10 flex items-center justify-center rounded-full border-2 border-[var(--paper)]">
-                                            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
-                                                <path d="M8 5v14l11-7z"/>
-                                            </svg>
-                                        </div>
-                                    </button>
-                                    ` : ''}
-                                </div>
-                                
-                                <div class="flex-1 flex flex-col justify-between">
-                                    <div>
-                                        <div class="flex items-center gap-3 text-[10px] uppercase font-bold tracking-widest text-[var(--muted)] mb-2">
-                                             <span>${formattedDate}</span>
-                                             <span class="w-1 h-1 rounded-full bg-[var(--rule)]"></span>
-                                             <span>${ep.duration}</span>
-                                        </div>
-                                        <h3 class="font-serif text-xl sm:text-2xl mb-2 text-[var(--ink)] group-hover:accent-text transition-colors">${ep.title}</h3>
-                                        <p class="text-[14px] text-[var(--muted)] leading-relaxed m-0">${shortDesc}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        `);
-                    });
-                    
-                    totalPages = Math.ceil(allEpisodeCards.length / EPISODES_PER_PAGE);
-                    currentPage = 1;
-                    renderPage(currentPage);
-
-                    if (countDisplay) {
-                        countDisplay.textContent = `${episodes.length} Episodes`;
-                    }
-                } else {
-                    if (errorDisplay) {
-                       errorDisplay.textContent = "No episodes available. Please check back soon.";
-                       errorDisplay.classList.remove('hidden');
-                    }
-                    if (countDisplay) {
-                        countDisplay.textContent = '0 Episodes';
-                    }
-                }
-            } catch (e) {
-                console.error("Failed to load podcast archive:", e);
-                if (errorDisplay) {
-                   errorDisplay.textContent = "Failed to load archive. Please try refreshing.";
-                   errorDisplay.classList.remove('hidden');
-                }
-            }
-        }
-
-        function renderPage(page) {
-            const archive = document.getElementById('podcast-archive');
-            if (!archive) return;
-
-            currentPage = page;
-            const start = (page - 1) * EPISODES_PER_PAGE;
-            const end = start + EPISODES_PER_PAGE;
-            const pageCards = allEpisodeCards.slice(start, end);
-
-            archive.innerHTML = pageCards.join('');
-            
-            // Animate cards in
-            archive.querySelectorAll('.animate-enter').forEach((el, i) => {
-                setTimeout(() => el.classList.add('visible'), i * 60);
-            });
-
-            initPodcastActions();
-            renderPagination();
-
-            // Scroll to top of archive
-            const archiveHeader = document.querySelector('.archive-scroll-target');
-            if (archiveHeader && page > 1) {
-                archiveHeader.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-        }
-
-        function renderPagination() {
-            const container = document.getElementById('podcast-pagination');
-            if (!container || totalPages <= 1) {
-                if (container) container.innerHTML = '';
-                return;
-            }
-
-            const maxVisible = 5;
-            let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
-            let endPage = Math.min(totalPages, startPage + maxVisible - 1);
-            if (endPage - startPage + 1 < maxVisible) {
-                startPage = Math.max(1, endPage - maxVisible + 1);
-            }
-
-            let html = `<nav class="flex items-center justify-center gap-2 pt-12 pb-4" aria-label="Podcast archive pagination">`;
-
-            // Previous button
-            html += `<button 
-                onclick="renderPage(${currentPage - 1})" 
-                ${currentPage === 1 ? 'disabled' : ''}
-                class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded border text-[11px] font-bold uppercase tracking-widest transition-all
-                       ${currentPage === 1 
-                         ? 'border-[var(--rule)]/30 text-[var(--muted)]/40 cursor-not-allowed' 
-                         : 'border-[var(--rule)] text-[var(--muted)] hover:border-[var(--ink)] hover:text-[var(--ink)]'}">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg>
-                Prev
-            </button>`;
-
-            // First page + ellipsis
-            if (startPage > 1) {
-                html += pageButton(1);
-                if (startPage > 2) {
-                    html += `<span class="px-1 text-[var(--muted)]/40 text-sm select-none">…</span>`;
-                }
-            }
-
-            // Page number buttons
-            for (let i = startPage; i <= endPage; i++) {
-                html += pageButton(i);
-            }
-
-            // Last page + ellipsis
-            if (endPage < totalPages) {
-                if (endPage < totalPages - 1) {
-                    html += `<span class="px-1 text-[var(--muted)]/40 text-sm select-none">…</span>`;
-                }
-                html += pageButton(totalPages);
-            }
-
-            // Next button
-            html += `<button 
-                onclick="renderPage(${currentPage + 1})" 
-                ${currentPage === totalPages ? 'disabled' : ''}
-                class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded border text-[11px] font-bold uppercase tracking-widest transition-all
-                       ${currentPage === totalPages 
-                         ? 'border-[var(--rule)]/30 text-[var(--muted)]/40 cursor-not-allowed' 
-                         : 'border-[var(--rule)] text-[var(--muted)] hover:border-[var(--ink)] hover:text-[var(--ink)]'}">
-                Next
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
-            </button>`;
-
-            html += `</nav>`;
-
-            // Page info
-            const startEp = (currentPage - 1) * EPISODES_PER_PAGE + 1;
-            const endEp = Math.min(currentPage * EPISODES_PER_PAGE, allEpisodeCards.length);
-            html += `<p class="text-center text-[11px] font-bold uppercase tracking-widest text-[var(--muted)]/60 pb-2">
-                Showing ${startEp}–${endEp} of ${allEpisodeCards.length}
-            </p>`;
-
-            container.innerHTML = html;
-        }
-
-        function pageButton(num) {
-            const isActive = num === currentPage;
-            return `<button 
-                onclick="renderPage(${num})" 
-                class="w-10 h-10 rounded border text-sm font-bold transition-all
-                       ${isActive 
-                         ? 'bg-[var(--ink)] text-[var(--paper)] border-[var(--ink)]' 
-                         : 'border-[var(--rule)] text-[var(--muted)] hover:border-[var(--ink)] hover:text-[var(--ink)]'}"
-                ${isActive ? 'aria-current="page"' : ''}>
-                ${num}
-            </button>`;
-        }
-
-        function initPodcastActions() {
-            document.querySelectorAll('.play-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const card = btn.closest('.episode-card');
-                    if (card) {
-                        const id = card.dataset.episodeId || '';
-                        const url = card.dataset.audioUrl || '';
-                        const title = card.dataset.title || '';
-                        const meta = card.dataset.meta || '';
-                        const thumb = card.dataset.thumb || '';
-                        if (window.playEpisode) {
-                            window.playEpisode(id, url, title, meta, thumb);
-                        }
-                    }
-                });
-            });
-        }
-
-        // Expose renderPage globally for onclick handlers
-        window.renderPage = renderPage;
-
-        document.addEventListener('astro:page-load', loadPodcastArchive);
-
-        (function() {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach((entry, i) => {
-                    if (entry.isIntersecting) {
-                        setTimeout(() => {
-                            entry.target.classList.add('visible');
-                        }, (i % 6) * 80);
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.1 });
-
-            document.querySelectorAll('.animate-enter').forEach(el => observer.observe(el));
-        })();
-    </script>
 </Layout>
+
+<script>
+    // The newest episode is the first card; reuse its play handling.
+    document.addEventListener('click', (event) => {
+        if (!(event.target as Element).closest('[data-play-latest]')) return;
+        document.querySelector<HTMLElement>('.podcast-card')?.click();
+    });
+</script>
+
+<style>
+    .podcast-page{font-family:Inter,system-ui,sans-serif;color:#0a0a0a}
+    .reverb-hero{max-width:1040px;margin:0 auto;padding:120px 32px 0}
+    .reverb-hero-card{display:grid;grid-template-columns:1.3fr .7fr;align-items:center;gap:48px;padding:56px;border-radius:28px;background:#f5f5f5}
+    .reverb-pill{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border:1px solid rgba(10,10,10,.1);border-radius:999px;background:#fff;color:#6b6b6b;font-size:13px;font-weight:500}
+    .reverb-dot{width:7px;height:7px;border-radius:50%;background:#8fbf24}
+    .reverb-hero h1{margin:24px 0 0;font-size:clamp(2.5rem,1.6rem + 3vw,4rem);font-weight:600;line-height:1.02;letter-spacing:-.03em;color:#0a0a0a}
+    .reverb-hero-copy>p{max-width:44ch;margin:20px 0 0;color:#6b6b6b;font-size:17px;line-height:1.5}
+    .reverb-actions{display:flex;flex-wrap:wrap;align-items:center;gap:16px;margin-top:32px}
+    .reverb-play{display:inline-flex;align-items:center;gap:10px;height:48px;padding:0 24px;border:0;border-radius:999px;background:#0a0a0a;color:#fff;font:inherit;font-size:16px;font-weight:600;cursor:pointer;transition:background-color .2s,transform .2s}
+    .reverb-play:hover{background:rgba(10,10,10,.9)}.reverb-play:active{transform:scale(.99)}
+    .reverb-platforms{display:flex;flex-wrap:wrap;gap:8px}
+    .reverb-platforms a{padding:4px 10px;border-radius:999px;background:#fff;color:#0a0a0a;font-size:13px;font-weight:500;text-decoration:none;transition:background-color .2s}
+    .reverb-platforms a:hover{background:#ececec}
+    .reverb-cover{overflow:hidden;aspect-ratio:1;border-radius:24px;background:#ececec;box-shadow:0 20px 40px -20px rgba(0,0,0,.35)}
+    .reverb-cover img{width:100%;height:100%;object-fit:cover}
+    .reverb-archive{max-width:1040px;margin:0 auto;padding:96px 32px 64px}
+    .reverb-archive-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 32px;margin-bottom:48px}
+    .reverb-archive-head h2{margin:0;font-size:clamp(1.5rem,1.15rem + 1.5vw,2.25rem);font-weight:600;line-height:1.1;letter-spacing:-.015em;color:#0a0a0a}
+    .reverb-archive-head p{margin:0;color:#a1a1a1;font-size:14px}
+    .reverb-empty{padding:64px 0;color:#6b6b6b;text-align:center}
+    /* Smaller screens: the cover becomes a small tile above the copy instead of a full-width block. */
+    @media(max-width:1023px){.reverb-hero-card{grid-template-columns:1fr;gap:24px;padding:48px}.reverb-cover{order:-1;width:120px;border-radius:20px;box-shadow:0 12px 24px -14px rgba(0,0,0,.4)}}
+    @media(max-width:639px){.reverb-hero{padding:96px 12px 0}.reverb-hero-card{gap:20px;padding:24px 20px 28px;border-radius:24px}.reverb-cover{width:88px;border-radius:16px}.reverb-hero h1{margin-top:16px;font-size:40px}.reverb-hero-copy>p{margin-top:12px;font-size:16px}.reverb-actions{flex-direction:column;align-items:stretch;gap:12px;margin-top:24px}.reverb-play{justify-content:center;height:52px}.reverb-platforms{flex-wrap:nowrap;margin:0 -20px;padding:0 20px;overflow-x:auto;scrollbar-width:none}.reverb-platforms::-webkit-scrollbar{display:none}.reverb-platforms a{flex-shrink:0;padding:8px 14px;font-size:14px}.reverb-archive{padding:64px 24px 48px}}
+</style>

@@ -1,0 +1,40 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import type registry from '../data/registry.json';
+
+interface Props extends Omit<HTMLAttributes<'a'>, 'href'> {
+    company: (typeof registry)[number];
+}
+
+const { company, class: className, ...attrs } = Astro.props;
+const logo = company.logo.startsWith('assets/') ? `/${company.logo}` : company.logo;
+---
+
+<a class:list={['registry-card', className]} href={`/registry/${company.id}`} {...attrs}>
+    <div class="registry-card-top">
+        <div class="registry-logo"><img src={logo} alt="" loading="lazy" /></div>
+        {company.status === 'Live' && <span class="registry-live"><span aria-hidden="true"></span>Live</span>}
+    </div>
+    <h3>{company.name}</h3>
+    <p class="registry-meta">{company.industry} · {company.location} · Est. {company.founded}</p>
+    <p class="registry-desc">{company.description}</p>
+    <div class="registry-tags">
+        {company.tags.slice(0, 3).map((tag) => <span>{tag}</span>)}
+    </div>
+</a>
+
+<style>
+    .registry-card{display:flex;flex-direction:column;padding:24px;border:1px solid rgba(10,10,10,.1);border-radius:28px;background:#fff;color:#0a0a0a;font-family:Inter,system-ui,sans-serif;text-decoration:none;transition:border-color .3s cubic-bezier(.22,1,.36,1),background-color .3s}
+    .registry-card[hidden]{display:none}
+    .registry-card:hover{border-color:rgba(10,10,10,.25);background:#fafafa}
+    .registry-card-top{display:flex;align-items:flex-start;justify-content:space-between}
+    .registry-logo{display:grid;place-items:center;width:48px;height:48px;overflow:hidden;border:1px solid rgba(10,10,10,.08);border-radius:14px;background:#fff}
+    .registry-logo img{width:100%;height:100%;object-fit:contain}
+    .registry-live{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:#f5f5f5;color:#6b6b6b;font-size:12px;font-weight:500}
+    .registry-live span{width:6px;height:6px;border-radius:50%;background:#8fbf24}
+    .registry-card h3{margin:20px 0 0;font-size:19px;font-weight:600;line-height:1.2;letter-spacing:-.01em}
+    .registry-meta{margin:6px 0 0;color:#a1a1a1;font-size:13px}
+    .registry-desc{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;line-clamp:3;overflow:hidden;flex:1;margin:14px 0 0;color:#6b6b6b;font-size:15px;line-height:1.5}
+    .registry-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:20px}
+    .registry-tags span{padding:3px 10px;border:1px solid rgba(10,10,10,.1);border-radius:999px;color:#6b6b6b;font-size:12px;font-weight:500}
+</style>

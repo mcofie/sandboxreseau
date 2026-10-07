@@ -1,0 +1,59 @@
+---
+interface Props {
+    /** `answer` may contain inline links (rendered as HTML); `icon` is an optional 16×16 SVG path. */
+    items: { question: string; answer: string; icon?: string }[];
+    idPrefix: string;
+}
+
+const { items, idPrefix } = Astro.props;
+---
+
+<div class="faq-list">
+    {items.map((item, index) => (
+        <div class:list={['faq-item', item.icon && 'has-icon']}>
+            <h3>
+                <button type="button" class="faq-question" aria-expanded="false" aria-controls={`${idPrefix}-${index}`} data-faq-toggle>
+                    <span class="faq-question-label">
+                        {item.icon && <svg viewBox="0 0 16 16" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d={item.icon} /></svg>}
+                        <span>{item.question}</span>
+                    </span>
+                    <svg class="faq-plus" viewBox="0 0 16 16" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M8 3v10M3 8h10" /></svg>
+                </button>
+            </h3>
+            <div class="faq-answer" id={`${idPrefix}-${index}`}>
+                <div><p set:html={item.answer} /></div>
+            </div>
+        </div>
+    ))}
+</div>
+
+<script>
+    // Delegated once on the document, so it survives view transitions without re-binding.
+    document.addEventListener('click', (event) => {
+        const button = (event.target as Element).closest('[data-faq-toggle]');
+        if (button) button.setAttribute('aria-expanded', String(button.getAttribute('aria-expanded') !== 'true'));
+    });
+</script>
+
+<style>
+    .faq-list{overflow:hidden;border:1px solid rgba(10,10,10,.1);border-radius:16px;font-family:Inter,system-ui,sans-serif}
+    .faq-item{background:#fff;transition:background-color .2s}
+    .faq-item:hover{background:#f5f5f5}
+    .faq-item+.faq-item{border-top:1px solid rgba(10,10,10,.1)}
+    .faq-item h3{margin:0}
+    .faq-question{display:flex;align-items:center;justify-content:space-between;gap:24px;width:100%;padding:20px 32px;border:0;background:none;color:#0a0a0a;font:inherit;font-size:17px;font-weight:500;text-align:left;cursor:pointer}
+    .faq-question-label{display:flex;align-items:center;gap:14px}
+    .faq-question-label svg,.faq-plus{flex-shrink:0;color:#a1a1a1}
+    .faq-plus{transition:transform .3s cubic-bezier(.22,1,.36,1)}
+    .faq-question[aria-expanded="true"] .faq-plus{transform:rotate(45deg)}
+    .faq-answer{display:grid;grid-template-rows:0fr;transition:grid-template-rows .3s cubic-bezier(.22,1,.36,1)}
+    .faq-answer>div{overflow:hidden}
+    .faq-answer p{max-width:70ch;margin:0;padding:0 32px 24px;color:#6b6b6b;font-size:16px;line-height:1.55;opacity:0;transition:opacity .3s}
+    .has-icon .faq-answer p{padding-left:66px}
+    .faq-answer p :global(a){color:#0a0a0a;text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(10,10,10,.3)}
+    .faq-answer p :global(a:hover){text-decoration-color:#0a0a0a}
+    .faq-item:has([aria-expanded="true"]) .faq-answer{grid-template-rows:1fr}
+    .faq-item:has([aria-expanded="true"]) .faq-answer p{opacity:1}
+    @media(prefers-reduced-motion:reduce){.faq-answer,.faq-answer p,.faq-plus{transition:none}}
+    @media(max-width:639px){.faq-question{padding:20px 24px;font-size:16px}.faq-answer p,.has-icon .faq-answer p{padding:0 24px 20px}}
+</style>

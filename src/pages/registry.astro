@@ -1,471 +1,172 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import registry from '../data/registry.json'; // Force reload registry data 8
+import registry from '../data/registry.json';
+import RegistryCard from '../components/RegistryCard.astro';
 
-const headerSubtitle = "Ecosystem Directory";
+const PAGE_SIZE = 12;
 
-const industries = ['All', ...new Set(registry.map(item => item.industry))];
-const totalCount = registry.length;
-const industryCount = new Set(registry.map(item => item.industry)).size;
-const foundedYears = registry.map(r => parseInt(r.founded)).sort();
-const yearRange = `${foundedYears[0]}–${foundedYears[foundedYears.length - 1]}`;
-const locationSet = new Set(registry.map(r => r.location));
-
-// Color map for industry badges
-const industryColors: Record<string, string> = {
-    'Tech': '#0ea5e9',
-    'Fintech': '#10b981',
-    'Software': '#8b5cf6',
-    'Creative': '#f59e0b',
-    'Social': '#ec4899',
-    'Marketplace': '#f97316',
-    'Logistics': '#14b8a6',
-};
+// Industries ordered by how many builders they have, so the busiest filters come first.
+const industryCounts = registry.reduce<Record<string, number>>((counts, company) => {
+    counts[company.industry] = (counts[company.industry] ?? 0) + 1;
+    return counts;
+}, {});
+const industries = Object.keys(industryCounts).sort((a, b) => industryCounts[b] - industryCounts[a]);
 ---
 
-<Layout 
-    title="Registry | Sandbox Réseau" 
+<Layout
+    title="Registry | Sandbox Réseau"
     description="Discover the products, startups, and organizations building in the Sandbox Réseau ecosystem. A curated directory of builders from Accra and beyond."
-    headerSubtitle={headerSubtitle}
 >
-    <!-- Hero Header -->
-    <section class="border-b border-[var(--rule)]">
-        <div class="mx-auto max-w-[1100px] px-4 py-20 md:py-32 text-center">
-            <span class="inline-block w-max border-y border-[var(--rule)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-[.2em] text-[var(--muted)] mb-6 animate-enter">
-                The Index
-            </span>
-            <h1 class="font-serif text-5xl sm:text-7xl md:text-8xl leading-[.85] tracking-tighter mb-8 animate-enter">
-                Ecosystem Registry.
-            </h1>
-            <p class="mx-auto max-w-2xl text-[var(--muted)] text-base md:text-xl leading-relaxed font-serif animate-enter mb-12">
-                A curated directory of the products, startups, and organizations connected to the Sandbox Réseau community. All builder-led. All shipping.
-            </p>
+    <main class="registry-page">
+        <section class="registry-head" aria-labelledby="registry-title">
+            <span class="registry-pill"><span class="registry-dot" aria-hidden="true"></span>Registry · {registry.length} builders · {industries.length} industries</span>
+            <h1 id="registry-title">The builder registry.</h1>
+            <p>A curated directory of the products, startups, and organizations connected to the Sandbox Réseau community. All builder-led. All shipping.</p>
+        </section>
 
-            <!-- Stats Cluster -->
-            <div class="flex flex-wrap items-center justify-center gap-12 md:gap-20 animate-enter">
-                <div class="text-center">
-                    <div class="font-serif text-4xl md:text-5xl tracking-tight">{totalCount}</div>
-                    <div class="text-[10px] font-bold uppercase tracking-widest text-[var(--muted)] mt-2">Entries</div>
-                </div>
-                <div class="text-center">
-                    <div class="font-serif text-4xl md:text-5xl tracking-tight">{industryCount}</div>
-                    <div class="text-[10px] font-bold uppercase tracking-widest text-[var(--muted)] mt-2">Industries</div>
-                </div>
-                <div class="text-center">
-                    <div class="font-serif text-4xl md:text-5xl tracking-tight">{yearRange}</div>
-                    <div class="text-[10px] font-bold uppercase tracking-widest text-[var(--muted)] mt-2">Founded</div>
+        <section class="registry-body" aria-label="Builders">
+            <div class="registry-toolbar">
+                <label class="registry-search">
+                    <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M7 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zM14 14l-3.5-3.5" /></svg>
+                    <span class="sr-only">Search the registry</span>
+                    <input type="search" placeholder="Search builders, tags…" autocomplete="off" data-registry-search />
+                </label>
+                <div class="registry-filters" role="group" aria-label="Filter by industry">
+                    <button type="button" class="registry-chip" aria-pressed="true" data-registry-filter="All">All <span>{registry.length}</span></button>
+                    {industries.map((industry) => (
+                        <button type="button" class="registry-chip" aria-pressed="false" data-registry-filter={industry}>{industry} <span>{industryCounts[industry]}</span></button>
+                    ))}
                 </div>
             </div>
-        </div>
-    </section>
 
-    <!-- Sticky Control Bar -->
-    <section class="registry-toolbar sticky top-[44px] z-20 border-b border-[var(--rule)] bg-[var(--paper)]" id="registryToolbar">
-        <div class="mx-auto max-w-[1100px] px-4 py-3">
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
-                <!-- Search -->
-                <div class="w-full md:w-72">
-                    <div class="relative">
-                        <input type="text" id="companySearch" placeholder="Search entries..." aria-label="Search registry"
-                            class="search-input w-full rounded border border-[var(--rule)] bg-[var(--paper)] px-4 py-2.5 text-sm focus:border-[var(--accent)] outline-none transition-colors" />
-                        <div class="absolute right-3 top-3 text-[var(--muted)] pointer-events-none">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" /></svg>
-                        </div>
-                    </div>
-                </div>
+            <p class="registry-count" aria-live="polite" data-registry-count>Showing {Math.min(PAGE_SIZE, registry.length)} of {registry.length}</p>
 
-                <div class="flex items-center gap-4">
-                    <!-- Result Count -->
-                    <span id="resultCount" class="text-[10px] font-bold uppercase tracking-widest text-[var(--muted)] whitespace-nowrap">
-                        {totalCount} entries
-                    </span>
-
-                    <!-- Filters: Scrollable on Mobile -->
-                    <div class="flex overflow-x-auto pb-1 md:pb-0 hide-scrollbar">
-                        <div class="flex gap-1.5 whitespace-nowrap">
-                            {industries.map((industry) => (
-                                <button 
-                                    class={`filter-chip rounded-full border border-[var(--rule)] px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider transition-all ${industry === 'All' ? 'active bg-[var(--ink)] text-[var(--paper)] border-[var(--ink)]' : 'bg-[var(--paper)] text-[var(--muted)] hover:border-[var(--ink)] hover:text-[var(--ink)]'}`}
-                                    data-filter={industry}
-                                >
-                                    {industry}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-                </div>
+            <div class="registry-grid" data-registry-grid data-page-size={PAGE_SIZE}>
+                {registry.map((company, index) => (
+                    <RegistryCard
+                        company={company}
+                        hidden={index >= PAGE_SIZE}
+                        data-industry={company.industry}
+                        data-search={[company.name, company.description, company.industry, company.location, ...company.tags].join(' ').toLowerCase()}
+                    />
+                ))}
             </div>
-        </div>
-    </section>
 
-    <!-- Main Content Grid -->
-    <main class="mx-auto max-w-[1100px] px-4 py-16 md:py-24">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="companyGrid">
-            {registry.map((company, i) => {
-                const color = industryColors[company.industry] || '#6B7280';
-                return (
-                    <a href={`/registry/${company.id}`}
-                       class="company-card group relative flex flex-col rounded border border-[var(--rule)] bg-[var(--paper)] p-5 transition-all duration-300 animate-enter"
-                       data-industry={company.industry} 
-                       data-tags={company.tags.join(',')}
-                       data-name={company.name.toLowerCase()}
-                       data-desc={company.description.toLowerCase()}>
-                        
-                        <!-- Top Row: Logo + Name + Industry -->
-                        <div class="flex items-start gap-4 mb-4">
-                            <div class="company-logo w-11 h-11 rounded-lg border border-[var(--rule)] flex items-center justify-center overflow-hidden shrink-0 transition-all duration-300"
-                                 style={`background: ${color}12; border-color: ${color}30`}>
-                                {(company.logo.startsWith('http') || company.logo.startsWith('/') || company.logo.startsWith('assets/') || company.logo.includes('.')) 
-                                    ? <img src={company.logo.startsWith('assets/') ? `/${company.logo}` : company.logo} alt={`${company.name} Logo`} class="w-full h-full object-contain" />
-                                    : <span class="font-serif text-sm font-bold select-none" style={`color: ${color}`}>{company.logo}</span>
-                                }
-                            </div>
-                            <div class="flex-1 min-w-0">
-                                <div class="flex items-center gap-2 flex-wrap">
-                                    <h3 class="name font-serif text-lg font-bold leading-tight group-hover:accent-text transition-colors">{company.name}</h3>
-                                    <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[8px] font-bold uppercase tracking-widest"
-                                          style={`background: ${color}12; color: ${color}`}>
-                                        {company.industry}
-                                    </span>
-                                </div>
-                                <div class="flex items-center gap-2 mt-1">
-                                    <span class="text-[10px] text-[var(--muted)]">{company.location}</span>
-                                    <span class="w-0.5 h-0.5 rounded-full bg-[var(--muted)]"></span>
-                                    <span class="text-[10px] text-[var(--muted)]">Est. {company.founded}</span>
-                                    {company.status === 'Live' && (
-                                        <span class="inline-flex items-center gap-1 text-[9px] font-bold text-emerald-600">
-                                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                                            Live
-                                        </span>
-                                    )}
-                                </div>
-                            </div>
-                        </div>
+            <div class="registry-empty" hidden data-registry-empty>
+                <h2>No builders found.</h2>
+                <p>Try a different search or industry.</p>
+                <button type="button" data-registry-clear>Clear filters</button>
+            </div>
 
-                        <!-- Description -->
-                        <p class="description text-[13px] text-[var(--muted)] leading-relaxed mb-4 flex-1">
-                            {company.description}
-                        </p>
+            <div class="registry-more" hidden={registry.length <= PAGE_SIZE} data-registry-more-wrap>
+                <button type="button" data-registry-more>Load more builders</button>
+            </div>
+        </section>
 
-                        <!-- Footer: Tags + CTA -->
-                        <div class="flex items-center justify-between gap-3 pt-3 border-t border-[var(--rule)]/10">
-                            <div class="flex flex-wrap gap-1.5">
-                                {company.tags.map(tag => (
-                                    <span class="tag-chip px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider bg-[color:color-mix(in_oklab,var(--paper)_92%,var(--ink)_8%)] text-[var(--muted)]">
-                                        {tag}
-                                    </span>
-                                ))}
-                            </div>
-                            <span class="cta-arrow text-[10px] font-bold uppercase tracking-widest accent-text whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
-                                Profile →
-                            </span>
-                        </div>
-                    </a>
-                );
-            })}
-        </div>
-        
-        <!-- Empty State -->
-        <div id="emptyState" class="hidden text-center py-20 border-2 border-dashed border-[var(--rule)]/10 rounded-xl">
-            <div class="text-4xl mb-4">🔍</div>
-            <h3 class="font-serif text-xl mb-1">No results found</h3>
-            <p class="text-[var(--muted)] text-sm">Try adjusting your search or filter to find what you're looking for.</p>
-            <button id="clearFilters" class="mt-4 text-xs font-bold uppercase tracking-widest underline accent-text">Clear all filters</button>
-        </div>
-
-        <!-- Pagination -->
-        <div id="registryPagination"></div>
-
-        <!-- Submit CTA -->
-        <section class="mt-16 mb-8 animate-enter">
-            <div class="relative overflow-hidden rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_95%,var(--ink)_5%)] p-8 md:p-12">
-                <div class="absolute inset-0 hatch opacity-[0.02] pointer-events-none"></div>
-                <div class="relative z-10 grid grid-cols-1 md:grid-cols-[1fr_auto] gap-6 items-center">
-                    <div>
-                        <h3 class="font-serif text-2xl md:text-3xl tracking-tight mb-2">Building something?</h3>
-                        <p class="text-[var(--muted)] text-sm md:text-base leading-relaxed max-w-lg">
-                            If you're part of the Sandbox Réseau community and shipping a product, you belong here. Drop your project in <span class="font-bold text-[var(--ink)]">#show-your-work</span> on Discord and we'll add you to the registry.
-                        </p>
-                    </div>
-                    <a href="https://discord.gg/RMcBDRrV7x" target="_blank" rel="noreferrer"
-                       class="inline-flex items-center gap-3 rounded bg-[#5865F2] px-6 py-3 text-sm font-bold text-white uppercase tracking-widest hover:bg-[#4752C4] transition-all hover:shadow-[0_0_30px_rgba(88,101,242,0.3)] whitespace-nowrap self-start md:self-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 127.14 96.36" fill="currentColor" class="w-4 h-4">
-                            <path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.11,77.11,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22c2.36-24.44-2.85-48.47-18.9-72.15ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/>
-                        </svg>
-                        Join Discord
-                    </a>
-                </div>
+        <section class="registry-cta" aria-labelledby="registry-cta-title">
+            <div class="registry-cta-card">
+                <h2 id="registry-cta-title">Building something?</h2>
+                <p>If you’re part of the Sandbox Réseau community and shipping a product, you belong here. Drop your project in <strong>#show-your-work</strong> on Discord and we’ll add you to the registry.</p>
+                <a class="registry-cta-button" href="https://discord.gg/RMcBDRrV7x" target="_blank" rel="noreferrer">
+                    Join the Discord
+                    <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5" /></svg>
+                </a>
             </div>
         </section>
     </main>
 </Layout>
 
-<style>
-    .filter-chip.active {
-        background-color: var(--ink);
-        color: var(--paper);
-        border-color: var(--ink);
-    }
+<script>
+    function initRegistry() {
+        const grid = document.querySelector<HTMLElement>('[data-registry-grid]');
+        if (!grid) return;
 
-    /* Card hover effects */
-    .company-card {
-        cursor: pointer;
-    }
-    .company-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 12px 40px -12px rgba(0, 0, 0, 0.12);
-        border-color: var(--accent);
-    }
+        const cards = Array.from(grid.querySelectorAll<HTMLElement>('.registry-card'));
+        const search = document.querySelector<HTMLInputElement>('[data-registry-search]');
+        const chips = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-registry-filter]'));
+        const count = document.querySelector<HTMLElement>('[data-registry-count]');
+        const empty = document.querySelector<HTMLElement>('[data-registry-empty]');
+        const moreWrap = document.querySelector<HTMLElement>('[data-registry-more-wrap]');
+        const pageSize = Number(grid.dataset.pageSize) || 12;
 
-    .company-card:hover .company-logo {
-        transform: scale(1.05);
-    }
+        let filter = 'All';
+        let query = '';
+        let limit = pageSize;
 
-    /* Toolbar shadow on scroll */
-    .registry-toolbar {
-        transition: box-shadow 0.3s ease;
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-    }
-    .registry-toolbar.scrolled {
-        box-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.08);
-    }
-</style>
+        const render = () => {
+            const matches = cards.filter((card) =>
+                (filter === 'All' || card.dataset.industry === filter) && (!query || card.dataset.search?.includes(query)));
+            const shown = new Set(matches.slice(0, limit));
 
-<script is:inline>
-    (function() {
-        const ITEMS_PER_PAGE = 12;
-
-        // Native debounce
-        function debounce(fn, ms) {
-            let timer;
-            return function() {
-                clearTimeout(timer);
-                timer = setTimeout(() => fn.apply(this, arguments), ms);
-            };
-        }
-
-        const searchInput = document.getElementById('companySearch');
-        const companyGrid = document.getElementById('companyGrid');
-        const emptyState = document.getElementById('emptyState');
-        const paginationContainer = document.getElementById('registryPagination');
-        const cards = Array.from(document.querySelectorAll('.company-card'));
-        const filterChips = document.querySelectorAll('.filter-chip');
-        const clearBtn = document.getElementById('clearFilters');
-        const resultCount = document.getElementById('resultCount');
-        const toolbar = document.getElementById('registryToolbar');
-        const totalCount = cards.length;
-
-        let currentFilter = 'All';
-        let currentSearch = '';
-        let currentPage = 1;
-
-        function getFilteredCards() {
-            return cards.filter(card => {
-                const name = card.getAttribute('data-name') || '';
-                const desc = card.getAttribute('data-desc') || '';
-                const tags = (card.getAttribute('data-tags') || '').toLowerCase();
-                const industry = card.getAttribute('data-industry') || '';
-
-                const matchesSearch = !currentSearch || 
-                    name.includes(currentSearch) || 
-                    desc.includes(currentSearch) || 
-                    tags.includes(currentSearch);
-                
-                const matchesFilter = currentFilter === 'All' || industry === currentFilter;
-
-                return matchesSearch && matchesFilter;
-            });
-        }
-
-        function isFiltering() {
-            return currentSearch !== '' || currentFilter !== 'All';
-        }
-
-        const updateDisplay = () => {
-            const filtered = getFilteredCards();
-            const visibleCount = filtered.length;
-
-            if (isFiltering()) {
-                // When searching/filtering: show all matching, no pagination
-                cards.forEach(card => card.classList.add('hidden'));
-                filtered.forEach(card => card.classList.remove('hidden'));
-                if (paginationContainer) paginationContainer.innerHTML = '';
-            } else {
-                // Paginated view
-                const totalPages = Math.ceil(visibleCount / ITEMS_PER_PAGE);
-                if (currentPage > totalPages) currentPage = totalPages || 1;
-
-                const start = (currentPage - 1) * ITEMS_PER_PAGE;
-                const end = start + ITEMS_PER_PAGE;
-
-                cards.forEach(card => card.classList.add('hidden'));
-                filtered.slice(start, end).forEach((card, i) => {
-                    card.classList.remove('hidden');
-                    // Re-trigger entrance animation
-                    card.classList.remove('visible');
-                    setTimeout(() => card.classList.add('visible'), i * 50);
-                });
-
-                renderPagination(totalPages, visibleCount);
-            }
-
-            // Update count
-            if (resultCount) {
-                if (!isFiltering()) {
-                    const start = (currentPage - 1) * ITEMS_PER_PAGE + 1;
-                    const end = Math.min(currentPage * ITEMS_PER_PAGE, visibleCount);
-                    resultCount.textContent = start + '–' + end + ' of ' + visibleCount + ' entries';
-                } else {
-                    resultCount.textContent = visibleCount + ' of ' + totalCount;
-                }
-            }
-
-            if (visibleCount === 0) {
-                companyGrid?.classList.add('hidden');
-                emptyState?.classList.remove('hidden');
-                if (paginationContainer) paginationContainer.innerHTML = '';
-            } else {
-                companyGrid?.classList.remove('hidden');
-                emptyState?.classList.add('hidden');
-            }
+            cards.forEach((card) => { card.hidden = !shown.has(card); });
+            chips.forEach((chip) => chip.setAttribute('aria-pressed', String(chip.dataset.registryFilter === filter)));
+            if (count) count.textContent = matches.length ? `Showing ${shown.size} of ${matches.length}` : '';
+            if (empty) empty.hidden = matches.length > 0;
+            if (moreWrap) moreWrap.hidden = matches.length <= limit;
         };
 
-        function renderPagination(totalPages, totalItems) {
-            if (!paginationContainer || totalPages <= 1) {
-                if (paginationContainer) paginationContainer.innerHTML = '';
-                return;
-            }
-
-            const maxVisible = 5;
-            let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
-            let endPage = Math.min(totalPages, startPage + maxVisible - 1);
-            if (endPage - startPage + 1 < maxVisible) {
-                startPage = Math.max(1, endPage - maxVisible + 1);
-            }
-
-            let html = '<nav class="flex items-center justify-center gap-2 pt-12 pb-4" aria-label="Registry pagination">';
-
-            // Prev
-            html += '<button ' + (currentPage === 1 ? 'disabled' : '') + ' data-page="' + (currentPage - 1) + '" class="pagination-btn inline-flex items-center gap-1.5 px-4 py-2.5 rounded border text-[11px] font-bold uppercase tracking-widest transition-all ' + (currentPage === 1 ? 'border-[var(--rule)]/30 text-[var(--muted)]/40 cursor-not-allowed' : 'border-[var(--rule)] text-[var(--muted)] hover:border-[var(--ink)] hover:text-[var(--ink)]') + '">';
-            html += '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg>Prev</button>';
-
-            // First + ellipsis
-            if (startPage > 1) {
-                html += pgBtn(1);
-                if (startPage > 2) html += '<span class="px-1 text-[var(--muted)]/40 text-sm select-none">…</span>';
-            }
-
-            for (let i = startPage; i <= endPage; i++) {
-                html += pgBtn(i);
-            }
-
-            // Last + ellipsis
-            if (endPage < totalPages) {
-                if (endPage < totalPages - 1) html += '<span class="px-1 text-[var(--muted)]/40 text-sm select-none">…</span>';
-                html += pgBtn(totalPages);
-            }
-
-            // Next
-            html += '<button ' + (currentPage === totalPages ? 'disabled' : '') + ' data-page="' + (currentPage + 1) + '" class="pagination-btn inline-flex items-center gap-1.5 px-4 py-2.5 rounded border text-[11px] font-bold uppercase tracking-widest transition-all ' + (currentPage === totalPages ? 'border-[var(--rule)]/30 text-[var(--muted)]/40 cursor-not-allowed' : 'border-[var(--rule)] text-[var(--muted)] hover:border-[var(--ink)] hover:text-[var(--ink)]') + '">';
-            html += 'Next<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>';
-
-            html += '</nav>';
-
-            // Showing counter
-            const startItem = (currentPage - 1) * ITEMS_PER_PAGE + 1;
-            const endItem = Math.min(currentPage * ITEMS_PER_PAGE, totalItems);
-            html += '<p class="text-center text-[11px] font-bold uppercase tracking-widest text-[var(--muted)]/60 pb-2">Showing ' + startItem + '–' + endItem + ' of ' + totalItems + '</p>';
-
-            paginationContainer.innerHTML = html;
-
-            // Attach click handlers
-            paginationContainer.querySelectorAll('.pagination-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const page = parseInt(btn.getAttribute('data-page'));
-                    if (page && page >= 1 && page <= totalPages) {
-                        currentPage = page;
-                        updateDisplay();
-                        // Scroll to grid
-                        if (toolbar) {
-                            toolbar.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        }
-                    }
-                });
-            });
-        }
-
-        function pgBtn(num) {
-            const isActive = num === currentPage;
-            return '<button data-page="' + num + '" class="pagination-btn w-10 h-10 rounded border text-sm font-bold transition-all ' + (isActive ? 'bg-[var(--ink)] text-[var(--paper)] border-[var(--ink)]' : 'border-[var(--rule)] text-[var(--muted)] hover:border-[var(--ink)] hover:text-[var(--ink)]') + '"' + (isActive ? ' aria-current="page"' : '') + '>' + num + '</button>';
-        }
-
-        // Search with native debounce
-        const handleSearch = debounce((e) => {
-            currentSearch = e.target.value.toLowerCase().trim();
-            currentPage = 1;
-            updateDisplay();
-        }, 150);
-
-        searchInput?.addEventListener('input', handleSearch);
-
-        // Filter chips
-        filterChips.forEach(chip => {
-            chip.addEventListener('click', () => {
-                filterChips.forEach(c => {
-                    c.classList.remove('active', 'bg-[var(--ink)]', 'text-[var(--paper)]', 'border-[var(--ink)]');
-                });
-                chip.classList.add('active', 'bg-[var(--ink)]', 'text-[var(--paper)]', 'border-[var(--ink)]');
-                
-                currentFilter = chip.getAttribute('data-filter') || 'All';
-                currentPage = 1;
-                updateDisplay();
-            });
+        search?.addEventListener('input', () => {
+            query = search.value.trim().toLowerCase();
+            limit = pageSize;
+            render();
         });
-
-        // Clear filters
-        clearBtn?.addEventListener('click', () => {
-            if (searchInput) searchInput.value = '';
-            currentSearch = '';
-            currentFilter = 'All';
-            currentPage = 1;
-            
-            filterChips.forEach(c => {
-                c.classList.remove('active', 'bg-[var(--ink)]', 'text-[var(--paper)]', 'border-[var(--ink)]');
-                if (c.getAttribute('data-filter') === 'All') {
-                    c.classList.add('active', 'bg-[var(--ink)]', 'text-[var(--paper)]', 'border-[var(--ink)]');
-                }
-            });
-            
-            updateDisplay();
+        chips.forEach((chip) => chip.addEventListener('click', () => {
+            filter = chip.dataset.registryFilter || 'All';
+            limit = pageSize;
+            render();
+        }));
+        document.querySelector('[data-registry-more]')?.addEventListener('click', () => {
+            limit += pageSize;
+            render();
         });
+        document.querySelector('[data-registry-clear]')?.addEventListener('click', () => {
+            if (search) search.value = '';
+            query = '';
+            filter = 'All';
+            limit = pageSize;
+            render();
+        });
+    }
 
-        // Toolbar scroll shadow
-        if (toolbar) {
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 200) {
-                    toolbar.classList.add('scrolled');
-                } else {
-                    toolbar.classList.remove('scrolled');
-                }
-            }, { passive: true });
-        }
-
-        // Entrance animations
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry, i) => {
-                if (entry.isIntersecting) {
-                    setTimeout(() => {
-                        entry.target.classList.add('visible');
-                    }, (i % 6) * 60);
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.05 });
-
-        document.querySelectorAll('.animate-enter').forEach(el => observer.observe(el));
-
-        // Initial paginated render
-        updateDisplay();
-    })();
+    // Elements are replaced on each navigation, so binding per page load doesn't accumulate listeners.
+    document.addEventListener('astro:page-load', initRegistry);
 </script>
+
+<style>
+    .registry-page{font-family:Inter,system-ui,sans-serif;color:#0a0a0a}
+    .registry-head{max-width:1040px;margin:0 auto;padding:152px 32px 0}
+    .registry-pill{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border:1px solid rgba(10,10,10,.1);border-radius:999px;color:#6b6b6b;font-size:13px;font-weight:500}
+    .registry-dot{width:7px;height:7px;border-radius:50%;background:#8fbf24}
+    .registry-head h1{margin:24px 0 0;font-size:clamp(2.5rem,1.6rem + 3vw,4rem);font-weight:600;line-height:1.02;letter-spacing:-.03em}
+    .registry-head p{max-width:50ch;margin:20px 0 0;color:#6b6b6b;font-size:17px;line-height:1.5}
+    .registry-body{max-width:1040px;margin:0 auto;padding:56px 32px 0}
+    .registry-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:16px}
+    .registry-search{display:flex;align-items:center;gap:10px;flex:1 1 260px;max-width:340px;height:44px;padding:0 18px;border:1px solid rgba(10,10,10,.1);border-radius:999px;color:#a1a1a1;transition:border-color .2s}
+    .registry-search:focus-within{border-color:rgba(10,10,10,.3)}
+    .registry-search input{flex:1;min-width:0;border:0;background:transparent;color:#0a0a0a;font:inherit;font-size:15px;outline:none}
+    .registry-search input::placeholder{color:#a1a1a1}
+    .registry-filters{display:flex;flex-wrap:wrap;gap:8px}
+    .registry-chip{display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 14px;border:1px solid rgba(10,10,10,.1);border-radius:999px;background:#fff;color:#6b6b6b;font:inherit;font-size:14px;font-weight:500;cursor:pointer;transition:border-color .2s,background-color .2s,color .2s}
+    .registry-chip span{color:#a1a1a1;font-size:12px;font-variant-numeric:tabular-nums}
+    .registry-chip:hover{border-color:rgba(10,10,10,.3);color:#0a0a0a}
+    .registry-chip[aria-pressed="true"]{border-color:#0a0a0a;background:#0a0a0a;color:#fff}
+    .registry-chip[aria-pressed="true"] span{color:rgba(255,255,255,.6)}
+    .registry-count{min-height:1.4em;margin:28px 0 16px;color:#a1a1a1;font-size:14px}
+    .registry-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .registry-empty{padding:72px 24px;border:1px dashed rgba(10,10,10,.15);border-radius:28px;text-align:center}
+    .registry-empty h2{margin:0;font-size:22px;font-weight:600}
+    .registry-empty p{margin:8px 0 0;color:#6b6b6b}
+    .registry-empty button,.registry-more button{height:44px;margin-top:24px;padding:0 24px;border:1px solid rgba(10,10,10,.1);border-radius:999px;background:#fff;color:#0a0a0a;font:inherit;font-size:15px;font-weight:600;cursor:pointer;transition:border-color .2s}
+    .registry-empty button:hover,.registry-more button:hover{border-color:rgba(10,10,10,.4)}
+    .registry-more{display:flex;justify-content:center;margin-top:24px}
+    .registry-more[hidden],.registry-empty[hidden]{display:none}
+    .registry-cta{max-width:1040px;margin:0 auto;padding:80px 32px 64px}
+    .registry-cta-card{display:flex;flex-direction:column;align-items:center;padding:72px 32px;border-radius:28px;background:#f5f5f5;text-align:center}
+    .registry-cta-card h2{margin:0;font-size:clamp(1.5rem,1.15rem + 1.5vw,2.25rem);font-weight:600;line-height:1.1;letter-spacing:-.015em}
+    .registry-cta-card p{max-width:50ch;margin:16px 0 0;color:#6b6b6b;font-size:17px;line-height:1.5}
+    .registry-cta-card strong{color:#0a0a0a;font-weight:600}
+    .registry-cta-button{display:inline-flex;align-items:center;gap:10px;height:48px;margin-top:32px;padding:0 28px;border-radius:999px;background:#0a0a0a;color:#fff;font-size:16px;font-weight:600;text-decoration:none;transition:background-color .2s,transform .2s}
+    .registry-cta-button:hover{background:rgba(10,10,10,.9)}.registry-cta-button:active{transform:scale(.99)}
+    @media(max-width:1023px){.registry-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:639px){.registry-head{padding:120px 24px 0}.registry-body{padding:40px 24px 0}.registry-search{max-width:none}.registry-filters{flex-wrap:nowrap;margin:0 -24px;padding:0 24px;overflow-x:auto;scrollbar-width:none}.registry-chip{flex-shrink:0}.registry-grid{grid-template-columns:1fr}.registry-cta{padding:64px 24px 48px}.registry-cta-card{padding:56px 24px}}
+</style>

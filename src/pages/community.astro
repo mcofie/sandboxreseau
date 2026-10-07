@@ -1,266 +1,207 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
-const headerSubtitle = "The Community";
+const discordInvite = 'https://discord.gg/RMcBDRrV7x';
 
-const discordInvite = "https://discord.gg/RMcBDRrV7x";
-
-const channels = [
-    { name: "show-your-work", desc: "Share what you're building. Screenshots, links, updates." },
-    { name: "feedback-wanted", desc: "Post your product, get honest feedback from builders." },
-    { name: "testing-pool", desc: "Need testers? The community is your first 50 users." },
-    { name: "funding-talk", desc: "Raising capital? Looking for investors? Discuss here." },
-    { name: "wins", desc: "Celebrate the build. First user, revenue, or hire." },
+const audience = [
+    'Founders and engineers building products in Ghana and West Africa',
+    'Designers, data people, indie makers, and the product-curious',
+    'Diaspora builders who want to stay connected to Accra’s ecosystem',
+    'Anyone with a builder’s mindset — beginner-friendly, curiosity is enough',
 ];
 
-const roles = [
-    { label: "Founder", color: "#EAB308", emoji: "🟡" },
-    { label: "Core Team", color: "#f3f3f3", emoji: "⚪" },
-    { label: "Moderator", color: "#22C55E", emoji: "🟢" },
-    { label: "Reverb Alumni", color: "#A855F7", emoji: "🟣" },
-    { label: "Edition Attendee", color: "#3B82F6", emoji: "🔵" },
-    { label: "Investor", color: "#14B8A6", emoji: "🟢" },
-    { label: "Builder", color: "#6B7280", emoji: "⚫" },
+const channels = [
+    { name: 'show-your-work', desc: 'Share what you’re building. Screenshots, links, updates.' },
+    { name: 'feedback-wanted', desc: 'Post your product, get honest feedback from builders.' },
+    { name: 'testing-pool', desc: 'Need testers? The community is your first 50 users.' },
+    { name: 'funding-talk', desc: 'Raising capital? Looking for investors? Discuss here.' },
+    { name: 'wins', desc: 'Celebrate the build. First user, revenue, or hire.' },
+];
+
+const pillars = [
+    { title: 'The meetups', desc: 'In-person editions in Accra. Builder demos, mini-talks, and open networking.', href: '/editions', cta: 'See past editions' },
+    { title: 'The Reverb', desc: 'Our podcast featuring builders from the community. Short episodes. No fluff.', href: '/podcast', cta: 'Listen now' },
+    { title: 'The Pitch', desc: 'Our pitch competition. 6–8 founders. One stage. Real judges.', href: '/the-pitch', cta: 'Learn more' },
 ];
 
 const values = [
-    "Build in public.",
-    "Be useful. Bring signal, not noise.",
-    "Be honest, not harsh.",
-    "What's shared here stays here.",
-    "One strike policy.",
+    'Build in public.',
+    'Be useful. Bring signal, not noise.',
+    'Be honest, not harsh.',
+    'What’s shared here stays here.',
+    'One strike policy.',
 ];
 
-const audience = [
-    "Founders and engineers building products in Ghana and West Africa",
-    "Designers, data people, indie makers, and the product-curious",
-    "Diaspora builders who want to stay connected to Accra's ecosystem",
-    "Anyone with a builder's mindset — beginner-friendly, curiosity is enough",
+const roles = [
+    { label: 'Founder', color: '#EAB308' },
+    { label: 'Core Team', color: '#d4d4d4' },
+    { label: 'Moderator', color: '#22C55E' },
+    { label: 'Reverb Alumni', color: '#A855F7' },
+    { label: 'Edition Attendee', color: '#3B82F6' },
+    { label: 'Investor', color: '#14B8A6' },
+    { label: 'Builder', color: '#6B7280' },
 ];
 ---
 
-<Layout 
-    title="Community | Sandbox Réseau" 
+<Layout
+    title="Community | Sandbox Réseau"
     description="Join the Sandbox Réseau Discord. Connect with builders, founders, and engineers in Accra and the diaspora. High-signal, no fluff."
-    headerSubtitle={headerSubtitle}
+    image="/assets/img/community-hero.jpg"
+    imageAlt="Members of the Sandbox Réseau community in Accra"
 >
-    <!-- Hero Section -->
-    <section class="border-b border-[var(--rule)]">
-        <div class="mx-auto max-w-[1100px] px-4 py-20 md:py-32 text-center">
-            <span
-                class="inline-block w-max border-y border-[var(--rule)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-[.2em] text-[var(--muted)] mb-6 animate-enter">
-                High-Signal, No Fluff
-            </span>
-            <h1 class="font-serif text-5xl sm:text-7xl md:text-8xl leading-[.85] tracking-tighter mb-8 animate-enter">
-                The Room is Open.
-            </h1>
-            <p class="mx-auto max-w-2xl text-[var(--muted)] text-base md:text-xl leading-relaxed font-serif animate-enter">
-                Sandbox Réseau is where Accra's builders connect, build in public, and hold each other accountable. Our community lives on Discord.
-            </p>
-            <div class="mt-10 flex flex-wrap items-center justify-center gap-4 animate-enter">
-                <a href={discordInvite} target="_blank" rel="noreferrer" id="hero-discord-cta"
-                    class="discord-cta inline-flex items-center gap-3 rounded bg-[#5865F2] px-7 py-3.5 text-sm font-bold text-white uppercase tracking-widest hover:bg-[#4752C4] transition-all hover:shadow-[0_0_30px_rgba(88,101,242,0.4)]">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 127.14 96.36" fill="currentColor" class="w-5 h-5">
-                        <path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.11,77.11,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22c2.36-24.44-2.85-48.47-18.9-72.15ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/>
-                    </svg>
-                    Join the Discord
-                </a>
-                <a href="#about" id="hero-learn-more"
-                    class="inline-flex items-center gap-2 rounded border border-[var(--rule)] px-6 py-3.5 text-sm font-bold uppercase tracking-widest hover:bg-[var(--ink)] hover:text-[var(--paper)] transition-all">
-                    Learn more <span class="text-lg leading-none">↓</span>
-                </a>
+    <main class="community-page">
+        <section class="community-hero" data-dark-hero aria-labelledby="community-title">
+            <div class="community-hero-frame">
+                <img src="/assets/img/community-hero.jpg" alt="" />
+                <div class="community-hero-copy">
+                    <span class="community-hero-pill"><span aria-hidden="true"></span>High-signal, no fluff</span>
+                    <h1 id="community-title">The room is open.</h1>
+                    <p>Sandbox Réseau is where Accra’s builders connect, build in public, and hold each other accountable. Our community lives on Discord.</p>
+                    <div class="community-hero-actions">
+                        <a class="community-white" href={discordInvite} target="_blank" rel="noreferrer">Join the Discord</a>
+                        <a class="community-glass" href="#inside">See what’s inside</a>
+                    </div>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Main: article stream -->
-    <main class="mx-auto max-w-[1100px] px-4 py-16 md:py-24" id="about">
-        <div class="grid grid-cols-1 gap-16 lg:grid-cols-[1fr_320px]">
-            <!-- Main Column -->
-            <div class="space-y-16">
-                <!-- Who It's For -->
-                <article class="prose-like animate-enter">
-                    <h3 class="mb-1 font-serif text-[28px] leading-tight tracking-[-.005em]">Who It's For</h3>
-                    <p class="text-neutral-600 mb-6">Built for builders, wherever you are.</p>
-                    <ul class="ml-5 list-disc font-sans space-y-2">
+        <div class="community-wrap">
+            <section class="community-split" aria-labelledby="community-who">
+                <div class="community-card community-card-grey">
+                    <h2 id="community-who">Built for builders, wherever you are.</h2>
+                    <ul class="community-audience">
                         {audience.map((item) => (
-                            <li>{item}</li>
+                            <li>
+                                <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3.5 8.5 3 3 6-7" /></svg>
+                                {item}
+                            </li>
                         ))}
                     </ul>
-                </article>
-
-                <!-- Channels -->
-                <article class="prose-like animate-enter">
-                    <h3 class="mb-1 font-serif text-[28px] leading-tight">Inside the Server</h3>
-                    <p class="text-neutral-600 mb-6">Our channels are optimized for work and feedback.</p>
-                    
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        {channels.map((ch, i) => (
-                            <div class="channel-card group rounded border border-[var(--rule)] p-5 bg-[color:color-mix(in_oklab,var(--paper)_95%,var(--ink)_5%)] hover:border-[#5865F2] transition-all">
-                                <div class="flex items-center gap-2 mb-3">
-                                    <span class="text-[#5865F2] text-lg font-bold opacity-60 group-hover:opacity-100 transition-opacity">#</span>
-                                    <span class="font-bold text-[var(--ink)] tracking-wide">{ch.name}</span>
-                                </div>
-                                <p class="text-[14px] text-neutral-600 leading-relaxed m-0">{ch.desc}</p>
-                            </div>
-                        ))}
-                    </div>
-                </article>
-
-                <!-- Community Pillars -->
-                <article class="prose-like animate-enter">
-                    <h3 class="mb-1 font-serif text-[28px] leading-tight">The Pillars</h3>
-                    <p class="text-neutral-600 mb-6">How we interact both online and offline.</p>
-                    
-                    <div class="space-y-6">
-                        <div class="flex items-start gap-4 p-5 rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_95%,var(--ink)_5%)]">
-                            <div class="w-10 h-10 rounded-full border border-[var(--rule)] flex items-center justify-center shrink-0">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"/></svg>
-                            </div>
-                            <div>
-                                <h4 class="font-serif text-[18px] text-[var(--ink)] mb-1">Monthly Meetups</h4>
-                                <p class="text-[14px] text-neutral-600 mb-2">We meet monthly in Accra. Builder demos, mini-talks, and open networking.</p>
-                                <a href="/editions" class="text-[12px] font-bold uppercase tracking-widest text-[var(--ink)] hover:text-[var(--accent)] underline decoration-[var(--rule)] underline-offset-4">See past editions →</a>
-                            </div>
-                        </div>
-
-                        <div class="flex items-start gap-4 p-5 rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_95%,var(--ink)_5%)]">
-                            <div class="w-10 h-10 rounded-full border border-[var(--rule)] flex items-center justify-center shrink-0">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z"/></svg>
-                            </div>
-                            <div>
-                                <h4 class="font-serif text-[18px] text-[var(--ink)] mb-1">The Reverb</h4>
-                                <p class="text-[14px] text-neutral-600 mb-2">Our podcast featuring builders from the community. 5 minutes. No fluff.</p>
-                                <a href="/podcast" class="text-[12px] font-bold uppercase tracking-widest text-[var(--ink)] hover:text-[var(--accent)] underline decoration-[var(--rule)] underline-offset-4">Listen now →</a>
-                            </div>
-                        </div>
-
-                        <div class="flex items-start gap-4 p-5 rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_95%,var(--ink)_5%)]">
-                            <div class="w-10 h-10 rounded-full border border-[var(--rule)] flex items-center justify-center shrink-0">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/></svg>
-                            </div>
-                            <div>
-                                <h4 class="font-serif text-[18px] text-[var(--ink)] mb-1">The Pitch</h4>
-                                <p class="text-[14px] text-neutral-600 mb-2">Our pitch competition. 6–8 founders. One stage. Real judges.</p>
-                                <a href="/the-pitch" class="text-[12px] font-bold uppercase tracking-widest text-[var(--ink)] hover:text-[var(--accent)] underline decoration-[var(--rule)] underline-offset-4">Learn more →</a>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- The Rules -->
-                <article class="prose-like animate-enter">
-                    <h3 class="mb-1 font-serif text-[28px] leading-tight">The Code</h3>
-                    <p class="text-neutral-600 mb-6">How we operate and interact.</p>
-                    <div class="space-y-0 border-t border-[var(--rule)]/20">
-                        {values.map((v, i) => (
-                            <div class="flex items-center gap-4 py-4 border-b border-[var(--rule)]/20">
-                                <span class="text-[11px] font-bold text-[var(--muted)] tabular-nums w-6">0{i + 1}</span>
-                                <span class="font-serif text-[18px] text-[var(--ink)]">"{v}"</span>
-                            </div>
-                        ))}
-                    </div>
-                </article>
-            </div>
-
-            <!-- Right Rail -->
-            <div class="space-y-8 lg:sticky lg:top-24 lg:self-start">
-                
-                <!-- Roles Widget -->
-                <div class="rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_95%,var(--ink)_5%)] p-6 animate-enter">
-                    <h3 class="font-serif text-xl mb-4 pb-4 border-b border-[var(--rule)]">Server Roles</h3>
-                    <div class="flex flex-col gap-2 mb-6">
-                        {roles.map((role) => (
-                            <div class="flex items-center gap-3">
-                                <span class="w-2.5 h-2.5 rounded-full flex-shrink-0" style={`background: ${role.color}`}></span>
-                                <span class="font-bold text-[13px] text-[var(--ink)]">{role.label}</span>
-                            </div>
-                        ))}
-                    </div>
-                    <p class="text-[12px] text-neutral-500 leading-relaxed m-0 pb-2 border-b border-[var(--rule)]/20">
-                        Everyone joins as a Builder. Roles are earned through showing up, shipping, and contributing.
-                    </p>
                 </div>
+                <div class="community-card community-card-dark">
+                    <h2>The code.</h2>
+                    <p class="community-card-lede">How we operate and interact — online and in the room.</p>
+                    <ol class="community-values">
+                        {values.map((value, index) => (
+                            <li><span>{String(index + 1).padStart(2, '0')}</span>{value}</li>
+                        ))}
+                    </ol>
+                </div>
+            </section>
 
-                <!-- Right Rail CTA -->
-                <div class="rounded border border-[var(--rule)] hatch p-6 relative overflow-hidden group animate-enter bg-[color:color-mix(in_oklab,var(--paper)_90%,var(--ink)_10%)] text-center">
-                    <div class="relative z-10">
-                        <div class="w-12 h-12 mx-auto rounded-full bg-[#5865F2] flex items-center justify-center text-white mb-4 shadow-lg group-hover:scale-110 transition-transform">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 127.14 96.36" fill="currentColor" class="w-6 h-6">
-                                <path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.11,77.11,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22c2.36-24.44-2.85-48.47-18.9-72.15ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/>
-                            </svg>
-                        </div>
-                        <h4 class="font-serif text-xl mb-2 text-[var(--ink)]">Enter the Room</h4>
-                        <p class="text-[13px] text-neutral-600 mb-5 leading-relaxed">
-                            Start building in public and connect with the ecosystem today.
-                        </p>
-                        <a href={discordInvite} target="_blank" rel="noreferrer"
-                            class="block w-full rounded bg-[var(--ink)] py-3 text-xs font-bold uppercase tracking-widest text-[var(--paper)] hover:opacity-90 transition-opacity">
-                            Join Discord
+            <section class="community-section" id="inside" aria-labelledby="community-inside">
+                <h2 id="community-inside">Inside the server.</h2>
+                <p class="community-lede">Our channels are set up for work and feedback.</p>
+                <div class="community-channels">
+                    {channels.map((channel) => (
+                        <article>
+                            <h3><span aria-hidden="true">#</span>{channel.name}</h3>
+                            <p>{channel.desc}</p>
+                        </article>
+                    ))}
+                    <a class="community-channels-cta" href={discordInvite} target="_blank" rel="noreferrer">
+                        <span>Join the conversation</span>
+                        <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5" /></svg>
+                    </a>
+                </div>
+            </section>
+
+            <section class="community-section" aria-labelledby="community-pillars">
+                <h2 id="community-pillars">More than a server.</h2>
+                <p class="community-lede">How the community shows up offline and on air.</p>
+                <div class="community-pillars">
+                    {pillars.map((pillar, index) => (
+                        <a href={pillar.href}>
+                            <span class="community-number">{String(index + 1).padStart(2, '0')}</span>
+                            <h3>{pillar.title}</h3>
+                            <p>{pillar.desc}</p>
+                            <span class="community-link">{pillar.cta} →</span>
                         </a>
-                    </div>
+                    ))}
                 </div>
+            </section>
 
-            </div>
+            <section class="community-section" aria-labelledby="community-roles">
+                <div class="community-roles">
+                    <div>
+                        <h2 id="community-roles">Server roles.</h2>
+                        <p class="community-lede">Everyone joins as a Builder. Roles are earned through showing up, shipping, and contributing.</p>
+                    </div>
+                    <ul>
+                        {roles.map((role) => (
+                            <li><span style={`background:${role.color}`} aria-hidden="true"></span>{role.label}</li>
+                        ))}
+                    </ul>
+                </div>
+            </section>
+
+            <section class="community-cta" aria-labelledby="community-cta-title">
+                <h2 id="community-cta-title">Enter the room.</h2>
+                <p>Start building in public and connect with the ecosystem today.</p>
+                <a class="community-black" href={discordInvite} target="_blank" rel="noreferrer">
+                    Join the Discord
+                    <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5" /></svg>
+                </a>
+            </section>
         </div>
     </main>
 </Layout>
 
 <style>
-    /* Discord CTA glow pulse */
-    .discord-cta {
-        position: relative;
-    }
-    .discord-cta::before {
-        content: "";
-        position: absolute;
-        inset: -1px;
-        border-radius: inherit;
-        background: linear-gradient(135deg, #5865F2, #7B8AF9);
-        opacity: 0;
-        z-index: -1;
-        transition: opacity 0.3s ease;
-        filter: blur(12px);
-    }
-    .discord-cta:hover::before {
-        opacity: 0.5;
-    }
-
-    /* Channel card hover effect */
-    .channel-card {
-        transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
-    }
-    .channel-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 30px -12px rgba(88, 101, 242, 0.15);
-    }
+    .community-page{font-family:Inter,system-ui,sans-serif;color:#0a0a0a}
+    .community-hero{padding:16px 16px 0}
+    .community-hero-frame{position:relative;isolation:isolate;display:flex;align-items:flex-end;min-height:min(78vh,720px);max-width:1920px;margin:0 auto;overflow:hidden;border-radius:28px;background:#111;color:#fff}
+    .community-hero-frame>img{position:absolute;inset:0;z-index:-2;width:100%;height:100%;object-fit:cover}
+    .community-hero-frame::after{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(0,0,0,.45) 0%,rgba(0,0,0,.2) 40%,rgba(0,0,0,.75) 100%)}
+    .community-hero-copy{width:100%;max-width:1040px;margin:0 auto;padding:160px 32px 56px}
+    .community-hero-pill{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.15);color:rgba(255,255,255,.85);font-size:13px;font-weight:500;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+    .community-hero-pill span{width:7px;height:7px;border-radius:50%;background:#d3fa69}
+    .community-hero h1{margin:24px 0 0;font-size:clamp(3rem,1.8rem + 5vw,6rem);font-weight:600;line-height:.98;letter-spacing:-.04em}
+    .community-hero-copy>p{max-width:48ch;margin:20px 0 0;color:rgba(255,255,255,.8);font-size:17px;font-weight:500;line-height:1.5}
+    .community-hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+    .community-white,.community-glass{display:inline-flex;align-items:center;height:44px;padding:0 20px;border-radius:999px;font-size:15px;font-weight:600;text-decoration:none;transition:background-color .2s}
+    .community-white{background:#fff;color:#0a0a0a}
+    .community-white:hover{background:#d3fa69}
+    .community-glass{border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.1);color:#fff;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+    .community-glass:hover{background:rgba(255,255,255,.2)}
+    .community-wrap{max-width:1040px;margin:0 auto;padding:0 32px 64px}
+    .community-wrap h2{margin:0;font-size:clamp(1.5rem,1.15rem + 1.5vw,2.25rem);font-weight:600;line-height:1.1;letter-spacing:-.015em;text-wrap:balance}
+    .community-lede{max-width:48ch;margin:16px 0 0;color:#6b6b6b;font-size:17px;line-height:1.5}
+    .community-split{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding-top:96px}
+    .community-card{padding:56px;border-radius:28px}
+    .community-card-grey{background:#f5f5f5}
+    .community-card-dark{background:#111;color:#fff}
+    .community-card-lede{margin:16px 0 0;color:rgba(255,255,255,.65);font-size:16px;line-height:1.5}
+    .community-audience{display:grid;gap:16px;margin:32px 0 0;padding:0;list-style:none}
+    .community-audience li{display:flex;gap:12px;color:#6b6b6b;font-size:16px;line-height:1.5}
+    .community-audience svg{flex-shrink:0;margin-top:4px;color:#0a0a0a}
+    .community-values{display:grid;gap:4px;margin:28px 0 0;padding:0;list-style:none}
+    .community-values li{display:flex;align-items:baseline;gap:16px;padding:12px 0;border-top:1px solid rgba(255,255,255,.12);font-size:18px;font-weight:500}
+    .community-values li:first-child{border-top:0}
+    .community-values span{color:#d3fa69;font-size:13px;font-variant-numeric:tabular-nums}
+    .community-section{padding-top:112px}
+    .community-channels{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px}
+    .community-channels article,.community-channels-cta{padding:28px;border:1px solid rgba(10,10,10,.1);border-radius:28px}
+    .community-channels h3{margin:0;font-size:18px;font-weight:600}
+    .community-channels h3 span{margin-right:4px;color:#a1a1a1}
+    .community-channels p{margin:10px 0 0;color:#6b6b6b;font-size:15px;line-height:1.5}
+    .community-channels-cta{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;border-color:#0a0a0a;background:#0a0a0a;color:#fff;font-size:18px;font-weight:600;text-decoration:none;transition:background-color .2s}
+    .community-channels-cta:hover{background:#2a2a2a}
+    .community-pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px}
+    .community-pillars a{display:flex;flex-direction:column;padding:28px;border:1px solid rgba(10,10,10,.1);border-radius:28px;color:inherit;text-decoration:none;transition:border-color .3s,background-color .3s}
+    .community-pillars a:hover{border-color:rgba(10,10,10,.25);background:#fafafa}
+    .community-number{display:inline-flex;align-items:center;justify-content:center;align-self:flex-start;height:28px;padding:0 8px;border:1px solid rgba(10,10,10,.1);border-radius:999px;color:#6b6b6b;font-size:13px;font-weight:600;font-variant-numeric:tabular-nums}
+    .community-pillars h3{margin:20px 0 0;font-size:19px;font-weight:600}
+    .community-pillars p{flex:1;margin:8px 0 0;color:#6b6b6b;font-size:15px;line-height:1.5}
+    .community-link{margin-top:20px;font-size:14px;font-weight:600}
+    .community-roles{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:48px;padding:56px;border-radius:28px;background:#f5f5f5}
+    .community-roles ul{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
+    .community-roles li{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:#fff;font-size:14px;font-weight:500}
+    .community-roles li span{width:9px;height:9px;border-radius:50%}
+    .community-cta{display:flex;flex-direction:column;align-items:center;margin-top:112px;padding:72px 32px;border:1px solid rgba(10,10,10,.1);border-radius:28px;text-align:center}
+    .community-cta p{max-width:44ch;margin:16px 0 0;color:#6b6b6b;font-size:17px;line-height:1.5}
+    .community-black{display:inline-flex;align-items:center;gap:10px;height:48px;margin-top:32px;padding:0 28px;border-radius:999px;background:#0a0a0a;color:#fff;font-size:16px;font-weight:600;text-decoration:none;transition:background-color .2s}
+    .community-black:hover{background:rgba(10,10,10,.9)}
+    @media(max-width:1023px){.community-split,.community-roles{grid-template-columns:1fr}.community-channels,.community-pillars{grid-template-columns:repeat(2,1fr)}.community-roles{gap:28px}}
+    @media(max-width:639px){.community-hero{padding:12px 12px 0}.community-hero-frame{min-height:84svh}.community-hero-copy{padding:140px 24px 40px}.community-wrap{padding:0 24px 48px}.community-split{padding-top:64px}.community-card,.community-roles{padding:32px 24px}.community-section{padding-top:80px}.community-channels,.community-pillars{grid-template-columns:1fr}.community-cta{margin-top:80px;padding:56px 24px}}
 </style>
-
-<script is:inline>
-    (function() {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry, i) => {
-                if (entry.isIntersecting) {
-                    setTimeout(() => {
-                        entry.target.classList.add('visible');
-                    }, (i % 6) * 80);
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.animate-enter').forEach(el => observer.observe(el));
-
-        // Smooth scroll for "Learn more" link
-        const learnMore = document.getElementById('hero-learn-more');
-        if (learnMore) {
-            learnMore.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.getElementById('about');
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        }
-    })();
-</script>

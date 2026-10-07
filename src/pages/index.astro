@@ -1,313 +1,403 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import editions from '../data/editions.json';
-import gallery from '../data/gallery.json';
-import { Image } from 'astro:assets';
+import registry from '../data/registry.json';
+import reports from '../data/reports.json';
 import { fetchPodcastEpisodes } from '../lib/podcast';
+import PodcastGrid from '../components/PodcastGrid.astro';
+import FaqList from '../components/FaqList.astro';
 
-const nextEdition = editions.find(e => e.status === 'In Preparation') || editions[0];
-const galleryPreview = gallery.slice(0, 4);
-const podcastEpisodes = await fetchPodcastEpisodes();
-const latestEpisode = podcastEpisodes.length > 0 ? podcastEpisodes[0] : null;
+const nextEdition = editions.find((edition) => edition.status === 'In Preparation') || editions[0];
+const latestEpisodes = (await fetchPodcastEpisodes()).slice(0, 3);
+const editionCards = [...editions].sort((a, b) => b.no - a.no).map((edition) => {
+    const upcoming = edition.status === 'In Preparation';
+    return {
+        vol: String(edition.no).padStart(2, '0'),
+        name: upcoming ? 'Up next' : edition.title,
+        image: edition.image ? `/${edition.image}` : '/assets/img/RNBL3150.jpg',
+        caption: upcoming ? `${edition.date} · Accra. Details are being finalised — save your seat on Luma.` : `${edition.date} · ${edition.description}`,
+        href: upcoming ? edition.lumaUrl || 'https://luma.com/sandbox-reseau' : '/editions',
+        external: upcoming,
+    };
+});
+const featuredReport = reports.find((report) => report.status === 'available') ?? reports[0];
+// Every other report, shown as a list beside the featured one.
+const otherReports = reports.filter((report) => report !== featuredReport).slice(0, 4);
+const faqs = [
+    {
+        question: 'What is Sandbox Réseau?',
+        answer: 'A gathering in Accra for Africa’s founders, builders, and curious minds. Each edition mixes builder demos, mini-talks, and open networking — signal over noise, progress over polish.',
+        icon: 'M8 13.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11zM8 10.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5zM8 8h.01',
+    },
+    {
+        question: 'Who is it for?',
+        answer: 'Founders, engineers, designers, operators, and anyone curious about what’s being built across the continent. No credentials needed — come with a question, a rough prototype, or just an open mind.',
+        icon: 'M6 7.5a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM2.5 13a3.5 3.5 0 0 1 7 0M10.5 7.5a1.75 1.75 0 1 0 0-3.5M11.5 9.6a3.2 3.2 0 0 1 2 3',
+    },
+    {
+        question: 'When and where is the next edition?',
+        answer: `Vol. ${String(nextEdition.no).padStart(2, '0')} takes place on ${nextEdition.date} in Accra. The venue and timing are shared on the <a href="${nextEdition.lumaUrl || 'https://luma.com/sandbox-reseau'}" target="_blank" rel="noreferrer">Luma page</a>.`,
+        icon: 'M3 4.5h10v8.5H3zM3 7.5h10M5.5 3v3M10.5 3v3',
+    },
+    {
+        question: 'How do I get an invite?',
+        answer: 'Request your spot on <a href="https://luma.com/sandbox-reseau" target="_blank" rel="noreferrer">Luma</a>. We keep the room small so conversations stay good, so it’s worth registering early.',
+        icon: 'M2.5 5.5V4h11v1.5a1.5 1.5 0 0 0 0 3V12h-11V8.5a1.5 1.5 0 0 0 0-3zM9.5 4v8',
+    },
+    {
+        question: 'Can I demo what I’m building?',
+        answer: 'Yes — builder demos are the heart of every edition, and early prototypes are welcome. Share what you’re working on in the <a href="https://discord.gg/RMcBDRrV7x" target="_blank" rel="noreferrer">community Discord</a> to be considered for an upcoming edition.',
+        icon: 'M2.5 3h11v7.5h-11zM8 10.5V13M5.5 13h5M6.5 5.25 9.5 6.75l-3 1.5z',
+    },
+    {
+        question: 'What is The Pitch?',
+        answer: 'Our flagship pitch competition: 6–8 early-stage founders, one stage, real judges, and a live audience. It’s free to apply and free to attend. <a href="/the-pitch">Learn more</a>.',
+        icon: 'M8 2.5a2 2 0 0 0-2 2V8a2 2 0 1 0 4 0V4.5a2 2 0 0 0-2-2zM4.5 7.5a3.5 3.5 0 0 0 7 0M8 11v2.5',
+    },
+    {
+        question: 'How do I stay connected between editions?',
+        answer: 'Join the <a href="https://discord.gg/RMcBDRrV7x" target="_blank" rel="noreferrer">Discord</a> — it’s where builders in Accra and the diaspora share wins, ask for help, and keep each other accountable.',
+        icon: 'M2.5 3.5h11v7h-6l-3 2.5v-2.5h-2z',
+    },
+    {
+        question: 'I missed an edition. Where can I catch up?',
+        answer: 'Listen to <a href="/podcast">The Reverb</a>, browse the <a href="/gallery">gallery</a>, read the <a href="https://mcofie.substack.com/" target="_blank" rel="noreferrer">newsletter</a>, or revisit every <a href="/editions">past edition</a>.',
+        icon: 'M8 13.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11zM8 5v3l2 1.5',
+    },
+];
+const formatSlides = [
+    { label: 'Builder demos', image: '/assets/img/gallery-v3-5.jpg', alt: 'A builder showcasing a new prototype' },
+    { label: 'Mini-talks', image: '/assets/img/gallery-v4-5.jpg', alt: 'Founders sharing their builder journey' },
+    { label: 'Open Q&A', image: '/assets/img/gallery-v3-3.jpg', alt: 'An interactive Q&A session' },
+    { label: 'Open networking', image: '/assets/img/gallery-v3-4.jpg', alt: 'Builders networking in Accra' },
+    { label: 'New connections', image: '/assets/img/RNBL3150.jpg', alt: 'Attendees connecting during Sandbox Réseau' },
+];
+const featuredBuilders = ['Pouch', 'Chime', 'STACX', 'Speso', 'Phundit', 'Clerra', 'Sail rides', 'Syio Labs', 'BoostMate', 'Traaple', 'Gaderin', 'NewComma', "Trip o'clock"]
+    .map((name) => registry.find((company) => company.name === name))
+    .filter((company) => company?.logo);
 ---
 
 <Layout>
-    <section class="relative z-[60] overflow-hidden border-b border-[var(--rule)] bg-[var(--paper)]">
-        <div class="absolute inset-0 z-0 pointer-events-none">
-            <img src="/assets/img/RNBL3150.jpg" alt="Sandbox Réseau Background" class="w-full h-full object-cover grayscale opacity-60" />
-            <div class="absolute inset-0 bg-gradient-to-b from-transparent to-[var(--paper)]"></div>
-        </div>
-        <div class="relative z-10 mx-auto max-w-[1100px] px-4 py-20 md:py-32 text-center">
-            <span class="inline-block w-max border-y border-[var(--rule)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-[.2em] text-[var(--muted)] mb-6 animate-enter">
-                Front Page
-            </span>
-            <h1 class="font-serif text-5xl sm:text-7xl md:text-8xl leading-[.85] tracking-tighter mb-8 animate-enter">
-                Sandbox Réseau.
-            </h1>
-            <p class="mx-auto max-w-2xl text-[var(--muted)] text-base md:text-xl leading-relaxed font-serif animate-enter">
-                Where Africa’s founders and builders connect, collaborate, and shape the future. Builder demos, mini-talks, and open networking. Signal over noise; progress over polish.
-            </p>
-            <div class="mt-10 flex flex-wrap items-center justify-center gap-4 animate-enter">
-                <a href="https://luma.com/sandbox-reseau" target="_blank" rel="noreferrer"
-                    class="inline-flex items-center gap-2 rounded border border-[var(--rule)] bg-[var(--ink)] px-6 py-3.5 text-sm font-bold uppercase tracking-widest text-[var(--paper)] hover:bg-[var(--accent)] transition-all">
-                    Register on Luma
-                </a>
-                <a href="#about"
-                    class="inline-flex items-center gap-2 rounded border border-[var(--rule)] px-6 py-3.5 text-sm font-bold uppercase tracking-widest hover:bg-[var(--ink)] hover:text-[var(--paper)] transition-all">
-                    See the format <span class="text-lg leading-none">↓</span>
-                </a>
+    <main class="home-page">
+        <section class="home-hero" data-dark-hero>
+            <div class="hero-frame">
+                <iframe id="hero-video" class="hero-video" src="https://www.youtube-nocookie.com/embed/qSOznAR_sLs?autoplay=1&mute=1&controls=0&loop=1&playlist=qSOznAR_sLs&playsinline=1&rel=0&modestbranding=1&cc_load_policy=0&iv_load_policy=3&disablekb=1&enablejsapi=1" title="Sandbox Réseau event highlights" allow="autoplay; encrypted-media; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" tabindex="-1" aria-hidden="true"></iframe>
+                <h1 class="sr-only">Sandbox Réseau — Make room for what’s next.</h1>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Main: article stream + sticky right rail -->
-    <main class="mx-auto max-w-[1100px] px-4 py-16 md:py-24">
-        <div class="grid grid-cols-1 gap-16 lg:grid-cols-[1fr_320px]">
-            <!-- Article stream -->
-            <div class="space-y-16">
-                
-                <article id="about" class="prose-like">
-                    <h3 class="mb-1 font-serif text-[28px] leading-tight tracking-[-.005em]">A Space for Founders, Builders & Makers</h3>
-                    <p class="text-neutral-600 mb-6">Where sandbox experimentation meets intentional networking.</p>
-                    <p><strong>Sandbox Réseau</strong> is a creative-tech meetup designed to bring together builders, thinkers, and makers who are shaping the next wave of innovation in Africa.</p>
-                    <p>Born from the spirit of sandbox experimentation and the French word “réseau” — meaning network — this event celebrates connection, collaboration, and creation.</p>
-                    <p>It’s a space where developers, designers, founders, and product lovers step out of their silos to share ideas, showcase what they’re building, and find new energy in community.</p>
-                </article>
-
-                <article id="purpose" class="prose-like">
-                    <h3 class="mb-1 font-serif text-[28px] leading-tight">The Purpose</h3>
-                    <p class="text-neutral-600 mb-6">Nurturing a network of curious minds who build the future.</p>
-                    <p>Sandbox Réseau exists to:</p>
-                    <ul class="ml-5 list-disc font-sans space-y-2">
-                        <li><strong>Connect</strong> creators across disciplines.</li>
-                        <li><strong>Inspire</strong> through shared stories, projects, and challenges.</li>
-                        <li><strong>Collaborate</strong> on new ideas and ventures born from genuine connection.</li>
-                    </ul>
-                </article>
-
-                <article id="format" class="prose-like">
-                    <h3 class="mb-1 font-serif text-[28px] leading-tight">The Experience</h3>
-                    <p class="text-neutral-600 mb-6">Intimate, thoughtful, and electric — a blend of knowledge and culture.</p>
-                    <ul class="ml-5 list-disc font-sans space-y-2">
-                        <li><strong>Builder Demos</strong> — real projects, raw prototypes, honest lessons.</li>
-                        <li><strong>Featured Talks or Firesides</strong> — short, punchy insights from innovators.</li>
-                        <li><strong>Open Network Sessions</strong> — meet, mingle, and connect intentionally.</li>
-                        <li><strong>Showcase Wall</strong> — where attendees post what they’re working on or what help they need.</li>
-                    </ul>
-                </article>
-
-                <article class="prose-like">
-                    <h3 class="mb-1 font-serif text-[28px] leading-tight">Who’s It For?</h3>
-                    <p class="text-neutral-600 mb-6">Engineers, designers, founders, data/ML folks, indie makers — and the
-                        product-curious.</p>
-                    <p>Beginner-friendly by design. Curiosity and a builder’s mindset are enough.</p>
-                </article>
-
-                <article id="highlights" class="prose-like">
-                    <h3 class="mb-1 font-serif text-[28px] leading-tight">Visual Dispatch</h3>
-                    <p class="text-neutral-600 mb-6">A glimpse into the energy and conversations at Sandbox Réseau.</p>
-                    <div class="mt-4 aspect-video overflow-hidden rounded border border-[var(--rule)] bg-black hatch">
-                        <iframe 
-                            width="100%" 
-                            height="100%" 
-                            src="https://www.youtube.com/embed/qSOznAR_sLs" 
-                            title="Sandbox Réseau Highlights" 
-                            frameborder="0" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                            allowfullscreen
-                            class="grayscale hover:grayscale-0 transition-all duration-700"
-                        ></iframe>
-                    </div>
-                </article>
-
-                <article id="details" class="prose-like">
-                    <h3 class="mb-1 font-serif text-[28px] leading-tight">Details & Logistics</h3>
-                    <p><strong>When:</strong> Dates announced on Luma. <a class="underline decoration-[var(--rule)] hover:accent-text"
-                            href="https://luma.com/sandbox-reseau" target="_blank" rel="noreferrer">Check schedule</a>.
-                    </p>
-                    <p><strong>Where:</strong> Accra. Venue shared with confirmed guests to keep the room intentional.
-                    </p>
-                    <p><strong>Capacity:</strong> Kept tight for focused conversations; early RSVP recommended.</p>
-                    <p><strong>Demos:</strong> Indicate interest on RSVP; we curate 3–5 per edition.</p>
-                    <p><strong>Code of Conduct:</strong> Be kind, be specific, credit work, respect time.</p>
-                </article>
-
-                <article class="prose-like">
-                    <h3 class="mb-1 font-serif text-[28px] leading-tight">Previous Editions</h3>
-                    <p class="text-neutral-600 mb-6">Snapshots from our last meetup. See the vibe for yourself.</p>
-
-                    <div class="grid grid-cols-2 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                        {gallery.slice(0, 12).map((img, i) => (
-                            <div class="group relative aspect-square w-full overflow-hidden rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_90%,var(--ink)_10%)] animate-enter">
-                                <img 
-                                    src={img.url} 
-                                    alt={img.title || `Event photo ${i + 1}`} 
-                                    onclick={`openLightbox('${img.url}')`}
-                                    loading="lazy" 
-                                    decoding="async"
-                                    class="h-full w-full object-cover transition duration-500 group-hover:scale-105 cursor-zoom-in grayscale group-hover:grayscale-0" 
-                                />
-                            </div>
-                        ))}
-                    </div>
-                    <p class="mt-6 text-[14px] text-[var(--muted)]">Want only high-signal connection? Join the next one.</p>
-                    <div class="mt-3">
-                        <a href="/gallery"
-                            class="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest underline decoration-[var(--rule)] underline-offset-4 hover:accent-text transition-colors">
-                            View Full Gallery <span>→</span>
-                        </a>
-                    </div>
-                </article>
-
-                <article id="podcast" class="prose-like">
-                    <div class="flex items-center justify-between mb-2">
-                        <h3 class="font-serif text-[28px] leading-tight m-0">Tune In: The Reverb</h3>
-                        <span id="podcast-new-badge" class="hidden text-[10px] uppercase font-bold tracking-widest text-[var(--accent)] bg-[var(--accent)]/5 px-2 py-0.5 rounded border border-[var(--accent)]/10 animate-pulse">New Episode</span>
-                    </div>
-                    <p class="text-neutral-600 mb-6">The high-bandwidth audio-log for the African builder.</p>
-                    
-                    <div id="podcast-loader" class="flex flex-col gap-6 sm:flex-row animate-pulse">
-                        <div class="w-full sm:w-1/3 aspect-square bg-neutral-200/50 rounded border border-[var(--rule)]/20"></div>
-                        <div class="flex-1 space-y-4">
-                            <div class="h-3 w-24 bg-neutral-200/50 rounded"></div>
-                            <div class="h-6 w-3/4 bg-neutral-200/50 rounded"></div>
-                            <div class="h-4 w-full bg-neutral-200/50 rounded"></div>
-                            <div class="h-4 w-5/6 bg-neutral-200/50 rounded"></div>
-                        </div>
-                    </div>
-
-                    <div id="podcast-content" class="hidden flex flex-col gap-6 sm:flex-row">
-                        <div class="w-full sm:w-1/3 group relative aspect-square sm:aspect-auto">
-                            <img id="podcast-thumb" src="/assets/img/podcast-logo.png" alt="The Reverb Podcast Logo" class="w-full rounded border border-[var(--rule)] shadow-sm grayscale hover:grayscale-0 transition-all duration-700" />
-                            <a id="podcast-play-link" href="/podcast" class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-[var(--ink)]/40 transition-opacity rounded">
-                                <div class="w-12 h-12 rounded-full border-2 border-[var(--paper)] flex items-center justify-center text-[var(--paper)]">
-                                     <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="flex-1 flex flex-col">
-                            <div id="podcast-meta" class="flex items-center gap-2 text-[10px] uppercase font-bold tracking-widest text-[var(--muted)] mb-2">
-                            </div>
-                            <h4 id="podcast-title" class="font-serif text-xl mb-2 text-[var(--ink)] leading-snug"></h4>
-                            <p id="podcast-desc" class="text-[14px] text-neutral-600 mb-4 leading-relaxed"></p>
-                            
-                            <div class="mt-auto flex flex-wrap gap-2">
-                                <a id="podcast-spotify" href="https://open.spotify.com/show/1mQUSNNpjenkeUiFVBXWCN" target="_blank" rel="noreferrer"
-                                    class="inline-flex items-center gap-2 rounded border border-[var(--rule)] px-4 py-2 text-[10px] font-bold uppercase tracking-widest hover:bg-[#1DB954] hover:text-white hover:border-[#1DB954] transition-all">
-                                    Spotify
-                                </a>
-                                <a href="/podcast" 
-                                    class="inline-flex items-center gap-2 rounded border border-[var(--rule)] px-4 py-2 text-[10px] font-bold uppercase tracking-widest hover:bg-[var(--ink)] hover:text-white transition-all">
-                                    Archive
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <article id="faq" class="prose-like">
-                    <h3 class="mb-1 font-serif text-[28px] leading-tight">FAQ</h3>
-                    <p class="text-neutral-600 mb-6">Common questions.</p>
-                    <ul class="ml-5 list-disc font-sans space-y-2">
-                        <li><strong>Beginner-friendly?</strong> Yes.</li>
-                        <li><strong>Finished product required?</strong> No — prototypes welcome.</li>
-                        <li><strong>Pitches?</strong> Keep it useful and grounded; salesy pitches discouraged.</li>
-                        <li><strong>Recordings?</strong> We prioritize candour; we’ll publish notes where possible.</li>
-                        <li><strong>Cadence?</strong> Recurring — watch the Luma page.</li>
-                    </ul>
-                </article>
-
+        <section class="about-strip" aria-labelledby="about-strip-title">
+            <div class="about-strip-inner">
+                <h2 id="about-strip-title" class="about-statement">Where Africa’s founders and builders connect, collaborate, and shape the future. <span>Builder demos, mini-talks, and open networking. Signal over noise; progress over polish.</span></h2>
             </div>
+        </section>
 
-            <!-- Sticky right rail -->
-            <aside class="space-y-8 lg:sticky lg:top-24 lg:self-start">
-                
-                <div class="rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_95%,var(--ink)_5%)] p-6 animate-enter">
-                    <h4 class="m-0 font-serif text-xl pb-4 border-b border-[var(--rule)]/20">At a Glance</h4>
-                    <ul class="mt-4 flex flex-col gap-3 text-[14px] leading-relaxed font-sans text-[var(--muted)]">
-                        <li><strong class="text-[var(--ink)]">Overview</strong> — experimentation meets networking.</li>
-                        <li><strong class="text-[var(--ink)]">Purpose</strong> — nurture a network of curious minds.</li>
-                        <li><strong class="text-[var(--ink)]">Experience</strong> — demos, talks, and connection.</li>
-                        <li><strong class="text-[var(--ink)]">Highlights</strong> — watch the visual dispatch.</li>
-                        <li><strong class="text-[var(--ink)]">Details</strong> — when, where, how to demo.</li>
-                        <li><strong class="text-[var(--ink)]">Podcast</strong> — the high-bandwidth audio-log.</li>
-                        <li><strong class="text-[var(--ink)]">FAQ</strong> — beginner-friendly, cadence, notes.</li>
-                    </ul>
+        <section class="format-cards" id="experience" aria-labelledby="format-cards-title">
+            <div class="format-card format-card-copy">
+                <div>
+                    <h2 id="format-cards-title">Three parts.<br />One evening.</h2>
+                    <p>Builders demo what they’re making. A few people a step ahead share short, honest talks. Then the floor opens up — trade ideas, make introductions, start something.</p>
                 </div>
+                <a class="format-cta" href={nextEdition.lumaUrl || 'https://luma.com/sandbox-reseau'} target="_blank" rel="noreferrer">Save your seat <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5" /></svg></a>
+            </div>
+            <div class="format-card format-carousel" data-format-carousel>
+                {formatSlides.map((slide, index) => (
+                    <figure class:list={['format-slide', index === 0 && 'is-active']} aria-hidden={index === 0 ? 'false' : 'true'}>
+                        <img src={slide.image} alt={slide.alt} loading={index === 0 ? 'eager' : 'lazy'} />
+                        <figcaption><span>{String(index + 1).padStart(2, '0')}</span>{slide.label}</figcaption>
+                    </figure>
+                ))}
+                <div class="format-dots" role="tablist" aria-label="Meetup format">
+                    {formatSlides.map((slide, index) => (
+                        <button type="button" role="tab" aria-label={slide.label} aria-selected={index === 0 ? 'true' : 'false'} class:list={[index === 0 && 'is-active']} data-slide={index}></button>
+                    ))}
+                </div>
+            </div>
+        </section>
 
-                <div class="rounded border border-[var(--rule)] hatch p-6 relative overflow-hidden group animate-enter bg-[color:color-mix(in_oklab,var(--paper)_90%,var(--ink)_10%)] text-center">
-                    <div class="relative z-10">
-                        <div class="w-12 h-12 mx-auto rounded-full border-[2px] border-[var(--paper)] bg-[var(--ink)] flex items-center justify-center text-[var(--paper)] mb-4 shadow-lg">
-                            <span class="font-serif text-xl leading-none pt-1">S</span>
-                        </div>
-                        <h4 class="font-serif text-xl mb-2 text-[var(--ink)]">Next Edition</h4>
-                        <p class="text-[13px] text-neutral-600 mb-5 leading-relaxed">
-                            {nextEdition.date} — {nextEdition.description}
-                        </p>
-                        <a href="https://luma.com/sandbox-reseau" target="_blank" rel="noreferrer"
-                            class="block w-full rounded bg-[var(--ink)] py-3 text-xs font-bold uppercase tracking-widest text-[var(--paper)] hover:opacity-90 transition-opacity">
-                            Register on Luma
+        <section class="podcast-section" aria-labelledby="podcast-section-title">
+            <h2 id="podcast-section-title">Fresh from The Reverb.</h2>
+            <p class="podcast-intro">Short, honest conversations from the Sandbox Réseau community — what people are building, thinking, and learning right now.</p>
+            <div class="podcast-grid-wrap"><PodcastGrid episodes={latestEpisodes} /></div>
+            <p class="podcast-platforms">Also on<a href="https://open.spotify.com/show/1mQUSNNpjenkeUiFVBXWCN" target="_blank" rel="noreferrer">Spotify</a><a href="https://podcasts.apple.com/gh/podcast/the-reverb/id1884282478" target="_blank" rel="noreferrer">Apple Podcasts</a><a href="https://thekompound.substack.com" target="_blank" rel="noreferrer">Substack</a></p>
+            <div class="podcast-more"><a class="format-cta" href="/podcast">All episodes <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5" /></svg></a></div>
+        </section>
+
+        <section class="editions-rail" aria-labelledby="editions-rail-title">
+            <div class="editions-rail-head">
+                <div>
+                    <h2 id="editions-rail-title">Every edition, a new room.</h2>
+                    <p>Each gathering takes on one hard question builders face — and leaves with sharper answers than it started with.</p>
+                </div>
+                <div class="editions-rail-nav">
+                    <button type="button" aria-label="Previous editions" data-rail-prev disabled><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3.5 5.5 8l4.5 4.5" /></svg></button>
+                    <button type="button" aria-label="Next editions" data-rail-next><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3.5 10.5 8 6 12.5" /></svg></button>
+                </div>
+            </div>
+            <div class="editions-track" data-rail-track>
+                {editionCards.map((card) => (
+                    <figure class="edition-slide">
+                        <a href={card.href} target={card.external ? '_blank' : undefined} rel={card.external ? 'noreferrer' : undefined}>
+                            <div class="edition-slide-art">
+                                <img src={card.image} alt="" loading="lazy" />
+                                <span class="edition-pill"><span>{card.name}</span><span class="edition-pill-vol">Vol. {card.vol}</span></span>
+                            </div>
+                            <figcaption>{card.caption}</figcaption>
                         </a>
-                        <a href="/editions" class="mt-4 inline-block text-[10px] font-bold uppercase tracking-widest underline decoration-[var(--rule)] hover:accent-text transition-colors">View details →</a>
-                    </div>
-                </div>
+                    </figure>
+                ))}
+            </div>
+        </section>
 
-            </aside>
-        </div>
+        <section class="about-strip builders-strip" aria-labelledby="builders-strip-title">
+            <div class="about-strip-inner">
+                <h2 id="builders-strip-title">The people building these companies <br />found their room at Sandbox Réseau.</h2>
+                <ul class="about-logos">
+                    {featuredBuilders.map((company) => (
+                        <li><img src={company.logo} alt="" loading="lazy" /><span>{company.name}</span></li>
+                    ))}
+                </ul>
+                <a class="format-cta builders-cta" href="/registry">View all builders <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5" /></svg></a>
+            </div>
+        </section>
+
+        <section class="resources-section" aria-labelledby="resources-title">
+            <div class="resources-head">
+                <div>
+                    <h2 id="resources-title">Reports &amp; resources.</h2>
+                    <p>Research, playbooks, and notes from the room — what we’re learning about building in Africa.</p>
+                </div>
+                <a class="resources-all" href="/reports">View all <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5" /></svg></a>
+            </div>
+            <div class="resources-grid">
+                <a class="resource-feature" href="/reports">
+                    <div class="resource-feature-art">
+                        <img src={featuredReport.bgImage} alt="" loading="lazy" />
+                        <span class="resource-chip resource-chip-left">Report</span>
+                        <span class="resource-chip resource-chip-right">{featuredReport.pages} pages</span>
+                    </div>
+                    <h3>{featuredReport.title}: {featuredReport.subtitle}</h3>
+                    <p>{featuredReport.description}</p>
+                    <span class="resource-read">Read the report <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5" /></svg></span>
+                </a>
+                <div class="resource-list">
+                    {otherReports.map((report) => (
+                        <a class="resource-item" href="/reports">
+                            <div class="resource-thumb"><img src={report.bgImage} alt="" loading="lazy" /></div>
+                            <div class="resource-item-copy">
+                                <div class="resource-meta"><span>{report.tags[0]}</span>{report.status === 'available' ? report.date : 'Coming soon'}</div>
+                                <h3>{report.title}</h3>
+                            </div>
+                        </a>
+                    ))}
+                </div>
+            </div>
+        </section>
+
+        <section class="faq-section" id="faq" aria-labelledby="faq-title">
+            <h2 id="faq-title">Questions, answered.</h2>
+            <FaqList items={faqs} idPrefix="home-faq" />
+        </section>
+
     </main>
-
-    <script is:inline define:vars={{ galleryStrings: gallery.map(img => img.url), latestEpisode }}>
-        // Load latest podcast from build-time data (or fallback)
-        async function loadLatestPodcast() {
-            const loader = document.getElementById('podcast-loader');
-            const content = document.getElementById('podcast-content');
-            const badge = document.getElementById('podcast-new-badge');
-            
-            if (!loader || !content) return; 
-
-            try {
-                let ep = latestEpisode;
-
-                if (!ep) {
-                    try {
-                        const res = await fetch('/data/podcast-episodes.json');
-                        if (res.ok) {
-                            const list = await res.json();
-                            if (list && list.length > 0) ep = list[0];
-                        }
-                    } catch (_) {}
-                }
-
-                if (!ep) return;
-
-                const dateObj = new Date(ep.pubDate);
-                const formattedDate = dateObj.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
-                const isNew = (Date.now() - dateObj.getTime()) < (7 * 24 * 60 * 60 * 1000);
-                const shortDesc = ep.description.substring(0, 150) + (ep.description.length > 150 ? '...' : '');
-
-                const titleEl = document.getElementById('podcast-title');
-                const descEl = document.getElementById('podcast-desc');
-                const metaEl = document.getElementById('podcast-meta');
-                const thumbEl = document.getElementById('podcast-thumb');
-                const spotifyEl = document.getElementById('podcast-spotify');
-
-                if (titleEl) titleEl.textContent = ep.title;
-                if (descEl) descEl.textContent = shortDesc;
-                if (metaEl) metaEl.innerHTML = `<span>Dispatch: ${formattedDate}</span>`;
-                if (thumbEl) thumbEl.src = ep.thumb;
-                if (spotifyEl) spotifyEl.href = ep.link;
-                
-                if (isNew && badge) badge.classList.remove('hidden');
-                
-                if (loader) loader.classList.add('hidden');
-                if (content) {
-                    content.classList.remove('hidden');
-                    setTimeout(() => content.classList.add('visible'), 50);
-                }
-            } catch (e) {
-                console.error("Failed to load podcast:", e);
-            }
-        }
-
-        document.addEventListener('astro:page-load', loadLatestPodcast);
-
-        // Set up gallery images for lightbox
-        window.GALLERY_IMAGES = galleryStrings;
-
-        (function() {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach((entry, i) => {
-                    if (entry.isIntersecting) {
-                        setTimeout(() => {
-                            entry.target.classList.add('visible');
-                        }, (i % 6) * 80);
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.1 });
-
-            document.querySelectorAll('.animate-enter').forEach(el => observer.observe(el));
-        })();
-
-    </script>
 </Layout>
+
+<script>
+    // YouTube ignores cc_load_policy when the viewer has captions on (or for muted autoplay),
+    // so unload the captions module through the player API once the video starts.
+    type YTPlayer = { unloadModule(name: string): void };
+    type YTNamespace = { Player: new (el: HTMLElement, opts: object) => YTPlayer };
+    const w = window as typeof window & { YT?: YTNamespace; onYouTubeIframeAPIReady?: () => void };
+
+    function hideHeroCaptions() {
+        const iframe = document.getElementById('hero-video');
+        if (!iframe || !w.YT?.Player) return;
+        new w.YT.Player(iframe, {
+            events: {
+                onStateChange: (event: { target: YTPlayer; data: number }) => {
+                    if (event.data !== 1) return; // 1 = playing
+                    event.target.unloadModule('captions');
+                    event.target.unloadModule('cc');
+                },
+            },
+        });
+    }
+
+    function initHeroVideo() {
+        if (!document.getElementById('hero-video')) return;
+        if (w.YT?.Player) return hideHeroCaptions();
+        w.onYouTubeIframeAPIReady = hideHeroCaptions;
+        if (!document.querySelector('script[src="https://www.youtube.com/iframe_api"]')) {
+            const tag = document.createElement('script');
+            tag.src = 'https://www.youtube.com/iframe_api';
+            document.head.append(tag);
+        }
+    }
+
+    let carouselTimer: number | undefined;
+
+    function initFormatCarousel() {
+        window.clearInterval(carouselTimer);
+        const carousel = document.querySelector('[data-format-carousel]');
+        if (!carousel) return;
+        const slides = carousel.querySelectorAll<HTMLElement>('.format-slide');
+        const dots = carousel.querySelectorAll<HTMLButtonElement>('.format-dots button');
+        let current = 0;
+
+        const show = (index: number) => {
+            current = (index + slides.length) % slides.length;
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('is-active', i === current);
+                slide.setAttribute('aria-hidden', String(i !== current));
+            });
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('is-active', i === current);
+                dot.setAttribute('aria-selected', String(i === current));
+            });
+        };
+
+        const start = () => {
+            window.clearInterval(carouselTimer);
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+            carouselTimer = window.setInterval(() => show(current + 1), 5000);
+        };
+
+        dots.forEach((dot, i) => dot.addEventListener('click', () => { show(i); start(); }));
+        start();
+    }
+
+    function initEditionsRail() {
+        const track = document.querySelector<HTMLElement>('[data-rail-track]');
+        const prev = document.querySelector<HTMLButtonElement>('[data-rail-prev]');
+        const next = document.querySelector<HTMLButtonElement>('[data-rail-next]');
+        if (!track || !prev || !next) return;
+
+        const step = () => {
+            const slide = track.querySelector<HTMLElement>('.edition-slide');
+            return slide ? slide.offsetWidth + 16 : track.clientWidth * 0.8;
+        };
+        const update = () => {
+            prev.disabled = track.scrollLeft <= 2;
+            next.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 2;
+        };
+
+        prev.addEventListener('click', () => track.scrollBy({ left: -step() }));
+        next.addEventListener('click', () => track.scrollBy({ left: step() }));
+        track.addEventListener('scroll', update, { passive: true });
+        window.addEventListener('resize', update);
+        update();
+    }
+
+
+    initHeroVideo();
+    initFormatCarousel();
+    initEditionsRail();
+    document.addEventListener('astro:after-swap', () => { initHeroVideo(); initFormatCarousel(); initEditionsRail(); });
+</script>
+
+<style>
+    .home-page{--home-paper:#fff;--home-ink:#171816;--home-muted:#6c6d67;--home-accent:#d3fa69;background:var(--home-paper);color:var(--home-ink);font-family:Inter,system-ui,sans-serif}
+    .home-page *{box-sizing:border-box}
+    .home-hero{position:relative;z-index:1;padding:16px 16px 0}
+    .hero-frame{position:relative;isolation:isolate;display:flex;flex-direction:column;container-type:size;height:84vh;min-height:560px;max-width:1920px;margin:0 auto;overflow:hidden;border-radius:28px;background:linear-gradient(180deg,#3a3b3d 0%,#6b6c6e 55%,#b9bab9 100%);color:#fff}
+    .hero-video{position:absolute;top:50%;left:50%;z-index:-2;width:max(100%,177.78cqh);height:max(100%,56.25cqw);pointer-events:none;border:0;transform:translate(-50%,-50%) scale(1.2)}
+    /* Sizes mirror nor.ma: 1040px container, 28px radii, sm = 640px, lg = 1024px */
+    .about-strip{position:relative;z-index:0;margin:-32px 0 64px;padding:0 16px}
+    .about-strip-inner{max-width:1920px;margin:0 auto;padding:96px 24px 64px;background:#f5f5f5;border-radius:0 0 28px 28px;text-align:center}
+    .about-strip h2{max-width:34ch;margin:0 auto;font-size:28px;font-weight:600;line-height:1.2;letter-spacing:-.01em;text-wrap:balance;color:#0a0a0a}
+    .about-strip .about-statement{max-width:36ch;font-size:clamp(26px,1.2rem + 1.4vw,36px);line-height:1.18;letter-spacing:-.015em}
+    .about-strip:not(.builders-strip) .about-strip-inner{padding:120px 24px 88px}
+    .about-statement span{color:#6b6b6b}
+    .builders-strip{margin:64px 0}.builders-strip .about-strip-inner{padding-top:64px;border-radius:28px}
+    .about-logos{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:28px 40px;max-width:calc(1040px - 4rem);margin:56px auto 0;padding:0;list-style:none}
+    .about-logos li{display:flex;align-items:center;gap:8px;color:#404040;font-size:17px;font-weight:600;letter-spacing:-.02em;opacity:.8;transition:opacity .5s cubic-bezier(.22,1,.36,1)}
+    .about-logos li:hover{opacity:1}
+    .about-strip .builders-cta{display:inline-flex;margin-top:56px;padding:0 28px}
+    .about-logos img{width:26px;height:26px;object-fit:contain;border-radius:7px;filter:grayscale(1) contrast(1.1);mix-blend-mode:multiply}
+    .format-cards{display:grid;grid-template-columns:1fr 1fr;align-items:stretch;gap:16px;width:100%;max-width:1040px;margin:0 auto;padding:64px 32px}
+    .format-card{position:relative;min-height:600px;border-radius:28px;overflow:hidden}
+    .format-card-copy{display:flex;flex-direction:column;justify-content:space-between;padding:56px;background:#f5f5f5}
+    .format-card-copy h2{max-width:16ch;margin:0;font-size:clamp(1.5rem,1.15rem + 1.5vw,2.25rem);font-weight:600;line-height:1.1;letter-spacing:-.015em;text-wrap:balance;color:#0a0a0a}
+    .format-card-copy p{max-width:38ch;margin:20px 0 0;color:#6b6b6b;font-size:17px;line-height:1.5}
+    .format-cta{display:flex;align-items:center;justify-content:center;gap:10px;height:48px;margin-top:40px;border-radius:999px;background:#0a0a0a;color:#fff;font-size:16px;font-weight:600;text-decoration:none;transition:background-color .2s cubic-bezier(.22,1,.36,1),transform .2s cubic-bezier(.22,1,.36,1)}
+    .format-cta:hover{background:rgba(10,10,10,.9)}.format-cta:active{transform:scale(.99)}
+    .format-carousel{background:#111}
+    .format-slide{position:absolute;inset:0;margin:0;opacity:0;transition:opacity .7s cubic-bezier(.22,1,.36,1)}
+    .format-slide.is-active{opacity:1}
+    .format-slide img{width:100%;height:100%;object-fit:cover;object-position:center}
+    .format-slide figcaption{position:absolute;top:20px;left:20px;display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:rgba(0,0,0,.2);color:#fff;font-size:13px;font-weight:500;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+    .format-slide figcaption span{color:rgba(255,255,255,.6);font-variant-numeric:tabular-nums}
+    .format-dots{position:absolute;left:50%;bottom:20px;z-index:2;transform:translateX(-50%);display:flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:rgba(0,0,0,.2);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+    .format-dots button{position:relative;width:6px;height:6px;padding:0;border:0;border-radius:999px;overflow:hidden;background:rgba(255,255,255,.45);cursor:pointer;transition:width .3s cubic-bezier(.22,1,.36,1),background-color .3s}
+    .format-dots button:hover{background:rgba(255,255,255,.8)}
+    .format-dots button.is-active{width:24px;background:rgba(255,255,255,.4)}
+    .format-dots button.is-active::after{content:'';position:absolute;inset:0 auto 0 0;width:100%;border-radius:999px;background:#fff;transform-origin:left;animation:format-progress 5s linear both}
+    @keyframes format-progress{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+    @media(prefers-reduced-motion:reduce){.format-slide{transition:none}.format-dots button.is-active::after{animation:none}}
+    .podcast-section{width:100%;max-width:1040px;margin:0 auto;padding:64px 32px}
+    .podcast-section>h2{margin:0;font-size:clamp(1.5rem,1.15rem + 1.5vw,2.25rem);font-weight:600;line-height:1.1;letter-spacing:-.015em;text-wrap:balance;color:#0a0a0a}
+    .podcast-intro{max-width:46ch;margin:16px 0 0;color:#6b6b6b;font-size:17px;line-height:1.5}
+    .podcast-platforms{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;margin:48px 0 0;color:#a1a1a1;font-size:15px}
+    .podcast-platforms a{padding:4px 10px;border-radius:999px;background:#f5f5f5;color:#0a0a0a;font-size:13px;font-weight:500;text-decoration:none;transition:background-color .2s}
+    .podcast-platforms a:hover{background:#ececec}
+    .podcast-more{display:flex;justify-content:center;margin-top:32px}
+    .podcast-more .format-cta{margin-top:0;padding:0 28px}
+    .podcast-grid-wrap{margin-top:64px}
+    @media(max-width:639px){.podcast-section{padding:48px 24px}}
+    .editions-rail{overflow:hidden;padding:64px 0}
+    .editions-rail-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;width:100%;max-width:1040px;margin:0 auto;padding:0 32px}
+    .editions-rail-head h2{max-width:18ch;margin:0;font-size:clamp(1.5rem,1.15rem + 1.5vw,2.25rem);font-weight:600;line-height:1.1;letter-spacing:-.015em;text-wrap:balance;color:#0a0a0a}
+    .editions-rail-head p{max-width:48ch;margin:16px 0 0;color:#6b6b6b;font-size:17px;line-height:1.5}
+    .editions-rail-nav{display:flex;flex-shrink:0;gap:8px}
+    .editions-rail-nav button{display:flex;align-items:center;justify-content:center;width:44px;height:44px;padding:0;border:1px solid rgba(10,10,10,.1);border-radius:999px;background:#fff;color:#0a0a0a;cursor:pointer;transition:border-color .2s,opacity .2s}
+    .editions-rail-nav button:hover:not(:disabled){border-color:rgba(10,10,10,.4)}
+    .editions-rail-nav button:disabled{opacity:.35;cursor:default}
+    .editions-track{--rail-inset:max(2rem,calc((100vw - 1040px)/2 + 2rem));display:flex;gap:16px;margin-top:48px;padding:0 var(--rail-inset) 8px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-left:var(--rail-inset);scroll-behavior:smooth;scrollbar-width:none}
+    .editions-track::-webkit-scrollbar{display:none}
+    .edition-slide{flex-shrink:0;width:340px;margin:0;scroll-snap-align:start}
+    .edition-slide a{display:block;color:inherit;text-decoration:none}
+    .edition-slide-art{position:relative;aspect-ratio:4/5;overflow:hidden;border-radius:28px;background:#111}
+    .edition-slide-art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.22,1,.36,1)}
+    .edition-slide a:hover .edition-slide-art img{transform:scale(1.04)}
+    .edition-pill{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);display:flex;align-items:center;gap:10px;max-width:calc(100% - 32px);padding:6px 6px 6px 16px;border:1px solid rgba(255,255,255,.25);border-radius:999px;background:rgba(255,255,255,.15);color:#fff;font-size:15px;font-weight:600;white-space:nowrap;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+    .edition-pill>span:first-child{overflow:hidden;text-overflow:ellipsis}
+    .edition-pill-vol{flex-shrink:0;padding:4px 10px;border-radius:999px;background:rgba(0,0,0,.35);color:rgba(255,255,255,.9);font-size:12px;font-weight:500;line-height:1}
+    .edition-slide figcaption{margin-top:16px;padding:0 4px;color:#6b6b6b;font-size:15px;line-height:1.5}
+    @media(max-width:639px){.editions-rail{padding:48px 0}.editions-rail-head{padding:0 24px}.editions-rail-nav{display:none}.editions-track{--rail-inset:1.5rem}.edition-slide{width:280px}}
+    .resources-section{width:100%;max-width:1040px;margin:0 auto;padding:64px 32px}
+    .resources-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px 32px}
+    .resources-head>div{max-width:26ch}
+    .resources-head h2{margin:0;font-size:clamp(1.5rem,1.15rem + 1.5vw,2.25rem);font-weight:600;line-height:1.1;letter-spacing:-.015em;text-wrap:balance;color:#0a0a0a}
+    .resources-head p{max-width:46ch;margin:16px 0 0;color:#6b6b6b;font-size:17px;line-height:1.5}
+    .resources-all{display:inline-flex;flex-shrink:0;align-items:center;gap:6px;color:#6b6b6b;font-size:14px;font-weight:500;text-decoration:none;transition:color .2s}
+    .resources-all:hover{color:#0a0a0a}
+    .resources-all svg,.resource-read svg{transition:transform .2s cubic-bezier(.22,1,.36,1)}
+    .resources-all:hover svg,.resource-feature:hover .resource-read svg{transform:translateX(2px)}
+    .resources-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:48px;margin-top:48px}
+    .resource-feature{display:block;color:inherit;text-decoration:none}
+    .resource-feature-art{position:relative;aspect-ratio:16/10;overflow:hidden;border-radius:24px;background:#f5f5f5}
+    .resource-feature-art img,.resource-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.22,1,.36,1)}
+    .resource-feature:hover .resource-feature-art img,.resource-item:hover .resource-thumb img{transform:scale(1.04)}
+    .resource-chip{position:absolute;bottom:14px;padding:4px 12px;border-radius:999px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.12),0 0 0 1px rgba(10,10,10,.05);color:#0a0a0a;font-size:12.5px;font-weight:600}
+    .resource-chip-left{left:14px}.resource-chip-right{right:14px;color:#6b6b6b;font-weight:500}
+    .resource-feature h3{max-width:24ch;margin:20px 0 0;font-size:clamp(1.125rem,.95rem + .7vw,1.375rem);font-weight:600;line-height:1.15;letter-spacing:-.015em;color:#0a0a0a}
+    .resource-feature p{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;max-width:54ch;margin:10px 0 0;color:#6b6b6b;font-size:16px;line-height:1.5}
+    .resource-read{display:inline-flex;align-items:center;gap:6px;margin-top:16px;color:#0a0a0a;font-size:14px;font-weight:600}
+    .resource-list{display:flex;flex-direction:column}
+    .resource-item{display:flex;align-items:flex-start;gap:16px;padding:20px 0;color:inherit;text-decoration:none}
+    .resource-item+.resource-item{border-top:1px solid rgba(10,10,10,.1)}
+    .resource-item:first-child{padding-top:0}
+    .resource-thumb{position:relative;flex-shrink:0;width:144px;aspect-ratio:2/1;overflow:hidden;border-radius:12px;background:#f5f5f5}
+    .resource-item-copy{min-width:0;padding-top:2px}
+    .resource-meta{display:flex;align-items:center;gap:8px;color:#a1a1a1;font-size:12px}
+    .resource-meta span{padding:2px 8px;border:1px solid rgba(10,10,10,.1);border-radius:999px;color:#6b6b6b;font-weight:500}
+    .resource-item h3{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;margin:8px 0 0;font-size:17px;font-weight:600;line-height:1.375;letter-spacing:-.01em;color:#0a0a0a}
+    @media(max-width:1023px){.resources-grid{grid-template-columns:1fr;gap:32px}.resource-item:first-child{padding-top:20px}}
+    @media(max-width:639px){.resources-section{padding:48px 24px}.resource-thumb{width:112px}}
+    .faq-section{width:100%;max-width:1040px;margin:0 auto;padding:64px 32px}
+    .faq-section>h2{max-width:16ch;margin:0 0 48px;font-size:clamp(1.5rem,1.15rem + 1.5vw,2.25rem);font-weight:600;line-height:1.1;letter-spacing:-.015em;text-wrap:balance;color:#0a0a0a}
+    @media(max-width:639px){.faq-section{padding:48px 24px}}
+    /* Stacked: the copy card hugs its content and the photo keeps a fixed shape instead of a tall min-height. */
+    @media(max-width:1023px){.format-cards{grid-template-columns:1fr}.format-card{min-height:0}.format-card-copy{padding:48px}.format-card-copy .format-cta{align-self:flex-start;margin-top:32px;padding:0 28px}.format-carousel{aspect-ratio:4/3}}
+    @media(max-width:639px){.home-hero{padding:12px 12px 0}.hero-frame{height:84svh;min-height:480px}.about-strip{margin:-28px 0 48px;padding:0 12px}.about-strip-inner{padding:76px 24px 48px}.about-strip h2{font-size:22px}.about-strip .about-statement{font-size:26px}.about-strip:not(.builders-strip) .about-strip-inner{padding:88px 24px 64px}.about-strip h2 br{display:none}.builders-strip{margin:48px 0}.builders-strip .about-strip-inner{padding-top:48px}.about-logos{gap:20px 28px;margin-top:48px}.about-logos li{font-size:15px}.about-strip .builders-cta{margin-top:40px}.format-cards{gap:12px;padding:48px 16px}.format-card{border-radius:24px}.format-card-copy{padding:28px 24px}.format-card-copy p{margin-top:14px;font-size:16px}.format-card-copy .format-cta{align-self:stretch;height:52px;margin-top:24px}.format-carousel{aspect-ratio:4/5}.format-slide figcaption{top:14px;left:14px;font-size:12px}.format-dots{bottom:14px}}
+</style>

@@ -1,63 +1,83 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import gallery from '../data/gallery.json';
+import editions from '../data/editions.json';
 
-const headerSubtitle = "The Archive";
+const nextEdition = editions.find((edition) => edition.status === 'In Preparation');
+const pastCount = editions.filter((edition) => edition.status === 'Past').length;
 ---
 
-<Layout 
-    title="Gallery | Sandbox Réseau" 
+<Layout
+    title="Gallery | Sandbox Réseau"
     description="Snapshots from previous Sandbox Réseau editions in Accra."
-    headerSubtitle={headerSubtitle}
+    image={gallery[0].url}
+    imageAlt={gallery[0].title}
 >
-    <!-- Hero Section -->
-    <section class="border-b border-[var(--rule)]">
-        <div class="mx-auto max-w-[1100px] px-4 py-20 md:py-32 text-center">
-            <span
-                class="inline-block w-max border-y border-[var(--rule)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-[.2em] text-[var(--muted)] mb-6 animate-enter">
-                Exhibition
-            </span>
-            <h1 class="font-serif text-5xl sm:text-7xl md:text-8xl leading-[.85] tracking-tighter mb-8 animate-enter">
-                Captured Moments.
-            </h1>
-            <p class="mx-auto max-w-2xl text-[var(--muted)] text-base md:text-xl leading-relaxed font-serif animate-enter">
-                A visual record of the builders, thinkers, and makers who have shared their work and energy with our ecosystem since Vol. 1.
-            </p>
-        </div>
-    </section>
+    <main class="gallery-page">
+        <section class="gallery-head" aria-labelledby="gallery-title">
+            <span class="gallery-pill"><span class="gallery-dot" aria-hidden="true"></span>Gallery · {gallery.length} photos · {pastCount} editions</span>
+            <h1 id="gallery-title">Captured moments.</h1>
+            <p>A visual record of the builders, thinkers, and makers who have shared their work and energy with our community since Vol. 01.</p>
+        </section>
 
-    <main class="mx-auto max-w-[1100px] px-4 py-16 md:py-24">
-        <div class="masonry-grid" id="galleryContainer">
-            {gallery.map((img, i) => (
-                <div class="masonry-item animate-enter">
-                    <figure class="group relative overflow-hidden rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_92%,var(--ink)_8%)] p-2 hatch">
-                        <div class="relative overflow-hidden aspect-auto border border-[var(--rule)]">
-                            <img 
-                                src={img.url} 
-                                alt={img.title} 
-                                onclick={`openLightbox(${i})`}
-                                loading="lazy" 
-                                decoding="async"
-                                class="w-full h-auto object-cover grayscale transition duration-500 group-hover:grayscale-0 group-hover:scale-105 cursor-zoom-in" 
-                            />
-                        </div>
-                        <figcaption class="mt-3 px-1 flex items-end justify-between gap-3">
-                            <div class="min-w-0">
-                                <span class="block font-serif text-[15px] leading-tight truncate">{img.title}</span>
-                                <span class="block text-[10px] uppercase tracking-widest text-[var(--muted)] font-semibold mt-1">
-                                    {img.location || 'Accra, Ghana'} 
-                                    {img.edition && `• ${img.edition}`}
-                                </span>
-                            </div>
-                        </figcaption>
-                    </figure>
-                </div>
+        <section class="gallery-grid" aria-label="Photos">
+            {gallery.map((img, index) => (
+                <figure class="gallery-item">
+                    <button type="button" class="gallery-photo" data-lightbox-index={index} aria-label={`View larger: ${img.title}`}>
+                        <img src={img.url} alt={img.title} loading={index < 6 ? 'eager' : 'lazy'} decoding="async" />
+                    </button>
+                    <figcaption>{img.title}</figcaption>
+                </figure>
             ))}
-        </div>
+        </section>
+
+        <section class="gallery-cta" aria-labelledby="gallery-cta-title">
+            <div class="gallery-cta-card">
+                <h2 id="gallery-cta-title">Be in the next frame.</h2>
+                <p>{nextEdition ? `Vol. ${String(nextEdition.no).padStart(2, '0')} is coming up on ${nextEdition.date} in Accra.` : 'The next edition is coming up in Accra.'} Bring what you’re building.</p>
+                <a class="gallery-cta-button" href={nextEdition?.lumaUrl || 'https://luma.com/sandbox-reseau'} target="_blank" rel="noreferrer">
+                    Get an invite
+                    <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5" /></svg>
+                </a>
+            </div>
+        </section>
     </main>
 
-    <script is:inline define:vars={{ galleryStrings: gallery.map(img => img.url) }}>
-        // Set up gallery images for lightbox
+    <script is:inline define:vars={{ galleryStrings: gallery.map((img) => img.url) }}>
+        // The global lightbox in Layout pages through this list.
         window.GALLERY_IMAGES = galleryStrings;
     </script>
 </Layout>
+
+<script>
+    // Delegated once so it keeps working after view transitions.
+    document.addEventListener('click', (event) => {
+        const photo = (event.target as Element).closest<HTMLElement>('[data-lightbox-index]');
+        const openLightbox = (window as typeof window & { openLightbox?: (index: number) => void }).openLightbox;
+        if (photo && openLightbox) openLightbox(Number(photo.dataset.lightboxIndex));
+    });
+</script>
+
+<style>
+    .gallery-page{font-family:Inter,system-ui,sans-serif;color:#0a0a0a}
+    .gallery-head{max-width:1040px;margin:0 auto;padding:152px 32px 0}
+    .gallery-pill{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border:1px solid rgba(10,10,10,.1);border-radius:999px;color:#6b6b6b;font-size:13px;font-weight:500}
+    .gallery-dot{width:7px;height:7px;border-radius:50%;background:#8fbf24}
+    .gallery-head h1{margin:24px 0 0;font-size:clamp(2.5rem,1.6rem + 3vw,4rem);font-weight:600;line-height:1.02;letter-spacing:-.03em}
+    .gallery-head p{max-width:48ch;margin:20px 0 0;color:#6b6b6b;font-size:17px;line-height:1.5}
+    .gallery-grid{max-width:1040px;margin:0 auto;padding:64px 32px 0;columns:3;column-gap:16px}
+    .gallery-item{margin:0 0 28px;break-inside:avoid}
+    .gallery-photo{display:block;width:100%;padding:0;overflow:hidden;border:0;border-radius:24px;background:#f5f5f5;cursor:zoom-in}
+    .gallery-photo img{display:block;width:100%;height:auto;transition:transform .6s cubic-bezier(.22,1,.36,1)}
+    .gallery-photo:hover img{transform:scale(1.04)}
+    .gallery-photo:focus-visible{outline:2px solid #0a0a0a;outline-offset:3px}
+    .gallery-item figcaption{margin-top:12px;padding:0 4px;color:#6b6b6b;font-size:15px;line-height:1.5}
+    .gallery-cta{max-width:1040px;margin:0 auto;padding:64px 32px}
+    .gallery-cta-card{display:flex;flex-direction:column;align-items:center;padding:72px 32px;border-radius:28px;background:#f5f5f5;text-align:center}
+    .gallery-cta-card h2{margin:0;font-size:clamp(1.5rem,1.15rem + 1.5vw,2.25rem);font-weight:600;line-height:1.1;letter-spacing:-.015em}
+    .gallery-cta-card p{max-width:42ch;margin:16px 0 0;color:#6b6b6b;font-size:17px;line-height:1.5}
+    .gallery-cta-button{display:inline-flex;align-items:center;gap:10px;height:48px;margin-top:32px;padding:0 28px;border-radius:999px;background:#0a0a0a;color:#fff;font-size:16px;font-weight:600;text-decoration:none;transition:background-color .2s,transform .2s}
+    .gallery-cta-button:hover{background:rgba(10,10,10,.9)}.gallery-cta-button:active{transform:scale(.99)}
+    @media(max-width:1023px){.gallery-grid{columns:2}}
+    @media(max-width:639px){.gallery-head{padding:120px 24px 0}.gallery-grid{columns:1;padding:48px 24px 0}.gallery-photo{border-radius:20px}.gallery-cta{padding:48px 24px}.gallery-cta-card{padding:56px 24px}}
+</style>

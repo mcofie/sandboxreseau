@@ -1,163 +1,155 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
-const headerSubtitle = "Sandbox Réseau Supply";
+// TODO: replace with the real payment page (e.g. a Paystack link). Until then the
+// support buttons jump to the support section instead of a checkout.
+const SUPPORT_URL = '';
+const supportHref = SUPPORT_URL || '#support';
+const supportTarget = SUPPORT_URL ? { target: '_blank', rel: 'noreferrer' } : {};
 
-// Merch data — extend this array as new items are added
+const supportTiers = [
+    { amount: '₵50', title: 'Buy a builder a coffee', desc: 'A small thank-you that keeps the community going.' },
+    { amount: '₵200', title: 'Back an edition', desc: 'Help cover what it takes to put on a meetup in Accra.', featured: true },
+    { amount: 'Any amount', title: 'Give what you can', desc: 'Every contribution, big or small, keeps the room open.' },
+];
+
+// Merch data — extend this array as new items are added. Set status to 'available' to enable pre-orders.
 const merchItems = [
-    {
-        title: "Builder's Heavyweight Tee",
-        description: "A premium 250gsm organic cotton t-shirt with subtle Sandbox branding. Designed for long shipping sessions.",
-        price: "₵250",
-        status: "coming-soon",
-        image: "/assets/img/merch-tee.jpg"
-    },
-    {
-        title: "The Founders Dad Cap",
-        description: "Classic unstructured 6-panel cap. Washed cotton twill with an embroidered 'Sandbox Réseau' crest.",
-        price: "₵150",
-        status: "coming-soon",
-        image: "/assets/img/merch-cap.jpg"
-    },
-    {
-        title: "Premium Oversized Hoodie",
-        description: "400gsm heavyweight french terry cotton hoodie. Drop shoulder, relaxed fit with tonal embroidered branding.",
-        price: "₵450",
-        status: "coming-soon",
-        image: "/assets/img/merch-hoodie.jpg"
-    },
-    {
-        title: "Heavyweight Canvas Tote",
-        description: "12oz organic cotton canvas tote bag with reinforced handles. Large enough for a 16-inch laptop and daily carry.",
-        price: "₵120",
-        status: "coming-soon",
-        image: "/assets/img/merch-tote.jpg"
-    },
-    {
-        title: "Insulated Water Bottle",
-        description: "Matte black stainless steel double-walled insulated bottle. Keeps drinks cold for 24 hours or hot for 12 hours. Engraved logo.",
-        price: "₵200",
-        status: "coming-soon",
-        image: "/assets/img/merch-bottle.jpg"
-    },
-    {
-        title: "Ceramic Builder's Mug",
-        description: "Minimalist matte ceramic mug. Perfect for early mornings and late night shipping sessions.",
-        price: "₵100",
-        status: "coming-soon",
-        image: "/assets/img/merch-mug.jpg"
-    },
-    {
-        title: "Ecosystem Sticker Pack",
-        description: "Die-cut vinyl stickers featuring Sandbox Réseau branding. Matte finish, weather-resistant, perfect for laptop lids.",
-        price: "₵50",
-        status: "coming-soon",
-        image: "/assets/img/merch-stickers.jpg"
-    }
+    { title: 'Builder’s Heavyweight Tee', description: 'A premium 250gsm organic cotton t-shirt with subtle Sandbox branding. Designed for long shipping sessions.', price: '₵250', status: 'coming-soon' },
+    { title: 'The Founders Dad Cap', description: 'Classic unstructured 6-panel cap. Washed cotton twill with an embroidered “Sandbox Réseau” crest.', price: '₵150', status: 'coming-soon' },
+    { title: 'Premium Oversized Hoodie', description: '400gsm heavyweight french terry cotton hoodie. Drop shoulder, relaxed fit with tonal embroidered branding.', price: '₵450', status: 'coming-soon' },
+    { title: 'Heavyweight Canvas Tote', description: '12oz organic cotton canvas tote with reinforced handles. Fits a 16-inch laptop and daily carry.', price: '₵120', status: 'coming-soon' },
+    { title: 'Insulated Water Bottle', description: 'Matte black double-walled stainless steel. Cold for 24 hours, hot for 12. Engraved logo.', price: '₵200', status: 'coming-soon' },
+    { title: 'Ceramic Builder’s Mug', description: 'Minimalist matte ceramic mug. For early mornings and late-night shipping sessions.', price: '₵100', status: 'coming-soon' },
+    { title: 'Ecosystem Sticker Pack', description: 'Die-cut vinyl stickers with Sandbox Réseau branding. Matte, weather-resistant, made for laptop lids.', price: '₵50', status: 'coming-soon' },
 ];
 ---
 
-<Layout 
-    title="Merch | Sandbox Réseau" 
-    description="Official Sandbox Réseau merchandise. High quality apparel for builders and makers in the Accra tech ecosystem."
-    headerSubtitle={headerSubtitle}
+<Layout
+    title="Merch & Support | Sandbox Réseau"
+    description="Official Sandbox Réseau merchandise and ways to support the community of builders in Accra."
 >
-    <!-- Hero Header -->
-    <section class="border-b border-[var(--rule)]">
-        <div class="mx-auto max-w-[1100px] px-4 py-20 md:py-32 text-center">
-            <span class="inline-block w-max border-y border-[var(--rule)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-[.2em] text-[var(--muted)] mb-6 animate-enter">
-                Sandbox Supply
-            </span>
-            <h1 class="font-serif text-5xl sm:text-7xl md:text-8xl leading-[.85] tracking-tighter mb-8 animate-enter">
-                Merchandise.
-            </h1>
-            <p class="mx-auto max-w-2xl text-[var(--muted)] text-base md:text-xl leading-relaxed font-serif animate-enter">
-                Uniforms for the builders, thinkers, and makers shaping Africa's future. Premium quality, limited runs.
-            </p>
-        </div>
-    </section>
+    <main class="merch-page">
+        <section class="merch-head" aria-labelledby="merch-title">
+            <span class="merch-pill"><span aria-hidden="true"></span>Sandbox Supply · Limited runs</span>
+            <h1 id="merch-title">Merch &amp; support.</h1>
+            <p>Uniforms for the builders, thinkers, and makers shaping Africa’s future — and a way to back the community that brings them together.</p>
+            <div class="merch-head-actions">
+                <a class="merch-black" href="#support">Support Sandbox Réseau</a>
+                <a class="merch-outline" href="#supply">Shop the supply</a>
+            </div>
+        </section>
 
-    <!-- Main Content -->
-    <main class="mx-auto max-w-[1100px] px-4 py-16 md:py-24">
-        <div class="grid grid-cols-1 gap-16 lg:grid-cols-[1fr_320px]">
-            
-            <!-- Merch Items Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 h-fit">
-                {merchItems.map((item) => (
-                    <article class="group animate-enter">
-                        <div class="rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_95%,var(--ink)_5%)] overflow-hidden flex flex-col h-full">
-                            
-                            <!-- Product Image Placeholder -->
-                            <div class="relative border-b border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_88%,var(--ink)_12%)] aspect-square flex items-center justify-center hatch">
-                                <div class="relative z-10 text-center">
-                                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full border-2 border-[var(--ink)] mb-4">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-[var(--ink)]">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
-                                        </svg>
-                                    </div>
-                                    <h3 class="font-serif text-lg tracking-tight px-4">{item.title}</h3>
-                                </div>
-                            </div>
-
-                            <!-- Product Details -->
-                            <div class="p-6 flex flex-col flex-1">
-                                <div class="flex items-center justify-between mb-4">
-                                    <h3 class="font-serif text-xl tracking-tight leading-tight">{item.title}</h3>
-                                    <span class="font-bold text-[var(--ink)]">{item.price}</span>
-                                </div>
-                                <p class="text-[14px] text-[var(--muted)] leading-relaxed mb-6 flex-1">
-                                    {item.description}
-                                </p>
-
-                                <div class="pt-4 border-t border-[var(--rule)]/10">
-                                    {item.status === 'available' ? (
-                                        <button class="w-full rounded border border-[var(--rule)] bg-[var(--ink)] py-3 text-xs font-bold uppercase tracking-widest text-[var(--paper)] hover:bg-[var(--accent)] transition-all">
-                                            Pre-Order Now
-                                        </button>
-                                    ) : (
-                                        <span class="flex items-center justify-center gap-2 w-full rounded border border-[var(--rule)]/20 bg-[var(--paper)] py-3 text-xs font-bold uppercase tracking-widest text-[var(--muted)]">
-                                            <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-                                            Dropping Soon
-                                        </span>
-                                    )}
-                                </div>
-                            </div>
+        <section class="support" id="support" aria-labelledby="support-title">
+            <img class="support-photo" src="/assets/img/community-hero.jpg" alt="" loading="lazy" />
+            <div class="support-intro">
+                <p class="support-kicker">
+                    <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8 14s-5.5-3.3-5.5-7.4A3 3 0 0 1 8 4.7a3 3 0 0 1 5.5 1.9C13.5 10.7 8 14 8 14z" /></svg>
+                    Community-run <span>· Accra</span>
+                </p>
+                <h2 id="support-title">Help keep the room open.</h2>
+                <p class="support-copy">If the meetups, the podcast, or the people have helped you build, you can help keep it going for the next builder.</p>
+                <a class="support-button" href={supportHref} {...supportTarget}>Support Sandbox Réseau</a>
+            </div>
+            <div class="support-tiers">
+                {supportTiers.map((tier) => (
+                    <article class="support-tier">
+                        <span class="support-amount">{tier.amount}</span>
+                        <h3>{tier.title}</h3>
+                        <p>{tier.desc}</p>
+                        <div class="support-tier-foot">
+                            {tier.featured ? <span class="support-tag">Suggested</span> : <span></span>}
+                            <a href={supportHref} {...supportTarget}>Support →</a>
                         </div>
                     </article>
                 ))}
             </div>
+            <p class="support-note">Want to sponsor an edition or partner with us? <a href="https://www.linkedin.com/company/sandbox-reseau/" target="_blank" rel="noreferrer">Reach out on LinkedIn</a>.</p>
+        </section>
 
-            <!-- Sticky Right Rail -->
-            <aside class="space-y-8 lg:sticky lg:top-24 lg:self-start">
-                
-                <div class="rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_95%,var(--ink)_5%)] p-6 animate-enter">
-                    <h4 class="m-0 font-serif text-xl pb-4 border-b border-[var(--rule)]/20">The Supply Drop</h4>
-                    <p class="mt-4 text-[14px] text-[var(--muted)] leading-relaxed">
-                        Sandbox Supply produces limited run items designed for our community. We prioritize high-quality fabrics and minimal branding.
-                    </p>
-                    <p class="mt-3 text-[14px] text-[var(--muted)] leading-relaxed">
-                        Join the community to get early access to upcoming drops.
-                    </p>
+        <section class="merch-section" id="supply" aria-labelledby="supply-title">
+            <div class="merch-section-head">
+                <div>
+                    <h2 id="supply-title">The supply drop.</h2>
+                    <p>Limited-run items designed for our community — high-quality fabrics, minimal branding. Every purchase supports the community.</p>
                 </div>
-
-            </aside>
-        </div>
+                <a href="https://discord.gg/RMcBDRrV7x" target="_blank" rel="noreferrer">Get early access on Discord →</a>
+            </div>
+            <div class="merch-grid">
+                {merchItems.map((item) => (
+                    <article class="merch-card">
+                        <div class="merch-art">
+                            <span class="merch-art-brand">Sandbox Supply</span>
+                            <span class="merch-art-name">{item.title}</span>
+                            <span class="merch-chip">{item.status === 'available' ? 'Available' : 'Dropping soon'}</span>
+                        </div>
+                        <div class="merch-card-copy">
+                            <div class="merch-card-top">
+                                <h3>{item.title}</h3>
+                                <span>{item.price}</span>
+                            </div>
+                            <p>{item.description}</p>
+                            {item.status === 'available' && <a class="merch-order" href={supportHref} {...supportTarget}>Pre-order</a>}
+                        </div>
+                    </article>
+                ))}
+            </div>
+        </section>
     </main>
-
-    <script is:inline>
-        (function() {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach((entry, i) => {
-                    if (entry.isIntersecting) {
-                        setTimeout(() => {
-                            entry.target.classList.add('visible');
-                        }, (i % 4) * 100);
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.1 });
-
-            document.querySelectorAll('.animate-enter').forEach(el => observer.observe(el));
-        })();
-    </script>
 </Layout>
+
+<style>
+    .merch-page{max-width:1040px;margin:0 auto;padding:152px 32px 64px;font-family:Inter,system-ui,sans-serif;color:#0a0a0a}
+    .merch-pill{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border:1px solid rgba(10,10,10,.1);border-radius:999px;color:#6b6b6b;font-size:13px;font-weight:500}
+    .merch-pill span{width:7px;height:7px;border-radius:50%;background:#8fbf24}
+    .merch-head h1{margin:24px 0 0;font-size:clamp(2.5rem,1.6rem + 3vw,4rem);font-weight:600;line-height:1.02;letter-spacing:-.03em}
+    .merch-head>p{max-width:50ch;margin:20px 0 0;color:#6b6b6b;font-size:17px;line-height:1.5}
+    .merch-head-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px}
+    .merch-black,.merch-outline{display:inline-flex;align-items:center;height:48px;padding:0 24px;border-radius:999px;font-size:16px;font-weight:600;text-decoration:none;transition:background-color .2s,border-color .2s}
+    .merch-black{background:#0a0a0a;color:#fff}
+    .merch-black:hover{background:rgba(10,10,10,.9)}
+    .merch-outline{border:1px solid rgba(10,10,10,.12);color:#0a0a0a}
+    .merch-outline:hover{border-color:rgba(10,10,10,.4)}
+    .merch-page h2{margin:0;font-size:clamp(1.5rem,1.15rem + 1.5vw,2.25rem);font-weight:600;line-height:1.1;letter-spacing:-.015em;text-wrap:balance}
+    .support{position:relative;isolation:isolate;margin-top:72px;padding:72px 56px 40px;overflow:hidden;border-radius:28px;background:#e8e8e8;scroll-margin-top:96px}
+    .support-photo{position:absolute;top:0;right:0;z-index:-1;width:62%;height:78%;object-fit:cover;object-position:center 35%;filter:grayscale(1) contrast(1.08);-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 40%);mask-image:linear-gradient(90deg,transparent 0%,#000 40%)}
+    .support-intro{max-width:26rem}
+    .support-kicker{display:flex;align-items:center;gap:8px;margin:0;font-size:15px;font-weight:600}
+    .support-kicker span{color:#8a8a8a;font-weight:500}
+    .support h2{margin-top:20px;font-size:clamp(2rem,1.4rem + 2vw,3rem);line-height:1.02;letter-spacing:-.03em}
+    .support-copy{margin:16px 0 0;color:#5f5f5f;font-size:16px;line-height:1.5}
+    .support-button{display:inline-flex;align-items:center;height:48px;margin-top:28px;padding:0 24px;border-radius:999px;background:#fff;color:#0a0a0a;font-size:16px;font-weight:600;text-decoration:none;box-shadow:0 1px 2px rgba(0,0,0,.06);transition:background-color .2s}
+    .support-button:hover{background:#d3fa69}
+    .support-tiers{display:grid;grid-template-columns:repeat(3,1fr);margin:56px 0 0;overflow:hidden;border:1px solid rgba(10,10,10,.08);border-radius:24px;background:#fff;box-shadow:0 30px 60px -30px rgba(0,0,0,.35)}
+    .support-tier{display:flex;flex-direction:column;padding:32px}
+    .support-tier+.support-tier{border-left:1px solid rgba(10,10,10,.08)}
+    .support-amount{font-size:28px;font-weight:600;letter-spacing:-.02em}
+    .support-tier h3{margin:16px 0 0;font-size:19px;font-weight:500;line-height:1.3}
+    .support-tier p{flex:1;margin:8px 0 0;color:#6b6b6b;font-size:15px;line-height:1.5}
+    .support-tier-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:32px}
+    .support-tag{display:inline-flex;align-items:center;padding:4px 10px;border-radius:999px;background:#f0f0f0;color:#6b6b6b;font-size:13px;font-weight:500}
+    .support-tier a{color:#0a0a0a;font-size:15px;font-weight:600;text-decoration:none}
+    .support-tier a:hover{text-decoration:underline;text-underline-offset:3px}
+    .support-note{margin:28px 0 0;color:#6b6b6b;font-size:15px;text-align:center}
+    .support-note a{color:#0a0a0a;text-underline-offset:3px}
+    .merch-section{margin-top:112px;scroll-margin-top:96px}
+    .merch-section-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px 32px}
+    .merch-section-head p{max-width:48ch;margin:16px 0 0;color:#6b6b6b;font-size:17px;line-height:1.5}
+    .merch-section-head a{color:#6b6b6b;font-size:14px;font-weight:500;text-decoration:none;transition:color .2s}
+    .merch-section-head a:hover{color:#0a0a0a}
+    .merch-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px}
+    .merch-card{display:flex;flex-direction:column;overflow:hidden;border:1px solid rgba(10,10,10,.1);border-radius:28px;transition:border-color .3s}
+    .merch-card:hover{border-color:rgba(10,10,10,.25)}
+    .merch-art{position:relative;display:flex;flex-direction:column;justify-content:center;aspect-ratio:4/3;padding:28px;background:#f5f5f5}
+    .merch-art-brand{color:#a1a1a1;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase}
+    .merch-art-name{max-width:14ch;margin-top:8px;font:italic 26px/1.15 'Libre Baskerville',Georgia,serif;letter-spacing:-.02em}
+    .merch-chip{position:absolute;top:16px;right:16px;padding:4px 10px;border-radius:999px;background:#fff;color:#6b6b6b;font-size:12px;font-weight:500}
+    .merch-card-copy{display:flex;flex:1;flex-direction:column;padding:24px}
+    .merch-card-top{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+    .merch-card-top h3{margin:0;font-size:17px;font-weight:600}
+    .merch-card-top span{flex-shrink:0;font-size:16px;font-weight:600}
+    .merch-card-copy p{margin:10px 0 0;color:#6b6b6b;font-size:15px;line-height:1.5}
+    .merch-order{display:inline-flex;align-items:center;justify-content:center;height:44px;margin-top:20px;border-radius:999px;background:#0a0a0a;color:#fff;font-size:15px;font-weight:600;text-decoration:none}
+    @media(max-width:1023px){.support{padding-top:0}.support-photo{position:relative;z-index:0;display:block;width:calc(100% + 112px);max-width:none;height:260px;margin:0 -56px 32px;-webkit-mask-image:linear-gradient(180deg,#000 55%,transparent);mask-image:linear-gradient(180deg,#000 55%,transparent)}.support-tiers{grid-template-columns:1fr}.support-tier+.support-tier{border-left:0;border-top:1px solid rgba(10,10,10,.08)}.merch-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:639px){.merch-page{padding:120px 24px 48px}.support{margin-top:48px;padding:0 20px 24px}.support-photo{width:calc(100% + 40px);height:200px;margin:0 -20px 24px}.support-tier{padding:24px}.merch-section{margin-top:80px}.merch-grid{grid-template-columns:1fr}}
+</style>

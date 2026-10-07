@@ -1,0 +1,76 @@
+[
+    {
+        "title": "The State of Accra's Startup Ecosystem",
+        "subtitle": "2026 Edition",
+        "description": "A comprehensive analysis of the startup landscape in Accra — funding trends, sector breakdowns, founder demographics, and ecosystem maturity indicators.",
+        "date": "June 2026",
+        "pages": "42",
+        "tags": [
+            "Ecosystem",
+            "Accra",
+            "Startups",
+            "2026"
+        ],
+        "pdf": "/assets/docs/reports/state-of-accra-startup-ecosystem-2026.pdf",
+        "status": "available",
+        "bgImage": "/assets/img/state-of-accra-report-bg.png"
+    },
+    {
+        "title": "The African Market Dynamics",
+        "subtitle": "",
+        "description": "Where to build, where to sell, and what actually works on the ground.",
+        "date": "",
+        "pages": "",
+        "tags": [
+            "Markets",
+            "Expansion",
+            "Africa"
+        ],
+        "pdf": "",
+        "status": "coming-soon",
+        "bgImage": "/assets/img/reports/african-market-dynamics.jpg"
+    },
+    {
+        "title": "Startup Metric Cheat Sheet",
+        "subtitle": "",
+        "description": "The numbers every early-stage startup should obsess over.",
+        "date": "",
+        "pages": "",
+        "tags": [
+            "Metrics",
+            "Early-stage"
+        ],
+        "pdf": "",
+        "status": "coming-soon",
+        "bgImage": "/assets/img/reports/startup-metric-cheat-sheet.jpg"
+    },
+    {
+        "title": "Early Startup Playbook",
+        "subtitle": "",
+        "description": "A step-by-step guide to finding out if anyone actually wants what you're building.",
+        "date": "",
+        "pages": "",
+        "tags": [
+            "Validation",
+            "Playbook"
+        ],
+        "pdf": "",
+        "status": "coming-soon",
+        "bgImage": "/assets/img/reports/early-startup-playbook.jpg"
+    },
+    {
+        "title": "The Founder's Equity & ESOP Playbook",
+        "subtitle": "Before You Split, Before You Grant",
+        "description": "How to split founder equity and set up an employee share option pool — before you split, before you grant.",
+        "date": "",
+        "pages": "",
+        "tags": [
+            "Equity",
+            "ESOP",
+            "Founders"
+        ],
+        "pdf": "",
+        "status": "coming-soon",
+        "bgImage": "/assets/img/reports/founders-equity-esop-playbook.jpg"
+    }
+]

@@ -1,40 +1,96 @@
 ---
-const currentYear = new Date().getFullYear();
-const currentPath = Astro.url.pathname;
+import Logo from './Logo.astro';
 
-const links = [
-    { name: 'Podcast', href: '/podcast' },
-    { name: 'Gallery', href: '/gallery' },
-    { name: 'Editions', href: '/editions' },
-    { name: 'Newsletters', href: '/newsletters' },
-    { name: 'Community', href: '/community' },
-    { name: 'Registry', href: '/registry' },
-    { name: 'Merch', href: '/merch' },
-    { name: 'Reports', href: '/reports' },
-    { name: 'The Pitch', href: '/the-pitch' },
+const currentYear = new Date().getFullYear();
+
+const columns = [
+    { title: 'Explore', links: [
+        { name: 'The gathering', href: '/#experience' },
+        { name: 'Editions', href: '/editions' },
+        { name: 'Gallery', href: '/gallery' },
+        { name: 'The Pitch', href: '/the-pitch' },
+    ] },
+    { title: 'Listen & read', links: [
+        { name: 'Podcast', href: '/podcast' },
+        { name: 'Newsletter', href: 'https://mcofie.substack.com/', external: true },
+        { name: 'Reports', href: '/reports' },
+    ] },
+    { title: 'Community', links: [
+        { name: 'Our community', href: '/community' },
+        { name: 'Registry', href: '/registry' },
+        { name: 'Merch', href: '/merch' },
+    ] },
+    { title: 'Connect', links: [
+        { name: 'Discord', href: 'https://discord.gg/RMcBDRrV7x', external: true },
+        { name: 'LinkedIn', href: 'https://www.linkedin.com/company/sandbox-reseau/', external: true },
+        { name: 'Instagram', href: 'https://www.instagram.com/sandboxreseau', external: true },
+        { name: 'YouTube', href: 'https://www.youtube.com/@SandboxReseau', external: true },
+    ] },
 ];
+
 ---
 
-<footer class="border-t-[3px] border-[var(--rule)] border-double">
-    <div class="mx-auto flex max-w-[1100px] flex-col md:flex-row items-center justify-between gap-6 px-4 py-8 md:py-4 text-[13px] text-neutral-600">
-        <div class="order-2 md:order-1 text-center md:text-left">
-            © <span id="year">{currentYear}</span> Sandbox Réseau • Accra
+<footer class="site-footer">
+    <div class="site-footer-inner">
+        <div class="site-footer-main">
+            <div class="site-footer-brand">
+                <a class="site-footer-logo" href="/" aria-label="Sandbox Réseau home"><Logo aria-hidden="true" /></a>
+                <p>Where Africa’s founders and builders connect, collaborate, and shape the future.</p>
+                <form class="site-footer-form" action="https://mcofie.substack.com/subscribe" method="get" target="_blank">
+                    <label class="sr-only" for="footer-email">Email address</label>
+                    <input id="footer-email" type="email" name="email" required placeholder="you@email.com" autocomplete="email" />
+                    <button type="submit">Subscribe</button>
+                </form>
+                <a class="site-footer-pill" href="https://luma.com/sandbox-reseau" target="_blank" rel="noreferrer"><span class="site-footer-dot" aria-hidden="true"></span>Accra, Ghana · Get an invite</a>
+            </div>
+            <div class="site-footer-columns">
+                {columns.map((column) => (
+                    <div>
+                        <p class="site-footer-heading">{column.title}</p>
+                        <ul>
+                            {column.links.map((link) => (
+                                <li><a href={link.href} target={link.external ? '_blank' : undefined} rel={link.external ? 'noreferrer' : undefined}>{link.name}</a></li>
+                            ))}
+                        </ul>
+                    </div>
+                ))}
+            </div>
         </div>
-        
-        <div class="order-1 md:order-2 flex flex-wrap items-center justify-center gap-x-5 gap-y-3">
-            {links.map((link) => (
-                <a 
-                    href={link.href} 
-                    class={`hover:underline ${currentPath === link.href ? 'text-[var(--ink)] font-semibold' : ''}`}
-                >
-                    {link.name}
-                </a>
-            ))}
-        </div>
-        
-        <div class="order-3">
-            <a class="underline accent-text font-bold" href="https://luma.com/sandbox-reseau" target="_blank"
-                rel="noreferrer">Register</a>
+        <div class="site-footer-bottom">
+            <span>© {currentYear} Sandbox Réseau. Built in Accra.</span>
+            <span class="site-footer-legal"><a href="https://luma.com/sandbox-reseau" target="_blank" rel="noreferrer">Events on Luma</a><a href="#top">Back to top</a></span>
         </div>
     </div>
 </footer>
+
+
+<style>
+    .site-footer{background:#fff;padding:64px 0 80px;font-family:Inter,system-ui,sans-serif;color:#0a0a0a}
+    .site-footer-inner{width:100%;max-width:1040px;margin:0 auto;padding:0 32px}
+    .site-footer-main{display:grid;grid-template-columns:1.3fr 2.4fr;gap:64px}
+    .site-footer-brand{max-width:24rem}
+    .site-footer-logo{display:inline-block;color:#0a0a0a;text-decoration:none}
+    .site-footer-logo svg{display:block;height:44px;width:auto}
+    .site-footer-brand>p{margin:16px 0 0;color:#6b6b6b;font-size:15px;line-height:1.5}
+    .site-footer-form{display:flex;align-items:center;gap:8px;width:100%;max-width:24rem;margin-top:24px;padding:6px 6px 6px 20px;border:1px solid rgba(10,10,10,.1);border-radius:999px;transition:border-color .2s}
+    .site-footer-form:focus-within{border-color:rgba(10,10,10,.3)}
+    .site-footer-form input{flex:1;min-width:0;border:0;background:transparent;color:#0a0a0a;font:inherit;font-size:15px;outline:none}
+    .site-footer-form input::placeholder{color:#a1a1a1}
+    .site-footer-form button{flex-shrink:0;height:36px;padding:0 16px;border:0;border-radius:999px;background:#0a0a0a;color:#fff;font:inherit;font-size:14px;font-weight:500;cursor:pointer;transition:background-color .2s}
+    .site-footer-form button:hover{background:rgba(10,10,10,.85)}
+    .site-footer-pill{display:inline-flex;align-items:center;gap:8px;height:40px;margin-top:24px;padding:0 14px;border:1px solid rgba(10,10,10,.1);border-radius:999px;color:#6b6b6b;font-size:13px;font-weight:500;text-decoration:none;transition:border-color .2s,color .2s}
+    .site-footer-pill:hover{border-color:rgba(10,10,10,.3);color:#0a0a0a}
+    .site-footer-dot{width:7px;height:7px;border-radius:50%;background:#8fbf24}
+    .site-footer-columns{display:grid;grid-template-columns:repeat(4,1fr);gap:40px 32px}
+    .site-footer-heading{margin:0;font-size:13px;font-weight:600;color:#0a0a0a}
+    .site-footer-columns ul{margin:14px 0 0;padding:0;list-style:none}
+    .site-footer-columns li+li{margin-top:10px}
+    .site-footer-columns a{color:#6b6b6b;font-size:14px;text-decoration:none;transition:color .2s}
+    .site-footer-columns a:hover{color:#0a0a0a}
+    .site-footer-bottom{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-top:56px;padding-top:24px;border-top:1px solid rgba(10,10,10,.1);color:#a1a1a1;font-size:13px}
+    .site-footer-legal{display:flex;flex-wrap:wrap;gap:4px 20px}
+    .site-footer-legal a{color:inherit;text-decoration:none;transition:color .2s}
+    .site-footer-legal a:hover{color:#0a0a0a}
+    @media(max-width:1023px){.site-footer-main{grid-template-columns:1fr;gap:48px}}
+    @media(max-width:639px){.site-footer{padding:48px 0 64px}.site-footer-inner{padding:0 24px}.site-footer-columns{grid-template-columns:repeat(2,1fr)}}
+</style>

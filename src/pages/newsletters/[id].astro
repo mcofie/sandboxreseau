@@ -15,9 +15,8 @@ const { newsletter } = Astro.props;
 <Layout 
     title={`${newsletter.title} | Newsletter — Sandbox Réseau`}
     description={newsletter.excerpt}
-    headerSubtitle={`Dispatch Issue ${newsletter.issue}`}
 >
-    <main class="mx-auto max-w-[800px] px-4 py-12">
+    <main class="mx-auto max-w-[800px] px-4 pt-36 pb-12">
         <div class="mb-12">
             <div class="flex flex-wrap items-center gap-3 text-[11px] font-bold uppercase tracking-widest text-[var(--muted)] mb-6">
                 <a href="/newsletters" class="hover:accent-text transition-colors">Archive</a>
@@ -78,7 +77,7 @@ const { newsletter } = Astro.props;
                     <a href="/newsletters" class="text-xs font-bold uppercase tracking-widest border border-[var(--ink)] px-8 py-4 hover:bg-[var(--ink)] hover:text-[var(--paper)] transition-all">
                     ← Archive
                     </a>
-                    <a href="https://luma.com/sandbox-reseau" target="_blank" rel="noopener noreferrer" class="text-xs font-bold uppercase tracking-widest bg-[var(--ink)] text-[var(--paper)] px-8 py-4 hover:opacity-90 transition-all shadow-lg">
+                    <a href="https://mcofie.substack.com/" target="_blank" rel="noopener noreferrer" class="text-xs font-bold uppercase tracking-widest bg-[var(--ink)] text-[var(--paper)] px-8 py-4 hover:opacity-90 transition-all shadow-lg">
                     Subscribe
                     </a>
                 </div>

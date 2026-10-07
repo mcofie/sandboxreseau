@@ -1,248 +1,142 @@
 ---
-import ThemeControls from './ThemeControls.astro';
-import ThemeSwatches from './ThemeSwatches.astro';
+import Logo from './Logo.astro';
 
-interface Props {
-	title?: string;
-	subtitle?: string;
-}
-
-import editions from '../data/editions.json';
-
-const { title = "Sandbox Réseau Gazette", subtitle = "For Builders, Thinkers & Makers" } = Astro.props;
+const LUMA_URL = 'https://luma.com/sandbox-reseau';
 const currentPath = Astro.url.pathname;
 
-const latestEdition = editions[0]; // Assuming newest is first in JSON
-const volNo = `VOL · NO ${latestEdition.no}`;
-
-const categories = [
-    { name: 'Gazette', href: '/', description: 'Latest dispatches and community news', active: currentPath === '/' },
-    { name: 'Podcast', href: '/podcast', description: 'The high-bandwidth audio log', active: currentPath === '/podcast' },
-    { name: 'Gallery', href: '/gallery', description: 'Visual archive of past editions', active: currentPath === '/gallery' },
-    { name: 'Editions', href: '/editions', description: 'Explore our event history', active: currentPath === '/editions' },
-    { name: 'Newsletters', href: '/newsletters', description: 'Curated signals for builders', active: currentPath === '/newsletters' },
-    { name: 'Community', href: '/community', description: 'Join the builders on Discord', active: currentPath === '/community' },
-    { name: 'Registry', href: '/registry', description: 'Directory of projects and makers', active: currentPath === '/registry' },
-    { name: 'The Pitch', href: '/the-pitch', description: 'Our flagship pitch competition', active: currentPath === '/the-pitch' },
-    { name: 'Merch', href: '/merch', description: 'Sandbox Supply official gear', active: currentPath === '/merch' },
-    { name: 'Reports', href: '/reports', description: 'Ecosystem research and publications', active: currentPath === '/reports' },
+// Shown in the centre pill on desktop.
+const primaryLinks = [
+    { name: 'The gathering', href: '/#experience', icon: 'M8 2.5v11M3.2 5.25l9.6 5.5M3.2 10.75l9.6-5.5' },
+    { name: 'Editions', href: '/editions', icon: 'M3 4.5h10v8.5H3zM3 7.5h10M5.5 3v3M10.5 3v3' },
+    { name: 'Community', href: '/community', icon: 'M6 7.5a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM2.5 13a3.5 3.5 0 0 1 7 0M10.5 7.5a1.75 1.75 0 1 0 0-3.5M11.5 9.6a3.2 3.2 0 0 1 2 3' },
+    { name: 'Gallery', href: '/gallery', icon: 'M2.5 3.5h11v9h-11zM2.5 10.5l3-3 3 3 2-2 3 3M10.25 6.25h.01' },
 ];
+
+// The full site map, shown in the mobile menu.
+const menuLinks = [
+    { name: 'Home', href: '/' },
+    { name: 'Editions', href: '/editions' },
+    { name: 'Podcast', href: '/podcast' },
+    { name: 'Community', href: '/community' },
+    { name: 'Gallery', href: '/gallery' },
+    { name: 'Registry', href: '/registry' },
+    { name: 'Reports', href: '/reports' },
+    { name: 'The Pitch', href: '/the-pitch' },
+    { name: 'Merch & support', href: '/merch' },
+    { name: 'Newsletter', href: 'https://mcofie.substack.com/', external: true },
+];
+
+const isCurrent = (href: string) => href === currentPath || (href !== '/' && currentPath.startsWith(`${href}/`));
 ---
 
-<header class="border-b-[3px] border-[var(--rule)] border-double bg-[var(--paper)]">
-    <div class="mx-auto max-w-[1100px] px-4">
-        <!-- Row 1: Utility -->
-        <div class="flex flex-wrap items-center justify-between gap-3 py-2 text-[13px]">
-            <div class="text-[var(--muted)]">
-                <span id="dateline">Monday, March 23, 2026</span> • {volNo} • Accra
-            </div>
-
-            <div class="flex items-center gap-2">
-                {Astro.url.pathname !== '/' && (
-                    <a href="/"
-                        class="inline-flex items-center gap-2 mr-4 rounded bg-[var(--ink)] px-3 py-1.5 text-xs font-bold text-[var(--paper)] uppercase tracking-wide hover:opacity-80 transition-opacity">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
-                            stroke="currentColor" class="h-3.5 w-3.5">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
-                        </svg>
-                        Back to Gazette
-                    </a>
-                )}
-                <ThemeControls />
-            </div>
+<header class="site-header" data-site-header>
+    <div class="site-nav">
+        <a class="nav-pill site-brand" href="/" aria-label="Sandbox Réseau home"><Logo class="site-logo" aria-hidden="true" /></a>
+        <nav class="nav-pill site-links" aria-label="Main navigation">
+            {primaryLinks.map((link) => (
+                <a href={link.href} aria-current={isCurrent(link.href) ? 'page' : undefined}>
+                    <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d={link.icon} /></svg>
+                    {link.name}
+                </a>
+            ))}
+        </nav>
+        <div class="site-nav-end">
+            <button type="button" class="nav-pill site-menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="site-menu" data-menu-toggle>
+                <svg class="icon-open" viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M2.5 5h11M2.5 11h11" /></svg>
+                <svg class="icon-close" viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" /></svg>
+            </button>
+            <a class="site-cta" href={LUMA_URL} target="_blank" rel="noreferrer">Get an invite</a>
         </div>
+    </div>
 
-        <!-- Row 2: Centered Masthead -->
-        <div class="py-3">
-            <h1 class="text-center font-serif text-[44px] leading-none tracking-tight sm:text-[56px]">
-                {title}
-            </h1>
-            <div class="mx-auto mt-3 h-px w-24 bg-[var(--rule)]"></div>
-            <p class="mt-2 text-center font-serif text-sm text-[var(--muted)]">
-                {subtitle}
-            </p>
-        </div>
-
-        <!-- Row 3: Swatches -->
-        <ThemeSwatches />
+    <div class="site-menu" id="site-menu" hidden data-site-menu>
+        <nav aria-label="Site menu">
+            <ul>
+                {menuLinks.map((link) => (
+                    <li>
+                        <a href={link.href} aria-current={isCurrent(link.href) ? 'page' : undefined} target={link.external ? '_blank' : undefined} rel={link.external ? 'noreferrer' : undefined}>
+                            {link.name}
+                            {link.external && <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5" /></svg>}
+                        </a>
+                    </li>
+                ))}
+            </ul>
+        </nav>
+        <a class="site-menu-cta" href={LUMA_URL} target="_blank" rel="noreferrer">Get an invite</a>
     </div>
 </header>
 
-<!-- Sticky Menu Toggle Bar -->
-<div class="sticky top-0 z-50 border-y border-[var(--rule)] bg-[var(--paper)] py-2 transition-shadow duration-300" id="sticky-menu-bar">
-    <div class="mx-auto flex max-w-[1100px] items-center justify-between px-4">
-        <button id="menu-open-btn" class="flex items-center gap-2 px-3 py-1 text-[11px] font-black uppercase tracking-[0.2em] hover:accent-text transition-colors">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
-            Menu
-        </button>
-        
-        <div class="flex items-center gap-4">
-             <span class="hidden sm:inline font-serif text-[12px] text-[var(--muted)]" id="global-status-label">Gazette Dispatch</span>
-             <a href="https://luma.com/sandbox-reseau" target="_blank" class="rounded bg-[var(--ink)] px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest text-[var(--paper)] hover:bg-[var(--accent)] transition-colors">
-                Register
-             </a>
-        </div>
-    </div>
-    <div class="absolute bottom-0 left-0 h-[2px] w-full bg-[var(--rule)]/5">
-        <div id="global-scroll-progress" class="h-full bg-[var(--accent)] transition-all duration-150" style="width: 0%"></div>
-    </div>
-</div>
-
-<div class="h-1 border-b border-[var(--rule)] banner"></div>
-
-<!-- Full Screen Overlay Menu -->
-<div id="full-screen-menu" class="fixed inset-0 z-[100] translate-y-full bg-[var(--paper)] transition-transform duration-700 ease-[cubic-bezier(0.85,0,0.15,1)]">
-    <div class="grain-overlay opacity-10"></div>
-    
-    <!-- Menu Header -->
-    <div class="flex items-center justify-between border-b border-[var(--rule)] px-6 py-6 md:px-12">
-        <div class="font-serif text-xl font-bold tracking-tight">Sandbox Réseau</div>
-        <button id="menu-close-btn" class="group flex h-12 w-12 items-center justify-center rounded-full border border-[var(--rule)]/20 transition-all hover:bg-[var(--ink)] hover:text-[var(--paper)]">
-             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform group-hover:rotate-90"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-        </button>
-    </div>
-
-    <!-- Menu Content -->
-    <div class="h-full overflow-y-auto px-6 py-12 md:px-12">
-        <div class="mx-auto max-w-[1200px]">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-8 md:gap-y-12">
-                {categories.map((cat, i) => (
-                    <div class="overflow-hidden group">
-                        <a 
-                            href={cat.href}
-                            target={cat.external ? "_blank" : "_self"}
-                            class="menu-link block opacity-0 translate-y-12 transition-all duration-500 ease-out"
-                            style={`transition-delay: ${i * 50}ms`}
-                        >
-                            <div class="flex items-start gap-4">
-                                <span class="font-sans text-[10px] font-bold text-[var(--muted)] mt-2">0{i + 1}</span>
-                                <div class="flex-1">
-                                    <div class="flex items-center gap-3">
-                                        <h2 class="font-serif text-4xl sm:text-5xl md:text-6xl tracking-tighter group-hover:accent-text transition-colors leading-none">
-                                            {cat.name}
-                                        </h2>
-                                        {cat.external && <span class="font-sans text-[10px] font-black uppercase tracking-[0.2em] text-[var(--muted)] opacity-50 px-2 py-0.5 border border-[var(--rule)] rounded">EXT</span>}
-                                    </div>
-                                    <p class="mt-2 font-serif text-sm md:text-base text-[var(--muted)] max-w-xs">
-                                        {cat.description}
-                                    </p>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                ))}
-            </div>
-
-            <!-- Menu Footer -->
-            <div id="menu-footer" class="mt-24 border-t border-[var(--rule)] pt-12 grid grid-cols-1 sm:grid-cols-2 gap-8 pb-24">
-                <div class="opacity-0 translate-y-8 transition-all duration-500 delay-500">
-                    <h4 class="text-[10px] uppercase font-bold tracking-widest text-[var(--muted)] mb-4">Location</h4>
-                    <p class="font-serif text-lg">Accra, Ghana</p>
-                </div>
-                <div class="opacity-0 translate-y-8 transition-all duration-500 delay-600">
-                    <h4 class="text-[10px] uppercase font-bold tracking-widest text-[var(--muted)] mb-4">Social</h4>
-                    <div class="flex flex-col gap-2">
-                        <a href="https://www.linkedin.com/company/sandbox-reseau/" target="_blank" class="font-serif text-lg hover:accent-text transition-colors">LinkedIn</a>
-                        <a href="https://www.youtube.com/@SandboxReseau" target="_blank" class="font-serif text-lg hover:accent-text transition-colors">YouTube</a>
-                        <a href="https://www.instagram.com/sandboxreseau?igsh=MTg5ZWt5a3lyZ21iMg%3D%3D&utm_source=qr" target="_blank" class="font-serif text-lg hover:accent-text transition-colors">Instagram</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<div class="site-menu-scrim" hidden data-menu-scrim></div>
 
 <script>
-    function initMenu() {
-        const openBtn = document.getElementById('menu-open-btn');
-        const closeBtn = document.getElementById('menu-close-btn');
-        const menu = document.getElementById('full-screen-menu');
-        const stickyBar = document.getElementById('sticky-menu-bar');
-        const progress = document.getElementById('global-scroll-progress');
-        const label = document.getElementById('global-status-label');
-        const menuLinks = document.querySelectorAll('.menu-link');
-        const menuFooter = document.getElementById('menu-footer');
+    // Registered once at module level; elements are looked up per event so this survives view transitions.
+    const els = () => ({
+        header: document.querySelector<HTMLElement>('[data-site-header]'),
+        menu: document.querySelector<HTMLElement>('[data-site-menu]'),
+        scrim: document.querySelector<HTMLElement>('[data-menu-scrim]'),
+        toggle: document.querySelector<HTMLButtonElement>('[data-menu-toggle]'),
+    });
 
-        if (!openBtn || !closeBtn || !menu) return;
-
-        function toggleMenu(isOpen: boolean) {
-            if (isOpen) {
-                menu.classList.remove('translate-y-full');
-                document.body.style.overflow = 'hidden';
-                // Animate links
-                menuLinks.forEach((link, i) => {
-                    setTimeout(() => {
-                        link.classList.remove('opacity-0', 'translate-y-12');
-                    }, 300 + (i * 60));
-                });
-                // Animate footer
-                const footerChildren = menuFooter?.children;
-                if (footerChildren) {
-                    Array.from(footerChildren).forEach((child, i) => {
-                        setTimeout(() => {
-                            child.classList.remove('opacity-0', 'translate-y-8');
-                        }, 800 + (i * 100));
-                    });
-                }
-            } else {
-                menu.classList.add('translate-y-full');
-                document.body.style.overflow = '';
-                // Reset state for next time
-                menuLinks.forEach(link => {
-                    link.classList.add('opacity-0', 'translate-y-12');
-                });
-                const footerChildren = menuFooter?.children;
-                if (footerChildren) {
-                    Array.from(footerChildren).forEach((child) => {
-                        child.classList.add('opacity-0', 'translate-y-8');
-                    });
-                }
-            }
-        }
-
-        openBtn.addEventListener('click', () => toggleMenu(true));
-        closeBtn.addEventListener('click', () => toggleMenu(false));
-        
-        // Close on link click (if internal)
-        menuLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                const target = (link as HTMLAnchorElement).getAttribute('target');
-                if (target !== '_blank') toggleMenu(false);
-            });
-        });
-
-        // Sticky & Progress Logic
-        const handleScroll = () => {
-            if (window.scrollY > 150) {
-                stickyBar?.classList.add('shadow-xl');
-            } else {
-                stickyBar?.classList.remove('shadow-xl');
-            }
-
-            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            if (height > 0) {
-                const scrolledPercent = (winScroll / height) * 100;
-                if (progress) progress.style.width = scrolledPercent + "%";
-            }
-
-            if (window.location.pathname === '/' && label) {
-                const articles = document.querySelectorAll('article[id]');
-                let cur = "Dispatch";
-                articles.forEach(art => {
-                    if (window.scrollY >= (art as HTMLElement).offsetTop - 120) {
-                        cur = art.getAttribute('id') || "Dispatch";
-                    }
-                });
-                label.textContent = "Journal: " + cur.charAt(0).toUpperCase() + cur.slice(1);
-            }
-        };
-
-        window.addEventListener('scroll', handleScroll, { passive: true });
-        handleScroll(); // Initial check
+    function setMenu(open: boolean) {
+        const { header, menu, scrim, toggle } = els();
+        if (!menu || !toggle) return;
+        menu.hidden = !open;
+        if (scrim) scrim.hidden = !open;
+        header?.classList.toggle('menu-open', open);
+        toggle.setAttribute('aria-expanded', String(open));
+        toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
     }
 
-    initMenu();
-    document.addEventListener('astro:after-swap', initMenu);
+    // Light pills only read over a dark hero; pages without one get the solid style from the start.
+    function updateHeader() {
+        const overHero = document.querySelector('[data-dark-hero]') && window.scrollY <= window.innerHeight * 0.6;
+        els().header?.classList.toggle('is-scrolled', !overHero);
+    }
+
+    document.addEventListener('click', (event) => {
+        const target = event.target as Element;
+        if (target.closest('[data-menu-toggle]')) return setMenu(els().menu?.hidden ?? false);
+        if (target.closest('[data-menu-scrim]') || target.closest('[data-site-menu] a')) setMenu(false);
+    });
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') setMenu(false);
+    });
+    window.addEventListener('resize', () => { if (window.innerWidth > 860) setMenu(false); });
+    window.addEventListener('scroll', updateHeader, { passive: true });
+    document.addEventListener('astro:page-load', () => { setMenu(false); updateHeader(); });
 </script>
+
+<style>
+    .site-header{position:fixed;z-index:60;top:28px;left:0;width:100%;pointer-events:none;font-family:Inter,system-ui,sans-serif}
+    .site-nav{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;width:min(1040px,100%);height:64px;margin:0 auto;padding:0 32px}
+    .site-nav>*,.site-menu{pointer-events:auto}
+    .nav-pill{display:flex;align-items:center;height:40px;border-radius:999px;background:rgba(255,255,255,.15);-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px);color:#fff;transition:background-color .3s cubic-bezier(.22,1,.36,1)}
+    .site-brand{justify-self:start;padding:0 16px;color:#fff;text-decoration:none}
+    .site-logo{display:block;height:30px;width:auto;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3))}
+    .site-links{justify-self:center;padding:4px}
+    .site-links a{display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;color:rgba(255,255,255,.85);font-size:14px;font-weight:500;text-decoration:none;white-space:nowrap;text-shadow:0 1px 3px rgba(0,0,0,.35);transition:background-color .2s,color .2s}
+    .site-links a:hover,.site-links a[aria-current]{background:rgba(255,255,255,.15);color:#fff}
+    .site-nav-end{justify-self:end;display:flex;align-items:center;gap:8px}
+    .site-menu-btn{display:none;justify-content:center;width:40px;border:0;cursor:pointer}
+    .site-menu-btn .icon-close,.menu-open .site-menu-btn .icon-open{display:none}
+    .menu-open .site-menu-btn .icon-close{display:block}
+    .site-cta{display:inline-flex;align-items:center;height:40px;padding:0 16px;border-radius:999px;background:#fff;color:#0a0a0a;font-size:14px;font-weight:500;white-space:nowrap;text-decoration:none;transition:background-color .2s}
+    .site-cta:hover{background:#d3fa69}
+    .is-scrolled .nav-pill,.menu-open .nav-pill{background:rgba(23,24,22,.72)}
+    .is-scrolled .site-cta,.menu-open .site-cta{background:#0a0a0a;color:#fff}
+    .is-scrolled .site-cta:hover{background:#2a2a2a}
+    .site-menu{width:calc(100% - 48px);max-width:420px;margin:8px 24px 0 auto;padding:8px;border:1px solid rgba(10,10,10,.08);border-radius:24px;background:rgba(255,255,255,.96);-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px);box-shadow:0 24px 60px -20px rgba(0,0,0,.35);animation:menu-in .25s cubic-bezier(.22,1,.36,1)}
+    .site-menu[hidden]{display:none}
+    .site-menu ul{margin:0;padding:0;list-style:none}
+    .site-menu li a{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-radius:14px;color:#0a0a0a;font-size:17px;font-weight:500;text-decoration:none;transition:background-color .2s}
+    .site-menu li a:hover,.site-menu li a[aria-current]{background:#f5f5f5}
+    .site-menu li a svg{color:#a1a1a1}
+    .site-menu-cta{display:flex;align-items:center;justify-content:center;height:48px;margin-top:8px;border-radius:999px;background:#0a0a0a;color:#fff;font-size:16px;font-weight:600;text-decoration:none}
+    .site-menu-scrim{position:fixed;inset:0;z-index:59;background:rgba(10,10,10,.25)}
+    .site-menu-scrim[hidden]{display:none}
+    @keyframes menu-in{from{opacity:0;transform:translateY(-6px) scale(.98)}to{opacity:1;transform:none}}
+    @media(prefers-reduced-motion:reduce){.site-menu{animation:none}}
+    @media(max-width:860px){.site-nav{display:flex;justify-content:space-between;padding:0 24px}.site-links{display:none}.site-menu-btn{display:flex}}
+    @media(max-width:639px){.site-header{top:16px}.site-nav{padding:0 16px}.site-menu{width:calc(100% - 32px);max-width:none;margin:8px 16px 0}}
+    @media(max-width:359px){.site-brand{padding:0 14px}.site-logo{height:22px}.site-cta{padding:0 14px}}
+</style>

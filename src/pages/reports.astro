@@ -1,269 +1,225 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import reports from '../data/reports.json';
+import newsletters from '../data/newsletters.json';
 
-const headerSubtitle = "Research & Intelligence";
-
-// Reports data — extend this array as new PDFs are added
-const reports = [
-    {
-        title: "The State of Accra's Startup Ecosystem",
-        subtitle: "2026 Edition",
-        description: "A comprehensive analysis of the startup landscape in Accra — funding trends, sector breakdowns, founder demographics, and ecosystem maturity indicators.",
-        date: "June 2026",
-        pages: "42",
-        tags: ["Ecosystem", "Accra", "Startups", "2026"],
-        pdf: "/assets/docs/reports/state-of-accra-startup-ecosystem-2026.pdf",
-        status: "available",
-        bgImage: "/assets/img/state-of-accra-report-bg.png"
-    },
-];
+const [featured, ...otherReports] = reports;
+const availableCount = reports.filter((report) => report.status === 'available').length;
+const upcomingCount = reports.length - availableCount;
+const otherAllUpcoming = otherReports.every((report) => report.status !== 'available');
+const latestNotes = [...newsletters]
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .slice(0, 3)
+    .map((note) => ({
+        ...note,
+        shortDate: new Date(note.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }),
+    }));
 ---
 
-<Layout 
-    title="Reports | Sandbox Réseau" 
+<Layout
+    title="Reports | Sandbox Réseau"
     description="Research reports and ecosystem intelligence from Sandbox Réseau. Download PDF publications on the African startup landscape."
-    headerSubtitle={headerSubtitle}
+    image="/assets/img/state-of-accra-report-bg.png"
+    imageAlt="The State of Accra’s Startup Ecosystem 2026 report cover"
 >
-    <!-- Hero Header -->
-    <section class="border-b border-[var(--rule)]">
-        <div class="mx-auto max-w-[1100px] px-4 py-20 md:py-32 text-center">
-            <span class="inline-block w-max border-y border-[var(--rule)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-[.2em] text-[var(--muted)] mb-6 animate-enter">
-                Research & Intelligence
-            </span>
-            <h1 class="font-serif text-5xl sm:text-7xl md:text-8xl leading-[.85] tracking-tighter mb-8 animate-enter">
-                Reports.
-            </h1>
-            <p class="mx-auto max-w-2xl text-[var(--muted)] text-base md:text-xl leading-relaxed font-serif animate-enter">
-                Ecosystem intelligence and research publications from Sandbox Réseau. Deep, data-driven reports on the builders shaping Africa's future.
-            </p>
-        </div>
-    </section>
+    <main class="reports-page">
+        <section class="reports-head" aria-labelledby="reports-title">
+            <span class="reports-pill"><span class="reports-dot" aria-hidden="true"></span>Reports · {availableCount} available{upcomingCount > 0 && ` · ${upcomingCount} coming soon`} · Free to download</span>
+            <h1 id="reports-title">Reports &amp; research.</h1>
+            <p>Ecosystem intelligence and research publications from Sandbox Réseau. Deep, data-driven reports on the builders shaping Africa’s future.</p>
+        </section>
 
-    <!-- Main Content -->
-    <main class="mx-auto max-w-[1100px] px-4 py-16 md:py-24">
-        <div class="grid grid-cols-1 gap-16 lg:grid-cols-[1fr_320px]">
-            
-            <!-- Report Stream -->
-            <div class="space-y-12">
-                {reports.map((report) => (
-                    <article class="group animate-enter">
-                        <div class="rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_95%,var(--ink)_5%)] overflow-hidden">
-                            
-                            <!-- Report Cover -->
-                            <div class:list={[
-                                "relative border-b border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_88%,var(--ink)_12%)] text-center overflow-hidden min-h-[300px] flex items-center justify-center",
-                                { "hatch": !report.bgImage, "px-8 py-16 md:px-16 md:py-24": !report.bgImage }
-                            ]}>
-                                {report.bgImage ? (
-                                    <div class="absolute inset-0 z-0">
-                                        <img src={report.bgImage} alt={report.title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                                    </div>
-                                ) : (
-                                    <div class="relative z-10 animate-enter">
-                                        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full border-2 border-[var(--ink)] mb-6">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
-                                            </svg>
-                                        </div>
-                                        <h2 class="font-serif text-2xl md:text-4xl tracking-tight mb-2">{report.title}</h2>
-                                        <p class="text-[var(--muted)] text-sm font-serif">{report.date}</p>
-                                    </div>
-                                )}
-                            </div>
-
-                            <!-- Report Details -->
-                            <div class="p-6 md:p-8">
-                                <div class="flex items-center gap-3 mb-3">
-                                    <span class="text-[10px] font-bold uppercase tracking-widest text-[var(--muted)]">{report.date}</span>
-                                    {report.pages && (
-                                        <>
-                                        <span class="w-1 h-1 rounded-full bg-[var(--rule)]"></span>
-                                        <span class="text-[10px] font-bold uppercase tracking-widest text-[var(--muted)]">{report.pages} pages</span>
-                                        </>
-                                    )}
-                                    {report.status === 'available' && (
-                                        <>
-                                        <span class="w-1 h-1 rounded-full bg-[var(--rule)]"></span>
-                                        <span class="text-[10px] font-bold uppercase tracking-widest text-emerald-600">PDF</span>
-                                        </>
-                                    )}
-                                </div>
-
-                                <h2 class="font-serif text-2xl md:text-3xl tracking-tight mb-1">{report.title}</h2>
-                                {report.subtitle && (
-                                    <p class="font-serif text-lg text-[var(--muted)] mb-4">{report.subtitle}</p>
-                                )}
-
-                                <p class="text-[14px] text-[var(--muted)] leading-relaxed mb-6">
-                                    {report.description}
-                                </p>
-
-                                <div class="flex flex-wrap items-center gap-2 mb-6">
-                                    {report.tags.map(tag => (
-                                        <span class="px-2.5 py-1 rounded-full text-[9px] font-bold uppercase tracking-widest bg-[color:color-mix(in_oklab,var(--paper)_90%,var(--ink)_10%)] text-[var(--muted)] border border-[var(--rule)]/10">
-                                            {tag}
-                                        </span>
-                                    ))}
-                                </div>
-
-                                <div class="flex flex-wrap items-center gap-3 pt-5 border-t border-[var(--rule)]/10">
-                                    {report.status === 'available' && (
-                                        <>
-                                        <button 
-                                            data-pdf={report.pdf}
-                                            data-title={report.title}
-                                            class="report-view-btn inline-flex items-center gap-2 rounded border border-[var(--ink)] bg-[var(--ink)] px-6 py-3 text-xs font-bold uppercase tracking-widest text-[var(--paper)] hover:opacity-90 transition-all">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                            </svg>
-                                            Read Report
-                                        </button>
-                                        <a href={report.pdf} download 
-                                            class="inline-flex items-center gap-2 rounded border border-[var(--rule)] px-6 py-3 text-xs font-bold uppercase tracking-widest text-[var(--muted)] hover:border-[var(--ink)] hover:text-[var(--ink)] transition-all">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
-                                            </svg>
-                                            Download PDF
-                                        </a>
-                                        </>
-                                    )}
-                                    {report.status === 'coming-soon' && (
-                                        <span class="inline-flex items-center gap-2 rounded border border-[var(--rule)]/20 px-6 py-3 text-xs font-bold uppercase tracking-widest text-[var(--muted)]">
-                                            <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-                                            Coming Soon
-                                        </span>
-                                    )}
-                                </div>
-                            </div>
-                        </div>
-                    </article>
-                ))}
-            </div>
-
-            <!-- Sticky Right Rail -->
-            <aside class="space-y-8 lg:sticky lg:top-24 lg:self-start">
-                
-                <div class="rounded border border-[var(--rule)] bg-[color:color-mix(in_oklab,var(--paper)_95%,var(--ink)_5%)] p-6 animate-enter">
-                    <h4 class="m-0 font-serif text-xl pb-4 border-b border-[var(--rule)]/20">About Reports</h4>
-                    <p class="mt-4 text-[14px] text-[var(--muted)] leading-relaxed">
-                        Sandbox Réseau publishes original research and ecosystem reports. Our publications are free to download and share.
-                    </p>
-                    <p class="mt-3 text-[14px] text-[var(--muted)] leading-relaxed">
-                        All reports are available in PDF format.
-                    </p>
+        {featured && (
+            <section class="report-feature" aria-labelledby="report-feature-title">
+                <div class="report-feature-art">
+                    {featured.bgImage ? <img src={featured.bgImage} alt="" /> : <span class="report-feature-fallback">{featured.title}</span>}
+                    <span class="report-chip report-chip-left">Report</span>
+                    {featured.pages && <span class="report-chip report-chip-right">{featured.pages} pages</span>}
                 </div>
-
-                <div class="rounded border border-[var(--rule)] hatch p-6 relative overflow-hidden group animate-enter bg-[color:color-mix(in_oklab,var(--paper)_90%,var(--ink)_10%)] text-center">
-                    <div class="relative z-10">
-                        <h4 class="font-serif text-xl mb-2 text-[var(--ink)]">Submit a Report</h4>
-                        <p class="text-[13px] text-neutral-600 mb-5 leading-relaxed">
-                            Have data or research to contribute? Reach out to the team on Discord.
-                        </p>
-                        <a href="https://discord.gg/RMcBDRrV7x" target="_blank" rel="noreferrer"
-                            class="block w-full rounded bg-[var(--ink)] py-3 text-xs font-bold uppercase tracking-widest text-[var(--paper)] hover:opacity-90 transition-opacity">
-                            Join Discord
-                        </a>
+                <div class="report-feature-copy">
+                    <p class="report-meta">{featured.date}{featured.status === 'available' && ' · PDF'}</p>
+                    <h2 id="report-feature-title">{featured.title}{featured.subtitle && <span>{featured.subtitle}</span>}</h2>
+                    <p class="report-desc">{featured.description}</p>
+                    <div class="report-tags">{featured.tags.map((tag) => <span>{tag}</span>)}</div>
+                    <div class="report-actions">
+                        {featured.status === 'available' ? (
+                            <>
+                                <button type="button" class="report-primary" data-pdf-open={featured.pdf} data-pdf-title={featured.title}>Read report</button>
+                                <a class="report-secondary" href={featured.pdf} download>Download PDF</a>
+                            </>
+                        ) : (
+                            <span class="report-soon">Coming soon</span>
+                        )}
                     </div>
                 </div>
+            </section>
+        )}
 
-            </aside>
-        </div>
+        {otherReports.length > 0 && (
+            <section class="reports-section" aria-labelledby="reports-more-title">
+                <h2 id="reports-more-title">{otherAllUpcoming ? 'Coming soon.' : 'More reports.'}</h2>
+                {otherAllUpcoming && <p class="reports-more-lede">Playbooks and cheat sheets in the works for builders. Check back soon.</p>}
+                <div class="reports-grid">
+                    {otherReports.map((report) => (
+                        <article class="report-card">
+                            <div class="report-card-art">
+                                {report.bgImage && <img src={report.bgImage} alt={`${report.title} cover`} loading="lazy" />}
+                                {report.status !== 'available' && <span class="report-chip report-chip-left">Coming soon</span>}
+                            </div>
+                            {(report.date || report.pages) && <p class="report-meta">{[report.date, report.pages && `${report.pages} pages`].filter(Boolean).join(' · ')}</p>}
+                            <h3>{report.title}</h3>
+                            <p class="report-desc">{report.description}</p>
+                            {report.status === 'available' ? (
+                                <button type="button" class="report-link" data-pdf-open={report.pdf} data-pdf-title={report.title}>Read report →</button>
+                            ) : null}
+                        </article>
+                    ))}
+                </div>
+            </section>
+        )}
+
+        <section class="reports-section" aria-labelledby="reports-notes-title">
+            <div class="reports-section-head">
+                <div>
+                    <h2 id="reports-notes-title">Notes from the room.</h2>
+                    <p>Shorter reads from our newsletter — playbooks and lessons from each edition.</p>
+                </div>
+                <a href="https://mcofie.substack.com/" target="_blank" rel="noreferrer">Subscribe on Substack →</a>
+            </div>
+            <div class="notes-grid">
+                {latestNotes.map((note) => (
+                    <a class="note-card" href={`/newsletters/${note.id}`}>
+                        <div class="note-art"><img src={note.image} alt="" loading="lazy" /></div>
+                        <div class="note-meta"><span>{note.tags[0]}</span>{note.shortDate} · {note.readTime} read</div>
+                        <h3>{note.title}</h3>
+                    </a>
+                ))}
+            </div>
+        </section>
+
+        <section class="reports-cta" aria-labelledby="reports-cta-title">
+            <div class="reports-cta-card">
+                <h2 id="reports-cta-title">Have research to contribute?</h2>
+                <p>Our publications are free to download and share. If you have data or research on the ecosystem, reach out to the team on Discord.</p>
+                <a class="reports-cta-button" href="https://discord.gg/RMcBDRrV7x" target="_blank" rel="noreferrer">
+                    Join the Discord
+                    <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5" /></svg>
+                </a>
+            </div>
+        </section>
     </main>
 
-    <!-- PDF Viewer Modal -->
-    <div id="pdfViewerModal" class="fixed inset-0 z-[999] hidden">
-        <!-- Backdrop -->
-        <div id="pdfViewerBackdrop" class="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
-
-        <!-- Viewer Container -->
-        <div class="relative z-10 flex flex-col h-full">
-            <!-- Toolbar -->
-            <div class="flex items-center justify-between px-4 md:px-8 py-4 bg-black/40 backdrop-blur-xl border-b border-white/10">
-                <div class="flex items-center gap-4 min-w-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-white/60 shrink-0">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
-                    </svg>
-                    <h3 id="pdfViewerTitle" class="text-white text-sm md:text-base font-bold truncate"></h3>
-                </div>
-                <div class="flex items-center gap-3 shrink-0">
-                    <a id="pdfDownloadLink" href="#" download
-                        class="inline-flex items-center gap-2 px-4 py-2 rounded border border-white/20 text-white text-[10px] font-bold uppercase tracking-widest hover:bg-white/10 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
-                        </svg>
-                        Download
-                    </a>
-                    <button id="pdfViewerClose" class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white/10 transition-colors" aria-label="Close viewer">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-                        </svg>
+    <div class="pdf-viewer" role="dialog" aria-modal="true" aria-labelledby="pdf-viewer-title" hidden data-pdf-viewer>
+        <div class="pdf-viewer-backdrop" data-pdf-close></div>
+        <div class="pdf-viewer-panel">
+            <div class="pdf-viewer-bar">
+                <h2 id="pdf-viewer-title" data-pdf-viewer-title></h2>
+                <div class="pdf-viewer-actions">
+                    <a class="report-secondary" href="#" download data-pdf-download>Download</a>
+                    <button type="button" class="pdf-viewer-close" aria-label="Close viewer" data-pdf-close>
+                        <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" /></svg>
                     </button>
                 </div>
             </div>
-
-            <!-- PDF Iframe -->
-            <div class="flex-1 relative">
-                <iframe id="pdfViewerFrame" class="absolute inset-0 w-full h-full border-0" src=""></iframe>
-            </div>
+            <iframe class="pdf-viewer-frame" title="Report viewer" data-pdf-frame></iframe>
         </div>
     </div>
-
-    <script is:inline>
-        (function() {
-            // PDF Viewer Modal
-            const modal = document.getElementById('pdfViewerModal');
-            const backdrop = document.getElementById('pdfViewerBackdrop');
-            const frame = document.getElementById('pdfViewerFrame');
-            const titleEl = document.getElementById('pdfViewerTitle');
-            const downloadLink = document.getElementById('pdfDownloadLink');
-            const closeBtn = document.getElementById('pdfViewerClose');
-
-            function openViewer(pdfUrl, title) {
-                if (!modal || !frame) return;
-                frame.src = pdfUrl;
-                if (titleEl) titleEl.textContent = title;
-                if (downloadLink) downloadLink.href = pdfUrl;
-                modal.classList.remove('hidden');
-                document.body.style.overflow = 'hidden';
-            }
-
-            function closeViewer() {
-                if (!modal || !frame) return;
-                modal.classList.add('hidden');
-                frame.src = '';
-                document.body.style.overflow = '';
-            }
-
-            // View buttons
-            document.querySelectorAll('.report-view-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const pdf = btn.getAttribute('data-pdf');
-                    const title = btn.getAttribute('data-title');
-                    if (pdf) openViewer(pdf, title || 'Report');
-                });
-            });
-
-            // Close handlers
-            closeBtn?.addEventListener('click', closeViewer);
-            backdrop?.addEventListener('click', closeViewer);
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') closeViewer();
-            });
-
-            // Entrance animations
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach((entry, i) => {
-                    if (entry.isIntersecting) {
-                        setTimeout(() => {
-                            entry.target.classList.add('visible');
-                        }, (i % 4) * 100);
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.1 });
-
-            document.querySelectorAll('.animate-enter').forEach(el => observer.observe(el));
-        })();
-    </script>
 </Layout>
+
+<script>
+    function setViewer(pdf?: string, title?: string) {
+        const viewer = document.querySelector<HTMLElement>('[data-pdf-viewer]');
+        const frame = document.querySelector<HTMLIFrameElement>('[data-pdf-frame]');
+        if (!viewer || !frame) return;
+        const open = Boolean(pdf);
+        frame.src = pdf ?? 'about:blank';
+        viewer.hidden = !open;
+        document.body.style.overflow = open ? 'hidden' : '';
+        if (open) {
+            const titleEl = viewer.querySelector('[data-pdf-viewer-title]');
+            const download = viewer.querySelector<HTMLAnchorElement>('[data-pdf-download]');
+            if (titleEl) titleEl.textContent = title || 'Report';
+            if (download) download.href = pdf!;
+            viewer.querySelector<HTMLElement>('.pdf-viewer-close')?.focus();
+        }
+    }
+
+    // Delegated once on the document, so it survives view transitions without re-binding.
+    document.addEventListener('click', (event) => {
+        const target = event.target as Element;
+        const opener = target.closest<HTMLElement>('[data-pdf-open]');
+        if (opener) return setViewer(opener.dataset.pdfOpen, opener.dataset.pdfTitle);
+        if (target.closest('[data-pdf-close]')) setViewer();
+    });
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && document.querySelector<HTMLElement>('[data-pdf-viewer]')?.hidden === false) setViewer();
+    });
+</script>
+
+<style>
+    .reports-page{max-width:1040px;margin:0 auto;padding:152px 32px 64px;font-family:Inter,system-ui,sans-serif;color:#0a0a0a}
+    .reports-pill{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border:1px solid rgba(10,10,10,.1);border-radius:999px;color:#6b6b6b;font-size:13px;font-weight:500}
+    .reports-dot{width:7px;height:7px;border-radius:50%;background:#8fbf24}
+    .reports-head h1{margin:24px 0 0;font-size:clamp(2.5rem,1.6rem + 3vw,4rem);font-weight:600;line-height:1.02;letter-spacing:-.03em}
+    .reports-head>p{max-width:50ch;margin:20px 0 0;color:#6b6b6b;font-size:17px;line-height:1.5}
+    .report-feature{display:grid;grid-template-columns:1.15fr 1fr;align-items:center;gap:48px;margin-top:64px;padding:24px;border-radius:28px;background:#f5f5f5}
+    .report-feature-art{position:relative;aspect-ratio:2/1;overflow:hidden;border-radius:20px;background:#ececec}
+    .report-feature-art img{width:100%;height:100%;object-fit:cover}
+    .report-feature-fallback{display:grid;place-items:center;height:100%;padding:32px;font-size:22px;font-weight:600;text-align:center}
+    .report-chip{position:absolute;bottom:14px;padding:4px 12px;border-radius:999px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.12);color:#0a0a0a;font-size:12.5px;font-weight:600}
+    .report-chip-left{left:14px}.report-chip-right{right:14px;color:#6b6b6b;font-weight:500}
+    .report-feature-copy{padding:16px 24px 16px 0}
+    .report-meta{margin:0;color:#a1a1a1;font-size:13px}
+    .report-feature h2{margin:12px 0 0;font-size:clamp(1.5rem,1.15rem + 1.2vw,2.125rem);font-weight:600;line-height:1.12;letter-spacing:-.02em}
+    .report-feature h2 span{display:block;color:#6b6b6b;font-weight:500}
+    .report-desc{margin:16px 0 0;color:#6b6b6b;font-size:16px;line-height:1.55}
+    .report-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:20px}
+    .report-tags span{padding:3px 10px;border:1px solid rgba(10,10,10,.1);border-radius:999px;background:#fff;color:#6b6b6b;font-size:12px;font-weight:500}
+    .report-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px}
+    .report-primary,.report-secondary{display:inline-flex;align-items:center;height:48px;padding:0 24px;border-radius:999px;font:inherit;font-size:16px;font-weight:600;text-decoration:none;cursor:pointer;transition:background-color .2s,border-color .2s}
+    .report-primary{border:0;background:#0a0a0a;color:#fff}
+    .report-primary:hover{background:rgba(10,10,10,.9)}
+    .report-secondary{border:1px solid rgba(10,10,10,.12);background:#fff;color:#0a0a0a}
+    .report-secondary:hover{border-color:rgba(10,10,10,.4)}
+    .report-soon{display:inline-flex;align-items:center;height:40px;padding:0 16px;border-radius:999px;background:#fff;color:#6b6b6b;font-size:14px;font-weight:500}
+    .reports-section{margin-top:112px}
+    .reports-section h2,.reports-cta-card h2{margin:0;font-size:clamp(1.5rem,1.15rem + 1.5vw,2.25rem);font-weight:600;line-height:1.1;letter-spacing:-.015em}
+    .reports-section-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px 32px}
+    .reports-section-head p{max-width:46ch;margin:16px 0 0;color:#6b6b6b;font-size:17px;line-height:1.5}
+    .reports-section-head a{color:#6b6b6b;font-size:14px;font-weight:500;text-decoration:none;transition:color .2s}
+    .reports-section-head a:hover{color:#0a0a0a}
+    .reports-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:40px}
+    .report-card{padding:20px;border:1px solid rgba(10,10,10,.1);border-radius:28px}
+    .report-card-art{position:relative;aspect-ratio:2/1;overflow:hidden;margin-bottom:20px;border-radius:18px;background:#f5f5f5}
+    .report-card-art img{width:100%;height:100%;object-fit:cover}
+    .report-card h3{margin:8px 0 0;font-size:19px;font-weight:600}
+    .report-card .report-desc{font-size:15px}
+    .reports-more-lede{margin:16px 0 0;color:#6b6b6b;font-size:17px;line-height:1.5}
+    .report-link{margin-top:16px;padding:0;border:0;background:none;color:#0a0a0a;font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+    .notes-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px}
+    .note-card{display:block;color:inherit;text-decoration:none}
+    .note-art{aspect-ratio:4/3;overflow:hidden;border-radius:24px;background:#f5f5f5}
+    .note-art img{width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.22,1,.36,1)}
+    .note-card:hover .note-art img{transform:scale(1.04)}
+    .note-meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:16px;color:#a1a1a1;font-size:13px}
+    .note-meta span{padding:2px 8px;border:1px solid rgba(10,10,10,.1);border-radius:999px;color:#6b6b6b;font-weight:500}
+    .note-card h3{margin:10px 0 0;font-size:18px;font-weight:600;line-height:1.3;letter-spacing:-.01em}
+    .reports-cta{margin-top:112px}
+    .reports-cta-card{display:flex;flex-direction:column;align-items:center;padding:72px 32px;border-radius:28px;background:#f5f5f5;text-align:center}
+    .reports-cta-card p{max-width:48ch;margin:16px 0 0;color:#6b6b6b;font-size:17px;line-height:1.5}
+    .reports-cta-button{display:inline-flex;align-items:center;gap:10px;height:48px;margin-top:32px;padding:0 28px;border-radius:999px;background:#0a0a0a;color:#fff;font-size:16px;font-weight:600;text-decoration:none;transition:background-color .2s}
+    .reports-cta-button:hover{background:rgba(10,10,10,.9)}
+    .pdf-viewer{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:24px;font-family:Inter,system-ui,sans-serif}
+    .pdf-viewer[hidden]{display:none}
+    .pdf-viewer-backdrop{position:absolute;inset:0;background:rgba(10,10,10,.6);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+    .pdf-viewer-panel{position:relative;display:flex;flex-direction:column;width:min(1100px,100%);height:min(92vh,1000px);overflow:hidden;border-radius:24px;background:#fff;box-shadow:0 30px 80px -20px rgba(0,0,0,.5)}
+    .pdf-viewer-bar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 12px 12px 24px;border-bottom:1px solid rgba(10,10,10,.1)}
+    .pdf-viewer-bar h2{overflow:hidden;margin:0;font-size:16px;font-weight:600;white-space:nowrap;text-overflow:ellipsis}
+    .pdf-viewer-actions{display:flex;flex-shrink:0;gap:8px}
+    .pdf-viewer-actions .report-secondary{height:40px;padding:0 18px;font-size:14px}
+    .pdf-viewer-close{display:grid;place-items:center;width:40px;height:40px;border:1px solid rgba(10,10,10,.12);border-radius:50%;background:#fff;color:#0a0a0a;cursor:pointer;transition:border-color .2s}
+    .pdf-viewer-close:hover{border-color:rgba(10,10,10,.4)}
+    .pdf-viewer-frame{flex:1;width:100%;border:0;background:#f5f5f5}
+    @media(max-width:1023px){.report-feature{grid-template-columns:1fr;gap:24px}.report-feature-copy{padding:0 12px 12px}.notes-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:639px){.reports-page{padding:120px 24px 48px}.report-feature{margin-top:48px;padding:16px}.reports-section,.reports-cta{margin-top:80px}.reports-grid,.notes-grid{grid-template-columns:1fr}.reports-cta-card{padding:56px 24px}.pdf-viewer{padding:0}.pdf-viewer-panel{height:100%;border-radius:0}}
+</style>
