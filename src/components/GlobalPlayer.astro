@@ -1,6 +1,18 @@
 ---
+import { fetchPodcastEpisodes } from '../lib/podcast';
+
+// Newest first, the same order as the episode grids, so "Next" moves to the next card.
+const playlist = (await fetchPodcastEpisodes())
+    .filter((episode) => episode.audioUrl)
+    .map((episode) => ({
+        id: episode.guid,
+        url: episode.audioUrl,
+        title: episode.title,
+        meta: `${new Date(episode.pubDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })} • ${episode.duration}`,
+        thumb: episode.thumb,
+    }));
 ---
-<div id="global-player" class="player-bar fixed inset-x-0 bottom-0 z-[60] px-3 pb-3 sm:px-4 sm:pb-4 pointer-events-none">
+<div id="global-player" transition:persist="global-player" class="player-bar fixed inset-x-0 bottom-0 z-[60] px-3 pb-3 sm:px-4 sm:pb-4 pointer-events-none">
     <div class="player-card pointer-events-auto relative mx-auto max-w-[1040px] rounded-[20px] sm:rounded-[24px]">
         <div class="flex items-center gap-3 sm:gap-5 px-3 py-3 sm:px-5 sm:py-4">
             <!-- Episode Info -->
@@ -33,6 +45,11 @@
                     </div>
                 </div>
 
+                <!-- Stop -->
+                <button id="playerStop" type="button" aria-label="Stop" class="player-icon-btn">
+                    <svg class="h-4 w-4 fill-current" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>
+                </button>
+
                 <!-- Play/Pause -->
                 <button id="playerMainToggle" type="button" aria-label="Play or pause" class="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-white text-[#0a0a0a] transition-transform hover:scale-105 active:scale-95">
                     <svg id="playIconMain" class="h-5 w-5 sm:h-6 sm:w-6 fill-current translate-x-[1px]" viewBox="0 0 24 24" aria-hidden="true">
@@ -42,6 +59,11 @@
                         <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
                     </svg>
                 </button>
+
+                <!-- Next -->
+                <button id="playerNext" type="button" aria-label="Next episode" class="player-icon-btn">
+                    <svg class="h-4 w-4 fill-current" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6.5v11l8.5-5.5zM16 6h2.5v12H16z"/></svg>
+                </button>
             </div>
         </div>
 
@@ -50,4 +72,5 @@
             <div id="playerProgressBar" class="progress-bar-fill"></div>
         </div>
     </div>
+    <script type="application/json" id="playerPlaylist" set:html={JSON.stringify(playlist).replace(/</g, '\\u003c')} />
 </div>

@@ -17,7 +17,15 @@ function cleanEpisode(episode: PodcastEpisode): PodcastEpisode {
   return { ...episode, title: withoutEmDashes(episode.title), description: withoutEmDashes(episode.description) };
 }
 
-export async function fetchPodcastEpisodes(): Promise<PodcastEpisode[]> {
+// Every page's player needs the episode list, so fetch the feed once per build.
+let episodesPromise: Promise<PodcastEpisode[]> | undefined;
+
+export function fetchPodcastEpisodes(): Promise<PodcastEpisode[]> {
+  episodesPromise ??= loadEpisodes();
+  return episodesPromise;
+}
+
+async function loadEpisodes(): Promise<PodcastEpisode[]> {
   try {
     console.log(`[podcast] Fetching RSS from ${RSS_FEED_URL}...`);
     const episodes = await fetchLiveEpisodes();

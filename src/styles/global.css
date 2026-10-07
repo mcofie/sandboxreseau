@@ -355,6 +355,28 @@ button:active {
 .audio-wave div:nth-child(3) { animation-delay: 0.2s; }
 .audio-wave div:nth-child(4) { animation-delay: 0.3s; }
 
+/* Stop / Next */
+.player-icon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    transition: background-color 0.2s, opacity 0.2s;
+}
+
+.player-icon-btn:hover {
+    background: rgba(255, 255, 255, 0.18);
+}
+
+.player-icon-btn:disabled {
+    opacity: 0.35;
+    pointer-events: none;
+}
+
 /* Playback Speed */
 .speed-toggle {
     height: 32px;

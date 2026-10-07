@@ -137,27 +137,57 @@ const isDefaultImage = image === '/assets/img/social-preview.jpg';
                     }
                 }
 
+                type Episode = { id: string; url: string; title: string; meta: string; thumb: string };
+                let playlist: Episode[] = [];
+                try {
+                    playlist = JSON.parse(document.getElementById('playerPlaylist')?.textContent || '[]');
+                } catch {}
+
+                function nextEpisode(): Episode | undefined {
+                    const index = playlist.findIndex((ep) => ep.id === activeId);
+                    return index === -1 ? undefined : playlist[index + 1];
+                }
+
+                function loadEpisode(ep: Episode) {
+                    activeId = ep.id;
+                    (window as any).SBR_ACTIVE_EP_ID = ep.id;
+                    audio.src = ep.url;
+                    audio.play();
+
+                    const titleEl = document.getElementById('playerTitle');
+                    const metaEl = document.getElementById('playerMeta');
+                    const thumbEl = document.getElementById('playerThumbnail') as HTMLImageElement;
+                    if (titleEl) titleEl.textContent = ep.title;
+                    if (metaEl) metaEl.textContent = ep.meta;
+                    if (thumbEl) thumbEl.src = ep.thumb;
+
+                    const nextBtn = document.getElementById('playerNext') as HTMLButtonElement | null;
+                    if (nextBtn) nextBtn.disabled = !nextEpisode();
+                    document.getElementById('global-player')?.classList.add('active');
+                }
+
+                function playNext() {
+                    const ep = nextEpisode();
+                    if (ep) loadEpisode(ep);
+                }
+
+                // Stop ends the session: rewind, forget the episode and tuck the bar away.
+                function stopPlayback() {
+                    audio.pause();
+                    audio.currentTime = 0;
+                    activeId = null;
+                    (window as any).SBR_ACTIVE_EP_ID = null;
+                    document.getElementById('global-player')?.classList.remove('active');
+                }
+
                 // Global play function accessible from anywhere
                 (window as any).playEpisode = (id: string, url: string, title: string, meta: string, thumb: string) => {
-                    const bar = document.getElementById('global-player');
                     if (activeId === id) {
                         if (audio.paused) audio.play();
                         else audio.pause();
                     } else {
-                        activeId = id;
-                        (window as any).SBR_ACTIVE_EP_ID = id;
-                        audio.src = url;
-                        audio.play();
-
-                        // Sync UI content
-                        const titleEl = document.getElementById('playerTitle');
-                        const metaEl = document.getElementById('playerMeta');
-                        const thumbEl = document.getElementById('playerThumbnail') as HTMLImageElement;
-                        if (titleEl) titleEl.textContent = title;
-                        if (metaEl) metaEl.textContent = meta;
-                        if (thumbEl) thumbEl.src = thumb;
+                        loadEpisode({ id, url, title, meta, thumb });
                     }
-                    bar?.classList.add('active');
                     updatePlayerUI();
                 };
 
@@ -166,28 +196,33 @@ const isDefaultImage = image === '/assets/img/social-preview.jpg';
                 audio.onplay = updatePlayerUI;
                 audio.onpause = updatePlayerUI;
                 audio.onloadedmetadata = updatePlayerUI;
+                audio.onended = playNext;
 
-                // Sync UI on every page swap
-                function syncUI() {
+                // The player element persists across view transitions (transition:persist), so its
+                // episode, speed and progress survive page changes. Bind its controls only once.
+                function bindPlayerControls() {
                     const bar = document.getElementById('global-player');
                     const mainToggle = document.getElementById('playerMainToggle');
                     const progContainer = document.getElementById('playerProgressContainer');
                     const speedToggle = document.getElementById('speedToggle');
 
                     if (activeId) bar?.classList.add('active');
-                    
+
                     mainToggle?.addEventListener('click', () => {
                         if (audio.paused) audio.play();
                         else audio.pause();
                     });
 
                     progContainer?.addEventListener('click', (e: any) => {
+                        if (!audio.duration) return;
                         const rect = progContainer.getBoundingClientRect();
                         const p = (e.clientX - rect.left) / rect.width;
                         audio.currentTime = p * audio.duration;
                     });
 
-                    // Re-init speed
+                    document.getElementById('playerStop')?.addEventListener('click', stopPlayback);
+                    document.getElementById('playerNext')?.addEventListener('click', playNext);
+
                     speedToggle?.addEventListener('click', () => document.getElementById('speedDropdown')?.classList.toggle('active'));
                     document.querySelectorAll('.speed-option').forEach(opt => {
                         opt.addEventListener('click', () => {
@@ -205,8 +240,9 @@ const isDefaultImage = image === '/assets/img/social-preview.jpg';
                     updatePlayerUI();
                 }
 
-                document.addEventListener('astro:after-swap', syncUI);
-                syncUI(); // Init on load
+                // Page swaps only need the new page's episode cards marked as playing.
+                document.addEventListener('astro:after-swap', updatePlayerUI);
+                bindPlayerControls();
             })();
 
 
