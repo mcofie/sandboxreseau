@@ -8,7 +8,7 @@ import { ClientRouter } from 'astro:transitions';
 interface Props {
 	title?: string;
 	description?: string;
-    /** Social share image (path or URL). Defaults to the branded 1200×630 card. */
+    /** Social share image (path or URL). Defaults to the branded event photo. */
     image?: string;
     imageAlt?: string;
 }
@@ -17,14 +17,14 @@ const SITE_NAME = 'Sandbox Réseau';
 const {
     title = 'Sandbox Réseau | The Builders’ Gathering in Accra',
     description = 'A gathering in Accra for Africa’s founders, builders, and curious minds. Builder demos, mini-talks, and open networking. Signal over noise; progress over polish.',
-    image = '/assets/img/social-preview.jpg',
-    imageAlt = 'Sandbox Réseau: where Africa’s founders and builders connect.',
+    image = '/assets/img/hero-poster.jpg',
+    imageAlt = 'Sandbox Réseau founders and builders gathered together in Accra.',
 } = Astro.props;
 
 // Social platforms need absolute URLs; `site` comes from astro.config.
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const imageUrl = new URL(image, Astro.site);
-const isDefaultImage = image === '/assets/img/social-preview.jpg';
+const isDefaultImage = image === '/assets/img/hero-poster.jpg';
 ---
 
 <!DOCTYPE html>
@@ -54,8 +54,8 @@ const isDefaultImage = image === '/assets/img/social-preview.jpg';
         <meta property="og:description" content={description} />
         <meta property="og:image" content={imageUrl} />
         <meta property="og:image:alt" content={imageAlt} />
-        {isDefaultImage && <meta property="og:image:width" content="1200" />}
-        {isDefaultImage && <meta property="og:image:height" content="630" />}
+        {isDefaultImage && <meta property="og:image:width" content="1280" />}
+        {isDefaultImage && <meta property="og:image:height" content="720" />}
 
         <!-- X / Twitter -->
         <meta name="twitter:card" content="summary_large_image" />
