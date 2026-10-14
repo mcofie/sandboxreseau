@@ -1,27 +1,26 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
-// TODO: replace with the real payment page (e.g. a Paystack link). Until then the
-// support buttons jump to the support section instead of a checkout.
-const SUPPORT_URL = '';
+// Where the support buttons send people. Swap for a checkout (e.g. a Paystack link) if one is set up.
+const SUPPORT_URL = 'https://buymeacoffee.com/sandboxreseau';
 const supportHref = SUPPORT_URL || '#support';
 const supportTarget = SUPPORT_URL ? { target: '_blank', rel: 'noreferrer' } : {};
 
 const supportTiers = [
-    { amount: '₵50', title: 'Buy a builder a coffee', desc: 'A small thank-you that keeps the community going.' },
-    { amount: '₵200', title: 'Back an edition', desc: 'Help cover what it takes to put on a meetup in Accra.', featured: true },
+    { amount: '$50', title: 'Buy a builder a coffee', desc: 'A small thank-you that keeps the community going.' },
+    { amount: '$100', title: 'Back an edition', desc: 'Help cover what it takes to put on a meetup in Accra.', featured: true },
     { amount: 'Any amount', title: 'Give what you can', desc: 'Every contribution, big or small, keeps the room open.' },
 ];
 
-// Merch data: extend this array as new items are added. artScale shrinks bulky product shots so they sit evenly with the rest. Set status to 'available' to enable pre-orders.
+// Merch data: extend this array as new items are added. Prices are in USD (converted from GHS at ~0.085 USD/GHS, Oct 2026). artScale shrinks bulky product shots so they sit evenly with the rest. Set status to 'available' to enable pre-orders.
 const merchItems = [
-    { title: 'Builder’s Heavyweight Tee', image: '/assets/img/merch-tee.webp', description: 'A premium 250gsm organic cotton t-shirt with subtle Sandbox branding. Designed for long shipping sessions.', price: '₵250', status: 'coming-soon' },
-    { title: 'The Founders Dad Cap', image: '/assets/img/merch-cap.webp', artScale: 0.72, description: 'Classic unstructured 6-panel cap. Washed cotton twill with an embroidered “Sandbox Réseau” crest.', price: '₵150', status: 'coming-soon' },
-    { title: 'Premium Oversized Hoodie', image: '/assets/img/merch-hoodie.webp', description: '400gsm heavyweight french terry cotton hoodie. Drop shoulder, relaxed fit with tonal embroidered branding.', price: '₵450', status: 'coming-soon' },
-    { title: 'Heavyweight Canvas Tote', image: '/assets/img/merch-tote.webp', description: '12oz organic cotton canvas tote with reinforced handles. Fits a 16-inch laptop and daily carry.', price: '₵120', status: 'coming-soon' },
-    { title: 'Insulated Water Bottle', image: '/assets/img/merch-bottle.webp', description: 'Matte black double-walled stainless steel. Cold for 24 hours, hot for 12. Engraved logo.', price: '₵200', status: 'coming-soon' },
-    { title: 'Ceramic Builder’s Mug', image: '/assets/img/merch-mug.webp', artScale: 0.72, description: 'Minimalist matte ceramic mug. For early mornings and late-night shipping sessions.', price: '₵100', status: 'coming-soon' },
-    { title: 'Ecosystem Sticker Pack', image: '/assets/img/merch-stickers.webp', description: 'Die-cut vinyl stickers with Sandbox Réseau branding. Matte, weather-resistant, made for laptop lids.', price: '₵50', status: 'coming-soon' },
+    { title: 'Builder’s Heavyweight Tee', image: '/assets/img/merch-tee.webp', description: 'A premium 250gsm organic cotton t-shirt with subtle Sandbox branding. Designed for long shipping sessions.', price: '$21', status: 'coming-soon' },
+    { title: 'The Founders Dad Cap', image: '/assets/img/merch-cap.webp', artScale: 0.72, description: 'Classic unstructured 6-panel cap. Washed cotton twill with an embroidered “Sandbox Réseau” crest.', price: '$13', status: 'coming-soon' },
+    { title: 'Premium Oversized Hoodie', image: '/assets/img/merch-hoodie.webp', description: '400gsm heavyweight french terry cotton hoodie. Drop shoulder, relaxed fit with tonal embroidered branding.', price: '$38', status: 'coming-soon' },
+    { title: 'Heavyweight Canvas Tote', image: '/assets/img/merch-tote.webp', description: '12oz organic cotton canvas tote with reinforced handles. Fits a 16-inch laptop and daily carry.', price: '$10', status: 'coming-soon' },
+    { title: 'Insulated Water Bottle', image: '/assets/img/merch-bottle.webp', description: 'Matte black double-walled stainless steel. Cold for 24 hours, hot for 12. Engraved logo.', price: '$17', status: 'coming-soon' },
+    { title: 'Ceramic Builder’s Mug', image: '/assets/img/merch-mug.webp', artScale: 0.72, description: 'Minimalist matte ceramic mug. For early mornings and late-night shipping sessions.', price: '$9', status: 'coming-soon' },
+    { title: 'Ecosystem Sticker Pack', image: '/assets/img/merch-stickers.webp', description: 'Die-cut vinyl stickers with Sandbox Réseau branding. Matte, weather-resistant, made for laptop lids.', price: '$4', status: 'coming-soon' },
 ];
 ---
 
@@ -94,6 +93,9 @@ const merchItems = [
                 ))}
             </div>
         </section>
+        <!-- Buy Me a Coffee floating widget (merch page only). It builds itself on DOMContentLoaded, which has already
+             fired when this page is reached through a view transition, so onload re-sends it in that case. -->
+        <script is:inline data-name="BMC-Widget" data-cfasync="false" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="sandboxreseau" data-description="Support me on Buy me a coffee!" data-message="" data-color="#BD5FFF" data-position="Right" data-x_margin="18" data-y_margin="18" onload="if (document.readyState !== 'loading' && !document.getElementById('bmc-wbtn')) window.dispatchEvent(new Event('DOMContentLoaded'));"></script>
     </main>
 </Layout>
 

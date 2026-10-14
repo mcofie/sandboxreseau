@@ -283,6 +283,11 @@ button:active {
     transform: translateY(0);
 }
 
+/* Lift the Buy Me a Coffee bubble (merch page) above the podcast player while it's showing. */
+body:has(.player-bar.active) #bmc-wbtn {
+    bottom: 116px !important;
+}
+
 .player-card {
     background: #0a0a0a;
     color: #fff;
