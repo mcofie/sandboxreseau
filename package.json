@@ -10,7 +10,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "podcast:refresh": "node scripts/refresh-episodes.ts"
+    "podcast:refresh": "node scripts/refresh-episodes.ts",
+    "brand:kit": "node scripts/build-brand-kit.mjs"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",
