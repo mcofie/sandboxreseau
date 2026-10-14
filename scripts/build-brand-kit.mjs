@@ -40,9 +40,9 @@ copyFileSync(pub('assets/img/cta-doodle-sweep.svg'), out('graphics/doodle-sweep.
 copyFileSync(pub('assets/img/cta-doodle-spiral.svg'), out('graphics/doodle-spiral.svg'));
 // The site's default link-preview (Open Graph) image, as set in src/layouts/Layout.astro.
 copyFileSync(pub('assets/img/hero-poster.jpg'), out('graphics/link-preview-1280x720.jpg'));
-// Recent photography: the two latest edition group shots, then speakers and panelists from the newest gallery set.
+// Photography: edition cover shots (Vol. 05 and Vol. 03), then speakers and panelists from the newest gallery set.
 // Order matters: /brand shows the first two as landscape tiles and the rest as portraits.
-const photos = ['vol5-pivoting', 'vol4-scaling', 'gallery-v4-6', 'gallery-v4-7', 'gallery-v3-5', 'gallery-v4-2'];
+const photos = ['vol5-pivoting', 'vol3-regulators', 'gallery-v4-6', 'gallery-v4-7', 'gallery-v3-5', 'gallery-v4-2'];
 for (const [i, file] of photos.entries()) {
     copyFileSync(pub(`assets/img/${file}.jpg`), out(`photos/sandbox-reseau-photo-${i + 1}.jpg`));
 }
