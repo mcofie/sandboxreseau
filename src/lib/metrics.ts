@@ -650,6 +650,20 @@ export function analyse(inputs: Inputs): Report {
 }
 
 /** The worked example from the cheat sheet: Osu Ledger, a fictional Accra invoicing app. */
+/** The one-line verdict shown on the results page and the PDF: default alive/dead when there's cash data, else a status from the ratings. */
+export function verdict(r: Report) {
+    const p = r.projection;
+    const problems = r.counts.work + r.counts.danger;
+    const rated = r.counts.strong + r.counts.okay + problems;
+    const hero = p
+        ? p.alive ? (p.month === 0 ? 'Profitable' : 'Default alive') : 'Default dead'
+        : r.counts.danger ? 'Needs attention' : problems ? 'On track, with gaps' : 'Looking healthy';
+    const sub = p
+        ? p.alive ? (p.month === 0 ? 'Revenue already covers your costs.' : `At today’s growth you turn profitable in month ${p.month}.`) : `At today’s growth your cash runs out in month ${p.month ?? '60+'}.`
+        : `${r.counts.strong + r.counts.okay} of ${rated} rated metrics are okay or better.`;
+    return { hero, sub };
+}
+
 export const SAMPLE: Inputs = {
     name: 'Osu Ledger',
     stage: 'pmf',
