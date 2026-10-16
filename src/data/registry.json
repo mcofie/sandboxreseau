@@ -1080,5 +1080,62 @@
         "bio": "Kingsley frequently partners with Charles Yeboah Frimpong in managing and promoting BMPT Books as an accounting software platform for small businesses."
       }
     ]
+  },
+  {
+    "id": "zend",
+    "name": "Zend",
+    "industry": "Software",
+    "location": "Accra",
+    "status": "Live",
+    "description": "A developer-first messaging API for sending OTPs, alerts and notifications over SMS, WhatsApp, voice and email, with templates, bulk campaigns, webhooks and 98%+ delivery.",
+    "longDescription": "Zend is a developer-first messaging platform. One API sends OTPs, alerts and system messages over SMS, WhatsApp, voice and email, with SDKs for Node and Go, message templates, bulk campaigns and webhooks for delivery status.\n\nIts transactional email lets teams send from their own domains, authenticated with SPF, DKIM and DMARC, with bounces and complaints tracked and suppressed automatically. Zend is built in Ghana for global reach, and is a Deadal.us product.",
+    "tags": [
+      "Developer tools",
+      "Software"
+    ],
+    "founded": "",
+    "url": "https://www.tryzend.com/",
+    "cta": "Learn more",
+    "logo": "/assets/img/logos/zend.png",
+    "socials": {
+      "twitter": "https://x.com/usezend"
+    },
+    "founders": [
+      {
+        "name": "Selorm J. Akoto",
+        "role": "Founder",
+        "linkedin": "https://www.linkedin.com/in/cirlormx/",
+        "twitter": "",
+        "avatar": "",
+        "bio": "Selorm is the founder of Zend, a developer-first messaging platform built in Ghana for global reach."
+      }
+    ]
+  },
+  {
+    "id": "stokmate",
+    "name": "Stokmate",
+    "industry": "Marketplace",
+    "location": "Accra",
+    "status": "Live",
+    "description": "The operating system for informal retail in Africa. Stokmate connects manufacturers, distributors and neighbourhood shops so they can restock without guesswork, track deliveries and build a credit history.",
+    "longDescription": "Stokmate is building the infrastructure for informal retail in Africa, connecting suppliers and informal shops through technology and smart logistics.\n\nShops, kiosks and estates order stock from trusted manufacturers and distributors through myShopa, track deliveries, and get stock predictions so they never run out. Manufacturers see what is actually selling at retail level in real time, and delivery routes are optimised from warehouse to community store. As transactions build up, shops gain a verifiable credit history that opens access to working capital and inventory credit.",
+    "tags": [
+      "Retail",
+      "Logistics"
+    ],
+    "founded": "",
+    "url": "https://www.stokmate.co/",
+    "cta": "Learn more",
+    "logo": "/assets/img/logos/stokmate.png",
+    "founders": [
+      {
+        "name": "Wendy Quarshie",
+        "role": "Founder",
+        "linkedin": "https://www.linkedin.com/in/wendy-quarshie/",
+        "twitter": "",
+        "avatar": "",
+        "bio": "Wendy is the founder of Stokmate, building the infrastructure for informal retail in Africa."
+      }
+    ]
   }
 ]

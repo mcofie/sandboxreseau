@@ -263,7 +263,7 @@ const pickable = STAGES;
             : '';
         // On phones, cards collapse to the verdict; problems start open. On larger screens they're always open.
         const open = !isPhone() || m.signal === 'danger' || m.signal === 'work' || Boolean(m.redFlag);
-        return `<details class="mx-metric${m.focus ? ' is-focus' : ''}"${open ? ' open' : ''}>
+        return `<details class="mx-metric${m.focus ? ' is-focus' : ''}" id="mx-m-${m.id}"${open ? ' open' : ''}>
             <summary>
                 <header>
                     <span class="mx-metric-id">${String(m.id).padStart(2, '0')}</span>
@@ -324,29 +324,57 @@ const pickable = STAGES;
         }
         const name = r.inputs.name ? esc(r.inputs.name) : 'Your startup';
         summary.innerHTML = `${name}: ${r.computed} of 16 metrics calculated. Focus metrics for your stage are marked.`;
-        // Score card: a headline, one bar segment per metric (in cheat-sheet order), then the counts.
-        const rated = r.counts.strong + r.counts.okay + r.counts.work + r.counts.danger;
-        const good = r.counts.strong + r.counts.okay;
-        const segment = (m: MetricResult) => {
-            const colour = m.missing ? 'rgba(255,255,255,.08)' : m.signal ? SIGNALS[m.signal].colour : 'rgba(255,255,255,.28)';
-            const state = m.missing ? 'not calculated' : m.signal ? SIGNALS[m.signal].label : 'info only';
-            return `<span style="background:${colour}" title="${esc(m.name)}: ${state}"></span>`;
-        };
-        const rows = (['strong', 'okay', 'work', 'danger'] as const)
-            .map((s) => `<li style="--sig:${SIGNALS[s].colour}"><span>${SIGNALS[s].label}</span><strong>${r.counts[s]}</strong></li>`)
+        // 1. Verdict: one sentence from the founder's own numbers, counts underneath.
+        const problems = r.counts.work + r.counts.danger;
+        const p = r.projection;
+        const lead = p
+            ? p.alive
+                ? p.month === 0 ? 'Profitable already' : `Default alive, profitable in month ${p.month}`
+                : `Default dead: cash runs out in month ${p.month ?? '60+'}`
+            : `${r.counts.strong + r.counts.okay} of ${r.counts.strong + r.counts.okay + problems} metrics are okay or better`;
+        const tail = problems ? `with ${problems} metric${problems > 1 ? 's' : ''} needing work` : 'and nothing urgent to fix';
+        const tally = (['strong', 'okay', 'work', 'danger'] as const)
+            .map((sg) => `<span style="--sig:${SIGNALS[sg].colour}"><strong>${r.counts[sg]}</strong> ${SIGNALS[sg].label.toLowerCase()}</span>`)
             .join('');
-        const info = r.computed - rated;
-        const counts = `<p class="mx-score-kicker">Your score</p>
-            <p class="mx-score-head">${rated ? `<strong>${good}</strong> of ${rated} rated metrics are okay or better` : 'Nothing rated yet'}</p>
-            <div class="mx-score-bar" aria-hidden="true">${r.metrics.map(segment).join('')}</div>
-            <ul class="mx-score-list">${rows}</ul>
-            <p class="mx-score-foot">${r.computed} of 16 calculated${info ? ` · ${info} info only` : ''}</p>`;
+        const verdict = `<div class="mx-verdict">
+                <p class="mx-verdict-line">${esc(lead)}, ${tail}.</p>
+                <p class="mx-tally">${tally}<span class="mx-tally-muted">${r.computed} of 16 calculated</span></p>
+            </div>`;
+
+        // 2. The Metrics Map, as in the cheat sheet: one column per area, one tile per metric.
+        const tile = (m: MetricResult) => {
+            const colour = m.missing ? 'transparent' : m.signal ? SIGNALS[m.signal].colour : '#c8c8c8';
+            const state = m.missing ? 'Not enough data' : m.signal ? SIGNALS[m.signal].label : 'Info only';
+            return `<a class="mx-tile${m.missing ? ' is-missing' : ''}" href="#mx-m-${m.id}" style="--sig:${colour}" title="${esc(m.name)}: ${state}">
+                <span class="mx-tile-code">${esc(m.short)}</span>
+                <span class="mx-tile-value">${m.missing ? '—' : esc(m.display)}</span>
+            </a>`;
+        };
+        const map = `<div class="mx-map">${BUCKETS.map(
+            (b, i) => `<div class="mx-map-col" style="--bucket:${b.colour};--tint:${b.tint}">
+                <p class="mx-map-head"><span>${String(i + 1).padStart(2, '0')}</span>${b.name}</p>
+                <div class="mx-map-tiles">${r.metrics.filter((m) => m.bucket === b.id).map(tile).join('')}</div>
+            </div>`,
+        ).join('')}</div>`;
+
+        // 3. Fix these first, as cards.
         const priorities = r.priorities.length
-            ? `<ol class="mx-priorities">${r.priorities
-                  .map(
-                      (m, i) => `<li><span class="mx-priority-num">${i + 1}</span><div><p><strong>${esc(m.name)}</strong> ${signalPill(m)} <span class="mx-priority-val">${esc(m.display)}</span></p><p>${esc(m.redFlag ?? m.signalText)}</p>${m.moves[0] ? `<p class="mx-priority-move">→ ${esc(m.moves[m.id === 1 ? 1 : 0])}</p>` : ''}</div></li>`,
-                  )
-                  .join('')}</ol>`
+            ? `<div class="mx-fix">
+                <h3>Fix these first</h3>
+                <ol>${r.priorities
+                    .map((m, i) => {
+                        const b = BUCKETS.find((x) => x.id === m.bucket)!;
+                        const move = m.moves[m.id === 1 ? 1 : 0];
+                        return `<li style="--bucket:${b.colour}">
+                            <p class="mx-fix-num">${String(i + 1).padStart(2, '0')}<span>${b.name}</span></p>
+                            <h4>${esc(m.name)}</h4>
+                            <p class="mx-fix-value"><strong>${esc(m.display)}</strong>${signalPill(m)}</p>
+                            <p class="mx-fix-why">${esc(m.redFlag ?? m.signalText)}</p>
+                            ${move ? `<p class="mx-fix-move"><span>The move</span>${esc(move)}</p>` : ''}
+                        </li>`;
+                    })
+                    .join('')}</ol>
+            </div>`
             : '<p class="mx-none">Nothing urgent in the numbers you’ve shared. Keep tracking them weekly.</p>';
         const buckets = BUCKETS.map((b) => {
             const ms = r.metrics.filter((m) => m.bucket === b.id);
@@ -359,10 +387,7 @@ const pickable = STAGES;
                 ${missing.length ? `<ul class="mx-missing">${missing.map((m) => `<li><strong>${esc(m.name)}</strong> needs: ${esc(m.missing!.toLowerCase())}${m.redFlag ? ` <span class="mx-flag-inline">${esc(m.redFlag)}</span>` : ''}</li>`).join('')}</ul>` : ''}
             </section>`;
         }).join('');
-        out.innerHTML = `<div class="mx-overview">
-                <div class="mx-score">${counts}</div>
-                <div class="mx-top"><h3>Fix these first</h3>${priorities}</div>
-            </div>${buckets}`;
+        out.innerHTML = `<div class="mx-overview">${verdict}${map}${priorities}</div>${buckets}`;
     }
 
     // Move each field into the main card if its stage asks for it, otherwise into “Add more numbers”.
@@ -463,6 +488,17 @@ const pickable = STAGES;
         const next = inputs[inputs.indexOf(el) + 1];
         if (next) next.focus();
         else el.blur();
+    });
+
+    // Map tiles jump to their card, opening it first if it's collapsed.
+    document.addEventListener('click', (event) => {
+        const tileLink = (event.target as Element).closest<HTMLAnchorElement>('.mx-tile');
+        if (!tileLink) return;
+        event.preventDefault();
+        const card = document.querySelector<HTMLDetailsElement>(tileLink.getAttribute('href')!);
+        if (!card) return;
+        card.open = true;
+        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
     });
 
     // Cards only collapse on phones; elsewhere a click on the summary does nothing.
@@ -571,28 +607,40 @@ const pickable = STAGES;
     .mx-black:hover{background:#2a2a2a}
     .mx-black:disabled{opacity:.35;cursor:default}
 
-    .mx-overview{display:grid;grid-template-columns:1fr 1.6fr;gap:16px;margin-top:32px}
-    .mx-score{display:flex;flex-direction:column;padding:28px;border-radius:24px;background:#0a0a0a;color:#fff}
-    .mx-score-kicker{margin:0;color:#d3fa69;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
-    .mx-score-head{margin:12px 0 0;color:rgba(255,255,255,.7);font-size:17px;line-height:1.35}
-    .mx-score-head strong{display:block;color:#fff;font-size:56px;font-weight:600;line-height:1;letter-spacing:-.03em}
-    .mx-score-bar{display:grid;grid-template-columns:repeat(16,1fr);gap:3px;margin-top:24px}
-    .mx-score-bar span{height:28px;border-radius:4px}
-    .mx-score-list{display:grid;gap:0;margin:auto 0 0;padding:20px 0 0;list-style:none}
-    .mx-score-list li{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid rgba(255,255,255,.1);font-size:14px}
-    .mx-score-list li::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--sig)}
-    .mx-score-list span{flex:1;color:rgba(255,255,255,.75)}
-    .mx-score-list strong{font-size:18px;font-weight:600;font-variant-numeric:tabular-nums}
-    .mx-score-foot{margin:4px 0 0;padding-top:12px;border-top:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.45);font-size:12.5px}
-    .mx-top{padding:28px;border-radius:24px;background:#f5f5f5}
-    .mx-top h3{margin:0;font-size:18px;font-weight:600}
-    .mx-priorities{display:grid;gap:16px;margin:18px 0 0;padding:0;list-style:none}
-    .mx-priorities li{display:flex;gap:14px}
-    .mx-priority-num{display:grid;place-items:center;flex-shrink:0;width:28px;height:28px;border-radius:50%;background:#0a0a0a;color:#d3fa69;font-size:13px;font-weight:600}
-    .mx-priorities p{margin:0;color:#4a4a4a;font-size:14.5px;line-height:1.5}
-    .mx-priorities p:first-child{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;color:#0a0a0a;font-size:15px}
-    .mx-priority-val{color:#6b6b6b;font-weight:500}
-    .mx-priority-move{margin-top:4px!important;color:#0a0a0a!important;font-weight:500}
+    .mx-overview{display:grid;gap:20px;margin-top:32px}
+    .mx-overview>*{min-width:0}
+    .mx-verdict{padding:28px 32px;border-radius:24px;background:#0a0a0a;color:#fff}
+    .mx-verdict-line{max-width:30ch;margin:0;font-size:clamp(1.5rem,1.1rem + 1.4vw,2.125rem);font-weight:600;line-height:1.15;letter-spacing:-.02em;text-wrap:balance}
+    .mx-tally{display:flex;flex-wrap:wrap;gap:8px 18px;margin:18px 0 0;color:rgba(255,255,255,.7);font-size:14px}
+    .mx-tally span{display:inline-flex;align-items:center;gap:7px}
+    .mx-tally span::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--sig)}
+    .mx-tally strong{color:#fff;font-weight:600}
+    .mx-tally .mx-tally-muted{margin-left:auto;color:rgba(255,255,255,.45)}
+    .mx-tally .mx-tally-muted::before{display:none}
+    .mx-map{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+    .mx-map-col{display:flex;flex-direction:column;gap:6px}
+    .mx-map-head{display:flex;align-items:center;gap:8px;margin:0 0 4px;padding:10px 12px;border-radius:12px;background:var(--bucket);color:#fff;font-size:13px;font-weight:600}
+    .mx-map-head span{opacity:.7;font-variant-numeric:tabular-nums}
+    .mx-map-tiles{display:grid;gap:6px}
+    .mx-tile{position:relative;display:flex;flex-direction:column;gap:2px;padding:10px 12px 10px 15px;overflow:hidden;border:1px solid rgba(10,10,10,.08);border-radius:12px;background:#fff;color:#0a0a0a;text-decoration:none;transition:border-color .2s,transform .2s}
+    .mx-tile::before{content:'';position:absolute;inset:0 auto 0 0;width:4px;background:var(--sig)}
+    .mx-tile:hover{border-color:rgba(10,10,10,.3);transform:translateY(-1px)}
+    .mx-tile-code{color:var(--bucket);font-size:12px;font-weight:600}
+    .mx-tile-value{overflow:hidden;font-size:16px;font-weight:600;letter-spacing:-.01em;white-space:nowrap;text-overflow:ellipsis;font-variant-numeric:tabular-nums}
+    .mx-tile.is-missing{border-style:dashed;background:transparent}
+    .mx-tile.is-missing .mx-tile-value{color:#c8c8c8}
+    .mx-fix h3{margin:12px 0 0;font-size:20px;font-weight:600;letter-spacing:-.01em}
+    .mx-fix ol{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:14px 0 0;padding:0;list-style:none}
+    .mx-fix li{display:flex;flex-direction:column;padding:22px;border:1px solid rgba(10,10,10,.1);border-top:3px solid var(--bucket);border-radius:20px;background:#fff}
+    .mx-fix-num{display:flex;align-items:baseline;gap:10px;margin:0;color:var(--bucket);font-size:22px;font-weight:400;font-variant-numeric:tabular-nums}
+    .mx-fix-num span{color:#8a8a8a;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+    .mx-fix h4{margin:10px 0 0;font-size:16px;font-weight:600}
+    .mx-fix-value{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;margin:8px 0 0}
+    .mx-fix-value strong{font-size:26px;font-weight:600;letter-spacing:-.02em}
+    .mx-fix-why{margin:10px 0 0;color:#4a4a4a;font-size:14px;line-height:1.45}
+    .mx-fix-move{margin:auto 0 0;padding-top:14px;border-top:1px solid rgba(10,10,10,.08);color:#0a0a0a;font-size:14px;font-weight:500;line-height:1.45}
+    .mx-fix-why+.mx-fix-move{margin-top:14px}
+    .mx-fix-move span{display:block;margin-bottom:4px;color:var(--bucket);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
     .mx-none{margin:12px 0 0;color:#6b6b6b}
 
     .mx-result-bucket{margin-top:48px}
@@ -641,8 +689,8 @@ const pickable = STAGES;
     .mx-cta p{max-width:52ch;margin:14px auto 28px;color:#6b6b6b;font-size:17px;line-height:1.5}
 
     @media(max-width:1023px){
+        .mx-map{grid-template-columns:repeat(5,minmax(150px,1fr));overflow-x:auto;padding-bottom:4px}
         .mx-stages{grid-template-columns:repeat(2,1fr)}
-        .mx-overview{grid-template-columns:1fr}
     }
     @media(max-width:767px){
         .mx-dock:not([hidden]){position:fixed;z-index:55;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom, 0px));display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 8px 8px 18px;border-radius:999px;background:#0a0a0a;color:#fff;box-shadow:0 12px 30px -10px rgba(0,0,0,.45)}
@@ -655,6 +703,16 @@ const pickable = STAGES;
         .mx-page{padding-bottom:120px}
     }
     @media(max-width:639px){
+        .mx-verdict{padding:22px}
+        .mx-tally .mx-tally-muted{margin-left:0;flex-basis:100%}
+        .mx-map{display:flex;flex-direction:column;gap:12px;overflow:visible;padding-bottom:0}
+        .mx-map-head{margin:0;padding:0;background:none;color:var(--bucket);font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+        .mx-map-head span{opacity:1}
+        .mx-map-tiles{grid-template-columns:repeat(3,1fr)}
+        .mx-tile{padding:8px 8px 8px 12px;border-radius:10px}
+        .mx-tile-code{font-size:11px}
+        .mx-tile-value{font-size:14px}
+        .mx-fix li{padding:18px}
         .mx-page{padding:112px 16px 120px}
         .mx-field input,.mx-field select{font-size:16px}
         .mx-stages{gap:8px}
@@ -671,10 +729,6 @@ const pickable = STAGES;
         .mx-chart{padding:18px}
         .mx-card{padding:24px 20px}
         .mx-setup-grid,.mx-fields,.mx-metrics{grid-template-columns:1fr}
-        .mx-score{padding:22px}
-        .mx-score-head strong{font-size:44px}
-        .mx-score-bar span{height:22px}
-        .mx-top{padding:22px}
         .mx-results-head .mx-black{width:100%;justify-content:center}
         .mx-cta{padding:48px 24px}
     }

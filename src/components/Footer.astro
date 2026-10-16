@@ -3,17 +3,19 @@ import Logo from './Logo.astro';
 
 const currentYear = new Date().getFullYear();
 
+// Four columns: where to show up, what to use, who's here, where to follow.
 const columns = [
-    { title: 'Explore', links: [
+    { title: 'Gatherings', links: [
         { name: 'The gathering', href: '/#experience' },
         { name: 'Editions', href: '/editions' },
-        { name: 'Gallery', href: '/gallery' },
         { name: 'The Pitch', href: '/the-pitch' },
+        { name: 'Gallery', href: '/gallery' },
     ] },
-    { title: 'Listen & read', links: [
+    { title: 'Resources', links: [
+        { name: 'Reports', href: '/reports' },
+        { name: 'Metrics Check', href: '/tools/metrics', badge: 'New' },
         { name: 'Podcast', href: '/podcast' },
         { name: 'Newsletter', href: 'https://thekompound.substack.com/', external: true },
-        { name: 'Reports', href: '/reports' },
     ] },
     { title: 'Community', links: [
         { name: 'Our community', href: '/community' },
@@ -27,7 +29,7 @@ const columns = [
         { name: 'Instagram', href: 'https://www.instagram.com/sandboxreseau', external: true },
         { name: 'YouTube', href: 'https://www.youtube.com/@SandboxReseau', external: true },
     ] },
-];
+] as { title: string; links: { name: string; href: string; external?: boolean; pulse?: boolean; divider?: boolean; badge?: string }[] }[];
 
 ---
 
@@ -50,7 +52,7 @@ const columns = [
                         <p class="site-footer-heading">{column.title}</p>
                         <ul>
                             {column.links.map((link) => (
-                                <li class:list={[link.divider && 'site-footer-divider']}><a href={link.href} target={link.external ? '_blank' : undefined} rel={link.external ? 'noreferrer' : undefined}>{link.name}{link.pulse && <span class="site-footer-new" aria-hidden="true"></span>}</a></li>
+                                <li class:list={[link.divider && 'site-footer-divider']}><a href={link.href} target={link.external ? '_blank' : undefined} rel={link.external ? 'noreferrer' : undefined}>{link.name}{link.pulse && <span class="site-footer-new" aria-hidden="true"></span>}{link.badge && <span class="site-footer-badge">{link.badge}</span>}{link.external && <svg class="site-footer-ext" viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-label="(opens in a new tab)"><path d="M5 11 11 5M6 5h5v5" /></svg>}</a></li>
                             ))}
                         </ul>
                     </div>
@@ -88,11 +90,14 @@ const columns = [
     .site-footer-new::after{content:'';position:absolute;inset:0;border-radius:50%;background:#ffc800;animation:footer-new-pulse 2s cubic-bezier(.22,1,.36,1) infinite}
     @keyframes footer-new-pulse{0%{opacity:.7;transform:scale(1)}80%,100%{opacity:0;transform:scale(2.8)}}
     @media(prefers-reduced-motion:reduce){.site-footer-new::after{animation:none;opacity:0}}
-    .site-footer-columns{display:grid;grid-template-columns:repeat(4,1fr);gap:40px 32px}
+    .site-footer-columns{display:grid;grid-template-columns:repeat(4,auto);justify-content:space-between;gap:40px 28px}
     .site-footer-heading{margin:0;font-size:13px;font-weight:600;color:#0a0a0a}
+    .site-footer-badge{display:inline-flex;align-items:center;height:18px;margin-left:8px;padding:0 7px;border-radius:999px;background:#d3fa69;color:#0a0a0a;font-size:10.5px;font-weight:600;vertical-align:middle}
+    .site-footer-ext{display:inline-block;margin-left:4px;vertical-align:-1px;opacity:.55;transition:opacity .2s}
+    .site-footer-columns a:hover .site-footer-ext{opacity:1}
     .site-footer-columns ul{margin:14px 0 0;padding:0;list-style:none}
     .site-footer-columns li+li{margin-top:10px}
-    .site-footer-columns a{color:#6b6b6b;font-size:14px;text-decoration:none;transition:color .2s}
+    .site-footer-columns a{white-space:nowrap;color:#3a3a3a;font-size:14px;text-decoration:none;transition:color .2s}
     .site-footer-columns a:hover{color:#0a0a0a}
     /* Sets a link apart from the rest of its column (e.g. Brand kit under Community). */
     .site-footer-columns li.site-footer-divider{margin-top:14px;padding-top:14px;border-top:1px solid rgba(10,10,10,.1)}
