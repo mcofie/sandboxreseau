@@ -1,0 +1,681 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SubscribeGate from '../../components/SubscribeGate.astro';
+import { BUCKETS, CURRENCIES, STAGES } from '../../lib/metrics';
+
+type Stage = 'mvp' | 'pmf' | 'scaling';
+type Field = { key: string; label: string; bucket: string; core: Stage[]; hint?: string; money?: boolean; unit?: string };
+
+// Raw numbers only: the page does the maths. Keys match the Inputs type in src/lib/metrics.ts.
+// `core` lists the stages where a field is asked up front; everywhere else it sits under “Add more numbers”.
+const FIELDS: Field[] = [
+    { key: 'usersNow', label: 'Active users this month', bucket: 'growth', core: ['mvp', 'pmf', 'scaling'] },
+    { key: 'usersPrev', label: 'Active users last month', bucket: 'growth', core: ['pmf', 'scaling'] },
+    { key: 'signups', label: 'New signups this month', bucket: 'growth', core: ['mvp', 'scaling'] },
+    { key: 'activated', label: 'Of those, how many did the key action', bucket: 'growth', core: ['mvp', 'scaling'], hint: 'The moment they “got it”: first payment, first order, first post' },
+    { key: 'coreActionUsers', label: 'Users who did the main thing this month', bucket: 'engagement', core: ['mvp', 'scaling'], hint: 'What your product exists for: sent money, completed an order, finished a lesson' },
+    { key: 'dau', label: 'Daily active users, on average', bucket: 'engagement', core: ['scaling'] },
+    { key: 'mrr', label: 'Monthly recurring revenue', bucket: 'revenue', money: true, core: ['pmf', 'scaling'] },
+    { key: 'mrrStart', label: 'MRR last month', bucket: 'revenue', money: true, core: ['pmf', 'scaling'] },
+    { key: 'mrrLost', label: 'MRR lost to cancellations or downgrades', bucket: 'revenue', money: true, core: ['scaling'] },
+    { key: 'smSpend', label: 'Sales & marketing spend this month', bucket: 'unit', money: true, core: ['scaling'], hint: 'Ads, sales and marketing salaries, tools, events' },
+    { key: 'newCustomers', label: 'New paying customers this month', bucket: 'unit', core: ['scaling'] },
+    { key: 'cash', label: 'Cash in the bank', bucket: 'runway', money: true, core: ['pmf', 'scaling'] },
+    { key: 'expenses', label: 'Monthly spend, everything included', bucket: 'runway', money: true, core: ['pmf', 'scaling'], hint: 'Salaries (yours too), servers, rent, subscriptions' },
+    { key: 'invitesPerUser', label: 'Invites each user sends, on average', bucket: 'growth', core: [] },
+    { key: 'inviteConversion', label: 'Invites that become signups', bucket: 'growth', unit: '%', core: [] },
+    { key: 'usersPrev2', label: 'Active users 2 months ago', bucket: 'growth', core: [] },
+    { key: 'usersPrev3', label: 'Active users 3 months ago', bucket: 'growth', core: [], hint: 'With the one above, checks for a 3-month plateau' },
+    { key: 'dauPrev', label: 'Daily active users last month', bucket: 'engagement', core: [] },
+    { key: 'mrr3Ago', label: 'MRR three months ago', bucket: 'revenue', money: true, core: [] },
+    { key: 'churnPrev', label: 'Last month’s revenue churn', bucket: 'revenue', unit: '%', core: [] },
+    { key: 'monthsCharging', label: 'Months you’ve been charging', bucket: 'unit', core: [] },
+];
+// Retention is one row of three: the % of a signup cohort still active on days 1, 7 and 30.
+const RETENTION_CORE: Stage[] = ['mvp', 'pmf', 'scaling'];
+const RETENTION_AFTER = 'coreActionUsers'; // where the retention row sits in the field order
+const DEFAULT_STAGE: Stage = 'pmf';
+const pickable = STAGES;
+---
+
+<Layout
+    title="Metrics Check | Sandbox Réseau"
+    description="Bring your startup’s numbers and get the 16 metrics from the Startup Metrics Cheat Sheet calculated, benchmarked and diagnosed, with a PDF report to keep."
+    image="/assets/img/reports/startup-metric-cheat-sheet.jpg"
+    imageAlt="Startup Metrics Cheat Sheet cover"
+>
+    <main class="mx-page" data-metrics-root>
+        <section class="mx-head" aria-labelledby="mx-title">
+            <span class="mx-pill"><span aria-hidden="true"></span>Free tool · Based on the Startup Metrics Cheat Sheet</span>
+            <h1 id="mx-title">Metrics check.</h1>
+            <p>Bring your numbers. We’ll calculate the metrics that matter at your stage, benchmark them, and tell you exactly what’s wrong and what to do about it.</p>
+            <p class="mx-private">
+                <svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7V5a4 4 0 0 1 8 0v2M3.5 7h9v6.5h-9z" /></svg>
+                Your numbers never leave your browser. Nothing is sent or stored on our side.
+            </p>
+        </section>
+
+        <form class="mx-form" data-metrics-form novalidate>
+            <section class="mx-card mx-setup" aria-labelledby="mx-setup-title">
+                <div class="mx-setup-head">
+                    <h2 id="mx-setup-title">Start here.</h2>
+                    <div class="mx-setup-actions">
+                        <button type="button" class="mx-ghost" data-metrics-sample>Try with sample data</button>
+                        <button type="button" class="mx-ghost" data-metrics-clear>Clear</button>
+                    </div>
+                </div>
+                <div class="mx-setup-grid">
+                    <label class="mx-field">
+                        <span>Startup name <em>optional</em></span>
+                        <input type="text" name="name" maxlength="60" placeholder="e.g. Osu Ledger" autocomplete="organization" enterkeyhint="next" />
+                    </label>
+                    <label class="mx-field">
+                        <span>Currency</span>
+                        <select name="currency">
+                            {['Africa', 'Global'].map((region) => (
+                                <optgroup label={region}>
+                                    {CURRENCIES.filter((c) => c.region === region).map((c) => (
+                                        <option value={c.code}>{c.name} ({c.symbol.trim()})</option>
+                                    ))}
+                                </optgroup>
+                            ))}
+                        </select>
+                    </label>
+                </div>
+                <fieldset class="mx-stages">
+                    <legend>Where are you?</legend>
+                    {pickable.map((stage) => (
+                        <label class="mx-stage">
+                            <input type="radio" name="stage" value={stage.id} checked={stage.id === 'pmf'} />
+                            <span><strong>{stage.name}</strong><small>{stage.hint}</small></span>
+                        </label>
+                    ))}
+                </fieldset>
+                <p class="mx-stage-current" data-stage-hint></p>
+            </section>
+
+            <section class="mx-card mx-idea" data-metrics-idea hidden>
+                <h2>Close this page. Seriously.</h2>
+                <p>At the idea stage, metrics don’t help you yet. Go and have 30 conversations with potential users, then come back when you have a product people can touch.</p>
+                <a class="mx-black" href="/reports">Read the Early Startup Playbook</a>
+            </section>
+
+            <section class="mx-card mx-numbers" aria-labelledby="mx-numbers-title" data-metrics-buckets>
+                <div class="mx-numbers-head">
+                    <h2 id="mx-numbers-title">Your numbers.</h2>
+                    <p>Just what matters at your stage. Leave anything you don’t know blank.</p>
+                </div>
+                <div class="mx-fields" data-core-fields>
+                    {FIELDS.map((field, index) => (
+                        <>
+                        <label class="mx-field" data-field={field.key} data-order={index * 2} data-core={field.core.join(' ')} data-bucket-id={field.bucket} hidden={!field.core.includes(DEFAULT_STAGE)}>
+                            <span>{field.label}</span>
+                            <span class:list={['mx-input', field.money && 'is-money', field.unit && 'has-unit']}>
+                                {field.money && <span class="mx-prefix" data-currency-symbol>GH₵</span>}
+                                <input type="text" inputmode="decimal" enterkeyhint="next" name={field.key} autocomplete="off" />
+                                {field.unit && <span class="mx-suffix">{field.unit}</span>}
+                            </span>
+                            {field.hint && <small>{field.hint}</small>}
+                        </label>
+                        {field.key === RETENTION_AFTER && (
+                        <fieldset class="mx-trio" data-field="retention" data-order={index * 2 + 1} data-core={RETENTION_CORE.join(' ')} data-bucket-id="engagement">
+                            <legend>Of everyone who signs up, what % are still active after…</legend>
+                            <div class="mx-trio-row">
+                            {[['d1', '1 day'], ['d7', '7 days'], ['d30', '30 days']].map(([key, label]) => (
+                                <label class="mx-field">
+                                    <span class="mx-input has-unit">
+                                        <input type="text" inputmode="decimal" enterkeyhint="next" name={key} autocomplete="off" aria-label={`Still active after ${label}`} />
+                                        <span class="mx-suffix">%</span>
+                                    </span>
+                                    <small>{label}</small>
+                                </label>
+                            ))}
+                            </div>
+                        </fieldset>
+                        )}
+                        </>
+                    ))}
+                </div>
+
+                <details class="mx-more" data-more>
+                    <summary>
+                        <span><strong>Add more numbers</strong><small data-more-count>For a fuller check across all 16 metrics</small></span>
+                        <svg class="mx-chevron" viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6l4 4 4-4" /></svg>
+                    </summary>
+                    <div class="mx-more-groups">
+                        {BUCKETS.map((bucket) => (
+                            <div class="mx-more-group" data-more-group={bucket.id} style={`--bucket:${bucket.colour}`}>
+                                <p class="mx-more-title"><span aria-hidden="true"></span>{bucket.name}</p>
+                                <div class="mx-fields" data-more-fields={bucket.id}></div>
+                            </div>
+                        ))}
+                    </div>
+                </details>
+            </section>
+        </form>
+
+        <section class="mx-results" aria-labelledby="mx-results-title" data-metrics-results>
+            <div class="mx-results-head">
+                <div>
+                    <h2 id="mx-results-title">Your diagnosis.</h2>
+                    <p data-metrics-summary>Fill in a few numbers above, or try the sample data, and your results appear here.</p>
+                </div>
+                <button type="button" class="mx-black" data-metrics-pdf data-gated disabled>
+                    <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2.5v8M4.5 7 8 10.5 11.5 7M3 13h10" /></svg>
+                    <span data-pdf-label>Download PDF report</span>
+                </button>
+            </div>
+            <div data-metrics-output></div>
+        </section>
+
+        <div class="mx-dock" data-metrics-dock hidden>
+            <p class="mx-dock-score" data-dock-score></p>
+            <button type="button" class="mx-dock-btn" data-dock-action>See results</button>
+        </div>
+
+        <section class="mx-cta cta-doodles" aria-labelledby="mx-cta-title">
+            <h2 id="mx-cta-title">Want the full context?</h2>
+            <p>Every metric here comes from the Startup Metrics Cheat Sheet: what each number means, why it matters early, and the worked example behind the sample data.</p>
+            <a class="mx-black" href="/reports">Read the cheat sheet</a>
+        </section>
+    </main>
+
+    <SubscribeGate
+        title="Get your report in one step."
+        copy="Subscribe to the Sandbox Réseau newsletter and your PDF report downloads straight away. You’ll also get every new playbook and cheat sheet first. Unsubscribe anytime."
+    />
+</Layout>
+
+<script>
+    import { analyse, BUCKETS, SAMPLE, SIGNALS, STAGES, currencyOf, money, num, type Inputs, type MetricResult, type Report } from '../../lib/metrics';
+
+    const STORE = 'sbr-metrics-inputs';
+    const TEXT_KEYS = new Set(['name', 'stage', 'currency']);
+    let report: Report | null = null;
+
+    const root = () => document.querySelector<HTMLElement>('[data-metrics-root]');
+    const form = () => document.querySelector<HTMLFormElement>('[data-metrics-form]');
+
+    const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
+
+    function parseNumber(raw: string) {
+        const cleaned = raw.replace(/[,\s₵$%]/g, '').replace(/^GH/i, '');
+        if (cleaned === '') return undefined;
+        const n = Number(cleaned);
+        return Number.isFinite(n) ? n : undefined;
+    }
+
+    function read(): Inputs {
+        const data = new FormData(form()!);
+        const inputs: Record<string, unknown> = {};
+        for (const [key, value] of data.entries()) {
+            const v = String(value);
+            if (TEXT_KEYS.has(key)) inputs[key] = v.trim() || undefined;
+            else inputs[key] = parseNumber(v);
+        }
+        return inputs as Inputs;
+    }
+
+    function write(inputs: Inputs) {
+        const f = form()!;
+        for (const el of Array.from(f.elements) as HTMLInputElement[]) {
+            if (!el.name) continue;
+            const v = (inputs as Record<string, unknown>)[el.name];
+            if (el.type === 'radio') el.checked = el.value === (v ?? 'pmf');
+            else if (el.tagName === 'SELECT') el.value = String(v ?? 'GHS');
+            else if (typeof v === 'number') el.value = el.name === 'name' ? String(v) : formatNumber(v);
+            else el.value = v === undefined || v === null ? '' : String(v);
+        }
+    }
+
+    function save(inputs: Inputs) {
+        try { localStorage.setItem(STORE, JSON.stringify(inputs)); } catch {}
+    }
+    function restore(): Inputs | null {
+        try { return JSON.parse(localStorage.getItem(STORE) || 'null'); } catch { return null; }
+    }
+
+    function signalPill(m: MetricResult) {
+        if (!m.signal) return '<span class="mx-sig is-info">Info</span>';
+        return `<span class="mx-sig" style="--sig:${SIGNALS[m.signal].colour}">${SIGNALS[m.signal].label}</span>`;
+    }
+
+    const isPhone = () => window.matchMedia('(max-width: 639px)').matches;
+    const formatNumber = (n: number) => n.toLocaleString('en-GB', { maximumFractionDigits: 2 });
+
+    function renderDock() {
+        const dock = document.querySelector<HTMLElement>('[data-metrics-dock]');
+        const score = document.querySelector<HTMLElement>('[data-dock-score]');
+        if (!dock || !score) return;
+        const r = report;
+        dock.hidden = !r || r.computed === 0 || r.inputs.stage === 'idea';
+        if (!r || dock.hidden) return;
+        const order = ['danger', 'work', 'okay', 'strong'] as const;
+        score.innerHTML = `<strong>${r.computed}</strong> metrics${order
+            .filter((s) => r.counts[s] > 0)
+            .map((s) => `<span style="--sig:${SIGNALS[s].colour}" title="${SIGNALS[s].label}">${r.counts[s]}</span>`)
+            .join('')}`;
+    }
+
+    function metricCard(m: MetricResult) {
+        const moves = m.moves.length
+            ? `<div class="mx-move"><p class="mx-label">The move</p><ul>${m.moves.map((x) => `<li>${esc(x)}</li>`).join('')}</ul></div>`
+            : '';
+        // On phones, cards collapse to the verdict; problems start open. On larger screens they're always open.
+        const open = !isPhone() || m.signal === 'danger' || m.signal === 'work' || Boolean(m.redFlag);
+        return `<details class="mx-metric${m.focus ? ' is-focus' : ''}"${open ? ' open' : ''}>
+            <summary>
+                <header>
+                    <span class="mx-metric-id">${String(m.id).padStart(2, '0')}</span>
+                    <h4>${esc(m.name)}</h4>
+                    ${m.focus ? '<span class="mx-focus-dot" title="Focus at your stage">Focus</span>' : ''}
+                    <svg class="mx-metric-chevron" viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg>
+                </header>
+                <div class="mx-metric-value"><strong>${esc(m.display)}</strong>${signalPill(m)}</div>
+                <p class="mx-metric-text">${esc(m.signalText)}</p>
+            </summary>
+            ${m.working ? `<p class="mx-working">${esc(m.working)}</p>` : ''}
+            ${m.note ? `<p class="mx-note">${esc(m.note)}</p>` : ''}
+            ${m.redFlag ? `<p class="mx-flag"><span>Red flag</span>${esc(m.redFlag)}</p>` : ''}
+            ${moves}
+        </details>`;
+    }
+
+    function chart(r: Report) {
+        const p = r.projection;
+        if (!p || p.series.length < 2) return '';
+        const cur = r.inputs.currency ?? 'GHS';
+        const W = 640, H = 240, L = 8, R = 8, T = 16, B = 28;
+        const pts = p.series;
+        const last = pts[pts.length - 1].month || 1;
+        const maxY = Math.max(...pts.map((d) => Math.max(d.revenue, d.expenses))) * 1.1;
+        const x = (m: number) => L + (m / last) * (W - L - R);
+        const y = (v: number) => T + (1 - v / maxY) * (H - T - B);
+        const line = (key: 'revenue' | 'expenses') => pts.map((d, i) => `${i ? 'L' : 'M'}${x(d.month).toFixed(1)},${y(d[key]).toFixed(1)}`).join(' ');
+        const end = pts[pts.length - 1];
+        const marker = p.alive
+            ? `<circle cx="${x(end.month)}" cy="${y(end.expenses)}" r="5" fill="#fff" stroke="#92519b" stroke-width="2.5"/><text x="${Math.min(x(end.month), W - 120)}" y="${y(end.expenses) - 12}" class="mx-chart-label">Profitable · month ${end.month}</text>`
+            : `<line x1="${x(end.month)}" x2="${x(end.month)}" y1="${T}" y2="${H - B}" stroke="#0a0a0a" stroke-dasharray="4 4"/><text x="${Math.min(x(end.month) + 6, W - 110)}" y="${T + 12}" class="mx-chart-label">Cash runs out · month ${end.month}</text>`;
+        const ticks = [0, Math.round(last / 2), last].map((m) => `<text x="${x(m)}" y="${H - 8}" text-anchor="${m === 0 ? 'start' : m === last ? 'end' : 'middle'}" class="mx-chart-tick">Month ${m}</text>`).join('');
+        return `<figure class="mx-chart">
+            <figcaption><strong>${p.alive ? 'Default alive' : 'Default dead'}</strong>Monthly revenue growing at ${(p.growth * 100).toFixed(1).replace(/\.0$/, '')}% against flat expenses of ${money(end.expenses, cur)}.</figcaption>
+            <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Revenue projection against monthly expenses">
+                <line x1="${L}" x2="${W - R}" y1="${H - B}" y2="${H - B}" stroke="rgba(10,10,10,.15)"/>
+                <path d="${line('expenses')}" fill="none" stroke="#0a0a0a" stroke-width="2"/>
+                <path d="${line('revenue')}" fill="none" stroke="#92519b" stroke-width="2.5"/>
+                ${marker}${ticks}
+            </svg>
+            <p class="mx-legend"><span style="--c:#92519b">Revenue</span><span style="--c:#0a0a0a">Monthly expenses</span></p>
+        </figure>`;
+    }
+
+    function render() {
+        const r = report;
+        const out = document.querySelector<HTMLElement>('[data-metrics-output]');
+        const summary = document.querySelector<HTMLElement>('[data-metrics-summary]');
+        const pdf = document.querySelector<HTMLButtonElement>('[data-metrics-pdf]');
+        if (!r || !out || !summary || !pdf) return;
+        pdf.disabled = r.computed === 0;
+        renderDock();
+        if (r.computed === 0) {
+            out.innerHTML = '';
+            summary.textContent = 'Fill in a few numbers above, or try the sample data, and your results appear here.';
+            return;
+        }
+        const name = r.inputs.name ? esc(r.inputs.name) : 'Your startup';
+        summary.innerHTML = `${name}: ${r.computed} of 16 metrics calculated. Focus metrics for your stage are marked.`;
+        // Score card: a headline, one bar segment per metric (in cheat-sheet order), then the counts.
+        const rated = r.counts.strong + r.counts.okay + r.counts.work + r.counts.danger;
+        const good = r.counts.strong + r.counts.okay;
+        const segment = (m: MetricResult) => {
+            const colour = m.missing ? 'rgba(255,255,255,.08)' : m.signal ? SIGNALS[m.signal].colour : 'rgba(255,255,255,.28)';
+            const state = m.missing ? 'not calculated' : m.signal ? SIGNALS[m.signal].label : 'info only';
+            return `<span style="background:${colour}" title="${esc(m.name)}: ${state}"></span>`;
+        };
+        const rows = (['strong', 'okay', 'work', 'danger'] as const)
+            .map((s) => `<li style="--sig:${SIGNALS[s].colour}"><span>${SIGNALS[s].label}</span><strong>${r.counts[s]}</strong></li>`)
+            .join('');
+        const info = r.computed - rated;
+        const counts = `<p class="mx-score-kicker">Your score</p>
+            <p class="mx-score-head">${rated ? `<strong>${good}</strong> of ${rated} rated metrics are okay or better` : 'Nothing rated yet'}</p>
+            <div class="mx-score-bar" aria-hidden="true">${r.metrics.map(segment).join('')}</div>
+            <ul class="mx-score-list">${rows}</ul>
+            <p class="mx-score-foot">${r.computed} of 16 calculated${info ? ` · ${info} info only` : ''}</p>`;
+        const priorities = r.priorities.length
+            ? `<ol class="mx-priorities">${r.priorities
+                  .map(
+                      (m, i) => `<li><span class="mx-priority-num">${i + 1}</span><div><p><strong>${esc(m.name)}</strong> ${signalPill(m)} <span class="mx-priority-val">${esc(m.display)}</span></p><p>${esc(m.redFlag ?? m.signalText)}</p>${m.moves[0] ? `<p class="mx-priority-move">→ ${esc(m.moves[m.id === 1 ? 1 : 0])}</p>` : ''}</div></li>`,
+                  )
+                  .join('')}</ol>`
+            : '<p class="mx-none">Nothing urgent in the numbers you’ve shared. Keep tracking them weekly.</p>';
+        const buckets = BUCKETS.map((b) => {
+            const ms = r.metrics.filter((m) => m.bucket === b.id);
+            const done = ms.filter((m) => !m.missing);
+            const missing = ms.filter((m) => m.missing);
+            return `<section class="mx-result-bucket" style="--bucket:${b.colour};--tint:${b.tint}">
+                <h3><span>${b.name}</span><small>${b.question}</small></h3>
+                ${done.length ? `<div class="mx-metrics">${done.map(metricCard).join('')}</div>` : ''}
+                ${b.id === 'runway' ? chart(r) : ''}
+                ${missing.length ? `<ul class="mx-missing">${missing.map((m) => `<li><strong>${esc(m.name)}</strong> needs: ${esc(m.missing!.toLowerCase())}${m.redFlag ? ` <span class="mx-flag-inline">${esc(m.redFlag)}</span>` : ''}</li>`).join('')}</ul>` : ''}
+            </section>`;
+        }).join('');
+        out.innerHTML = `<div class="mx-overview">
+                <div class="mx-score">${counts}</div>
+                <div class="mx-top"><h3>Fix these first</h3>${priorities}</div>
+            </div>${buckets}`;
+    }
+
+    // Move each field into the main card if its stage asks for it, otherwise into “Add more numbers”.
+    // Moving the same nodes keeps whatever the founder has typed.
+    function arrange(stage: string) {
+        const core = document.querySelector<HTMLElement>('[data-core-fields]');
+        if (!core) return;
+        let extra = 0;
+        core.querySelectorAll<HTMLElement>(':scope > [data-field]').forEach((el) => (el.hidden = false));
+        const fields = Array.from(document.querySelectorAll<HTMLElement>('[data-field][data-core]'));
+        fields.sort((a, b) => Number(a.dataset.order) - Number(b.dataset.order));
+        fields.forEach((el) => {
+            const isCore = (el.dataset.core ?? '').split(' ').includes(stage);
+            const target = isCore ? core : document.querySelector<HTMLElement>(`[data-more-fields="${el.dataset.bucketId}"]`);
+            if (target) target.append(el);
+            if (!isCore) extra++;
+        });
+        document.querySelectorAll<HTMLElement>('[data-more-group]').forEach((g) => (g.hidden = !g.querySelector('[data-field]')));
+        const count = document.querySelector('[data-more-count]');
+        if (count) count.textContent = `${extra} optional numbers for a fuller check across all 16 metrics`;
+    }
+
+    function update() {
+        if (!form()) return;
+        const inputs = read();
+        const idea = inputs.stage === 'idea';
+        document.querySelector<HTMLElement>('[data-metrics-idea]')!.hidden = !idea;
+        document.querySelector<HTMLElement>('[data-metrics-buckets]')!.hidden = idea;
+        document.querySelector<HTMLElement>('[data-metrics-results]')!.hidden = idea;
+        const symbol = currencyOf(inputs.currency).symbol.trim();
+        document.querySelectorAll('[data-currency-symbol]').forEach((el) => (el.textContent = symbol));
+        arrange(inputs.stage ?? 'pmf');
+        const hint = document.querySelector<HTMLElement>('[data-stage-hint]');
+        if (hint) hint.textContent = STAGES.find((s) => s.id === inputs.stage)?.hint ?? '';
+        report = analyse(inputs);
+        save(inputs);
+        render();
+    }
+
+    let timer: number | undefined;
+    document.addEventListener('input', (event) => {
+        if (!(event.target as Element).closest('[data-metrics-form]')) return;
+        clearTimeout(timer);
+        timer = window.setTimeout(update, 150);
+    });
+    document.addEventListener('change', (event) => {
+        if ((event.target as Element).closest('[data-metrics-form]')) update();
+    });
+
+    document.addEventListener('click', async (event) => {
+        const target = event.target as Element;
+        if (target.closest('[data-metrics-sample]')) {
+            write(SAMPLE);
+            const more = document.querySelector<HTMLDetailsElement>('[data-more]');
+            if (more) more.open = true;
+            update();
+            document.querySelector('[data-metrics-results]')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            return;
+        }
+        if (target.closest('[data-metrics-clear]')) {
+            write({});
+            update();
+            return;
+        }
+        const pdf = target.closest<HTMLButtonElement>('[data-metrics-pdf]');
+        if (pdf && report && report.computed > 0) {
+            const label = pdf.querySelector<HTMLElement>('[data-pdf-label]')!;
+            pdf.disabled = true;
+            label.textContent = 'Preparing your PDF…';
+            try {
+                const { downloadReport } = await import('../../lib/metrics-pdf');
+                await downloadReport(report);
+            } catch (error) {
+                console.error(error);
+                label.textContent = 'Something went wrong. Try again';
+                pdf.disabled = false;
+                return;
+            }
+            label.textContent = 'Download PDF report';
+            pdf.disabled = false;
+        }
+    });
+
+    // Big numbers are easier to check with separators: 600000 becomes 600,000 when you leave the field.
+    document.addEventListener('focusout', (event) => {
+        const el = event.target as HTMLInputElement;
+        if (!el.matches?.('[data-metrics-form] input[inputmode="decimal"]')) return;
+        const n = parseNumber(el.value);
+        if (n !== undefined) el.value = formatNumber(n);
+    });
+
+    // Return on the phone keyboard moves to the next visible field.
+    document.addEventListener('keydown', (event) => {
+        const el = event.target as HTMLInputElement;
+        if (event.key !== 'Enter' || !el.matches?.('[data-metrics-form] input')) return;
+        event.preventDefault();
+        const inputs = Array.from(form()!.querySelectorAll<HTMLInputElement>('input:not([type="radio"])')).filter((i) => i.offsetParent !== null);
+        const next = inputs[inputs.indexOf(el) + 1];
+        if (next) next.focus();
+        else el.blur();
+    });
+
+    // Cards only collapse on phones; elsewhere a click on the summary does nothing.
+    document.addEventListener('click', (event) => {
+        if ((event.target as Element).closest('.mx-metric > summary') && !isPhone()) event.preventDefault();
+    });
+
+    // The dock offers “See results” until the results reach the screen, then the PDF.
+    let resultsVisible = false;
+    function syncDock() {
+        const results = document.querySelector('[data-metrics-results]');
+        const action = document.querySelector<HTMLElement>('[data-dock-action]');
+        if (!results || !action) return;
+        const box = results.getBoundingClientRect();
+        resultsVisible = box.top < window.innerHeight * 0.6 && box.bottom > 0;
+        action.textContent = resultsVisible ? 'Download PDF' : 'See results';
+    }
+    window.addEventListener('scroll', syncDock, { passive: true });
+    document.addEventListener('click', (event) => {
+        if (!(event.target as Element).closest('[data-dock-action]')) return;
+        if (resultsVisible) document.querySelector<HTMLButtonElement>('[data-metrics-pdf]')?.click();
+        else document.querySelector('[data-metrics-results]')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    function init() {
+        if (!root()) return;
+        const saved = restore();
+        if (saved) write(saved);
+        update();
+        syncDock();
+    }
+    document.addEventListener('astro:page-load', init);
+</script>
+
+<!-- Global: most of the results markup is rendered by the script above. Every class is mx- prefixed. -->
+<style is:global>
+    .mx-page{max-width:1040px;margin:0 auto;padding:152px 32px 64px;font-family:Inter,system-ui,sans-serif;color:#0a0a0a}
+    .mx-pill{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border:1px solid rgba(10,10,10,.1);border-radius:999px;color:#6b6b6b;font-size:13px;font-weight:500}
+    .mx-pill span{width:7px;height:7px;border-radius:50%;background:#8fbf24}
+    .mx-head h1{margin:24px 0 0;font-size:clamp(2.5rem,1.6rem + 3vw,4rem);font-weight:600;line-height:1.02;letter-spacing:-.03em}
+    .mx-head>p{max-width:54ch;margin:20px 0 0;color:#6b6b6b;font-size:17px;line-height:1.5}
+    .mx-head .mx-private{display:inline-flex;align-items:center;gap:8px;margin-top:16px;padding:8px 14px;border-radius:999px;background:#f5f5f5;color:#3a3a3a;font-size:13.5px}
+
+    .mx-form{display:grid;gap:16px;margin-top:48px}
+    .mx-card{padding:32px;border-radius:28px;background:#f5f5f5}
+    .mx-setup-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px}
+    .mx-setup h2,.mx-idea h2{margin:0;font-size:24px;font-weight:600;letter-spacing:-.015em}
+    .mx-setup-actions{display:flex;flex-wrap:wrap;gap:8px}
+    .mx-ghost{height:40px;padding:0 18px;border:1px solid rgba(10,10,10,.15);border-radius:999px;background:#fff;color:#0a0a0a;font:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:border-color .2s}
+    .mx-ghost:hover{border-color:#0a0a0a}
+    .mx-setup-grid{display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-top:24px}
+    .mx-field{display:flex;flex-direction:column;gap:6px;min-width:0}
+    .mx-field>span:first-child{color:#3a3a3a;font-size:14px;font-weight:500;line-height:1.35}
+    .mx-field em{margin-left:6px;color:#a1a1a1;font-size:12px;font-style:normal;font-weight:500}
+    .mx-field small{color:#8a8a8a;font-size:12.5px;line-height:1.4}
+    .mx-field input,.mx-field select{width:100%;height:46px;padding:0 14px;border:1px solid rgba(10,10,10,.12);border-radius:14px;background:#fff;color:#0a0a0a;font:inherit;font-size:15px;outline:none;transition:border-color .2s}
+    .mx-field input:focus,.mx-field select:focus{border-color:#0a0a0a}
+    .mx-input{display:flex;align-items:center;height:46px;border:1px solid rgba(10,10,10,.12);border-radius:14px;background:#fff;transition:border-color .2s}
+    .mx-input:focus-within{border-color:#0a0a0a}
+    .mx-field .mx-input input{flex:1;min-width:0;height:100%;border:0;border-radius:14px;background:transparent}
+    .mx-input.is-money input{padding-left:6px}
+    .mx-input.has-unit input{padding-right:4px}
+    .mx-prefix,.mx-suffix{flex-shrink:0;color:#8a8a8a;font-size:14px;font-weight:500;white-space:nowrap;pointer-events:none}
+    .mx-prefix{padding-left:14px}.mx-suffix{padding-right:14px}
+
+    .mx-stages{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:24px 0 0;padding:0;border:0}
+    .mx-stages legend{margin-bottom:10px;padding:0;color:#3a3a3a;font-size:14px;font-weight:500}
+    .mx-stage{position:relative;cursor:pointer}
+    .mx-stage input{position:absolute;opacity:0}
+    .mx-stage>span{display:flex;flex-direction:column;gap:2px;height:100%;padding:12px 14px;border:1px solid rgba(10,10,10,.12);border-radius:16px;background:#fff;color:#6b6b6b;font-size:13px;line-height:1.35;transition:border-color .2s,box-shadow .2s}
+    .mx-stage strong{color:#0a0a0a;font-size:14.5px;font-weight:600}
+    .mx-stage:hover>span{border-color:rgba(10,10,10,.35)}
+    .mx-stage input:checked+span{border-color:#0a0a0a;box-shadow:inset 0 0 0 1px #0a0a0a}
+    .mx-stage input:focus-visible+span{outline:2px solid #0a0a0a;outline-offset:2px}
+
+    .mx-idea{background:#0a0a0a;color:#fff}
+    .mx-idea p{max-width:52ch;margin:12px 0 24px;color:rgba(255,255,255,.7);font-size:16px;line-height:1.5}
+    .mx-idea .mx-black{background:#d3fa69;color:#0a0a0a}
+
+    .mx-numbers-head p{margin:6px 0 0;color:#6b6b6b;font-size:15px}
+    .mx-numbers h2{margin:0;font-size:24px;font-weight:600;letter-spacing:-.015em}
+    .mx-fields{display:grid;grid-template-columns:repeat(2,1fr);gap:18px 20px;margin-top:24px}
+    .mx-fields:empty{display:none}
+    .mx-trio{grid-column:1/-1;min-width:0;margin:0;padding:0;border:0}
+    .mx-trio-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .mx-trio legend{margin-bottom:6px;padding:0;color:#3a3a3a;font-size:14px;font-weight:500;line-height:1.35}
+    .mx-trio .mx-field small{text-align:center}
+    .mx-more{margin-top:28px;border-top:1px solid rgba(10,10,10,.1)}
+    .mx-more summary{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 0 0;list-style:none;cursor:pointer}
+    .mx-more summary::-webkit-details-marker{display:none}
+    .mx-more summary span{display:flex;flex-direction:column;gap:2px}
+    .mx-more summary strong{font-size:16px;font-weight:600}
+    .mx-more summary small{color:#8a8a8a;font-size:13.5px}
+    .mx-more[open] .mx-chevron{transform:rotate(180deg)}
+    .mx-more-group{margin-top:28px}
+    .mx-more-group .mx-fields{margin-top:14px}
+    .mx-more-title{display:flex;align-items:center;gap:8px;margin:0;color:var(--bucket);font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+    .mx-more-title span{width:7px;height:7px;border-radius:50%;background:var(--bucket)}
+    .mx-chevron{flex-shrink:0;color:#8a8a8a;transition:transform .2s}
+
+    .mx-results{margin-top:80px}
+    .mx-results-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px 32px}
+    .mx-results h2,.mx-cta h2{margin:0;font-size:clamp(1.5rem,1.15rem + 1.5vw,2.25rem);font-weight:600;line-height:1.1;letter-spacing:-.015em}
+    .mx-results-head p{max-width:56ch;margin:12px 0 0;color:#6b6b6b;font-size:16px;line-height:1.5}
+    .mx-black{display:inline-flex;align-items:center;gap:8px;height:48px;padding:0 24px;border:0;border-radius:999px;background:#0a0a0a;color:#fff;font:inherit;font-size:15px;font-weight:600;text-decoration:none;cursor:pointer;transition:background-color .2s,opacity .2s}
+    .mx-black:hover{background:#2a2a2a}
+    .mx-black:disabled{opacity:.35;cursor:default}
+
+    .mx-overview{display:grid;grid-template-columns:1fr 1.6fr;gap:16px;margin-top:32px}
+    .mx-score{display:flex;flex-direction:column;padding:28px;border-radius:24px;background:#0a0a0a;color:#fff}
+    .mx-score-kicker{margin:0;color:#d3fa69;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+    .mx-score-head{margin:12px 0 0;color:rgba(255,255,255,.7);font-size:17px;line-height:1.35}
+    .mx-score-head strong{display:block;color:#fff;font-size:56px;font-weight:600;line-height:1;letter-spacing:-.03em}
+    .mx-score-bar{display:grid;grid-template-columns:repeat(16,1fr);gap:3px;margin-top:24px}
+    .mx-score-bar span{height:28px;border-radius:4px}
+    .mx-score-list{display:grid;gap:0;margin:auto 0 0;padding:20px 0 0;list-style:none}
+    .mx-score-list li{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid rgba(255,255,255,.1);font-size:14px}
+    .mx-score-list li::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--sig)}
+    .mx-score-list span{flex:1;color:rgba(255,255,255,.75)}
+    .mx-score-list strong{font-size:18px;font-weight:600;font-variant-numeric:tabular-nums}
+    .mx-score-foot{margin:4px 0 0;padding-top:12px;border-top:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.45);font-size:12.5px}
+    .mx-top{padding:28px;border-radius:24px;background:#f5f5f5}
+    .mx-top h3{margin:0;font-size:18px;font-weight:600}
+    .mx-priorities{display:grid;gap:16px;margin:18px 0 0;padding:0;list-style:none}
+    .mx-priorities li{display:flex;gap:14px}
+    .mx-priority-num{display:grid;place-items:center;flex-shrink:0;width:28px;height:28px;border-radius:50%;background:#0a0a0a;color:#d3fa69;font-size:13px;font-weight:600}
+    .mx-priorities p{margin:0;color:#4a4a4a;font-size:14.5px;line-height:1.5}
+    .mx-priorities p:first-child{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;color:#0a0a0a;font-size:15px}
+    .mx-priority-val{color:#6b6b6b;font-weight:500}
+    .mx-priority-move{margin-top:4px!important;color:#0a0a0a!important;font-weight:500}
+    .mx-none{margin:12px 0 0;color:#6b6b6b}
+
+    .mx-result-bucket{margin-top:48px}
+    .mx-result-bucket h3{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;margin:0;padding-top:16px;border-top:3px solid var(--bucket);font-size:22px;font-weight:600}
+    .mx-result-bucket h3 small{color:#8a8a8a;font-size:15px;font-weight:400}
+    .mx-metrics{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:20px}
+    .mx-metric{display:block;padding:22px;border:1px solid rgba(10,10,10,.1);border-radius:20px;background:#fff}
+    .mx-metric.is-focus{border-color:var(--bucket);box-shadow:inset 0 0 0 1px var(--bucket)}
+    .mx-metric>summary{display:block;list-style:none;cursor:default}
+    .mx-metric>summary::-webkit-details-marker{display:none}
+    .mx-metric-chevron{display:none;flex-shrink:0;color:#8a8a8a;transition:transform .2s}
+    .mx-metric[open] .mx-metric-chevron{transform:rotate(180deg)}
+    .mx-stage-current{display:none}
+    .mx-dock{display:none}
+    .mx-metric header{display:flex;align-items:center;gap:10px}
+    .mx-metric-id{color:var(--bucket);font-size:14px;font-weight:600}
+    .mx-metric h4{flex:1;margin:0;font-size:15px;font-weight:600}
+    .mx-focus-dot{padding:2px 8px;border-radius:999px;background:var(--tint);color:var(--bucket);font-size:11.5px;font-weight:600}
+    .mx-metric-value{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin-top:14px}
+    .mx-metric-value strong{font-size:32px;font-weight:600;letter-spacing:-.02em}
+    .mx-sig{display:inline-flex;align-items:center;gap:6px;padding:3px 10px 3px 8px;border:1px solid rgba(10,10,10,.1);border-radius:999px;background:#fff;color:#0a0a0a;font-size:12.5px;font-weight:600;white-space:nowrap}
+    .mx-sig::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--sig)}
+    .mx-sig.is-info{color:#6b6b6b}
+    .mx-sig.is-info::before{background:#c8c8c8}
+    .mx-metric-text{margin:10px 0 0;color:#2a2a2a;font-size:14.5px;line-height:1.5}
+    .mx-working{width:fit-content;max-width:100%;margin:12px 0 0;padding:6px 10px;border-radius:10px;background:var(--tint);color:#3a3a3a;font-size:12.5px;font-variant-numeric:tabular-nums}
+    .mx-note{margin:10px 0 0;color:#8a8a8a;font-size:12.5px;line-height:1.45}
+    .mx-flag{margin:14px 0 0;padding:10px 12px;border-radius:12px;background:#fbecec;color:#3a1a1a;font-size:13.5px;line-height:1.45}
+    .mx-flag span{display:block;margin-bottom:2px;color:#d93a3a;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+    .mx-move{margin-top:14px;padding-top:12px;border-top:1px solid rgba(10,10,10,.08)}
+    .mx-label{margin:0;color:var(--bucket);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+    .mx-move ul{display:grid;gap:6px;margin:8px 0 0;padding:0 0 0 18px;list-style:disc;color:#3a3a3a;font-size:13.5px;line-height:1.45}
+    .mx-missing{display:grid;gap:6px;margin:16px 0 0;padding:16px 20px;border-radius:16px;background:#f5f5f5;color:#6b6b6b;font-size:13.5px;list-style:none}
+    .mx-missing strong{color:#3a3a3a;font-weight:600}
+    .mx-flag-inline{display:block;color:#d93a3a}
+    .mx-chart{margin:16px 0 0;padding:24px;border:1px solid rgba(10,10,10,.1);border-radius:20px}
+    .mx-chart figcaption{color:#6b6b6b;font-size:14px}
+    .mx-chart figcaption strong{display:block;margin-bottom:2px;color:#0a0a0a;font-size:17px}
+    .mx-chart svg{display:block;width:100%;height:auto;margin-top:16px;overflow:visible}
+    .mx-chart-label{fill:#0a0a0a;font-size:12px;font-weight:600}
+    .mx-chart-tick{fill:#8a8a8a;font-size:11px}
+    .mx-legend{display:flex;gap:18px;margin:10px 0 0;color:#6b6b6b;font-size:12.5px}
+    .mx-legend span::before{content:'';display:inline-block;width:14px;height:3px;margin-right:6px;vertical-align:middle;background:var(--c)}
+
+    .mx-cta{margin-top:96px;padding:64px 56px;border-radius:28px;background:#f5f5f5;text-align:center}
+    .mx-cta p{max-width:52ch;margin:14px auto 28px;color:#6b6b6b;font-size:17px;line-height:1.5}
+
+    @media(max-width:1023px){
+        .mx-stages{grid-template-columns:repeat(2,1fr)}
+        .mx-overview{grid-template-columns:1fr}
+    }
+    @media(max-width:767px){
+        .mx-dock:not([hidden]){position:fixed;z-index:55;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom, 0px));display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 8px 8px 18px;border-radius:999px;background:#0a0a0a;color:#fff;box-shadow:0 12px 30px -10px rgba(0,0,0,.45)}
+        body:has(.player-bar.active) .mx-dock{bottom:calc(104px + env(safe-area-inset-bottom, 0px))}
+        .mx-dock-score{display:flex;align-items:center;gap:10px;margin:0;color:rgba(255,255,255,.75);font-size:13.5px;white-space:nowrap}
+        .mx-dock-score strong{margin-right:-6px;color:#fff;font-weight:600}
+        .mx-dock-score span{display:inline-flex;align-items:center;gap:5px;color:#fff;font-weight:600;font-variant-numeric:tabular-nums}
+        .mx-dock-score span::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--sig)}
+        .mx-dock-btn{flex-shrink:0;height:40px;padding:0 18px;border:0;border-radius:999px;background:#d3fa69;color:#0a0a0a;font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+        .mx-page{padding-bottom:120px}
+    }
+    @media(max-width:639px){
+        .mx-page{padding:112px 16px 120px}
+        .mx-field input,.mx-field select{font-size:16px}
+        .mx-stages{gap:8px}
+        .mx-stage small{display:none}
+        .mx-stage>span{justify-content:center;min-height:48px;padding:10px 12px}
+        .mx-stage strong{font-size:14px}
+        .mx-stage-current{display:block;margin:10px 2px 0;color:#6b6b6b;font-size:13.5px}
+        .mx-metric{padding:18px}
+        .mx-metric>summary{cursor:pointer}
+        .mx-metric-chevron{display:block}
+        .mx-metric:not([open]) .mx-metric-value{margin-top:10px}
+        .mx-metric:not([open]) .mx-metric-value strong{font-size:24px}
+        .mx-metric-value strong{font-size:28px}
+        .mx-chart{padding:18px}
+        .mx-card{padding:24px 20px}
+        .mx-setup-grid,.mx-fields,.mx-metrics{grid-template-columns:1fr}
+        .mx-score{padding:22px}
+        .mx-score-head strong{font-size:44px}
+        .mx-score-bar span{height:22px}
+        .mx-top{padding:22px}
+        .mx-results-head .mx-black{width:100%;justify-content:center}
+        .mx-cta{padding:48px 24px}
+    }
+</style>

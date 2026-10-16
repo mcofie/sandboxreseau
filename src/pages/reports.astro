@@ -2,7 +2,9 @@
 import Layout from '../layouts/Layout.astro';
 import reports from '../data/reports.json';
 import newsletters from '../data/newsletters.json';
+import SubscribeGate from '../components/SubscribeGate.astro';
 
+// reports.json is kept newest first, so the latest publication is featured.
 const [featured, ...otherReports] = reports;
 const availableCount = reports.filter((report) => report.status === 'available').length;
 const upcomingCount = reports.length - availableCount;
@@ -19,8 +21,8 @@ const latestNotes = [...newsletters]
 <Layout
     title="Reports | Sandbox Réseau"
     description="Research reports and ecosystem intelligence from Sandbox Réseau. Download PDF publications on the African startup landscape."
-    image="/assets/img/state-of-accra-report-bg.jpg"
-    imageAlt="The State of Accra’s Startup Ecosystem 2026 report cover"
+    image={featured?.bgImage?.replace(/\.webp$/, '.jpg')}
+    imageAlt={featured ? `${featured.title} cover` : undefined}
 >
     <main class="reports-page">
         <section class="reports-head" aria-labelledby="reports-title">
@@ -44,8 +46,9 @@ const latestNotes = [...newsletters]
                     <div class="report-actions">
                         {featured.status === 'available' ? (
                             <>
-                                <button type="button" class="report-primary" data-pdf-open={featured.pdf} data-pdf-title={featured.title}>Read report</button>
-                                <a class="report-secondary" href={featured.pdf} download>Download PDF</a>
+                                <button type="button" class="report-primary" data-pdf-open={featured.pdf} data-pdf-title={featured.title} data-gated>Read report</button>
+                                <a class="report-secondary" href={featured.pdf} download data-gated>Download PDF</a>
+                                {'tool' in featured && featured.tool && <a class="report-secondary" href={featured.tool.href}>{featured.tool.label}</a>}
                             </>
                         ) : (
                             <span class="report-soon">Coming soon</span>
@@ -70,7 +73,11 @@ const latestNotes = [...newsletters]
                             <h3>{report.title}</h3>
                             <p class="report-desc">{report.description}</p>
                             {report.status === 'available' ? (
-                                <button type="button" class="report-link" data-pdf-open={report.pdf} data-pdf-title={report.title}>Read report →</button>
+                                <div class="report-card-actions">
+                                    <button type="button" class="report-link" data-pdf-open={report.pdf} data-pdf-title={report.title} data-gated>Read report →</button>
+                                    <a class="report-link" href={report.pdf} download data-gated>Download PDF</a>
+                                    {'tool' in report && report.tool && <a class="report-link report-tool" href={report.tool.href}>{report.tool.label} →</a>}
+                                </div>
                             ) : null}
                         </article>
                     ))}
@@ -84,7 +91,7 @@ const latestNotes = [...newsletters]
                     <h2 id="reports-notes-title">Notes from the room.</h2>
                     <p>Shorter reads from our newsletter: playbooks and lessons from each edition.</p>
                 </div>
-                <a href="https://mcofie.substack.com/" target="_blank" rel="noreferrer">Subscribe on Substack →</a>
+                <a href="https://thekompound.substack.com/" target="_blank" rel="noreferrer">Subscribe on Substack →</a>
             </div>
             <div class="notes-grid">
                 {latestNotes.map((note) => (
@@ -108,6 +115,11 @@ const latestNotes = [...newsletters]
             </div>
         </section>
     </main>
+
+    <SubscribeGate
+        title="Get the report in one step."
+        copy="Subscribe to the Sandbox Réseau newsletter and every report unlocks straight away. You’ll also get each new playbook first. Unsubscribe anytime."
+    />
 
     <div class="pdf-viewer" role="dialog" aria-modal="true" aria-labelledby="pdf-viewer-title" hidden data-pdf-viewer>
         <div class="pdf-viewer-backdrop" data-pdf-close></div>
@@ -196,6 +208,9 @@ const latestNotes = [...newsletters]
     .report-card h3{margin:8px 0 0;font-size:19px;font-weight:600}
     .report-card .report-desc{font-size:15px}
     .reports-more-lede{margin:16px 0 0;color:#6b6b6b;font-size:17px;line-height:1.5}
+    .report-card-actions{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:16px}
+    .report-card-actions .report-link{margin-top:0;text-decoration:none}
+    .report-card-actions .report-tool{flex-basis:100%;color:#2d6cb5}
     .report-link{margin-top:16px;padding:0;border:0;background:none;color:#0a0a0a;font:inherit;font-size:14px;font-weight:600;cursor:pointer}
     .notes-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px}
     .note-card{display:block}

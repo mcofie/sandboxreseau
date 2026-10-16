@@ -1,0 +1,95 @@
+---
+// Newsletter sign-up that stands in front of any element marked data-gated (report PDFs, the metrics PDF).
+// One subscription unlocks every gated action in that browser.
+interface Props {
+    title: string;
+    copy: string;
+    kicker?: string;
+}
+
+const SUBSTACK = 'https://thekompound.substack.com';
+const { title, copy, kicker = 'Free download' } = Astro.props;
+---
+
+<dialog class="sub-gate" data-substack={SUBSTACK} aria-labelledby="sub-gate-title" data-subscribe-gate>
+    <form method="dialog" class="sub-gate-card" data-subscribe-gate-form>
+        <button type="submit" value="cancel" class="sub-gate-close" aria-label="Close" formnovalidate>
+            <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" /></svg>
+        </button>
+        <p class="sub-gate-kicker"><span aria-hidden="true"></span>{kicker}</p>
+        <h2 id="sub-gate-title">{title}</h2>
+        <p class="sub-gate-copy">{copy}</p>
+        <label class="sr-only" for="sub-gate-email">Email address</label>
+        <div class="sub-gate-field">
+            <input id="sub-gate-email" type="email" name="email" required placeholder="you@email.com" autocomplete="email" />
+            <button type="submit" value="subscribe">Subscribe &amp; unlock</button>
+        </div>
+        <p class="sub-gate-note">Substack opens in a new tab to confirm your subscription.</p>
+        <button type="submit" value="skip" class="sub-gate-skip" formnovalidate>Already subscribed? Continue</button>
+    </form>
+</dialog>
+
+<script>
+    // Soft email gate: the first click on any [data-gated] element opens a Substack sign-up. Once someone
+    // subscribes (or says they already have), everything gated stays unlocked in that browser.
+    // Gated files remain public.
+    const UNLOCK_KEY = 'sbr-subscribed';
+    let pending: HTMLElement | null = null;
+
+    function isUnlocked() {
+        try { return localStorage.getItem(UNLOCK_KEY) === '1'; } catch { return false; }
+    }
+    function unlock() {
+        try { localStorage.setItem(UNLOCK_KEY, '1'); } catch {}
+    }
+
+    document.addEventListener('click', (event) => {
+        const action = (event.target as Element).closest<HTMLElement>('[data-gated]');
+        const gate = document.querySelector<HTMLDialogElement>('[data-subscribe-gate]');
+        if (!action || !gate || isUnlocked()) return;
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        pending = action;
+        gate.showModal();
+        gate.querySelector<HTMLInputElement>('input[type="email"]')?.focus();
+    }, true);
+
+    document.addEventListener('submit', (event) => {
+        const form = (event.target as Element).closest<HTMLFormElement>('[data-subscribe-gate-form]');
+        if (!form) return;
+        const gate = form.closest<HTMLDialogElement>('dialog')!;
+        const choice = ((event as SubmitEvent).submitter as HTMLButtonElement | null)?.value;
+        if (choice === 'cancel') { pending = null; return; }
+        if (choice === 'subscribe') {
+            const email = new FormData(form).get('email')?.toString().trim() ?? '';
+            // Opened inside the click's submit, so browsers allow the new tab.
+            window.open(`${gate.dataset.substack}/subscribe?email=${encodeURIComponent(email)}`, '_blank', 'noopener');
+        }
+        unlock();
+        const action = pending;
+        pending = null;
+        // Let the dialog close first, then replay the click the reader originally made.
+        setTimeout(() => action?.click(), 0);
+    });
+</script>
+
+<style>
+    .sub-gate{width:min(440px,calc(100% - 32px));max-width:none;margin:auto;padding:0;border:0;border-radius:28px;background:#fff;color:#0a0a0a;box-shadow:0 24px 60px -20px rgba(0,0,0,.35)}
+    .sub-gate::backdrop{background:rgba(10,10,10,.45);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+    .sub-gate-card{position:relative;margin:0;padding:36px 32px 28px;font-family:Inter,system-ui,sans-serif}
+    .sub-gate-close{position:absolute;top:16px;right:16px;display:grid;place-items:center;width:36px;height:36px;border:0;border-radius:999px;background:#f5f5f5;color:#0a0a0a;cursor:pointer}
+    .sub-gate-close:hover{background:#ececec}
+    .sub-gate-kicker{display:inline-flex;align-items:center;gap:8px;margin:0;color:#6b6b6b;font-size:13px;font-weight:500}
+    .sub-gate-kicker span{width:7px;height:7px;border-radius:50%;background:#8fbf24}
+    .sub-gate h2{margin:14px 0 0;font-size:24px;font-weight:600;line-height:1.15;letter-spacing:-.015em}
+    .sub-gate-copy{margin:10px 0 0;color:#6b6b6b;font-size:15px;line-height:1.5}
+    .sub-gate-field{display:flex;gap:8px;margin-top:22px;padding:6px 6px 6px 18px;border:1px solid rgba(10,10,10,.15);border-radius:999px;transition:border-color .2s}
+    .sub-gate-field:focus-within{border-color:#0a0a0a}
+    .sub-gate-field input{flex:1;min-width:0;border:0;background:transparent;color:#0a0a0a;font:inherit;font-size:15px;outline:none}
+    .sub-gate-field button{flex-shrink:0;height:40px;padding:0 16px;border:0;border-radius:999px;background:#0a0a0a;color:#fff;font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+    .sub-gate-field button:hover{background:#2a2a2a}
+    .sub-gate-note{margin:10px 0 0 18px;color:#a1a1a1;font-size:12.5px}
+    .sub-gate-skip{display:block;margin:18px auto 0;padding:4px;border:0;background:none;color:#6b6b6b;font:inherit;font-size:13.5px;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+    .sub-gate-skip:hover{color:#0a0a0a}
+    @media(max-width:479px){.sub-gate-card{padding:32px 20px 24px}.sub-gate-field{flex-direction:column;padding:6px;border-radius:20px}.sub-gate-field input{height:40px;padding:0 12px}.sub-gate-field button{width:100%}.sub-gate-note{margin-left:6px}}
+</style>

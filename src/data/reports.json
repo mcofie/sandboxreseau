@@ -1,5 +1,67 @@
 [
     {
+        "title": "The African Market Dynamics",
+        "subtitle": "",
+        "description": "Where to build, where to sell, and what actually works on the ground. Twenty-two African markets profiled, with a ten-dimension entry framework, the payment matrix, expansion sequences and the mistakes that keep killing expansions.",
+        "date": "October 2026",
+        "pages": "61",
+        "tags": [
+            "Markets",
+            "Expansion",
+            "Africa"
+        ],
+        "pdf": "/assets/docs/reports/african-market-dynamics.pdf",
+        "status": "available",
+        "bgImage": "/assets/img/reports/african-market-dynamics.webp"
+    },
+    {
+        "title": "The Founder's Equity & ESOP Playbook",
+        "subtitle": "Before You Split, Before You Grant",
+        "description": "How to split founder equity fairly, set up vesting and a TopCo, size an option pool, and grant equity to early hires and advisors without wrecking your cap table.",
+        "date": "September 2026",
+        "pages": "29",
+        "tags": [
+            "Equity",
+            "ESOP",
+            "Founders"
+        ],
+        "pdf": "/assets/docs/reports/founders-equity-esop-playbook.pdf",
+        "status": "available",
+        "bgImage": "/assets/img/reports/founders-equity-esop-playbook.webp"
+    },
+    {
+        "title": "Startup Metrics Cheat Sheet",
+        "subtitle": "Accra Early-Stage Edition",
+        "description": "The 16 numbers every early-stage startup should obsess over: what each one tells you, how to calculate it, what good looks like, and what to do when it's off.",
+        "date": "July 2026",
+        "pages": "36",
+        "tags": [
+            "Metrics",
+            "Early-stage"
+        ],
+        "pdf": "/assets/docs/reports/startup-metrics-cheat-sheet.pdf",
+        "status": "available",
+        "bgImage": "/assets/img/reports/startup-metric-cheat-sheet.webp",
+        "tool": {
+            "label": "Check your numbers",
+            "href": "/tools/metrics"
+        }
+    },
+    {
+        "title": "The Early Startup Playbook",
+        "subtitle": "",
+        "description": "A step-by-step guide to finding out if anyone actually wants what you're building, from 30 conversations to product-market fit in five stages.",
+        "date": "July 2026",
+        "pages": "36",
+        "tags": [
+            "Validation",
+            "Playbook"
+        ],
+        "pdf": "/assets/docs/reports/early-startup-playbook.pdf",
+        "status": "available",
+        "bgImage": "/assets/img/reports/early-startup-playbook.webp"
+    },
+    {
         "title": "The State of Accra's Startup Ecosystem",
         "subtitle": "2026 Edition",
         "description": "A comprehensive analysis of the startup landscape in Accra: funding trends, sector breakdowns, founder demographics, and ecosystem maturity indicators.",
@@ -14,63 +76,5 @@
         "pdf": "/assets/docs/reports/state-of-accra-startup-ecosystem-2026.pdf",
         "status": "available",
         "bgImage": "/assets/img/state-of-accra-report-bg.webp"
-    },
-    {
-        "title": "The African Market Dynamics",
-        "subtitle": "",
-        "description": "Where to build, where to sell, and what actually works on the ground.",
-        "date": "",
-        "pages": "",
-        "tags": [
-            "Markets",
-            "Expansion",
-            "Africa"
-        ],
-        "pdf": "",
-        "status": "coming-soon",
-        "bgImage": "/assets/img/reports/african-market-dynamics.webp"
-    },
-    {
-        "title": "Startup Metric Cheat Sheet",
-        "subtitle": "",
-        "description": "The numbers every early-stage startup should obsess over.",
-        "date": "",
-        "pages": "",
-        "tags": [
-            "Metrics",
-            "Early-stage"
-        ],
-        "pdf": "",
-        "status": "coming-soon",
-        "bgImage": "/assets/img/reports/startup-metric-cheat-sheet.webp"
-    },
-    {
-        "title": "Early Startup Playbook",
-        "subtitle": "",
-        "description": "A step-by-step guide to finding out if anyone actually wants what you're building.",
-        "date": "",
-        "pages": "",
-        "tags": [
-            "Validation",
-            "Playbook"
-        ],
-        "pdf": "",
-        "status": "coming-soon",
-        "bgImage": "/assets/img/reports/early-startup-playbook.webp"
-    },
-    {
-        "title": "The Founder's Equity & ESOP Playbook",
-        "subtitle": "Before You Split, Before You Grant",
-        "description": "How to split founder equity and set up an employee share option pool. Before you split, before you grant.",
-        "date": "",
-        "pages": "",
-        "tags": [
-            "Equity",
-            "ESOP",
-            "Founders"
-        ],
-        "pdf": "",
-        "status": "coming-soon",
-        "bgImage": "/assets/img/reports/founders-equity-esop-playbook.webp"
     }
 ]
