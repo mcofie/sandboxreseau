@@ -1105,9 +1105,9 @@
         "name": "Selorm J. Akoto",
         "role": "Founder",
         "linkedin": "https://www.linkedin.com/in/cirlormx/",
-        "twitter": "",
-        "avatar": "",
-        "bio": "Selorm is the founder of Zend, a developer-first messaging platform built in Ghana for global reach."
+        "twitter": "https://x.com/cirlormx",
+        "avatar": "/assets/img/founders/selorm-akoto.jpg",
+        "bio": "Selorm is a product builder and the founder of Zend, a developer-first messaging platform built in Ghana for global reach."
       }
     ]
   },
@@ -1132,9 +1132,40 @@
         "name": "Wendy Quarshie",
         "role": "Founder",
         "linkedin": "https://www.linkedin.com/in/wendy-quarshie/",
-        "twitter": "",
-        "avatar": "",
-        "bio": "Wendy is the founder of Stokmate, building the infrastructure for informal retail in Africa."
+        "twitter": "https://x.com/the_wendyq",
+        "avatar": "/assets/img/founders/wendy-quarshie.jpg",
+        "bio": "Wendy is the founder of Stokmate, building the infrastructure for informal retail in Africa. A self-described car dealer who writes code, she is a VP at Girls Too Code and has previously worked with Wikimedia."
+      }
+    ]
+  },
+  {
+    "id": "midiarack",
+    "name": "Midiarack",
+    "industry": "Marketplace",
+    "location": "Accra",
+    "status": "Live",
+    "description": "Africa’s media buying marketplace. Plan, compare and book billboards, radio, podcasts, influencers and print across Ghana from one transparent platform, without the agency markup.",
+    "longDescription": "Midiarack brings media buying onto one platform. Advertisers browse ad spaces and media services across Ghana, filter by type, location, budget and reach, compare pricing, impressions and availability side by side, then book, upload their creative and track the campaign in one place.\n\nMedia owners list their inventory, set their rates, manage availability and get paid through a single dashboard. For larger campaigns, Midiarack works with brands, agencies and procurement teams on custom packages with dedicated support and consolidated invoicing.",
+    "tags": [
+      "Advertising",
+      "Marketplace"
+    ],
+    "founded": "",
+    "url": "https://www.midiarack.com/",
+    "cta": "Learn more",
+    "logo": "/assets/img/logos/midiarack.png",
+    "socials": {
+      "twitter": "https://x.com/midiarack",
+      "linkedin": "https://www.linkedin.com/company/midiarack/"
+    },
+    "founders": [
+      {
+        "name": "Kwabena B. Sarpong",
+        "role": "Founder",
+        "linkedin": "https://www.linkedin.com/in/kwabena-b-sarpong-44183769/",
+        "twitter": "https://x.com/KwabenaBSarpong",
+        "avatar": "/assets/img/founders/kwabena-b-sarpong.jpg",
+        "bio": "Kwabena builds products for and about Africa from Accra. He is the founder of Midiarack, Africa’s media buying marketplace, alongside ventures in commerce and trust."
       }
     ]
   }
