@@ -1168,5 +1168,44 @@
         "bio": "Kwabena builds products for and about Africa from Accra. He is the founder of Midiarack, Africa’s media buying marketplace, alongside ventures in commerce and trust."
       }
     ]
+  },
+  {
+    "id": "glolly",
+    "name": "Glolly",
+    "industry": "Software",
+    "location": "Accra",
+    "status": "Live",
+    "description": "The online store builder for Ghana. Go live in an hour, sell on Instagram, TikTok and WhatsApp, and take Mobile Money and card payments, all run from your phone.",
+    "longDescription": "Glolly gives social sellers a real online store on their own domain, plus a shop assistant in their own WhatsApp that answers questions, recommends products and closes sales around the clock. Mobile Money and card payments are built in, and customers buy straight from the browser with no app or sign-up.\n\nSellers manage orders, delivery, inventory, promotions and team accounts from their phone, record walk-in sales with an offline till, and can add products from a photo. It is one flat monthly fee with no commission on sales, and stores go live in under an hour, or the team builds it for you within 48 hours.",
+    "tags": [
+      "E-commerce",
+      "Social commerce",
+      "Payments"
+    ],
+    "founded": "",
+    "url": "https://glolly.com/",
+    "cta": "Learn more",
+    "logo": "/assets/img/logos/glolly.png",
+    "socials": {
+      "twitter": "https://x.com/glollyhq",
+      "linkedin": "https://www.linkedin.com/company/glolly",
+      "instagram": "https://www.instagram.com/glollyhq"
+    },
+    "founders": [
+      {
+        "name": "Seth King",
+        "role": "Founder",
+        "linkedin": "https://www.linkedin.com/in/seth-micah-king/",
+        "avatar": "/assets/img/founders/seth-king.jpg",
+        "bio": "Seth is the founder of Glolly, the online store builder made for how Ghana sells, helping social sellers turn their Instagram, TikTok and WhatsApp following into a real business."
+      },
+      {
+        "name": "Joseph Ghartey",
+        "role": "Co-Founder",
+        "linkedin": "https://www.linkedin.com/in/joseph-ghartey-0336311a",
+        "avatar": "/assets/img/founders/joseph-ghartey.jpg",
+        "bio": "Joseph is the co-founder of Glolly, building the tools that let any Ghanaian business, however small or new, sell online with the ease of the biggest brands."
+      }
+    ]
   }
 ]
