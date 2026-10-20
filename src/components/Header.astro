@@ -12,18 +12,23 @@ const primaryLinks = [
     { name: 'Gallery', href: '/gallery', icon: 'M2.5 3.5h11v9h-11zM2.5 10.5l3-3 3 3 2-2 3 3M10.25 6.25h.01' },
 ];
 
-// The full site map, shown in the mobile menu.
-const menuLinks = [
-    { name: 'Home', href: '/' },
-    { name: 'Editions', href: '/editions' },
-    { name: 'Podcast', href: '/podcast' },
-    { name: 'Community', href: '/community' },
-    { name: 'Gallery', href: '/gallery' },
+// The mobile menu, in three layers: the main places as tiles, the rest as a compact list, then small links.
+// Home is the logo, and "Get an invite" already sits in the header, so neither repeats here.
+const menuTiles = [
+    { name: 'Editions', href: '/editions', icon: 'M3 4.5h10v8.5H3zM3 7.5h10M5.5 3v3M10.5 3v3' },
+    { name: 'Community', href: '/community', icon: 'M6 7.5a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM2.5 13a3.5 3.5 0 0 1 7 0M10.5 7.5a1.75 1.75 0 1 0 0-3.5M11.5 9.6a3.2 3.2 0 0 1 2 3' },
+    { name: 'Podcast', href: '/podcast', icon: 'M8 2.5a2 2 0 0 0-2 2V8a2 2 0 0 0 4 0V4.5a2 2 0 0 0-2-2zM4 7.5a4 4 0 0 0 8 0M8 11.5v2' },
+    { name: 'Gallery', href: '/gallery', icon: 'M2.5 3.5h11v9h-11zM2.5 10.5l3-3 3 3 2-2 3 3M10.25 6.25h.01' },
+];
+const menuExplore = [
     { name: 'Registry', href: '/registry' },
     { name: 'Reports', href: '/reports' },
     { name: 'Metrics Check', href: '/tools/metrics' },
+    { name: 'Test Club', href: '/test-club' },
     { name: 'The Pitch', href: '/the-pitch' },
-    { name: 'Merch & support', href: '/merch' },
+];
+const menuSmall = [
+    { name: 'Merch', href: '/merch' },
     { name: 'Newsletter', href: 'https://thekompound.substack.com/', external: true },
 ];
 
@@ -53,18 +58,33 @@ const isCurrent = (href: string) => href === currentPath || (href !== '/' && cur
 
     <div class="site-menu" id="site-menu" hidden data-site-menu>
         <nav aria-label="Site menu">
-            <ul>
-                {menuLinks.map((link) => (
+            <ul class="menu-tiles">
+                {menuTiles.map((link, index) => (
+                    <li style={`--i:${index}`}>
+                        <a href={link.href} aria-current={isCurrent(link.href) ? 'page' : undefined}>
+                            <svg viewBox="0 0 16 16" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d={link.icon} /></svg>
+                            {link.name}
+                        </a>
+                    </li>
+                ))}
+            </ul>
+            <p class="menu-label" style={`--i:${menuTiles.length}`}>Explore</p>
+            <ul class="menu-explore">
+                {menuExplore.map((link, index) => (
+                    <li style={`--i:${menuTiles.length + 1 + Math.floor(index / 2)}`}><a href={link.href} aria-current={isCurrent(link.href) ? 'page' : undefined}>{link.name}</a></li>
+                ))}
+            </ul>
+            <ul class="menu-small" style={`--i:${menuTiles.length + 4}`}>
+                {menuSmall.map((link) => (
                     <li>
                         <a href={link.href} aria-current={isCurrent(link.href) ? 'page' : undefined} target={link.external ? '_blank' : undefined} rel={link.external ? 'noreferrer' : undefined}>
                             {link.name}
-                            {link.external && <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5" /></svg>}
+                            {link.external && <svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5" /></svg>}
                         </a>
                     </li>
                 ))}
             </ul>
         </nav>
-        <a class="site-menu-cta" href={LUMA_URL} target="_blank" rel="noreferrer">Get an invite</a>
     </div>
 </header>
 
@@ -79,11 +99,31 @@ const isCurrent = (href: string) => href === currentPath || (href !== '/' && cur
         toggle: document.querySelector<HTMLButtonElement>('[data-menu-toggle]'),
     });
 
+    // Closing plays a short exit animation before the menu is hidden; opening again mid-exit cancels it.
+    let closeTimer: number | undefined;
+    const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     function setMenu(open: boolean) {
         const { header, menu, scrim, toggle } = els();
         if (!menu || !toggle) return;
-        menu.hidden = !open;
-        if (scrim) scrim.hidden = !open;
+        clearTimeout(closeTimer);
+        const panels = [menu, scrim].filter(Boolean) as HTMLElement[];
+        panels.forEach((el) => el.classList.remove('is-closing'));
+        if (open || menu.hidden || reducedMotion()) {
+            panels.forEach((el) => (el.hidden = !open));
+        } else {
+            panels.forEach((el) => el.classList.add('is-closing'));
+            // Hide once the fold-back finishes (with a timer as a fallback if the animation never fires).
+            // Child items finish their own animations too, so only the menu's own animationend counts.
+            const onEnd = (event: AnimationEvent) => { if (event.target === menu) done(); };
+            const done = () => {
+                clearTimeout(closeTimer);
+                menu.removeEventListener('animationend', onEnd);
+                if (!menu.classList.contains('is-closing')) return;
+                panels.forEach((el) => { el.hidden = true; el.classList.remove('is-closing'); });
+            };
+            menu.addEventListener('animationend', onEnd);
+            closeTimer = window.setTimeout(done, 600);
+        }
         header?.classList.toggle('menu-open', open);
         toggle.setAttribute('aria-expanded', String(open));
         toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
@@ -103,7 +143,7 @@ const isCurrent = (href: string) => href === currentPath || (href !== '/' && cur
 
     document.addEventListener('click', (event) => {
         const target = event.target as Element;
-        if (target.closest('[data-menu-toggle]')) return setMenu(els().menu?.hidden ?? false);
+        if (target.closest('[data-menu-toggle]')) return setMenu(!els().header?.classList.contains('menu-open'));
         if (target.closest('[data-menu-scrim]') || target.closest('[data-site-menu] a')) setMenu(false);
     });
     document.addEventListener('keydown', (event) => {
@@ -133,19 +173,40 @@ const isCurrent = (href: string) => href === currentPath || (href !== '/' && cur
     .is-scrolled .nav-pill,.menu-open .nav-pill{background:rgba(23,24,22,.72)}
     .is-scrolled .site-cta,.menu-open .site-cta{background:#0a0a0a;color:#fff}
     .is-scrolled .site-cta:hover{background:#2a2a2a}
-    .site-menu{width:calc(100% - 48px);max-width:420px;margin:8px 24px 0 auto;padding:8px;border:1px solid rgba(10,10,10,.08);border-radius:24px;background:rgba(255,255,255,.96);-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px);box-shadow:0 24px 60px -20px rgba(0,0,0,.35);animation:menu-in .25s cubic-bezier(.22,1,.36,1)}
+    .site-menu{width:calc(100% - 48px);max-width:420px;margin:8px 24px 0 auto;padding:10px;border:1px solid rgba(10,10,10,.08);border-radius:24px;background:rgba(255,255,255,.96);-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px);box-shadow:0 24px 60px -20px rgba(0,0,0,.35);transform-origin:top right;animation:menu-in .52s cubic-bezier(.34,1.4,.64,1)}
     .site-menu[hidden]{display:none}
     .site-menu ul{margin:0;padding:0;list-style:none}
-    .site-menu li a{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-radius:14px;color:#0a0a0a;font-size:17px;font-weight:500;text-decoration:none;transition:background-color .2s}
-    .site-menu li a:hover,.site-menu li a[aria-current]{background:#f5f5f5}
-    .site-menu li a svg{color:#a1a1a1}
-    .site-menu-cta{display:flex;align-items:center;justify-content:center;height:48px;margin-top:8px;border-radius:999px;background:#0a0a0a;color:#fff;font-size:16px;font-weight:600;text-decoration:none}
-    .site-menu-scrim{position:fixed;inset:0;z-index:59;background:rgba(10,10,10,.25)}
+    .site-menu a{color:#0a0a0a;text-decoration:none;transition:background-color .2s,color .2s}
+    .menu-tiles{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+    .menu-tiles a{display:flex;flex-direction:column;align-items:flex-start;gap:14px;padding:14px;border-radius:16px;background:#f5f5f5;font-size:15px;font-weight:600}
+    .menu-tiles svg{color:#6b6b6b}
+    .menu-tiles a:hover,.menu-tiles a[aria-current]{background:#ececec}
+    .menu-tiles a[aria-current] svg{color:#0a0a0a}
+    .menu-label{margin:18px 10px 4px;color:#a1a1a1;font-size:12px;font-weight:500}
+    .menu-explore{display:grid;grid-template-columns:1fr 1fr;gap:0 6px}
+    .menu-explore a{display:block;padding:9px 10px;border-radius:12px;font-size:15px;font-weight:500}
+    .menu-explore a:hover,.menu-explore a[aria-current]{background:#f5f5f5}
+    .menu-small{display:flex;gap:4px;margin-top:10px;padding-top:8px;border-top:1px solid rgba(10,10,10,.07)}
+    .menu-small a{display:inline-flex;align-items:center;gap:4px;padding:8px 10px;border-radius:999px;color:#6b6b6b;font-size:13.5px;font-weight:500}
+    .menu-small a:hover,.menu-small a[aria-current]{background:#f5f5f5;color:#0a0a0a}
+    .site-menu.is-closing{animation:menu-out .32s cubic-bezier(.55,0,.75,.2) forwards}
+    .site-menu li,.menu-label,.menu-small{animation:menu-item .42s cubic-bezier(.22,1,.36,1) both;animation-delay:calc(70ms + var(--i,0) * 35ms)}
+    .site-menu.is-closing li,.site-menu.is-closing .menu-label,.site-menu.is-closing .menu-small{animation:none}
+    .menu-small li{animation:none}
+    .menu-open .site-menu-btn svg{animation:menu-icon .3s cubic-bezier(.22,1,.36,1)}
+    .site-menu-scrim{position:fixed;inset:0;z-index:59;background:rgba(10,10,10,.25);animation:menu-fade .3s ease}
+    .site-menu-scrim.is-closing{animation:menu-fade-out .2s ease forwards}
     .site-menu-scrim[hidden]{display:none}
-    @keyframes menu-in{from{opacity:0;transform:translateY(-6px) scale(.98)}to{opacity:1;transform:none}}
+    /* Unfolds from the menu button's corner with a little spring, and folds back into it on close */
+    @keyframes menu-in{0%{opacity:0;clip-path:inset(0 0 100% 70% round 24px);transform:scale(.6)}35%{opacity:1}100%{opacity:1;clip-path:inset(0 0 0 0 round 24px);transform:none}}
+    @keyframes menu-out{0%{clip-path:inset(0 0 0 0 round 24px);transform:none}70%{opacity:1}100%{opacity:0;clip-path:inset(0 0 100% 70% round 24px);transform:scale(.6)}}
+    @keyframes menu-item{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+    @keyframes menu-icon{from{opacity:0;transform:rotate(-90deg) scale(.6)}to{opacity:1;transform:none}}
+    @keyframes menu-fade{from{opacity:0}}
+    @keyframes menu-fade-out{to{opacity:0}}
     .nav-icon-pulse{transform-origin:center;animation:nav-icon-pulse 2s ease-in-out infinite}
     @keyframes nav-icon-pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.55;transform:scale(1.18)}}
-    @media(prefers-reduced-motion:reduce){.site-menu,.nav-icon-pulse{animation:none}}
+    @media(prefers-reduced-motion:reduce){.site-menu,.site-menu li,.menu-label,.menu-small,.site-menu-scrim,.site-menu-btn svg,.nav-icon-pulse{animation:none!important}}
     @media(max-width:860px){.site-nav{display:flex;justify-content:space-between;padding:0 24px}.site-links{display:none}.site-menu-btn{display:flex}}
     @media(max-width:639px){.site-header{top:16px}.site-nav{padding:0 16px}.site-menu{width:calc(100% - 32px);max-width:none;margin:8px 16px 0}}
     @media(max-width:359px){.site-brand{padding:0 14px}.site-logo{height:22px}.site-cta{padding:0 14px}}
