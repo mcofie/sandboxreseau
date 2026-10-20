@@ -1307,5 +1307,36 @@
         "bio": "Joseph is the co-founder of Glolly, building the tools that let any Ghanaian business, however small or new, sell online with the ease of the biggest brands."
       }
     ]
+  },
+  {
+    "id": "movebills",
+    "name": "MoveBills",
+    "industry": "Fintech",
+    "location": "Ghana",
+    "status": "Live",
+    "description": "Invoicing for freelancers and small businesses in Ghana. Create branded invoices and receipts in minutes, share them as a PDF or link, and get paid faster with payment links.",
+    "longDescription": "MoveBills is a cloud invoicing platform for freelancers and SMEs. Businesses create professional invoices, issue receipts after payment, send reminders and track their billing activity from one dashboard, on desktop or mobile.\n\nThere is a free Starter plan for occasional clients. Paid plans add unlimited invoices and receipts, payment links, business insights, quotations and waybills, and sessions with accountants and tax professionals.",
+    "tags": [
+      "Invoicing",
+      "Payments",
+      "SMEs"
+    ],
+    "founded": "",
+    "url": "https://movebills.com/",
+    "cta": "Learn more",
+    "logo": "/assets/img/logos/movebills.png",
+    "socials": {
+      "instagram": "https://www.instagram.com/move.bills/"
+    },
+    "founders": [
+      {
+        "name": "Kafui Yevu",
+        "role": "Co-founder",
+        "linkedin": "https://www.linkedin.com/in/kafuiday/",
+        "twitter": "https://x.com/kafuiday",
+        "avatar": "/assets/img/founders/kafui-yevu.jpg",
+        "bio": "Kafui is a product manager and builder, and the founder of Kraado, the studio behind MoveBills. She co-founded MoveBills to make invoicing and getting paid simple for freelancers and small businesses."
+      }
+    ]
   }
 ]
