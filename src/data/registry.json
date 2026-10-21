@@ -2,13 +2,13 @@
   {
     "id": "sail-rides",
     "name": "Sail rides",
-    "industry": "Tech",
+    "industry": "Mobility & Travel",
     "location": "Accra",
     "status": "Live",
     "description": "Compare Uber, Bolt and Yango prices for your trip in 24+ countries, see trotro routes and fares in Ghana, and check bus fares across Britain. Free, in your browser.",
     "tags": [
-      "Mobility",
-      "Software"
+      "Ride-hailing",
+      "Price comparison"
     ],
     "founded": "2025",
     "url": "https://sailrides.co/",
@@ -34,13 +34,13 @@
   {
     "id": "reveal-real-estate",
     "name": "Reveal Real Estate",
-    "industry": "Tech",
+    "industry": "Property",
     "location": "Accra",
     "status": "Live",
     "description": "We help you invest in real estate with full transparency, expert guidance, and end-to-end support. Secure your dream property without the hassle.",
     "tags": [
-      "Real Estate",
-      "Software"
+      "Real estate",
+      "Investment"
     ],
     "founded": "2024",
     "url": "https://reveal-real-estate.com",
@@ -63,8 +63,8 @@
     "status": "Waitlist",
     "description": "A contactless, Apple Pay-style way to pay with mobile money in Ghana. Pouch is taking sign-ups for its waitlist.",
     "tags": [
-      "Fintech",
-      "Software"
+      "Payments",
+      "Mobile money"
     ],
     "founded": "2025",
     "url": "https://www.pouchpay.app/",
@@ -84,13 +84,13 @@
   {
     "id": "chime-app",
     "name": "Chime",
-    "industry": "Software",
+    "industry": "Productivity & Tools",
     "location": "Accra",
     "status": "Live",
     "description": "A high-visibility productivity tool for macOS designed to ensure users never miss meetings by replacing subtle notifications with unmissable alerts.",
     "tags": [
-      "Productivity",
-      "Software"
+      "macOS",
+      "Meetings"
     ],
     "founded": "2025",
     "url": "https://www.usechime.app/",
@@ -113,13 +113,13 @@
   {
     "id": "ratecardly",
     "name": "RateCardly",
-    "industry": "Creative",
+    "industry": "Creators & Marketing",
     "location": "Accra",
     "status": "Live",
     "description": "A professional platform that allows creators and freelancers to build and share digital, link-based rate cards for their services and pricing.",
     "tags": [
-      "Creative",
-      "Software"
+      "Creators",
+      "Rate cards"
     ],
     "founded": "2023",
     "url": "https://ratecard.ly/",
@@ -139,13 +139,13 @@
   {
     "id": "echolift",
     "name": "Echolift",
-    "industry": "Tech",
+    "industry": "Community & Impact",
     "location": "Accra",
     "status": "Live",
     "description": "A technology platform that simplifies the donation process by connecting donors directly with verified charities through a decentralized system.",
     "tags": [
-      "Social Impact",
-      "Software"
+      "Donations",
+      "Charities"
     ],
     "founded": "2025",
     "url": "https://www.echolift.org/",
@@ -163,13 +163,13 @@
   {
     "id": "jampolls",
     "name": "JamPolls",
-    "industry": "Social",
+    "industry": "Creators & Marketing",
     "location": "Accra",
     "status": "Live",
     "description": "An audience engagement and polling platform designed for creators and brands to gather instant feedback through highly shareable, Gen Z-friendly polls.",
     "tags": [
-      "Social",
-      "Creative"
+      "Polls",
+      "Audience"
     ],
     "founded": "2024",
     "url": "https://jampolls.com/",
@@ -197,8 +197,8 @@
     "status": "Live",
     "description": "A professional invoicing and financial management platform that helps African freelancers create branded invoices and track payments.",
     "tags": [
-      "Fintech",
-      "Software"
+      "Invoicing",
+      "Freelancers"
     ],
     "founded": "2023",
     "url": "https://beeterty.com/",
@@ -223,13 +223,13 @@
   {
     "id": "skillsclub",
     "name": "The Skill Club",
-    "industry": "Social",
+    "industry": "Learning & Careers",
     "location": "Accra",
     "status": "Live",
     "description": "A career-focused community and talent marketplace that connects students and tech-savvy individuals in Ghana with internships and masterclasses.",
     "tags": [
-      "Community",
-      "Social"
+      "Internships",
+      "Talent"
     ],
     "founded": "2021",
     "url": "https://theskill.club/",
@@ -252,13 +252,12 @@
   {
     "id": "giftpal",
     "name": "GiftPal",
-    "industry": "Software",
+    "industry": "Commerce",
     "location": "Accra",
     "status": "Live",
     "description": "A gift marketplace for every occasion. Discover curated gifts, experiences and personalised presents, send them instantly, and track delivery in real time.",
     "tags": [
-      "Lifestyle",
-      "Software"
+      "Gifting"
     ],
     "founded": "2022",
     "url": "https://giftpal.co/",
@@ -286,13 +285,13 @@
   {
     "id": "fitsynq",
     "name": "FitSynQ",
-    "industry": "Software",
+    "industry": "Health",
     "location": "Accra",
     "status": "Live",
     "description": "A comprehensive gym management 'operating system' that automates member check-ins, multi-location billing, and class bookings.",
     "tags": [
-      "Software",
-      "Health"
+      "Gyms",
+      "Fitness"
     ],
     "founded": "2024",
     "url": "https://www.fitsynq.app/",
@@ -316,13 +315,13 @@
   {
     "id": "buukmenow",
     "name": "BuukMeNow",
-    "industry": "Marketplace",
+    "industry": "Events & Experiences",
     "location": "Accra",
     "status": "Live",
     "description": "An all-in-one booking platform for African businesses. Take mobile money and card payments, manage appointments, sell event tickets and create payment links, for 5% per transaction.",
     "tags": [
-      "Marketplace",
-      "Services"
+      "Bookings",
+      "Payments"
     ],
     "founded": "2023",
     "url": "https://buukmenow.com/",
@@ -346,13 +345,13 @@
   {
     "id": "gatepass",
     "name": "GatePass",
-    "industry": "Fintech",
+    "industry": "Events & Experiences",
     "location": "Accra",
     "status": "Live",
     "description": "A streamlined event ticketing platform that allows organizers to create events and sell digital tickets with secure QR codes for paperless entry.",
     "tags": [
-      "Events",
-      "Fintech"
+      "Ticketing",
+      "Events"
     ],
     "founded": "2025",
     "url": "https://gatepass.so/",
@@ -378,13 +377,13 @@
   {
     "id": "golly-express",
     "name": "Golly Express",
-    "industry": "Logistics",
+    "industry": "Commerce",
     "location": "Accra",
     "status": "Live",
     "description": "Shop from Amazon, eBay and Shopify stores in the US, UK and Canada and have it delivered in Ghana, with landed cedi prices, Mobile Money payments and delivery to Accra and Kumasi.",
     "tags": [
-      "Logistics",
-      "Software"
+      "Shipping",
+      "Cross-border shopping"
     ],
     "founded": "2024",
     "url": "https://gollyexpress.com/",
@@ -408,12 +407,12 @@
   {
     "id": "thedsgnjunkies",
     "name": "Thedsgnjunkies",
-    "industry": "Creative",
+    "industry": "Community & Impact",
     "location": "Accra",
     "status": "Live",
     "description": "An African creative community that empowers designers through mentorship, campus tours, and conferences like FiDCon.",
     "tags": [
-      "Creative",
+      "Design",
       "Community"
     ],
     "founded": "2022",
@@ -432,12 +431,12 @@
   {
     "id": "clerra",
     "name": "Clerra",
-    "industry": "Tech",
+    "industry": "Productivity & Tools",
     "location": "Accra",
     "status": "Live",
     "description": "An AI-powered legal practice management platform with case tracking, billing automation, document insights, and fast legal research, all in one place.",
     "tags": [
-      "Legal Tech",
+      "Legal",
       "AI"
     ],
     "founded": "2025",
@@ -462,13 +461,13 @@
   {
     "id": "openprop",
     "name": "OpenProp Africa",
-    "industry": "Marketplace",
+    "industry": "Property",
     "location": "Accra",
     "status": "Live",
     "description": "A property and home essentials marketplace in Ghana. Buy, rent, or sell property, shop furniture and appliances, and book moving, cleaning, and home services.",
     "tags": [
-      "Real Estate",
-      "Marketplace"
+      "Real estate",
+      "Home services"
     ],
     "founded": "2024",
     "url": "https://openprop.africa/",
@@ -492,13 +491,13 @@
   {
     "id": "nightmarket",
     "name": "Night Market",
-    "industry": "Marketplace",
+    "industry": "Commerce",
     "location": "Accra",
     "status": "Live",
     "description": "A local delivery platform in Ghana. Customers order food from their neighbourhood favourites, vendors grow their sales, and riders earn on every delivery.",
     "tags": [
-      "Commerce",
-      "Delivery"
+      "Food delivery",
+      "Local vendors"
     ],
     "founded": "2021",
     "url": "https://nightmarketgh.com/",
@@ -516,13 +515,13 @@
   {
     "id": "newcomma",
     "name": "NewComma",
-    "industry": "Creative",
+    "industry": "Learning & Careers",
     "location": "London, UK",
     "status": "Live",
     "description": "A talent marketplace connecting African creatives to global businesses. Creatives get found, booked and paid; businesses get the right talent for a team or project, on demand.",
     "tags": [
-      "Creative",
-      "Talent"
+      "Talent",
+      "Creatives"
     ],
     "founded": "2021",
     "url": "https://home.newcomma.com/",
@@ -559,7 +558,7 @@
     "status": "Live",
     "description": "An AI-powered expense tracker that auto-syncs transactions from SMS and email, giving users real-time visibility into their spending without manual entry.",
     "tags": [
-      "Fintech",
+      "Personal finance",
       "AI"
     ],
     "founded": "2023",
@@ -580,13 +579,13 @@
   {
     "id": "gaderin",
     "name": "Gaderin",
-    "industry": "Marketplace",
+    "industry": "Events & Experiences",
     "location": "Accra",
     "status": "Live",
     "description": "A curated experiences marketplace for Accra: discover and book activities, cultural events, food tours, art, and adventures hosted by locals.",
     "tags": [
       "Experiences",
-      "Marketplace"
+      "Accra"
     ],
     "founded": "2025",
     "url": "http://thegaderin.com/",
@@ -610,13 +609,13 @@
   {
     "id": "kixara",
     "name": "Kixara",
-    "industry": "Tech",
+    "industry": "Commerce",
     "location": "Accra",
     "status": "Live",
     "description": "A WhatsApp and Instagram CRM that answers customers, takes orders and books appointments automatically, so businesses stop losing sales to slow replies.",
     "tags": [
-      "Commerce",
-      "Marketing"
+      "WhatsApp",
+      "Customer service"
     ],
     "founded": "2023",
     "url": "https://www.kixara.com/",
@@ -638,12 +637,12 @@
   {
     "id": "piply",
     "name": "Piply",
-    "industry": "Software",
+    "industry": "Learning & Careers",
     "location": "Accra",
     "status": "Live",
     "description": "An AI tutor that plans, quizzes and tracks for you. Turn your notes into explanations, flashcards and quizzes for classes, certifications or work.",
     "tags": [
-      "EdTech",
+      "Studying",
       "AI"
     ],
     "founded": "2026",
@@ -667,13 +666,13 @@
   {
     "id": "pastcare",
     "name": "PastCare",
-    "industry": "Software",
+    "industry": "Community & Impact",
     "location": "Accra",
     "status": "Live",
     "description": "Church management software for tracking members, attendance, donations, church assets and events, with tools for pastoral care. Plans start at $5.99 a month.",
     "tags": [
-      "SaaS",
-      "Community"
+      "Churches",
+      "Membership"
     ],
     "founded": "2020",
     "url": "https://pastcare.app/",
@@ -695,13 +694,13 @@
   {
     "id": "aldincycles",
     "name": "Aldin Cycles",
-    "industry": "Tech",
+    "industry": "Mobility & Travel",
     "location": "Accra",
     "status": "Live",
     "description": "Ghana's first bike-sharing company, providing affordable, eco-friendly urban mobility through a network of shared bicycles across the city.",
     "tags": [
-      "Mobility",
-      "CleanTech"
+      "Bike sharing",
+      "Clean energy"
     ],
     "founded": "2023",
     "url": "https://www.aldincycles.com",
@@ -737,8 +736,8 @@
     "status": "Live",
     "description": "Susu and microfinance software for Ghana. Collectors, cooperatives and MFIs run susu cycles, savings, passbooks and a full loan book, with SusuPal, an AI that answers from their books.",
     "tags": [
-      "Fintech",
-      "Savings"
+      "Savings",
+      "Microfinance"
     ],
     "founded": "2025",
     "url": "https://susupaa.com/",
@@ -762,13 +761,12 @@
   {
     "id": "ridekrom",
     "name": "Krom",
-    "industry": "Tech",
+    "industry": "Mobility & Travel",
     "location": "Accra",
     "status": "Live",
     "description": "A carpooling platform connecting drivers and passengers traveling the same routes across Ghana: affordable rides, split costs, verified profiles, and secure payments.",
     "tags": [
-      "Mobility",
-      "Software"
+      "Carpooling"
     ],
     "founded": "2025",
     "url": "https://ridekrom.com/",
@@ -791,12 +789,13 @@
   {
     "id": "mande",
     "name": "Mande",
-    "industry": "Tech",
+    "industry": "Learning & Careers",
     "location": "Accra",
     "status": "Live",
     "description": "An AI-powered career companion for students that provides career readiness scores, personalized career matching, and 24/7 support to turn degrees into careers.",
     "tags": [
-      "EdTech",
+      "Careers",
+      "Students",
       "AI"
     ],
     "founded": "2022",
@@ -825,12 +824,12 @@
   {
     "id": "tripoclock",
     "name": "Trip o'clock",
-    "industry": "Tech",
+    "industry": "Mobility & Travel",
     "location": "Accra",
     "status": "Live",
     "description": "An AI-powered travel companion that helps you plan trips, find accommodations, book flights, get global e-SIMs, and discover destinations, all in one place.",
     "tags": [
-      "Travel",
+      "Trip planning",
       "AI"
     ],
     "founded": "2025",
@@ -865,13 +864,13 @@
   {
     "id": "traaple",
     "name": "Traaple",
-    "industry": "Marketplace",
+    "industry": "Events & Experiences",
     "location": "Accra",
     "status": "Live",
     "description": "A discovery and booking platform reshaping the experience economy, connecting people to cultural activities, lifestyle services, events, entertainment, and everyday essentials.",
     "tags": [
       "Experiences",
-      "Marketplace"
+      "Culture"
     ],
     "founded": "2023",
     "url": "https://traaple.com/",
@@ -903,7 +902,7 @@
     "status": "Live",
     "description": "An embedded finance platform that gives small businesses the same visibility, financing, and distribution power as enterprises, with AI-powered tools for smarter operations.",
     "tags": [
-      "Fintech",
+      "SME finance",
       "AI"
     ],
     "founded": "2024",
@@ -931,15 +930,13 @@
   {
     "id": "syio-labs",
     "name": "Syio Labs",
-    "industry": "Creative",
+    "industry": "Productivity & Tools",
     "location": "Accra",
     "status": "Live",
     "description": "A product studio in Accra that builds, launches and scales its own startups and SaaS products, and partners with a few founders to take theirs from 0 to 1.",
     "tags": [
-      "Design",
-      "Branding",
-      "Creative",
-      "Software"
+      "Product studio",
+      "Design"
     ],
     "founded": "2023",
     "url": "https://www.syiolabs.com/",
@@ -967,13 +964,13 @@
   {
     "id": "rivia-clinics",
     "name": "Rivia Clinics",
-    "industry": "Tech",
+    "industry": "Health",
     "location": "Accra",
     "status": "Live",
     "description": "A multi-specialty clinic chain offering comprehensive employee healthcare through a single annual fee, with virtual care, pharmacy, lab, and specialist services across Ghana.",
     "tags": [
-      "Healthcare",
-      "Software"
+      "Clinics",
+      "Employee health"
     ],
     "founded": "2023",
     "url": "https://riviaclinics.com/",
@@ -993,12 +990,13 @@
   {
     "id": "megaquest",
     "name": "MegaQuest",
-    "industry": "Tech",
+    "industry": "Productivity & Tools",
     "location": "Accra",
     "status": "Live",
     "description": "A voice-first research platform that helps you collect rich, authentic audio responses and transform them into actionable, AI-driven insights in multiple languages.",
     "tags": [
       "Research",
+      "Voice",
       "AI"
     ],
     "founded": "2024",
@@ -1028,8 +1026,8 @@
     "status": "Live",
     "description": "A cryptocurrency exchange platform that lets users buy and sell Bitcoin seamlessly using mobile money, bridging crypto and everyday payments in Ghana.",
     "tags": [
-      "Fintech",
-      "Crypto"
+      "Crypto",
+      "Mobile money"
     ],
     "founded": "2024",
     "url": "https://www.bitspenda.app/",
@@ -1048,13 +1046,13 @@
   {
     "id": "stacx",
     "name": "STACX",
-    "industry": "Creative",
+    "industry": "Creators & Marketing",
     "location": "Accra",
     "status": "Live",
     "description": "The content creator CRM built for influencers. Manage brand deals, track payments and invoices, organize deliverables, and grow your creator income from one clean dashboard.",
     "tags": [
-      "Creative",
-      "Software"
+      "Creators",
+      "Brand deals"
     ],
     "founded": "2025",
     "url": "https://getstacx.com/",
@@ -1079,8 +1077,8 @@
     "status": "Live",
     "description": "A guided savings platform that helps you build your emergency fund step by step. Save consistently, grow your money with interest, and earn rewards for your progress.",
     "tags": [
-      "Fintech",
-      "Savings"
+      "Savings",
+      "Personal finance"
     ],
     "founded": "2025",
     "url": "https://phundit.app/",
@@ -1100,13 +1098,13 @@
   {
     "id": "boostmate",
     "name": "BoostMate",
-    "industry": "Tech",
+    "industry": "Creators & Marketing",
     "location": "Accra",
     "status": "Live",
     "description": "An ambassador marketing platform that helps brands connect with passionate advocates, launch campaigns, and amplify reach organically through authentic connections.",
     "tags": [
-      "Marketing",
-      "Software"
+      "Ambassadors",
+      "Brands"
     ],
     "founded": "2024",
     "url": "https://www.theboostmate.com/",
@@ -1131,8 +1129,8 @@
     "status": "Live",
     "description": "A next-gen super app for everyday payments. Send money to friends and family quickly across banks and mobile money, and discover other services through mini apps.",
     "tags": [
-      "Fintech",
-      "Payments"
+      "Payments",
+      "Super app"
     ],
     "founded": "2022",
     "url": "https://speso.co/",
@@ -1143,13 +1141,13 @@
   {
     "id": "bmptbooks",
     "name": "BMPT Books",
-    "industry": "Software",
+    "industry": "Fintech",
     "location": "Accra",
     "status": "Live",
     "description": "A cloud accounting platform for businesses. Manage invoicing, expenses, payroll, inventory, bank reconciliation, and financial reporting from anywhere, on any device.",
     "tags": [
-      "SaaS",
-      "Fintech"
+      "Accounting",
+      "SMEs"
     ],
     "founded": "2018",
     "url": "https://bmptbooks.com/",
@@ -1181,14 +1179,14 @@
   {
     "id": "zend",
     "name": "Zend",
-    "industry": "Software",
+    "industry": "Productivity & Tools",
     "location": "Accra",
     "status": "Live",
     "description": "A developer-first messaging API for sending OTPs, alerts and notifications over SMS, WhatsApp, voice and email, with templates, bulk campaigns, webhooks and 98%+ delivery.",
     "longDescription": "Zend is a developer-first messaging platform. One API sends OTPs, alerts and system messages over SMS, WhatsApp, voice and email, with SDKs for Node and Go, message templates, bulk campaigns and webhooks for delivery status.\n\nIts transactional email lets teams send from their own domains, authenticated with SPF, DKIM and DMARC, with bounces and complaints tracked and suppressed automatically. Zend is built in Ghana for global reach, and is a Deadal.us product.",
     "tags": [
       "Developer tools",
-      "Software"
+      "Messaging"
     ],
     "founded": "",
     "url": "https://www.tryzend.com/",
@@ -1213,14 +1211,14 @@
   {
     "id": "stokmate",
     "name": "Stokmate",
-    "industry": "Marketplace",
+    "industry": "Commerce",
     "location": "Accra",
     "status": "Live",
     "description": "The operating system for informal retail in Africa. Stokmate connects manufacturers, distributors and neighbourhood shops so they can restock without guesswork, track deliveries and build a credit history.",
     "longDescription": "Stokmate is building the infrastructure for informal retail in Africa, connecting suppliers and informal shops through technology and smart logistics.\n\nShops, kiosks and estates order stock from trusted manufacturers and distributors through myShopa, track deliveries, and get stock predictions so they never run out. Manufacturers see what is actually selling at retail level in real time, and delivery routes are optimised from warehouse to community store. As transactions build up, shops gain a verifiable credit history that opens access to working capital and inventory credit.",
     "tags": [
       "Retail",
-      "Logistics"
+      "Distribution"
     ],
     "founded": "",
     "url": "https://www.stokmate.co/",
@@ -1240,14 +1238,14 @@
   {
     "id": "midiarack",
     "name": "Midiarack",
-    "industry": "Marketplace",
+    "industry": "Creators & Marketing",
     "location": "Accra",
     "status": "Live",
     "description": "Africa’s media buying marketplace. Plan, compare and book billboards, radio, podcasts, influencers and print across Ghana from one transparent platform, without the agency markup.",
     "longDescription": "Midiarack brings media buying onto one platform. Advertisers browse ad spaces and media services across Ghana, filter by type, location, budget and reach, compare pricing, impressions and availability side by side, then book, upload their creative and track the campaign in one place.\n\nMedia owners list their inventory, set their rates, manage availability and get paid through a single dashboard. For larger campaigns, Midiarack works with brands, agencies and procurement teams on custom packages with dedicated support and consolidated invoicing.",
     "tags": [
       "Advertising",
-      "Marketplace"
+      "Media buying"
     ],
     "founded": "",
     "url": "https://www.midiarack.com/",
@@ -1272,15 +1270,14 @@
   {
     "id": "glolly",
     "name": "Glolly",
-    "industry": "Software",
+    "industry": "Commerce",
     "location": "Accra",
     "status": "Live",
     "description": "The online store builder for Ghana. Go live in an hour, sell on Instagram, TikTok and WhatsApp, and take Mobile Money and card payments, all run from your phone.",
     "longDescription": "Glolly gives social sellers a real online store on their own domain, plus a shop assistant in their own WhatsApp that answers questions, recommends products and closes sales around the clock. Mobile Money and card payments are built in, and customers buy straight from the browser with no app or sign-up.\n\nSellers manage orders, delivery, inventory, promotions and team accounts from their phone, record walk-in sales with an offline till, and can add products from a photo. It is one flat monthly fee with no commission on sales, and stores go live in under an hour, or the team builds it for you within 48 hours.",
     "tags": [
-      "E-commerce",
-      "Social commerce",
-      "Payments"
+      "Online stores",
+      "Social commerce"
     ],
     "founded": "",
     "url": "https://glolly.com/",
@@ -1318,7 +1315,6 @@
     "longDescription": "MoveBills is a cloud invoicing platform for freelancers and SMEs. Businesses create professional invoices, issue receipts after payment, send reminders and track their billing activity from one dashboard, on desktop or mobile.\n\nThere is a free Starter plan for occasional clients. Paid plans add unlimited invoices and receipts, payment links, business insights, quotations and waybills, and sessions with accountants and tax professionals.",
     "tags": [
       "Invoicing",
-      "Payments",
       "SMEs"
     ],
     "founded": "",
@@ -1336,6 +1332,65 @@
         "twitter": "https://x.com/kafuiday",
         "avatar": "/assets/img/founders/kafui-yevu.jpg",
         "bio": "Kafui is a product manager and builder, and the founder of Kraado, the studio behind MoveBills. She co-founded MoveBills to make invoicing and getting paid simple for freelancers and small businesses."
+      }
+    ]
+  },
+  {
+    "id": "vendorlope",
+    "name": "Vendorlope",
+    "industry": "Commerce",
+    "location": "Ghana",
+    "status": "Live",
+    "description": "Sales and inventory software for small businesses in Ghana. Record every sale, know what’s in stock, and see your profit clearly, from your phone or computer.",
+    "longDescription": "Vendorlope gives shop owners one simple system in place of manual calculations and scattered records. Record sales, check sales and profit for any period, and set low-stock alerts on fast-moving items so you restock before they run out.\n\nIt shows your most profitable products and your slowest movers, works fully on mobile, and lets owners invite staff, assign roles and see who recorded or edited what. It is built for clothing shops, electronics retailers, grocery markets, beauty supply stores and other everyday retailers.",
+    "tags": [
+      "Inventory",
+      "Retail"
+    ],
+    "founded": "",
+    "url": "https://vendorlope.com/",
+    "cta": "Learn more",
+    "logo": "/assets/img/logos/vendorlope.png",
+    "socials": {
+      "twitter": "https://x.com/vendorlope",
+      "linkedin": "https://www.linkedin.com/company/vendorlope",
+      "instagram": "https://www.instagram.com/vendorlope"
+    },
+    "founders": [
+      {
+        "name": "Jeffrey De-Graft Hinson",
+        "role": "Founder",
+        "twitter": "https://x.com/jdghinson",
+        "avatar": "/assets/img/founders/jeffrey-de-graft-hinson.jpg",
+        "bio": "Jeffrey is a product designer building Vendorlope, alongside other ventures. He was previously a co-founder of The Design Junkies, the African creative community."
+      }
+    ]
+  },
+  {
+    "id": "margin",
+    "name": "Margin",
+    "industry": "Productivity & Tools",
+    "location": "London",
+    "status": "Live",
+    "description": "A private research workspace for serious curiosity. Turn a question into a source-backed reading, then keep your notes, highlights and writing together in one place.",
+    "longDescription": "Margin turns questions into readings laid out like a book, with every claim tied to the source that supports it. You set the depth, technicality and voice, then read, listen to a narrated version, mark passages in context and keep following the threads that matter.\n\nResearch, notes and writing stay connected instead of scattering across tools, and personal work stays private. Margin also has a dedicated legal workspace for cases, documents and drafting, and a free plan to start.",
+    "tags": [
+      "Research",
+      "AI"
+    ],
+    "founded": "",
+    "url": "https://mymargin.app/",
+    "cta": "Learn more",
+    "logo": "/assets/img/logos/margin.png",
+    "socials": {},
+    "founders": [
+      {
+        "name": "Jerry Buaba",
+        "role": "Founder",
+        "twitter": "https://x.com/buabaj_",
+        "linkedin": "https://www.linkedin.com/in/jerrybuaba/",
+        "avatar": "/assets/img/founders/jerry-buaba.jpg",
+        "bio": "Jerry is a Ghanaian software engineer based in London, working in R&D for electronic trading. Outside work he spends his curiosity on artificial intelligence, climate science and photography, and he built Margin as a home for that kind of deep, source-backed research."
       }
     ]
   }

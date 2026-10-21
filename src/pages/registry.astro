@@ -11,6 +11,8 @@ const industryCounts = registry.reduce<Record<string, number>>((counts, company)
     return counts;
 }, {});
 const industries = Object.keys(industryCounts).sort((a, b) => industryCounts[b] - industryCounts[a]);
+// The grid is listed A–Z by name.
+const companies = [...registry].sort((a, b) => a.name.localeCompare(b.name, 'en', { sensitivity: 'base' }));
 ---
 
 <Layout
@@ -42,7 +44,7 @@ const industries = Object.keys(industryCounts).sort((a, b) => industryCounts[b] 
             <p class="registry-count" aria-live="polite" data-registry-count>Showing {Math.min(PAGE_SIZE, registry.length)} of {registry.length}</p>
 
             <div class="registry-grid" data-registry-grid data-page-size={PAGE_SIZE}>
-                {registry.map((company, index) => (
+                {companies.map((company, index) => (
                     <RegistryCard
                         company={company}
                         hidden={index >= PAGE_SIZE}
