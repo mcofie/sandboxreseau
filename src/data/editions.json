@@ -1,12 +1,22 @@
 [
   {
     "vol": 1,
-    "no": 6,
+    "no": 7,
     "title": "TBA",
-    "description": "Details for the next meetup are being finalized. Join us on October 30th!",
-    "date": "30th Oct '26",
+    "description": "Details for the next meetup are being finalised. Join us in February 2027!",
+    "date": "Feb '27",
     "status": "In Preparation",
     "image": null,
+    "lumaUrl": "https://luma.com/sandbox-reseau"
+  },
+  {
+    "vol": 1,
+    "no": 6,
+    "title": "Earning Trust",
+    "description": "How early builders earn the trust of users, partners and investors before they have a track record.",
+    "date": "30th Oct '26",
+    "status": "Past",
+    "image": "assets/img/vol6-trust.webp",
     "lumaUrl": "https://luma.com/sandbox-reseau"
   },
   {
