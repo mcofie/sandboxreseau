@@ -1423,5 +1423,37 @@
         "bio": "Sedem is a builder and ecosystem enabler in Ghana's tech scene. He founded The Skill Club and Hakanow, and helps run Code & Cocktails, which connects startups, talent and investors."
       }
     ]
+  },
+  {
+    "id": "spayces",
+    "name": "Spayces",
+    "industry": "Commerce",
+    "location": "Ghana",
+    "status": "Live",
+    "description": "A business operating system for shops and SMEs in Ghana. Run inventory, point of sale, customers, expenses and your team across every branch, in one place.",
+    "longDescription": "Spayces brings the day-to-day running of a physical or online business into a single platform. Manage your product catalogue and stock across locations, ring up sales at a fast checkout, issue invoices and receipts, and see sales analytics in real time.\n\nIt also keeps a customer database with purchase history, loyalty and discounts, tracks expenses and purchase orders, and lets owners invite staff, assign roles, track shifts and see who did what. It works on desktop, tablet and mobile, and there's a free plan to start.",
+    "tags": [
+      "Point of sale",
+      "Inventory",
+      "SMEs"
+    ],
+    "founded": "",
+    "url": "https://spayces.co/",
+    "cta": "Learn more",
+    "logo": "/assets/img/logos/spayces.png",
+    "socials": {
+      "twitter": "https://x.com/Spayces__",
+      "linkedin": "https://www.linkedin.com/company/spayces",
+      "instagram": "https://www.instagram.com/spayces.co"
+    },
+    "founders": [
+      {
+        "name": "Daniel Olukoya",
+        "role": "Founder",
+        "linkedin": "https://www.linkedin.com/in/danielolukoya",
+        "avatar": "",
+        "bio": "Daniel is the founder of Spayces, building a business operating system that helps Ghanaian shops and SMEs run their inventory, sales, customers and teams in one place."
+      }
+    ]
   }
 ]
