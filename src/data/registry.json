@@ -239,8 +239,10 @@
       {
         "name": "Sedem Balfour",
         "role": "Founder & CEO",
-        "linkedin": "https://linkedin.com/in/sedem-balfour",
-        "bio": "Sedem is an ecosystem builder who previously served as Ecosystem Manager at Hacklab Foundation and Startup Grind Chapter Director for KNUST. He founded Skill Club to bridge the gap between African talent and startups through high-touch, manual matching."
+        "linkedin": "https://www.linkedin.com/in/sedembalfour",
+        "bio": "Sedem is an ecosystem builder who previously served as Ecosystem Manager at Hacklab Foundation and Startup Grind Chapter Director for KNUST. He founded Skill Club to bridge the gap between African talent and startups through high-touch, manual matching.",
+        "twitter": "https://x.com/Sedem233",
+        "avatar": "/assets/img/founders/sedem-balfour.jpg"
       }
     ],
     "socials": {
@@ -1391,6 +1393,34 @@
         "linkedin": "https://www.linkedin.com/in/jerrybuaba/",
         "avatar": "/assets/img/founders/jerry-buaba.jpg",
         "bio": "Jerry is a Ghanaian software engineer based in London, working in R&D for electronic trading. Outside work he spends his curiosity on artificial intelligence, climate science and photography, and he built Margin as a home for that kind of deep, source-backed research."
+      }
+    ]
+  },
+  {
+    "id": "hakanow",
+    "name": "Hakanow",
+    "industry": "Events & Experiences",
+    "location": "Ghana",
+    "status": "Live",
+    "description": "The hackathon platform for builders everywhere. Discover hackathons, find teammates, build projects and win prizes, or run your own event from one dashboard.",
+    "longDescription": "For builders, Hakanow is where to find hackathons, team up with people whose skills complement yours, submit projects and get paid when you win, with prizes sent to mobile money or bank.\n\nFor organisers, it runs in-person, virtual and hybrid hackathons in one place: applications, team formation, submissions, judging, sponsors, prize payouts and analytics. It's available in English and French.",
+    "tags": [
+      "Hackathons",
+      "Developers"
+    ],
+    "founded": "",
+    "url": "https://hakanow.com/",
+    "cta": "Learn more",
+    "logo": "/assets/img/logos/hakanow.png",
+    "socials": {},
+    "founders": [
+      {
+        "name": "Sedem Balfour",
+        "role": "Founder",
+        "linkedin": "https://www.linkedin.com/in/sedembalfour",
+        "twitter": "https://x.com/Sedem233",
+        "avatar": "/assets/img/founders/sedem-balfour.jpg",
+        "bio": "Sedem is a builder and ecosystem enabler in Ghana's tech scene. He founded The Skill Club and Hakanow, and helps run Code & Cocktails, which connects startups, talent and investors."
       }
     ]
   }
